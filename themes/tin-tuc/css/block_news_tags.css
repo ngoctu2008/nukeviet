@@ -32,7 +32,7 @@
 <link rel="preload" as="script" href="/themes/vnnuke/js/owl.carousel.js?t=1718683883">
 <link rel="stylesheet" href="/assets/css/font-awesome.min.css?t=1718683883">
 <link rel="stylesheet" href="/themes/vnnuke/css/bootstrap.min.css?t=1718683883">
-<link rel="stylesheet" href="/themes/vnnuke/images/vnnuke/css/green/vnnuke-main.css?t=1718683883">
+<link rel="stylesheet" href="">
 <link rel="stylesheet" href="/themes/vnnuke/css/owl.carousel.min.css?t=1718683883">
 <link rel="stylesheet" href="/themes/vnnuke/css/owl.theme.default.min.css?t=1718683883">
 <link rel="stylesheet" href="/themes/vnnuke/css/animate.css?t=1718683883">
@@ -57,7 +57,7 @@
     <div class="container">
         <div class="col-sm-4 col-lg-8 hidden-xs hidden-md hidden-sm no-padding header-left">
 			<a id="logo" class="main-logo" title="Mã nguồn VnNuke" href="/">
-				<img src="/themes/vnnuke/images/vnnuke/img/logo-green.png" alt="Mã nguồn VnNuke" />
+				<img src="logo-green.png" alt="Mã nguồn VnNuke" />
 				<span class="logo-text hidden">NNUKE</span>
 			</a>
 			<div class="hidden">
@@ -220,7 +220,7 @@
         <ul class="nav navbar-nav">
             <li class="show-sub">
 	<a class="menu-item" title="Chuẩn SEO, mã nguồn Nukeviet" data-toggle="collapse" href="#collapse1">
-	Website <img class="btn-down" src="/themes/vnnuke/images/vnnuke/img/icon-submenu.png" />
+	Website <img class="btn-down" src="icon-submenu.png" />
 	</a>
 		<div id="collapse1" class="panel-collapse collapse">
 		<ul class="sub-menu">
@@ -240,7 +240,7 @@
 </li>
 <li class="show-sub">
 	<a class="menu-item" title="Thông tin cần biết, Blog, thư viện" data-toggle="collapse" href="#collapse8">
-	Tiện ích <img class="btn-down" src="/themes/vnnuke/images/vnnuke/img/icon-submenu.png" />
+	Tiện ích <img class="btn-down" src="icon-submenu.png" />
 	</a>
 		<div id="collapse8" class="panel-collapse collapse">
 		<ul class="sub-menu">
@@ -278,7 +278,7 @@
 							<div class="title">Template, giao diện mẫu <span>Beauty &amp; Spa</span></div>
 							<div class="other-info clearfix">
 																<span class="rating">
-									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+									<img src="not-rate-star.png">
 								</span>
 								<span class="price">
 									<b>
@@ -307,7 +307,7 @@
 							<div class="title">Template, giao diện mẫu <span>Lasavina</span></div>
 							<div class="other-info clearfix">
 																<span class="rating">
-									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+									<img src="not-rate-star.png">
 								</span>
 								<span class="price">
 									<b>
@@ -336,7 +336,7 @@
 							<div class="title">Template, giao diện mẫu <span>Vconst</span></div>
 							<div class="other-info clearfix">
 																<span class="rating">
-									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+									<img src="not-rate-star.png">
 								</span>
 								<span class="price">
 									<b>
@@ -365,7 +365,7 @@
 							<div class="title">Template, giao diện mẫu <span>Snews</span></div>
 							<div class="other-info clearfix">
 																<span class="rating">
-									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+									<img src="not-rate-star.png">
 								</span>
 								<span class="price">
 									<b>
@@ -394,7 +394,7 @@
 							<div class="title">Template, giao diện mẫu <span>Emart</span></div>
 							<div class="other-info clearfix">
 																<span class="rating">
-									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+									<img src="not-rate-star.png">
 								</span>
 								<span class="price">
 									<b>
@@ -423,11 +423,11 @@
 							<div class="title">Template, giao diện mẫu <span>Vreal</span></div>
 							<div class="other-info clearfix">
 																<span class="rating rating-background">
-																		<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
-									<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
-									<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
-									<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
-									<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
+																		<img src="rate-star-hover.png">
+									<img src="rate-star-hover.png">
+									<img src="rate-star-hover.png">
+									<img src="rate-star-hover.png">
+									<img src="rate-star-hover.png">
 								</span>
 								<span class="price">
 									<b>
@@ -456,7 +456,7 @@
 							<div class="title">Template, giao diện mẫu <span>Elearning</span></div>
 							<div class="other-info clearfix">
 																<span class="rating">
-									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+									<img src="not-rate-star.png">
 								</span>
 								<span class="price">
 									<b>
@@ -485,7 +485,7 @@
 							<div class="title">Template, giao diện mẫu <span>Xpress News</span></div>
 							<div class="other-info clearfix">
 																<span class="rating">
-									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+									<img src="not-rate-star.png">
 								</span>
 								<span class="price">
 									<b>
@@ -1024,7 +1024,7 @@
 </div>
 <div class="msgshow" id="msgshow">&nbsp;</div>
 </div>
-<div class="register-bottom clearfix" style="background:url(/themes/vnnuke/images/vnnuke/img/bg-register-bottom-green.jpg) no-repeat top center">
+<div class="register-bottom clearfix" style="background:url(bg-register-bottom-green.jpg) no-repeat top center">
 	<div class="container">
 		<h4>Liên hệ với chúng tôi ngay</h4>
 		<p>Để trải nghiệm những tính năng độc đáo mà Nukeviet Shops mang lại.</p>
@@ -1059,7 +1059,7 @@
                 </div>
                 <div class="col-md-6 row footer_row logo">
 					<div class="logo_site w200" style="margin-top:25px">
-						<img src="/themes/vnnuke/images/vnnuke/img/logo-green.png" alt="Mã nguồn VnNuke" />
+						<img src="logo-green.png" alt="Mã nguồn VnNuke" />
 						<p class="margin-top-lg">Mã nguồn Nukeviet, thiết kế website, module Nukeviet, chuyển đổi sang mã nguồn Nukeviet</p>
 					</div>
 					<div class="block_social">
@@ -1182,11 +1182,11 @@
         var ww = $(window).width()
         if (ww <= 440) {
 			$("#header .btn-menu").css("white-space", "nowrap");
-			$("#header #logo img").attr("src", "/themes/vnnuke/images/vnnuke/img/logo-green.png");
-			$("#header .small-logo img").attr("src", "/themes/vnnuke/images/vnnuke/img/logo-green.png");
+			$("#header #logo img").attr("src", "logo-green.png");
+			$("#header .small-logo img").attr("src", "logo-green.png");
         } else {
-			$("#header #logo img").attr("src", "/themes/vnnuke/images/vnnuke/img/logo-green.png");
-			$("#header .small-logo img").attr("src", "/themes/vnnuke/images/vnnuke/img/logo-green.png");
+			$("#header #logo img").attr("src", "logo-green.png");
+			$("#header .small-logo img").attr("src", "logo-green.png");
         }
     }
     $(window).resize(function () {
