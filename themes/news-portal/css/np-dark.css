@@ -1,0 +1,154 @@
+.boxed_layout.site-mode--dark #page,
+.site-mode--dark #page {
+  background: #222222;
+}
+
+.site-mode--dark .news_portal_block_posts .layout4 .np-block-posts-wrapper .np-alt-grid-post .np-post-content,
+.site-mode--dark .np-header-search-wrapper .search-form-main {
+  background: #303030;
+}
+
+.site-mode--dark .np-home-top-section .news_portal_featured_posts .np-block-wrapper {
+  background: none;
+}
+
+.site-mode--dark .news_portal_featured_posts .np-single-post-wrap .np-post-content .np-post-title a,
+.site-mode--dark .np-post-title.large-size a,
+.site-mode--dark .np-post-title.small-size a,
+.site-mode--dark .news-ticker-title>a,
+.site-mode--dark .np-archive-post-content-wrapper .entry-title a,
+.site-mode--dark h1.entry-title,
+.site-mode--dark .news_portal_block_posts .layout4 .np-post-title a {
+  color: #ffffff;
+}
+
+.site-mode--dark .cvmm-post-title a,
+.site-mode--dark .cvmm-timeline-title a,
+.site-mode--dark .cvmm-ticker-single-title,
+.site-mode--dark .cvmm-block-title span,
+.site-mode--dark .cvmm-ticker-wrapper .cvmm-ticker-single-title,
+.site-mode--dark .cvmm-ticker-wrapper .cvmm-ticker-single-title a,
+.site-mode--dark .cvmm-post-filter-cat-title-wrapper .cvmm-term-titles-wrap li {
+  color: #ffffff;
+}
+
+.site-mode--dark .cvmm-block-post-filter--layout-one .cvmm-post-wrapper {
+  background: #303030;
+}
+
+.site-mode--dark .cvmm-block-post-filter--layout-one .cvmm-post-block-trailing-post-wrap article {
+  background: #404040;
+}
+
+.site-mode--dark .widget_archive a,
+.site-mode--dark .widget_categories a,
+.site-mode--dark .widget_recent_entries a,
+.site-mode--dark .widget_meta a,
+.site-mode--dark .widget_recent_comments li,
+.site-mode--dark .widget_rss li,
+.site-mode--dark .widget_pages li a,
+.site-mode--dark .widget_nav_menu li a,
+.site-mode--dark .wp-block-latest-posts li a,
+.site-mode--dark .wp-block-archives li a,
+.site-mode--dark .wp-block-categories li a,
+.site-mode--dark .wp-block-page-list li a,
+.site-mode--dark .wp-block-latest-comments li {
+  color: #fff;
+}
+
+body.site-mode--dark,
+.site-mode--dark .news_portal_block_posts .layout4 .np-post-excerpt {
+  color: #efefef;
+}
+
+.site-mode--dark .np-archive-post-content-wrapper {
+  background: #2f2f2f;
+}
+
+.site-mode--dark .np-block-title,
+.site-mode--dark .widget-title,
+.site-mode--dark .page-header .page-title,
+.site-mode--dark .np-related-title {
+  background: none;
+  border: 1px solid #616161;
+  border-left: none;
+  border-right: none;
+}
+
+.site-mode--dark .np-ticker-block {
+  border: 1px solid #616161;
+}
+
+.site-mode--dark .np-secondary-block-wrap .np-single-post,
+.site-mode--dark .news_portal_default_tabbed .np-single-post,
+.site-mode--dark .news_portal_default_tabbed #comments ul li,
+.site-mode--dark .news_portal_block_posts .layout2 .np-secondary-block-wrap .np-single-post:nth-child(4) {
+  border-bottom: 1px solid #616161;
+}
+
+.site-mode--dark.home .np-home-icon a::after,
+.site-mode--dark .np-home-icon a:hover::after,
+.site-mode--dark #site-navigation ul#primary-menu>li:hover>a::after,
+.site-mode--dark #site-navigation ul#primary-menu>li.current-menu-item>a::after {
+  border-bottom: 5px solid #222222;
+}
+
+.site-mode--dark .np-archive-post-content-wrapper::before {
+  display: none;
+}
+
+.site-mode--dark .widget_archive a,
+.site-mode--dark .widget_categories a,
+.site-mode--dark .widget_recent_entries a,
+.site-mode--dark .widget_meta a,
+.site-mode--dark .widget_recent_comments li,
+.site-mode--dark .widget_rss li,
+.site-mode--dark .widget_pages li a,
+.site-mode--dark .widget_nav_menu li a,
+.site-mode--dark .widget_archive a::before,
+.site-mode--dark .widget_categories a::before,
+.site-mode--dark .widget_recent_entries a::before,
+.site-mode--dark .widget_meta a::before,
+.site-mode--dark .widget_recent_comments li::before,
+.site-mode--dark .widget_rss li::before,
+.site-mode--dark .widget_pages li a::before,
+.site-mode--dark .widget_nav_menu li a::before,
+.site-mode--dark .wp-block-latest-posts li a::before,
+.site-mode--dark .wp-block-archives li a::before,
+.site-mode--dark .wp-block-categories li a::before,
+.site-mode--dark .wp-block-page-list li a::before,
+.site-mode--dark .wp-block-latest-comments li::before {
+  color: #dfdfdf;
+}
+
+.site-mode--dark .entry-meta span a,
+.site-mode--dark .entry-meta span {
+  color: #cfcfcf;
+}
+
+.site-mode--dark #respond,
+.site-mode--dark .comment-list .comment-body {
+  background: none;
+  color: #fff;
+  border: 1px solid #515151;
+}
+
+.site-mode--dark #comments h3,
+.site-mode--dark #comments h2.comments-title,
+.site-mode--dark .comment-author .fn .url {
+  color: #fff;
+}
+
+.site-mode--dark.single h1.entry-title:hover,
+.site-mode--dark h1,
+.site-mode--dark h2,
+.site-mode--dark h3,
+.site-mode--dark h4,
+.site-mode--dark h5,
+.site-mode--dark h6{
+  color: #fff;
+}
+
+.site-mode--dark pre {
+  color: #333;
+}
