@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+	<html lang="vi" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#">
+	<head>
+<title>Mã nguồn VnNuke</title>
+<meta name="description" content="Mã nguồn Nukeviet, thiết kế website, module Nukeviet, chuyển đổi sang mã nguồn Nukeviet">
+<meta name="keywords" content="mã nguồn nukeviet,  thiết kế website,  module nukeviet,  chuyển đổi sang mã nguồn nukeviet">
+<meta name="news_keywords" content="mã nguồn nukeviet,  thiết kế website,  module nukeviet,  chuyển đổi sang mã nguồn nukeviet">
+<meta name="author" content="Mã nguồn VnNuke">
+<meta name="copyright" content="Mã nguồn VnNuke [quocvietposcovn@gmail.com]">
+<meta name="robots" content="index, archive, follow, noodp">
+<meta name="googlebot" content="index,archive,follow,noodp">
+<meta name="msnbot" content="all,index,follow">
+<meta name="generator" content="NukeViet v4.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta property="og:title" content="Mã nguồn VnNuke">
+<meta property="og:type" content="website">
+<meta property="og:description" content="Mã nguồn Nukeviet, thiết kế website, module Nukeviet, chuyển đổi sang mã nguồn Nukeviet">
+<meta property="og:site_name" content="Mã nguồn VnNuke">
+<meta property="og:url" content="https://vnnuke.com/">
+<link rel="shortcut icon" href="/favicon-green.ico">
+<link rel="canonical" href="https://vnnuke.com/">
+<link rel="preload" as="script" href="/assets/js/jquery/jquery.min.js?t=1718683883">
+<link rel="preload" as="script" href="/assets/js/language/vi.js?t=1718683883">
+<link rel="preload" as="script" href="/assets/js/global.js?t=1718683883">
+<link rel="preload" as="script" href="/themes/vnnuke/js/shops.js?t=1718683883">
+<link rel="preload" as="script" href="/themes/vnnuke/js/main.js?t=1718683883">
+<link rel="preload" as="script" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+<link rel="preload" as="script" href="/themes/vnnuke/js/bootstrap.min.js?t=1718683883">
+<link rel="preload" as="script" href="/themes/vnnuke/js/swiper.js?t=1718683883">
+<link rel="preload" as="script" href="/themes/vnnuke/js/owl.carousel.js?t=1718683883">
+<link rel="stylesheet" href="/assets/css/font-awesome.min.css?t=1718683883">
+<link rel="stylesheet" href="/themes/vnnuke/css/bootstrap.min.css?t=1718683883">
+<link rel="stylesheet" href="/themes/vnnuke/images/vnnuke/css/green/vnnuke-main.css?t=1718683883">
+<link rel="stylesheet" href="/themes/vnnuke/css/owl.carousel.min.css?t=1718683883">
+<link rel="stylesheet" href="/themes/vnnuke/css/owl.theme.default.min.css?t=1718683883">
+<link rel="stylesheet" href="/themes/vnnuke/css/animate.css?t=1718683883">
+<link rel="StyleSheet" href="/themes/vnnuke/css/shops.css?t=1718683883">
+<link rel="stylesheet" href="/assets/css/vnnuke.vi.0.css?t=1718683883">
+<style>
+	.main-menu .menu-item {text-transform:uppercase}
+	.main-menu .sub-menu .menu-items .col-md-4 {max-height:100px;padding:0}
+	.main-menu .sub-menu .menu-items .col-md-4:nth-child(2n+1) ul{border-right:none}
+	.main-menu .sub-menu .menu-items .col-md-4 ul:nth-child(1),.main-menu .sub-menu .menu-items .col-md-4 ul:nth-child(2) {padding-top:20px}
+	.main-menu .sub-menu .menu-items .col-md-4 ul{}
+	</style>
+	</head>
+	<body>
+
+<div id="container">
+<noscript>
+	<div class="alert alert-danger">Trình duyệt của bạn đã tắt chức năng hỗ trợ JavaScript.<br />Website chỉ làm việc khi bạn bật nó trở lại.<br />Để tham khảo cách bật JavaScript, hãy click chuột <a href="http://wiki.nukeviet.vn/support:browser:enable_javascript">vào đây</a>!</div>
+</noscript>
+
+<div id="header" class="header">
+    <div class="container">
+        <div class="col-sm-4 col-lg-8 hidden-xs hidden-md hidden-sm no-padding header-left">
+			<a id="logo" class="main-logo" title="Mã nguồn VnNuke" href="/">
+				<img src="/themes/vnnuke/images/vnnuke/img/logo-green.png" alt="Mã nguồn VnNuke" />
+				<span class="logo-text hidden">NNUKE</span>
+			</a>
+			<div class="hidden">
+								<h1>Mã nguồn VnNuke</h1>
+				<h2>Mã nguồn Nukeviet, thiết kế website, module Nukeviet, chuyển đổi sang mã nguồn Nukeviet</h2>
+			</div>
+            <ul class="main-menu">
+<li class="sub-lv2 hidden-md hidden-sm hidden-xs">
+	<a class="menu-item" href="/shops/" title="Chuẩn SEO, mã nguồn Nukeviet">Website <i class="fa fa-angle-down"></i></a>
+		<div class="sub-menu">
+		<div class="menu-items" style="overflow:hidden">
+			<div class="desc pull-left" style="background:#08f url(/uploads/menu/web-design-bkg.jpg) no-repeat bottom center;">
+				<a href="/shops/" title="Website">Website</a>
+				<p>Chuẩn SEO, mã nguồn Nukeviet</p>
+			</div>
+			<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/service/intro/gioi-thieu-ve-vnnuke-1.html" title="Giới thiệu về Vnnuke">Giới thiệu về Vnnuke</a>
+			<p>Giới thiệu về Vnnuke</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/service/intro/dich-vu-thiet-ke-website-tai-vnnuke-6.html" title="Tại sao bạn nên chọn Nukeviet để thiết kế website">Dịch vụ thiết kế website tại Vnnuke</a>
+			<p>Tại sao bạn nên chọn Nukeviet để thiết kế website</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/service/customer/" title="Danh sách khách hàng đang sử dụng mã nguồn trên VnNuke">Khách hàng</a>
+			<p>Danh sách khách hàng đang sử dụng mã nguồn trên VnNuke</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/shops/" title="Kho giao diện website Nukeviet">Kho giao diện</a>
+			<p>Kho giao diện website Nukeviet</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/shops/module/" title="Kho ứng dụng Nukeviet">Ứng dụng</a>
+			<p>Kho ứng dụng Nukeviet</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/service/feature/" title="Tất cả các tính năng ưu việt của mã nguồn Nukeviet">Tính năng website Vnnuke</a>
+			<p>Tất cả các tính năng ưu việt của mã nguồn Nukeviet</p>
+		</li>
+	</ul>
+</div>
+
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</li>	<li class="hidden-md hidden-sm hidden-xs">
+	<a class="menu-item" href="/service/price/" title="Bảng giá">Bảng giá</a>
+</li>
+<li class="sub-lv2 hidden-md hidden-sm hidden-xs">
+	<a class="menu-item" href="http://#" title="Thông tin cần biết, Blog, thư viện">Tiện ích <i class="fa fa-angle-down"></i></a>
+		<div class="sub-menu">
+		<div class="menu-items" style="overflow:hidden">
+			<div class="desc pull-left" style="background:#08f url(/uploads/menu/contact-bkg.jpg) no-repeat bottom center;">
+				<a href="http://#" title="Tiện ích">Tiện ích</a>
+				<p>Thông tin cần biết, Blog, thư viện</p>
+			</div>
+			<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/siteterms/quy-dinh-su-dung.html" title="Một số ràng buộc khi sử dụng mã nguồn tại VnNuke">Quy định sử dụng</a>
+			<p>Một số ràng buộc khi sử dụng mã nguồn tại VnNuke</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/hinh-thuc-thanh-toan.html" title="Hướng dẫn thanh toán cho khách hàng khi mua mã nguồn tại VnNuke">Hình thức thanh toán</a>
+			<p>Hướng dẫn thanh toán cho khách hàng khi mua mã nguồn tại VnNuke</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/news/" title="Chia sẻ kinh nghiệm thiết kế website từ A đến Z">Blog</a>
+			<p>Chia sẻ kinh nghiệm thiết kế website từ A đến Z</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/faq/" title="Giái đáp thắc mắc của khách hàng, gởi thắc mắc trực tiếp đến quản trị">Câu hỏi thường gặp</a>
+			<p>Giái đáp thắc mắc của khách hàng, gởi thắc mắc trực tiếp đến quản trị</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/tools/" title="Công cụ trực tuyến hữu ích dành cho thiết kế website">Công cụ trực tuyến</a>
+			<p>Công cụ trực tuyến hữu ích dành cho thiết kế website</p>
+		</li>
+	</ul>
+</div>
+<div class="col-md-4">
+	<ul style="padding-right:0px">
+		<li>
+			<a href="/download/" title="Chia sẻ mã nguồn và ứng dụng miễn phí">Thư viện miễn phí</a>
+			<p>Chia sẻ mã nguồn và ứng dụng miễn phí</p>
+		</li>
+	</ul>
+</div>
+
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</li>	<li class="hidden-md hidden-sm hidden-xs">
+	<a class="menu-item" href="/service/" title="Nhận thông tin góp ý, phản hồi từ khách hàng">Đăng ký</a>
+</li>
+
+            </ul>
+        </div>
+        <div class="col-xs-6 col-sm-5 col-md-5 col-lg-2 hidden-lg no-padding btn-menu">
+            <a href="javascript:;" class="btn-toggle" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false" aria-controls="navbar-collapse-1">
+                <i class="fa fa-bars"></i>
+            </a>
+            <a class="small-logo hidden-lg" href="/">
+                <img src="" height="50" />
+            </a>
+        </div>
+        <div class="col-xs-6 col-sm-7 col-md-7 col-lg-4 text-right no-padding">
+            <ul class="main-menu">
+                <li class="hidden-sm hidden-xs">
+                    <a href="/faq/">Trợ giúp</a>
+                </li>
+				<li class="trial">
+                    <a class="btn-registration" href="/service/?sid=0&proid=0">
+                        <span>Đăng ký</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="navbar-mobile collapse hidden-lg" id="navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li class="show-sub">
+	<a class="menu-item" title="Chuẩn SEO, mã nguồn Nukeviet" data-toggle="collapse" href="#collapse1">
+	Website <img class="btn-down" src="/themes/vnnuke/images/vnnuke/img/icon-submenu.png" />
+	</a>
+		<div id="collapse1" class="panel-collapse collapse">
+		<ul class="sub-menu">
+			<li><a href="/service/intro/gioi-thieu-ve-vnnuke-1.html" title="Giới thiệu về Vnnuke">Giới thiệu về Vnnuke</a></li>
+<li><a href="/service/intro/dich-vu-thiet-ke-website-tai-vnnuke-6.html" title="Tại sao bạn nên chọn Nukeviet để thiết kế website">Dịch vụ thiết kế website tại Vnnuke</a></li>
+<li><a href="/service/customer/" title="Danh sách khách hàng đang sử dụng mã nguồn trên VnNuke">Khách hàng</a></li>
+<li><a href="/shops/" title="Kho giao diện website Nukeviet">Kho giao diện</a></li>
+<li><a href="/shops/module/" title="Kho ứng dụng Nukeviet">Ứng dụng</a></li>
+<li><a href="/service/feature/" title="Tất cả các tính năng ưu việt của mã nguồn Nukeviet">Tính năng website Vnnuke</a></li>
+
+		</ul>
+	</div>
+</li><li>
+	<a class="menu-item" title="Bảng giá" href="/service/price/">
+	Bảng giá
+	</a>
+</li>
+<li class="show-sub">
+	<a class="menu-item" title="Thông tin cần biết, Blog, thư viện" data-toggle="collapse" href="#collapse8">
+	Tiện ích <img class="btn-down" src="/themes/vnnuke/images/vnnuke/img/icon-submenu.png" />
+	</a>
+		<div id="collapse8" class="panel-collapse collapse">
+		<ul class="sub-menu">
+			<li><a href="/siteterms/quy-dinh-su-dung.html" title="Một số ràng buộc khi sử dụng mã nguồn tại VnNuke">Quy định sử dụng</a></li>
+<li><a href="/hinh-thuc-thanh-toan.html" title="Hướng dẫn thanh toán cho khách hàng khi mua mã nguồn tại VnNuke">Hình thức thanh toán</a></li>
+<li><a href="/news/" title="Chia sẻ kinh nghiệm thiết kế website từ A đến Z">Blog</a></li>
+<li><a href="/faq/" title="Giái đáp thắc mắc của khách hàng, gởi thắc mắc trực tiếp đến quản trị">Câu hỏi thường gặp</a></li>
+<li><a href="/tools/" title="Công cụ trực tuyến hữu ích dành cho thiết kế website">Công cụ trực tuyến</a></li>
+<li><a href="/download/" title="Chia sẻ mã nguồn và ứng dụng miễn phí">Thư viện miễn phí</a></li>
+
+		</ul>
+	</div>
+</li><li>
+	<a class="menu-item" title="Nhận thông tin góp ý, phản hồi từ khách hàng" href="/service/">
+	Đăng ký
+	</a>
+</li>
+
+        </ul>
+    </div>
+</div>
+<div class="index-container">
+	<div class="index-title login-box">
+	 <div class="container">
+		<h1>Nhiều giao diện, template website cực đẹp</h1>
+	</div>
+</div>
+<div class="feature-themes">
+	<div class="container">
+		<div class="swiper-container swiper-container-horizontal swiper-container-fade">
+			<div class="swiper-wrapper">
+								<div class="swiper-slide feature-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12 feature-info pull-right">
+							<div class="title">Template, giao diện mẫu <span>Beauty &amp; Spa</span></div>
+							<div class="other-info clearfix">
+																<span class="rating">
+									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+								</span>
+								<span class="price">
+									<b>
+									</b>
+								</span>
+							</div>
+							<div class="button">
+								<a class="preview action-preview-theme hidden-xs" href="/shops/demo/?proid=13" title="Beauty &amp; Spa">Xem thử</a>
+								<a class="preview action-preview-theme visible-xs" href="https://cobalaspa.com" title="Beauty &amp; Spa" target="_blank">Xem thử</a>
+								<a class="view-detail" href="/shops/my-pham/beauty-spa.html" title="Beauty &amp; Spa">Chi tiết</a>
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-7 col-xs-12 feature-image pull-left">
+							<div class="image-desktop">
+								<a href="/shops/my-pham/beauty-spa.html" title="Beauty &amp; Spa"><img alt="Beauty &amp; Spa" src="/uploads/shops/thumb/cobalaspa-desktop.jpg" /></a>
+							</div>
+														<div class="image-mobile hidden-xs">
+								<a href="/shops/my-pham/beauty-spa.html" title="Beauty &amp; Spa"><img alt="Beauty &amp; Spa" src="/uploads/shops/thumb/cobalaspa-mobile.jpg" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide feature-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12 feature-info pull-right">
+							<div class="title">Template, giao diện mẫu <span>Lasavina</span></div>
+							<div class="other-info clearfix">
+																<span class="rating">
+									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+								</span>
+								<span class="price">
+									<b>
+									</b>
+								</span>
+							</div>
+							<div class="button">
+								<a class="preview action-preview-theme hidden-xs" href="/shops/demo/?proid=12" title="Lasavina">Xem thử</a>
+								<a class="preview action-preview-theme visible-xs" href="https://lasavina.vn" title="Lasavina" target="_blank">Xem thử</a>
+								<a class="view-detail" href="/shops/cong-ty/lasavina.html" title="Lasavina">Chi tiết</a>
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-7 col-xs-12 feature-image pull-left">
+							<div class="image-desktop">
+								<a href="/shops/cong-ty/lasavina.html" title="Lasavina"><img alt="Lasavina" src="/uploads/shops/thumb/lasavina-desktop.jpg" /></a>
+							</div>
+														<div class="image-mobile hidden-xs">
+								<a href="/shops/cong-ty/lasavina.html" title="Lasavina"><img alt="Lasavina" src="/uploads/shops/thumb/lasavina-mobile.jpg" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide feature-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12 feature-info pull-right">
+							<div class="title">Template, giao diện mẫu <span>Vconst</span></div>
+							<div class="other-info clearfix">
+																<span class="rating">
+									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+								</span>
+								<span class="price">
+									<b>
+									</b>
+								</span>
+							</div>
+							<div class="button">
+								<a class="preview action-preview-theme hidden-xs" href="/shops/demo/?proid=11" title="Vconst">Xem thử</a>
+								<a class="preview action-preview-theme visible-xs" href="https://namcuongcons.com" title="Vconst" target="_blank">Xem thử</a>
+								<a class="view-detail" href="/shops/cong-ty/vconst.html" title="Vconst">Chi tiết</a>
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-7 col-xs-12 feature-image pull-left">
+							<div class="image-desktop">
+								<a href="/shops/cong-ty/vconst.html" title="Vconst"><img alt="Vconst" src="/uploads/shops/thumb/vconst-desktop.jpg" /></a>
+							</div>
+														<div class="image-mobile hidden-xs">
+								<a href="/shops/cong-ty/vconst.html" title="Vconst"><img alt="Vconst" src="/uploads/shops/thumb/vconst-mobile.jpg" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide feature-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12 feature-info pull-right">
+							<div class="title">Template, giao diện mẫu <span>Snews</span></div>
+							<div class="other-info clearfix">
+																<span class="rating">
+									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+								</span>
+								<span class="price">
+									<b>
+									</b>
+								</span>
+							</div>
+							<div class="button">
+								<a class="preview action-preview-theme hidden-xs" href="/shops/demo/?proid=10" title="Snews">Xem thử</a>
+								<a class="preview action-preview-theme visible-xs" href="https://vnnuke.com/demo/snews" title="Snews" target="_blank">Xem thử</a>
+								<a class="view-detail" href="/shops/tin-tuc/snews.html" title="Snews">Chi tiết</a>
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-7 col-xs-12 feature-image pull-left">
+							<div class="image-desktop">
+								<a href="/shops/tin-tuc/snews.html" title="Snews"><img alt="Snews" src="/uploads/shops/thumb/snews-desktop.jpg" /></a>
+							</div>
+														<div class="image-mobile hidden-xs">
+								<a href="/shops/tin-tuc/snews.html" title="Snews"><img alt="Snews" src="/uploads/shops/thumb/snews-mobile.jpg" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide feature-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12 feature-info pull-right">
+							<div class="title">Template, giao diện mẫu <span>Emart</span></div>
+							<div class="other-info clearfix">
+																<span class="rating">
+									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+								</span>
+								<span class="price">
+									<b>
+									</b>
+								</span>
+							</div>
+							<div class="button">
+								<a class="preview action-preview-theme hidden-xs" href="/shops/demo/?proid=9" title="Emart">Xem thử</a>
+								<a class="preview action-preview-theme visible-xs" href="https://quocviet.net/demo/emart/" title="Emart" target="_blank">Xem thử</a>
+								<a class="view-detail" href="/shops/thuc-pham/emart.html" title="Emart">Chi tiết</a>
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-7 col-xs-12 feature-image pull-left">
+							<div class="image-desktop">
+								<a href="/shops/thuc-pham/emart.html" title="Emart"><img alt="Emart" src="/uploads/shops/thumb/emart.jpg" /></a>
+							</div>
+														<div class="image-mobile hidden-xs">
+								<a href="/shops/thuc-pham/emart.html" title="Emart"><img alt="Emart" src="/uploads/shops/thumb/emart-mobile.jpg" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide feature-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12 feature-info pull-right">
+							<div class="title">Template, giao diện mẫu <span>Vreal</span></div>
+							<div class="other-info clearfix">
+																<span class="rating rating-background">
+																		<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
+									<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
+									<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
+									<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
+									<img src="/themes/vnnuke/images/vnnuke/img/rate-star-hover.png">
+								</span>
+								<span class="price">
+									<b>
+									</b>
+								</span>
+							</div>
+							<div class="button">
+								<a class="preview action-preview-theme hidden-xs" href="/shops/demo/?proid=8" title="Vreal">Xem thử</a>
+								<a class="preview action-preview-theme visible-xs" href="https://quocviet.net/demo/vreal/" title="Vreal" target="_blank">Xem thử</a>
+								<a class="view-detail" href="/shops/xay-dung/vreal.html" title="Vreal">Chi tiết</a>
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-7 col-xs-12 feature-image pull-left">
+							<div class="image-desktop">
+								<a href="/shops/xay-dung/vreal.html" title="Vreal"><img alt="Vreal" src="/uploads/shops/thumb/vreal.jpg" /></a>
+							</div>
+														<div class="image-mobile hidden-xs">
+								<a href="/shops/xay-dung/vreal.html" title="Vreal"><img alt="Vreal" src="/uploads/shops/thumb/vreal-mobile.jpg" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide feature-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12 feature-info pull-right">
+							<div class="title">Template, giao diện mẫu <span>Elearning</span></div>
+							<div class="other-info clearfix">
+																<span class="rating">
+									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+								</span>
+								<span class="price">
+									<b>
+									</b>
+								</span>
+							</div>
+							<div class="button">
+								<a class="preview action-preview-theme hidden-xs" href="/shops/demo/?proid=7" title="Elearning">Xem thử</a>
+								<a class="preview action-preview-theme visible-xs" href="https://boiduongonline.com" title="Elearning" target="_blank">Xem thử</a>
+								<a class="view-detail" href="/shops/giao-duc/elearning.html" title="Elearning">Chi tiết</a>
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-7 col-xs-12 feature-image pull-left">
+							<div class="image-desktop">
+								<a href="/shops/giao-duc/elearning.html" title="Elearning"><img alt="Elearning" src="/uploads/shops/thumb/elearning.jpg" /></a>
+							</div>
+														<div class="image-mobile hidden-xs">
+								<a href="/shops/giao-duc/elearning.html" title="Elearning"><img alt="Elearning" src="/uploads/shops/thumb/elearning-mobile.jpg" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-slide feature-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12 feature-info pull-right">
+							<div class="title">Template, giao diện mẫu <span>Xpress News</span></div>
+							<div class="other-info clearfix">
+																<span class="rating">
+									<img src="/themes/vnnuke/images/vnnuke/img/not-rate-star.png">
+								</span>
+								<span class="price">
+									<b>
+									</b>
+								</span>
+							</div>
+							<div class="button">
+								<a class="preview action-preview-theme hidden-xs" href="/shops/demo/?proid=6" title="Xpress News">Xem thử</a>
+								<a class="preview action-preview-theme visible-xs" href="https://vnnuke.com/demo/xpressnews/" title="Xpress News" target="_blank">Xem thử</a>
+								<a class="view-detail" href="/shops/tin-tuc/xpress-news.html" title="Xpress News">Chi tiết</a>
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-7 col-xs-12 feature-image pull-left">
+							<div class="image-desktop">
+								<a href="/shops/tin-tuc/xpress-news.html" title="Xpress News"><img alt="Xpress News" src="/uploads/shops/thumb/xpressnews.jpg" /></a>
+							</div>
+														<div class="image-mobile hidden-xs">
+								<a href="/shops/tin-tuc/xpress-news.html" title="Xpress News"><img alt="Xpress News" src="/uploads/shops/thumb/xpressnews-mobile.jpg" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+		</div>
+	</div>
+</div>
+	<div class="menu-toolbar">
+	<div class="container">
+		<div class="row filter-desktop hidden-xs">
+			<div class="col-md-8 menu">
+				<ul>
+					<!--
+<li><a href="/shops/" title="Tất cả">Tất cả</a></li>
+-->
+<li>
+	<a class="" href="/shops/" title="Tất cả">Tất cả</a>
+</li><li class="has-child">
+	<a class="" href="/shops/ban-hang/" title="Bán hàng">Bán hàng <i class="fa fa-angle-down"></i></a>
+		<ul class="sub-menu clearfix">
+		<li><a href="index.php?language=vi&nv=shops&op=thuc-pham" title="Thực phẩm"><span>Thực phẩm</span></a></li>
+<li><a href="index.php?language=vi&nv=shops&op=my-pham" title="Mỹ phẩm"><span>Mỹ phẩm</span></a></li>
+<li><a href="index.php?language=vi&nv=shops&op=thoi-trang" title="Thời trang"><span>Thời trang</span></a></li>
+<li><a href="index.php?language=vi&nv=shops&op=dien-tu" title="Điện tử"><span>Điện tử</span></a></li>
+<li><a href="index.php?language=vi&nv=shops&op=tong-hop" title="Tổng hợp"><span>Tổng hợp</span></a></li>
+
+	</ul>
+</li><li>
+	<a class="" href="/shops/tin-tuc/" title="Tin tức">Tin tức</a>
+</li>
+<li>
+	<a class="" href="/shops/giao-duc/" title="Giáo dục">Giáo dục</a>
+</li>
+<li>
+	<a class="" href="/shops/xay-dung/" title="Xây dựng">Xây dựng</a>
+</li>
+<li>
+	<a class="" href="/shops/cong-ty/" title="Công ty">Công ty</a>
+</li>
+				</ul>
+			</div>
+			<div class="col-md-4 hidden-xs">
+				<a class="show-search-tablet hidden visible-sm" href="javascript:;">
+					<i class="fa fa-search" aria-hidden="true"></i>
+					<i class="fa fa-times" style="display: none;" aria-hidden="true"></i>
+				</a>
+				<div class="filter-form">
+										<div class="sort-theme" href="#">
+						<i class="fa fa-sort-amount-asc hidden-sm" aria-hidden="true"></i>
+						<div class="sort-by">
+							<ul>
+																<li onclick="nv_chang_price_1(0)" data-sort="0" class="active">Mới cập nhật</li>
+								<li onclick="nv_chang_price_1(1)" data-sort="1">Giá tăng dần</li>
+								<li onclick="nv_chang_price_1(2)" data-sort="2">Giá giảm dần</li>
+							</ul>
+						</div>
+					</div>
+					<form id="search_form_shops" action="/" method="get" role="form" name="frm_search" onsubmit="return onsubmitsearch();">
+
+	<input id="keyword" type="text" value="" placeholder="Tìm kiếm sản phẩm ..." name="keyword" class="search-key">
+
+	<div class="form-group hidden">
+		<label>Giá từ</label>
+		<input id="price1" type="text" value="" name="price1" class="form-control input-sm">
+	</div>
+
+	<div class="form-group hidden">
+		<label>Đến</label>
+		<input id="price2" type="text" value="" name="price2" class="form-control input-sm">
+	</div>
+
+	<div class="form-group hidden">
+		<label>Tiền tệ</label>
+		<select name="typemoney" id="typemoney" class="form-control input-sm">
+			<option value="0"></option>
+						<option  value="USD">US Dollar</option>
+			<option  value="VND">Vietnam Dong</option>
+		</select>
+	</div>
+
+	<div class="form-group hidden">
+		<label>Danh mục</label>
+		<select name="cata" id="cata" class="form-control input-sm">
+			<option value="0"></option>
+						<option  value="9">Bán hàng</option>
+			<option  value="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thực phẩm</option>
+			<option  value="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mỹ phẩm</option>
+			<option  value="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thời trang</option>
+			<option  value="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Điện tử</option>
+			<option  value="10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tổng hợp</option>
+			<option  value="1">Tin tức</option>
+			<option  value="8">Giáo dục</option>
+			<option  value="11">Xây dựng</option>
+			<option  value="13">Công ty</option>
+			<option  value="12">Module</option>
+		</select>
+	</div>
+	<button type="button" name="submit" id="submit" onclick="onsubmitsearch('shops')"><i class="fa fa-search" aria-hidden="true"></i></button>
+</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="row filter-mobile hidden visible-xs">
+			<div class="col-xs-12">
+				<div class="title-filter-mobile">Lọc theo...</div>
+				<a class="show-search-form" href="javascript:;">
+					<i class="fa fa-search" aria-hidden="true"></i>
+					<i class="fa fa-times" style="display: none;" aria-hidden="true"></i>
+				</a>
+				<div class="search-form-mobile">
+					<form id="search_form_shops" action="/" method="get" role="form" name="frm_search" onsubmit="return onsubmitsearch1();">
+
+	<input id="keyword1" type="text" value="" placeholder="Tìm kiếm sản phẩm ..." name="keyword" class="search-key">
+
+	<div class="form-group hidden">
+		<label>Giá từ</label>
+		<input id="price1" type="text" value="" name="price1" class="form-control input-sm">
+	</div>
+
+	<div class="form-group hidden">
+		<label>Đến</label>
+		<input id="price2" type="text" value="" name="price2" class="form-control input-sm">
+	</div>
+
+	<div class="form-group hidden">
+		<label>Tiền tệ</label>
+		<select name="typemoney" id="typemoney" class="form-control input-sm">
+			<option value="0"></option>
+						<option  value="USD">US Dollar</option>
+			<option  value="VND">Vietnam Dong</option>
+		</select>
+	</div>
+
+	<div class="form-group hidden">
+		<label>Danh mục</label>
+		<select name="cata" id="cata" class="form-control input-sm">
+			<option value="0"></option>
+						<option  value="9">Bán hàng</option>
+			<option  value="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thực phẩm</option>
+			<option  value="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mỹ phẩm</option>
+			<option  value="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thời trang</option>
+			<option  value="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Điện tử</option>
+			<option  value="10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tổng hợp</option>
+			<option  value="1">Tin tức</option>
+			<option  value="8">Giáo dục</option>
+			<option  value="11">Xây dựng</option>
+			<option  value="13">Công ty</option>
+			<option  value="12">Module</option>
+		</select>
+	</div>
+
+	<button type="button" name="submit" id="submit1" onclick="onsubmitsearch1('shops')"><i class="fa fa-search" aria-hidden="true"></i></button>
+</form>
+				</div>
+				<div class="filter-by">
+					<ul>
+						<!--
+<li><a href="/shops/" title="Tất cả">Tất cả</a></li>
+-->
+<li>
+	<a class="" title="Tất cả" href="/shops/">
+	Tất cả
+	</a>
+</li><li class="has-child">
+	<a class="" title="Bán hàng" href="#4">
+	Bán hàng <i class="fa fa-angle-down"></i>
+	</a>
+		<ul class="sub-menu clearfix">
+		<li><a href="index.php?language=vi&nv=shops&op=thuc-pham" title="Thực phẩm"><span>Thực phẩm</span></a></li>
+<li><a href="index.php?language=vi&nv=shops&op=my-pham" title="Mỹ phẩm"><span>Mỹ phẩm</span></a></li>
+<li><a href="index.php?language=vi&nv=shops&op=thoi-trang" title="Thời trang"><span>Thời trang</span></a></li>
+<li><a href="index.php?language=vi&nv=shops&op=dien-tu" title="Điện tử"><span>Điện tử</span></a></li>
+<li><a href="index.php?language=vi&nv=shops&op=tong-hop" title="Tổng hợp"><span>Tổng hợp</span></a></li>
+
+	</ul>
+</li><li>
+	<a class="" title="Tin tức" href="/shops/tin-tuc/">
+	Tin tức
+	</a>
+</li>
+<li>
+	<a class="" title="Giáo dục" href="/shops/giao-duc/">
+	Giáo dục
+	</a>
+</li>
+<li>
+	<a class="" title="Xây dựng" href="/shops/xay-dung/">
+	Xây dựng
+	</a>
+</li>
+<li>
+	<a class="" title="Công ty" href="/shops/cong-ty/">
+	Công ty
+	</a>
+</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="themes-list">
+    <div class="container">
+		<h3>Giao diện mẫu mới nhất</h3>
+		<hr>
+		<p class="desc">Với nhiều mẫu đẹp mắt, chuyên nghiệp. Hãy xem những giao diện mới nhất của VNNUKE</p>
+
+		<div class="row list-items">
+						<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/cobalaspa-desktop.jpg" alt="Beauty &amp; Spa" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=13" title="" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://cobalaspa.com" title="" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/my-pham/beauty-spa.html" title="Beauty &amp; Spa" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/my-pham/beauty-spa.html" title="Beauty &amp; Spa" class="title">Beauty &amp; Spa</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/lasavina-desktop.jpg" alt="Lasavina" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=12" title="Beauty &amp; Spa" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://lasavina.vn" title="Beauty &amp; Spa" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/cong-ty/lasavina.html" title="Lasavina" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/cong-ty/lasavina.html" title="Lasavina" class="title">Lasavina</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/vconst-desktop.jpg" alt="Vconst" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=11" title="Lasavina" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://namcuongcons.com" title="Lasavina" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/cong-ty/vconst.html" title="Vconst" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/cong-ty/vconst.html" title="Vconst" class="title">Vconst</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/snews-desktop.jpg" alt="Snews" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=10" title="Vconst" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://vnnuke.com/demo/snews" title="Vconst" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/tin-tuc/snews.html" title="Snews" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/tin-tuc/snews.html" title="Snews" class="title">Snews</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/emart.jpg" alt="Emart" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=9" title="Snews" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://quocviet.net/demo/emart/" title="Snews" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/thuc-pham/emart.html" title="Emart" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/thuc-pham/emart.html" title="Emart" class="title">Emart</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/vreal.jpg" alt="Vreal" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=8" title="Emart" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://quocviet.net/demo/vreal/" title="Emart" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/xay-dung/vreal.html" title="Vreal" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/xay-dung/vreal.html" title="Vreal" class="title">Vreal</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/elearning.jpg" alt="Elearning" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=7" title="Vreal" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://boiduongonline.com" title="Vreal" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/giao-duc/elearning.html" title="Elearning" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/giao-duc/elearning.html" title="Elearning" class="title">Elearning</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/xpressnews.jpg" alt="Xpress News" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=6" title="Elearning" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://vnnuke.com/demo/xpressnews/" title="Elearning" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/tin-tuc/xpress-news.html" title="Xpress News" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/tin-tuc/xpress-news.html" title="Xpress News" class="title">Xpress News</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/gypsum.jpg" alt="Gypsum" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=5" title="Xpress News" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://tranthachcao247.com" title="Xpress News" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/xay-dung/gypsum.html" title="Gypsum" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/xay-dung/gypsum.html" title="Gypsum" class="title">Gypsum</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/austdoor.jpg" alt="Austdoor" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=4" title="Gypsum" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://boiduongonline.com/demo/ptmep/" title="Gypsum" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/xay-dung/austdoor.html" title="Austdoor" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/xay-dung/austdoor.html" title="Austdoor" class="title">Austdoor</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/cosmetic.jpg" alt="Cosmetic" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=3" title="Austdoor" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://karosehcm.com" title="Austdoor" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/my-pham/cosmetic.html" title="Cosmetic" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/my-pham/cosmetic.html" title="Cosmetic" class="title">Cosmetic</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/rau-sach.jpg" alt="Rau sạch" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="http://demo.rausaykho.com/rausach/" title="Cosmetic" class="view-demo action-preview-theme hidden-xs" target="_blank">Xem thử</a>
+								<a href="http://demo.rausaykho.com/rausach/" title="Cosmetic" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/thuc-pham/rau-sach.html" title="Rau sạch" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/thuc-pham/rau-sach.html" title="Rau sạch" class="title">Rau sạch</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+				<div class="theme-item responsive">
+					<div class="theme-image">
+						<img src="/uploads/shops/thumb/maxshop.jpg" alt="Maxshop" />
+						<div class="theme-action">
+							<div class="button">
+																<a href="/shops/demo/?proid=1" title="Rau sạch" class="view-demo action-preview-theme hidden-xs">Xem thử</a>
+								<a href="https://quocviet.net/demo/maxshop/" title="Rau sạch" class="view-demo action-preview-theme visible-xs" target="_blank">Xem thử</a>
+								<a href="/shops/tong-hop/maxshop.html" title="Maxshop" class="view-detail">Chi tiết</a>
+							</div>
+						</div>
+					</div>
+					<div class="theme-info text-center">
+						<a href="/shops/tong-hop/maxshop.html" title="Maxshop" class="title">Maxshop</a>
+						<span class="price hidden">
+							<b>
+							</b>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="themes-list" style="margin-bottom:20px">
+    <div class="container">
+        <div class="row" style="width:100%;display:table;margin: 0 auto;">
+            <!-- QC_home -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-8763263719003166"
+                 data-ad-slot="6687289515"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true">
+            </ins>
+        </div>
+	</div>
+</div>
+<br />
+<div class="modal fade" id="idmodals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Đặt hàng</h4>
+			</div>
+			<div class="modal-body">
+				<em class="fa fa-spinner fa-spin">&nbsp;</em>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="msgshow" id="msgshow">&nbsp;</div>
+</div>
+<div class="register-bottom clearfix" style="background:url(/themes/vnnuke/images/vnnuke/img/bg-register-bottom-green.jpg) no-repeat top center">
+	<div class="container">
+		<h4>Liên hệ với chúng tôi ngay</h4>
+		<p>Để trải nghiệm những tính năng độc đáo mà Nukeviet Shops mang lại.</p>
+		<div class="reg-form">
+			 <a class="btn-registration banner-home-registration" href="/service/">Đăng ký ngay</a>
+		</div>
+	</div>
+</div>
+<div id="footer" class="footer">
+    <div class="container-fluid">
+		<div class="row border-last">
+            <div class="container footer-contact">
+                <div class="col-md-3 row footer_row">
+                    <h4>Trợ giúp</h4>
+					<ul>
+		<li><a title="Câu hỏi thường gặp" href="/faq/" >Câu hỏi thường gặp</a></li>
+	<li><a title="Hình thức thanh toán" href="/hinh-thuc-thanh-toan.html" >Hình thức thanh toán</a></li>
+	<li><a title="Quy định sử dụng" href="/siteterms/quy-dinh-su-dung.html" >Quy định sử dụng</a></li>
+	<li><a title="Liên hệ" href="/service/" >Liên hệ</a></li>
+</ul>
+
+                </div>
+                <div class="col-md-3 row footer_row">
+                    <h4>Chia sẻ</h4>
+					<ul>
+		<li><a title="Công cụ trực tuyến" href="/tools/" >Công cụ trực tuyến</a></li>
+	<li><a title="Thư viện miễn phí" href="/download/" >Thư viện miễn phí</a></li>
+	<li><a title="Blog" href="/news/" >Blog</a></li>
+	<li><a title="Truyện ngắn" href="https://quocviet.net"  onclick="this.target='_blank'">Truyện ngắn</a></li>
+</ul>
+
+                </div>
+                <div class="col-md-6 row footer_row logo">
+					<div class="logo_site w200" style="margin-top:25px">
+						<img src="/themes/vnnuke/images/vnnuke/img/logo-green.png" alt="Mã nguồn VnNuke" />
+						<p class="margin-top-lg">Mã nguồn Nukeviet, thiết kế website, module Nukeviet, chuyển đổi sang mã nguồn Nukeviet</p>
+					</div>
+					<div class="block_social">
+		<span class="social-icon-wrap">
+	<a href="https://www.facebook.com/vietnhitg" title="Facebook" target="_blank"><i class="fa fa-facebook icon-font"></i></a>
+	</span>
+		<span class="social-icon-wrap">
+	<a href="https://plus.google.com/113563789950058483650" title="Google+" target="_blank"><i class="fa fa-google-plus icon-font"></i></a>
+	</span>
+		<span class="social-icon-wrap">
+	<a href="https://www.youtube.com/channel/UCE_Ek6MNKWuEV-FtCRWOa-A" title="Youtube" target="_blank"><i class="fa fa-youtube icon-font"></i></a>
+	</span>
+		<span class="social-icon-wrap">
+	<a href="https://twitter.com/tinhcavn" title="Twitter" target="_blank"><i class="fa fa-twitter icon-font"></i></a>
+	</span>
+		<span class="social-icon-wrap">
+	<a href="/feeds/" title="RSS"><i class="fa fa-rss icon-font"></i></a>
+	</span>
+</div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row footer-copyright hidden-sm hidden btn-xs visible-md visible-lg">
+            <div class="container">
+                <div class="col-md-12 row padding-copyright">
+                    <span>&copy;&nbsp;Bản quyền thuộc về <a href="http://vnnuke.com">Vnnuke</a>
+ - Dịch vụ thiết kế website Nukeviet chuyên nghiệp</span>
+                </div>
+            </div>
+        </div>
+        <div class="row footer-copyright hidden-md hidden-xs visible-sm">
+            <div class="container">
+
+                <div class="col-sm-12">
+                    <div class="row custom-row">
+                        <div class="col-sm-12">
+                            <span style="padding-top: 18px;">Dịch vụ thiết kế website Nukeviet chuyên nghiệp</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <hr style="margin-bottom:0px;margin-top:0px;border-bottom: solid thin #36353d;border-top:none">
+            <div class="container">
+                <div class="col-sm-12" style="padding-top: 12px; text-align:center">
+                    <span>&copy;&nbsp;Bản quyền thuộc về <a href="http://vnnuke.com">Vnnuke</a>
+</span>
+                </div>
+            </div>
+        </div>
+        <div class="row footer-copyright hidden-md hidden-sm visible-xs">
+            <div class="container">
+                <div class="col-xs-12 col-sm-9 col-md-9">
+                    <div class="row custom-row">
+                        <div class="col-xs-12 row" style="text-align:left">
+                            <span style="padding-top: 22px;padding-bottom:22px">Dịch vụ thiết kế website Nukeviet chuyên nghiệp</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- SiteModal Required!!! -->
+<div id="sitemodal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<em class="fa fa-spinner fa-spin">&nbsp;</em>
+			</div>
+			<button type="button" class="close" data-dismiss="modal"><span class="fa fa-times"></span></button>
+		</div>
+	</div>
+</div>
+		<div class="scroll-up"><i class="fa fa-chevron-up"></i></div>
+        <div id="timeoutsess" class="chromeframe">
+            Bạn đã không sử dụng Site, <a onclick="timeoutsesscancel();" href="#">Bấm vào đây để duy trì trạng thái đăng nhập</a>. Thời gian chờ: <span id="secField"> 60 </span> giây
+        </div>
+        <div id="openidResult" class="nv-alert" style="display:none"></div>
+        <div id="openidBt" data-result="" data-redirect=""></div>
+<script src="/assets/js/jquery/jquery.min.js?t=1718683883"></script>
+<script>var nv_base_siteurl="/",nv_lang_data="vi",nv_lang_interface="vi",nv_name_variable="nv",nv_fc_variable="op",nv_lang_variable="language",nv_module_name="shops",nv_func_name="main",nv_is_user=0, nv_my_ofs=7,nv_my_abbr="+07",nv_cookie_prefix="nv4",nv_check_pass_mstime=1738000,nv_area_admin=0,nv_safemode=0,theme_responsive=1,nv_is_recaptcha=1,nv_recaptcha_sitekey="6LcViZAUAAAAAE-NwdXrlZSzmZBXNPDKX-cZghMa",nv_recaptcha_type="image",nv_recaptcha_elements=[];</script>
+<script src="/assets/js/language/vi.js?t=1718683883"></script>
+<script src="/assets/js/global.js?t=1718683883"></script>
+<script src="/themes/vnnuke/js/shops.js?t=1718683883"></script>
+<script src="/themes/vnnuke/js/main.js?t=1718683883"></script>
+<script data-ad-client="ca-pub-8763263719003166" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script type="text/javascript" async>
+    $(document).ready(function () {
+        $('.show-sub').click(function () {
+            rotateArrow($(this));
+        });
+    });
+
+    function rotateArrow(clickElement) {
+        if (!$(clickElement).find('.in').length) {
+            $(clickElement).find('.btn-down').css({
+                '-moz-transform': 'rotate(90deg)',
+                '-webkit-transform': 'rotate(90deg)',
+                '-o-transform': 'rotate(90deg)',
+                '-ms-transform': 'rotate(90deg)',
+                'transform': 'rotate(90deg)'
+            });
+        }
+        else {
+            $(clickElement).find('.btn-down').css({
+                '-moz-transform': 'rotate(0deg)',
+                '-webkit-transform': 'rotate(0deg)',
+                '-o-transform': 'rotate(0deg)',
+                '-ms-transform': 'rotate(0deg)',
+                'transform': 'rotate(0deg)'
+            });
+        }
+    }
+
+    function onResize() {
+        var ww = $(window).width()
+        if (ww <= 440) {
+			$("#header .btn-menu").css("white-space", "nowrap");
+			$("#header #logo img").attr("src", "/themes/vnnuke/images/vnnuke/img/logo-green.png");
+			$("#header .small-logo img").attr("src", "/themes/vnnuke/images/vnnuke/img/logo-green.png");
+        } else {
+			$("#header #logo img").attr("src", "/themes/vnnuke/images/vnnuke/img/logo-green.png");
+			$("#header .small-logo img").attr("src", "/themes/vnnuke/images/vnnuke/img/logo-green.png");
+        }
+    }
+    $(window).resize(function () {
+        onResize();
+    });
+    $(window).trigger('resize');
+    function isVisibleScrollbar() {
+        var offset = $("#header").offset();
+        var curWin = $(window);
+        var top = curWin.scrollTop() - 51;
+        if (top >= 0)
+            return true;
+        return false;
+    }
+</script>
+<script type="text/javascript">
+		$(function () {
+			var featureSlide = new Swiper('.swiper-container', {
+				nextButton: '.swiper-button-next',
+				prevButton: '.swiper-button-prev',
+				slidesPerView: 1,
+				paginationClickable: true,
+				preventClicks: false,
+				preventClicksPropagation: false,
+				loop: true,
+				autoplay: 5000,
+				effect: 'fade',
+				fade: {
+					crossFade: true
+				}
+			});
+		});
+	</script>
+<script type="text/javascript">
+						$(function () {
+							$(".sort-by li").click(function () {
+								$(".sort-by li").removeClass("active");
+								$(this).addClass("active");
+							});
+						});
+					</script>
+<script>
+var input = document.getElementById("keyword");
+input.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.getElementById("submit").click();
+    }
+});
+</script>
+<script>
+var input = document.getElementById("keyword1");
+input.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.getElementById("submit1").click();
+    }
+});
+</script>
+<script type="text/javascript">
+        $(function () {
+            $(".show-search-form").click(function () {
+                $(".search-form-mobile").toggle();
+                $(".show-search-form .fa-search").toggle();
+                $(".show-search-form .fa-times").toggle();
+            });
+
+            $(".show-search-tablet").click(function () {
+                $(this).parent().find(".filter-form").toggle();
+                $(".show-search-tablet .fa-search").toggle();
+                $(".show-search-tablet .fa-times").toggle();
+            });
+
+            $(".title-filter-mobile").click(function () {
+                $(".filter-mobile .filter-by").toggle();
+            });
+
+            $(".filter-mobile .filter-by .has-child").click(function () {
+                $(this).find(".sub-menu").toggle();
+            });
+        });
+    </script>
+<script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+<script src="/themes/vnnuke/js/bootstrap.min.js?t=1718683883"></script>
+<script src="/themes/vnnuke/js/swiper.js?t=1718683883"></script>
+<script src="/themes/vnnuke/js/owl.carousel.js?t=1718683883"></script>
+</body>
+</html>
