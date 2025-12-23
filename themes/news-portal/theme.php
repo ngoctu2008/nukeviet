@@ -32,6 +32,19 @@ function nv_site_theme($contents, $full = true)
     $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
     $xtpl->assign('THEME_SITE_HREF', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA);
 
+    // System variables
+    $xtpl->assign('NV_SITE_NAME', $global_config['site_name']);
+    $xtpl->assign('SITE_DESCRIPTION', $global_config['site_description']);
+    $xtpl->assign('NV_SITE_COPYRIGHT', $global_config['site_name'] . ' [' . $global_config['site_email'] . '] ');
+    $xtpl->assign('NV_CURRENTTIME', nv_date($global_config['date_pattern'] . ', ' . $global_config['time_pattern'], NV_CURRENTTIME));
+
+    // Search URL
+    if (!$global_config['rewrite_enable']) {
+        $xtpl->assign('THEME_SEARCH_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=seek&amp;q=');
+    } else {
+        $xtpl->assign('THEME_SEARCH_URL', nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=seek', true) . '?q=');
+    }
+
     // Meta tags
     $metatags = nv_html_meta_tags(false);
     foreach ($metatags as $meta) {
@@ -73,10 +86,6 @@ function nv_site_theme($contents, $full = true)
         'rel' => 'stylesheet',
         'href' => 'https://fonts.googleapis.com/css?family=Roboto+Condensed%3A300italic%2C400italic%2C700italic%2C400%2C300%2C700%7CRoboto%3A300%2C400%2C400i%2C500%2C700%7CTitillium+Web%3A400%2C600%2C700%2C300&#038;subset=latin%2Clatin-ext'
     ];
-
-    if (defined('NV_IS_ADMIN') and $full) {
-         // Keep NukeViet Admin bar styles if needed, or handle differently
-    }
 
     foreach ($html_links as $links) {
         $xtpl->assign('LINKS', [
@@ -124,10 +133,6 @@ function nv_site_theme($contents, $full = true)
     }
 
     $xtpl->assign('MODULE_CONTENT', $contents);
-
-    // Assign other global vars
-    $xtpl->assign('SITE_NAME', $global_config['site_name']);
-    $xtpl->assign('SITE_DESCRIPTION', $global_config['site_description']);
 
     // Parse main
     $xtpl->parse('main');

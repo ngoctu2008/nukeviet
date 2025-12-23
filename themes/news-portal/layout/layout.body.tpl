@@ -32,7 +32,7 @@
                 <div class="date-section">{NV_CURRENTTIME}</div>
                 <nav id="top-navigation" class="top-navigation" role="navigation">
                    <!-- Block Group: Top Navigation -->
-                   {BLOCK_top_nav}
+                   [TOP_NAV]
                 </nav>
             </div>
             <div class="np-top-right-section-wrapper">
@@ -50,9 +50,9 @@
             <div class="mt-container">
                 <div class="site-branding">
                     <a href="{THEME_SITE_HREF}" class="custom-logo-link" rel="home">
-                        <img width="290" height="47" src="{NV_BASE_SITEURL}themes/{TEMPLATE}/images/logo.png" class="custom-logo" alt="{SITE_NAME}" />
+                        <img width="290" height="47" src="{NV_BASE_SITEURL}themes/{TEMPLATE}/images/logo.png" class="custom-logo" alt="{NV_SITE_NAME}" />
                     </a>
-                    <h1 class="site-title"><a href="{THEME_SITE_HREF}" rel="home">{SITE_NAME}</a></h1>
+                    <h1 class="site-title"><a href="{THEME_SITE_HREF}" rel="home">{NV_SITE_NAME}</a></h1>
                     <p class="site-description">{SITE_DESCRIPTION}</p>
                 </div>
                 <div class="np-header-ads-area">
@@ -71,7 +71,7 @@
                     <div class="mt-header-menu-wrap">
                         <a href="javascript:void(0)" class="menu-toggle hide"><i class="fa fa-navicon"> </i> </a>
                         <nav id="site-navigation" class="main-navigation" role="navigation">
-                             {BLOCK_header}
+                             [HEADER]
                         </nav>
                     </div>
                     <div class="np-icon-elements-wrapper">
@@ -103,7 +103,7 @@
             <div class="np-ticker-block np-clearfix">
                 <span class="ticker-caption">Breaking News</span>
                 <div class="ticker-content-wrapper">
-                    {BLOCK_breaking_news}
+                    [BREAKING_NEWS]
                 </div>
             </div>
         </div>
@@ -112,21 +112,21 @@
     <div id="content" class="site-content">
         <div class="mt-container">
             <div class="np-home-top-section np-clearfix">
-                {BLOCK_top_slider}
+                [TOP_SLIDER]
             </div>
 
             <div class="np-home-middle-section np-clearfix">
                 <div class="middle-primary">
-                    {BLOCK_main_content}
+                    [MAIN_CONTENT]
                     {MODULE_CONTENT}
                 </div>
                 <div class="middle-aside">
-                    {BLOCK_sidebar}
+                    [SIDEBAR]
                 </div>
             </div>
 
             <div class="np-home-bottom-section">
-                {BLOCK_content_top}
+                [CONTENT_TOP]
             </div>
         </div>
     </div>
@@ -136,7 +136,7 @@
             <div class="mt-container">
                 <div class="footer-widgets-area np-clearfix">
                     <div class="np-footer-widget-wrapper np-column-wrapper np-clearfix">
-                        {BLOCK_footer_widgets}
+                        [FOOTER_WIDGETS]
                     </div>
                 </div>
             </div>
@@ -146,7 +146,7 @@
                 <div class="site-info">
                     <span class="np-copyright-text">{NV_SITE_COPYRIGHT}</span>
                     <span class="sep"> | </span>
-                    {BLOCK_copyright}
+                    [COPYRIGHT]
                 </div>
             </div>
         </div>
