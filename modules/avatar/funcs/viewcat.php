@@ -55,24 +55,7 @@ $generate_page = nv_generate_page($base_url, $num_items, $per_page, $page);
 
 $viewcat = !empty($cat_info['viewcat']) ? $cat_info['viewcat'] : 'view_grid';
 
-$xtpl = new XTemplate($viewcat . '.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
-$xtpl->assign('LANG', $lang_module);
-$xtpl->assign('CAT_INFO', $cat_info);
-$xtpl->assign('GENERATE_PAGE', $generate_page);
-
-foreach ($list as $row) {
-    if (!empty($row['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['image'])) {
-        $row['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'];
-    }
-    // Link to detail view: domain.com/avatar/cat-alias/item-alias-id
-    $row['link'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $cat_info['alias'] . "/" . $row['alias'] . "-" . $row['id'];
-
-    $xtpl->assign('ROW', $row);
-    $xtpl->parse('main.row');
-}
-
-$xtpl->parse('main');
-$contents = $xtpl->text('main');
+$contents = nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);
