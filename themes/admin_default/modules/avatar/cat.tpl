@@ -1,6 +1,6 @@
 <!-- BEGIN: main -->
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-16">
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
                 <thead>
@@ -27,7 +27,7 @@
             </table>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
         <!-- BEGIN: error -->
         <div class="alert alert-danger">{ERROR}</div>
         <!-- END: error -->

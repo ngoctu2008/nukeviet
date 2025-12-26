@@ -52,6 +52,11 @@ foreach ($list as $row) {
     $array_cat_alias[$row['alias']] = $row['catid'];
 }
 
+// Ensure op is set
+if (empty($op)) {
+    $op = 'main';
+}
+
 // Manual Routing Logic
 if ($op == 'main') {
     // Case 1: domain.com/avatar/alias-id (Item detail at root)
