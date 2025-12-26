@@ -14,6 +14,12 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $lang_module['categories'];
 
+if ($nv_Request->isset_request('get_alias_title', 'post')) {
+    $alias = $nv_Request->get_title('get_alias_title', 'post', '');
+    $alias = change_alias($alias);
+    die($alias);
+}
+
 // Call nv_avatar_fix_cat_order to ensure order is correct on load
 nv_avatar_fix_cat_order();
 
