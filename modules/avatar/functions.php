@@ -16,9 +16,9 @@ define('NV_IS_MOD_AVATAR', true);
 
 // Get Config
 if (!function_exists('nv_avatar_get_config')) {
-    function nv_avatar_get_config()
+    function nv_avatar_get_config($module_data)
     {
-        global , ;
+        global $nv_Cache, $module_name;
         $sql = "SELECT config_name, config_value FROM " . NV_PREFIXLANG . "_" . $module_data . "_config";
         $list = $nv_Cache->db($sql, '', $module_name);
         $data = array();
