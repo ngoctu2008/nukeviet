@@ -12,11 +12,18 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <label>{LANG.title} <span class="red">(*)</span></label>
-                        <input class="form-control" type="text" name="title" value="{ROW.title}" required="required" />
+                        <input class="form-control" type="text" name="title" value="{ROW.title}" required="required" id="id_title" />
                     </div>
                     <div class="form-group">
                         <label>{LANG.alias}</label>
-                        <input class="form-control" type="text" name="alias" value="{ROW.alias}" />
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="alias" value="{ROW.alias}" id="id_alias" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" onclick="return nv_get_alias('id_alias');">
+                                    <i class="fa fa-refresh fa-lg fa-pointer"></i>
+                                </button>
+                            </span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>{LANG.category}</label>
@@ -67,17 +74,20 @@
     function nv_avatar_preview() {
         var src = $('#image').val();
         if (src != '') {
-            // Check if it's a full URL or relative path
-            if (src.indexOf('http') == -1 && src.indexOf('/') != 0) {
-                 // Assume it's relative to uploads if not starting with / or http (NukeViet logic usually returns relative or full depending on config)
-                 // But here we rely on what the input has.
-                 // For now, let's just try to set it.
-                 // If it's from upload, nv_open_browse usually returns full path or relative to site root.
-            }
             $('#image_preview').attr('src', src);
         } else {
              $('#image_preview').attr('src', '');
         }
+    }
+
+    function nv_get_alias(id) {
+        var title = strip_tags(document.getElementById('id_title').value);
+        if (title != '') {
+            $.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=content&get_alias_title=' + encodeURIComponent(title), function(res) {
+                document.getElementById(id).value = res;
+            });
+        }
+        return false;
     }
 
     // Monitor the input for changes (e.g. from popup)

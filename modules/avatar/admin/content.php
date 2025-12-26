@@ -13,6 +13,13 @@ if (!defined('NV_IS_FILE_ADMIN'))
 
 $row = array();
 $error = array();
+
+if ($nv_Request->isset_request('get_alias_title', 'post')) {
+    $alias = $nv_Request->get_title('get_alias_title', 'post', '');
+    $alias = change_alias($alias);
+    die($alias);
+}
+
 $row['id'] = $nv_Request->get_int('id', 'post,get', 0);
 
 // Get list of categories

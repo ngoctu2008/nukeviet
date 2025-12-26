@@ -180,6 +180,7 @@ foreach ($array_cat as $cat) {
     $cat['link_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&catid=" . $cat['catid'];
     $cat['link_delete'] = "javascript:void(0);";
     $cat['onclick_delete'] = "nv_del_cat(" . $cat['catid'] . ")";
+    $cat['title'] = str_repeat('&nbsp;&nbsp;', $cat['lev']) . $cat['title'];
     $xtpl->assign('ROW', $cat);
     $xtpl->parse('main.list.row');
 }

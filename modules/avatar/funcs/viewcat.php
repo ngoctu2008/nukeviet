@@ -34,6 +34,17 @@ if (!defined('NV_IS_ADMIN')) {
     }
 }
 
+// Check Use Permissions
+$allow_use = true;
+if (!defined('NV_IS_ADMIN')) {
+    if (!empty($cat_info['groups_use'])) {
+        $groups_use = explode(',', $cat_info['groups_use']);
+        if (!nv_user_in_groups($groups_use)) {
+             $allow_use = false;
+        }
+    }
+}
+
 $per_page = isset($module_config['per_page']) ? intval($module_config['per_page']) : 20;
 
 $base_url = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $cat_info['alias'];
@@ -55,7 +66,7 @@ $generate_page = nv_generate_page($base_url, $num_items, $per_page, $page);
 
 $viewcat = !empty($cat_info['viewcat']) ? $cat_info['viewcat'] : 'view_grid';
 
-$contents = nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page);
+$contents = nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page, $allow_use);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

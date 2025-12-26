@@ -14,6 +14,11 @@ if (!defined('NV_SYSTEM')) {
 
 define('NV_IS_MOD_AVATAR', true);
 
+// Fix for empty op causing include errors
+if (!isset($op) || empty($op)) {
+    $op = 'main';
+}
+
 // Get Config
 if (!function_exists('nv_avatar_get_config')) {
     function nv_avatar_get_config($module_data)
@@ -50,11 +55,6 @@ $sql = "SELECT catid, alias FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat"
 $list = $nv_Cache->db($sql, 'catid', $module_name);
 foreach ($list as $row) {
     $array_cat_alias[$row['alias']] = $row['catid'];
-}
-
-// Ensure op is set
-if (empty($op)) {
-    $op = 'main';
 }
 
 // Manual Routing Logic

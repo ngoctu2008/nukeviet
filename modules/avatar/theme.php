@@ -42,7 +42,7 @@ function nv_theme_avatar_main($array_cat)
 /**
  * View Category
  */
-function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page)
+function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page, $allow_use = true)
 {
     global $module_info, $lang_module, $module_file, $module_upload;
 
@@ -56,6 +56,11 @@ function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page)
     $xtpl->assign('CAT_INFO', $cat_info);
     $xtpl->assign('GENERATE_PAGE', $generate_page);
 
+    if ($allow_use) {
+        $xtpl->assign('ALLOW_USE', 1);
+        $xtpl->parse('main.allow_use');
+    }
+
     foreach ($list as $row) {
         if (!empty($row['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['image'])) {
             $row['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'];
@@ -63,6 +68,9 @@ function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page)
         $row['link'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_info['module_name'] . "&amp;" . NV_OP_VARIABLE . "=" . $cat_info['alias'] . "/" . $row['alias'] . "-" . $row['id'];
 
         $xtpl->assign('ROW', $row);
+        if ($allow_use) {
+            $xtpl->parse('main.row.allow_use');
+        }
         $xtpl->parse('main.row');
     }
 
@@ -73,7 +81,7 @@ function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page)
 /**
  * Detail View
  */
-function nv_theme_avatar_detail($row, $cat_info)
+function nv_theme_avatar_detail($row, $cat_info, $allow_use = true)
 {
     global $module_info, $lang_module, $module_file, $module_upload;
 
@@ -91,6 +99,10 @@ function nv_theme_avatar_detail($row, $cat_info)
 
     $xtpl->assign('ROW', $row);
     $xtpl->assign('CAT_INFO', $cat_info);
+
+    if ($allow_use) {
+        $xtpl->parse('main.allow_use');
+    }
 
     $xtpl->parse('main');
     return $xtpl->text('main');

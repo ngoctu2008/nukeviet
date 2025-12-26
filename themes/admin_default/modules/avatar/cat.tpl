@@ -38,11 +38,18 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <label>{LANG.title}</label>
-                        <input class="form-control" type="text" name="title" value="{DATA.title}" required="required" />
+                        <input class="form-control" type="text" name="title" value="{DATA.title}" required="required" id="id_title" />
                     </div>
                     <div class="form-group">
                         <label>{LANG.alias}</label>
-                        <input class="form-control" type="text" name="alias" value="{DATA.alias}" />
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="alias" value="{DATA.alias}" id="id_alias" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" onclick="return nv_get_alias('id_alias');">
+                                    <i class="fa fa-refresh fa-lg fa-pointer"></i>
+                                </button>
+                            </span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>{LANG.parent}</label>
@@ -118,6 +125,16 @@ function nv_del_cat(catid) {
             }
         });
     }
+}
+
+function nv_get_alias(id) {
+    var title = strip_tags(document.getElementById('id_title').value);
+    if (title != '') {
+        $.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=cat&get_alias_title=' + encodeURIComponent(title), function(res) {
+            document.getElementById(id).value = res;
+        });
+    }
+    return false;
 }
 </script>
 <!-- END: main -->
