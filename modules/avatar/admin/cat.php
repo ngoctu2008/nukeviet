@@ -14,8 +14,8 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $lang_module['categories'];
 
-// Call nv_fix_cat_order to ensure order is correct on load
-nv_fix_cat_order();
+// Call nv_avatar_fix_cat_order to ensure order is correct on load
+nv_avatar_fix_cat_order();
 
 $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat ORDER BY sort ASC";
 $result = $db->query($sql);
@@ -78,7 +78,7 @@ if ($nv_Request->isset_request('save', 'post')) {
 
                 if ($stmt->execute()) {
                     $catid = $db->lastInsertId();
-                    nv_fix_cat_order();
+                    nv_avatar_fix_cat_order();
                     nv_insert_logs(NV_LANG_DATA, $module_name, 'Add Category', "ID: " . $catid, $admin_info['userid']);
                     Header("Location: " . NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat");
                     die();
@@ -108,7 +108,7 @@ if ($nv_Request->isset_request('save', 'post')) {
                  $stmt->bindParam(':catid', $row['catid'], PDO::PARAM_INT);
 
                  if ($stmt->execute()) {
-                     nv_fix_cat_order();
+                     nv_avatar_fix_cat_order();
                      nv_insert_logs(NV_LANG_DATA, $module_name, 'Edit Category', "ID: " . $row['catid'], $admin_info['userid']);
                      Header("Location: " . NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat");
                      die();
@@ -147,7 +147,7 @@ if ($nv_Request->isset_request('delete', 'post')) {
             die('ERR_ROWS');
         }
         $db->query("DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE catid=" . $catid);
-        nv_fix_cat_order();
+        nv_avatar_fix_cat_order();
         nv_insert_logs(NV_LANG_DATA, $module_name, 'Delete Category', "ID: " . $catid, $admin_info['userid']);
         die('OK');
     }
