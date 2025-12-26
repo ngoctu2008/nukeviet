@@ -17,7 +17,7 @@ define('NV_IS_FILE_ADMIN', true);
 /**
  * Fix category order
  */
-function nv_fix_cat_order($parentid = 0, $order = 0, $lev = 0)
+function nv_avatar_fix_cat_order($parentid = 0, $order = 0, $lev = 0)
 {
     global $db, $db_config, $module_data;
 
@@ -40,7 +40,7 @@ function nv_fix_cat_order($parentid = 0, $order = 0, $lev = 0)
         ++$weight;
         $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_cat SET weight=" . $weight . ", sort=" . $order . ", lev=" . $lev . " WHERE catid=" . $catid;
         $db->query($sql);
-        $order = nv_fix_cat_order($catid, $order, $lev);
+        $order = nv_avatar_fix_cat_order($catid, $order, $lev);
     }
 
     // Update numsubcat
@@ -52,8 +52,9 @@ function nv_fix_cat_order($parentid = 0, $order = 0, $lev = 0)
     return $order;
 }
 
-// Function to handle alias change
-function change_alias($title)
-{
-    return change_alias_func($title); // Core function
+if (!function_exists('change_alias')) {
+    function change_alias($title)
+    {
+        return change_alias_func($title);
+    }
 }
