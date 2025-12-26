@@ -8,23 +8,17 @@
  * @Createdate Dec 19, 2025
  */
 
-if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
+if (!defined('NV_MAINFILE'))
     die('Stop!!!');
-}
 
-// 1. Config Table
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config";
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config (
-  config_name varchar(30) NOT NULL,
-  config_value varchar(255) NOT NULL,
-  UNIQUE KEY config_name (config_name)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-
-$sql_create_module[] = "INSERT IGNORE INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config (config_name, config_value) VALUES
-('per_page', '20')";
-
-// 2. Categories Table
+$sql_drop_module = array();
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_cat";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config";
+
+$sql_create_module = $sql_drop_module;
+
+// 1. Categories Table
 $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_cat (
   catid int(11) unsigned NOT NULL AUTO_INCREMENT,
   parentid int(11) unsigned NOT NULL DEFAULT '0',
@@ -45,10 +39,9 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
   UNIQUE KEY alias (alias),
   KEY parentid (parentid),
   KEY status (status)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+) ENGINE=MyISAM;";
 
-// 3. Rows Table (Items)
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows";
+// 2. Rows Table (Items)
 $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   catid int(11) unsigned NOT NULL DEFAULT '0',
@@ -68,4 +61,16 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
   KEY catid (catid),
   KEY status (status),
   KEY weight (weight)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+) ENGINE=MyISAM;";
+
+// 3. Config Table
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config (
+  config_name varchar(30) NOT NULL,
+  config_value varchar(255) NOT NULL,
+  UNIQUE KEY config_name (config_name)
+) ENGINE=MyISAM;";
+
+// Default Config
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config VALUES
+('per_page', '20')
+";
