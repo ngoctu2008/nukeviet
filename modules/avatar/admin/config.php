@@ -2,9 +2,9 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author YOUR NAME (email@domain.com)
- * @Copyright (C) 2025
- * @License GNU/GPLv3
+ * @Author Phạm Ngọc Tú (ngoctu.dnkd@gmail.com)
+ * @Copyright (C) 2024 Phạm Ngọc Tú. All rights reserved
+ *
  * @Createdate Dec 19, 2025
  */
 

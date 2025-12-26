@@ -2,9 +2,9 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author YOUR NAME (email@domain.com)
- * @Copyright (C) 2025
- * @License GNU/GPLv3
+ * @Author Phạm Ngọc Tú (ngoctu.dnkd@gmail.com)
+ * @Copyright (C) 2024 Phạm Ngọc Tú. All rights reserved
+ *
  * @Createdate Dec 19, 2025
  */
 
@@ -14,7 +14,7 @@ if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
 
 $lang_translator['author'] = 'Author Name';
 $lang_translator['createdate'] = '19/12/2025';
-$lang_translator['copyright'] = '@Copyright (C) 2025';
+$lang_translator['copyright'] = '@Copyright (C) 2024 Phạm Ngọc Tú. All rights reserved';
 $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
