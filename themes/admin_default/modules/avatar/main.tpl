@@ -1,4 +1,7 @@
 <!-- BEGIN: main -->
+<div class="well">
+    <a href="{ADD_NEW}" class="btn btn-primary">{LANG.add_template}</a>
+</div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <thead>
