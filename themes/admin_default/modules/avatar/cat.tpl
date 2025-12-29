@@ -31,6 +31,7 @@
         <!-- BEGIN: error -->
         <div class="alert alert-danger">{ERROR}</div>
         <!-- END: error -->
+        <!-- BEGIN: form -->
         <form action="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}" method="post">
             <input type="hidden" name="catid" value="{DATA.catid}" />
             <div class="panel panel-default">
@@ -109,6 +110,7 @@
                 </div>
             </div>
         </form>
+        <!-- END: form -->
     </div>
 </div>
 <script type="text/javascript">
