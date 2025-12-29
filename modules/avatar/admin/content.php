@@ -17,6 +17,7 @@ $error = array();
 if ($nv_Request->isset_request('get_alias_title', 'post')) {
     $alias = $nv_Request->get_title('get_alias_title', 'post', '');
     $alias = change_alias($alias);
+    if (ob_get_length()) ob_end_clean();
     die($alias);
 }
 

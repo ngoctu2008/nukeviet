@@ -17,7 +17,7 @@ if (!defined('NV_IS_MOD_AVATAR')) {
  */
 function nv_theme_avatar_main($array_cat)
 {
-    global $module_info, $lang_module, $module_file, $op;
+    global $module_info, $lang_module, $module_file, $op, $module_name;
 
     $tp = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file;
     if (!file_exists($tp . '/main.tpl')) {
@@ -27,7 +27,7 @@ function nv_theme_avatar_main($array_cat)
     $xtpl = new XTemplate('main.tpl', $tp);
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
-    $xtpl->assign('MODULE_NAME', $module_info['module_name']);
+    $xtpl->assign('MODULE_NAME', $module_name);
     $xtpl->assign('OP', $op);
 
     foreach ($array_cat as $cat) {
@@ -44,7 +44,7 @@ function nv_theme_avatar_main($array_cat)
  */
 function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page, $allow_use = true)
 {
-    global $module_info, $lang_module, $module_file, $module_upload;
+    global $module_info, $lang_module, $module_file, $module_upload, $module_name;
 
     $tp = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file;
     if (!file_exists($tp . '/' . $viewcat . '.tpl')) {
@@ -55,6 +55,8 @@ function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page, $al
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('CAT_INFO', $cat_info);
     $xtpl->assign('GENERATE_PAGE', $generate_page);
+    $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+    $xtpl->assign('MODULE_NAME', $module_name);
 
     if ($allow_use) {
         $xtpl->assign('ALLOW_USE', 1);
@@ -65,7 +67,7 @@ function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page, $al
         if (!empty($row['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['image'])) {
             $row['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'];
         }
-        $row['link'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_info['module_name'] . "&amp;" . NV_OP_VARIABLE . "=" . $cat_info['alias'] . "/" . $row['alias'] . "-" . $row['id'];
+        $row['link'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $cat_info['alias'] . "/" . $row['alias'] . "-" . $row['id'];
 
         $xtpl->assign('ROW', $row);
         if ($allow_use) {
@@ -79,11 +81,11 @@ function nv_theme_avatar_viewcat($viewcat, $cat_info, $list, $generate_page, $al
 }
 
 /**
- * Detail View
+ * Detail View (Editor)
  */
 function nv_theme_avatar_detail($row, $cat_info, $allow_use = true)
 {
-    global $module_info, $lang_module, $module_file, $module_upload;
+    global $module_info, $lang_module, $module_file, $module_upload, $module_name;
 
     $tp = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file;
     if (!file_exists($tp . '/detail.tpl')) {
@@ -92,6 +94,12 @@ function nv_theme_avatar_detail($row, $cat_info, $allow_use = true)
 
     $xtpl = new XTemplate('detail.tpl', $tp);
     $xtpl->assign('LANG', $lang_module);
+    $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+    $xtpl->assign('MODULE_NAME', $module_name);
+    $xtpl->assign('NV_LANG_VARIABLE', NV_LANG_VARIABLE);
+    $xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);
+    $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
+    $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 
     if (!empty($row['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['image'])) {
         $row['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'];
