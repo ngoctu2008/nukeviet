@@ -316,48 +316,48 @@ function recursive_cat_list($parentid, $xtpl, $groups_list, $module_upload, $mod
 // Note: recursive_cat_list usually fetches children. But we need to handle the roots we already have from pagination.
 $num_siblings_root = $num_items; // Approximately, for weight loop of roots
 
-while ($row = $result->fetch()) {
+while ($cat_item = $result->fetch()) {
      // Identical processing for Root Rows
-     $row['link_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&catid=" . $row['catid'];
-     $row['link_delete'] = "javascript:void(0);";
-     $row['onclick_delete'] = "nv_del_cat(" . $row['catid'] . ", '" . md5($row['catid'] . NV_CACHE_PREFIX . $client_info['session_id']) . "')";
+     $cat_item['link_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&catid=" . $cat_item['catid'];
+     $cat_item['link_delete'] = "javascript:void(0);";
+     $cat_item['onclick_delete'] = "nv_del_cat(" . $cat_item['catid'] . ", '" . md5($cat_item['catid'] . NV_CACHE_PREFIX . $client_info['session_id']) . "')";
 
-     if (!empty($row['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['image'])) {
-         $row['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'];
+     if (!empty($cat_item['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $cat_item['image'])) {
+         $cat_item['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $cat_item['image'];
      } else {
-         $row['image'] = '';
+         $cat_item['image'] = '';
      }
 
-     $groups_view = !empty($row['groups_view']) ? explode(',', $row['groups_view']) : array();
-     $row['groups_view_str'] = array();
+     $groups_view = !empty($cat_item['groups_view']) ? explode(',', $cat_item['groups_view']) : array();
+     $cat_item['groups_view_str'] = array();
      foreach ($groups_view as $gid) {
-         if (isset($groups_list[$gid])) $row['groups_view_str'][] = $groups_list[$gid];
+         if (isset($groups_list[$gid])) $cat_item['groups_view_str'][] = $groups_list[$gid];
      }
-     $row['groups_view_str'] = implode(', ', $row['groups_view_str']);
+     $cat_item['groups_view_str'] = implode(', ', $cat_item['groups_view_str']);
 
-     $groups_use = !empty($row['groups_use']) ? explode(',', $row['groups_use']) : array();
-     $row['groups_use_str'] = array();
+     $groups_use = !empty($cat_item['groups_use']) ? explode(',', $cat_item['groups_use']) : array();
+     $cat_item['groups_use_str'] = array();
      foreach ($groups_use as $gid) {
-         if (isset($groups_list[$gid])) $row['groups_use_str'][] = $groups_list[$gid];
+         if (isset($groups_list[$gid])) $cat_item['groups_use_str'][] = $groups_list[$gid];
      }
-     $row['groups_use_str'] = implode(', ', $row['groups_use_str']);
+     $cat_item['groups_use_str'] = implode(', ', $cat_item['groups_use_str']);
 
      for ($i = 1; $i <= $num_siblings_root; ++$i) {
          $xtpl->assign('WEIGHT', array(
              'key' => $i,
              'title' => $i,
-             'selected' => ($i == $row['weight']) ? ' selected="selected"' : ''
+             'selected' => ($i == $cat_item['weight']) ? ' selected="selected"' : ''
          ));
          $xtpl->parse('main.view.loop.weight_loop');
      }
 
-     $row['check_status'] = $row['status'] == 1 ? 'checked' : '';
+     $cat_item['check_status'] = $cat_item['status'] == 1 ? 'checked' : '';
 
-     $xtpl->assign('ROW', $row);
+     $xtpl->assign('ROW', $cat_item);
      $xtpl->parse('main.view.loop');
 
      // Render Children
-     recursive_cat_list($row['catid'], $xtpl, $groups_list, $module_upload, $module_name, $client_info);
+     recursive_cat_list($cat_item['catid'], $xtpl, $groups_list, $module_upload, $module_name, $client_info);
 }
 
 $xtpl->parse('main.view');
