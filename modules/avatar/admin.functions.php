@@ -58,3 +58,18 @@ if (!function_exists('change_alias')) {
         return change_alias_func($title);
     }
 }
+
+// Get Config (Added for Admin usage)
+if (!function_exists('nv_avatar_get_config')) {
+    function nv_avatar_get_config($module_data)
+    {
+        global $nv_Cache, $module_name;
+        $sql = "SELECT config_name, config_value FROM " . NV_PREFIXLANG . "_" . $module_data . "_config";
+        $list = $nv_Cache->db($sql, '', $module_name);
+        $data = array();
+        foreach ($list as $row) {
+            $data[$row['config_name']] = $row['config_value'];
+        }
+        return $data;
+    }
+}
