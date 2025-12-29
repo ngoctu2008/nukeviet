@@ -13,6 +13,11 @@
             <div class="description">
                 {ROW.description}
             </div>
+            <!-- BEGIN: allow_use -->
+            <div class="clearfix margin-bottom-lg">
+                <a href="{ROW.image}" download class="btn btn-success btn-lg"><i class="fa fa-download"></i> Download Avatar</a>
+            </div>
+            <!-- END: allow_use -->
             <div class="body">
                 {ROW.body}
             </div>

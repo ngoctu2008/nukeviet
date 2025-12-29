@@ -18,6 +18,9 @@
                 <div class="caption text-center">
                     <h4><a href="{ROW.link}">{ROW.title}</a></h4>
                     <p><i class="fa fa-eye"></i> {ROW.views} <i class="fa fa-download"></i> {ROW.downloads}</p>
+                    <!-- BEGIN: allow_use -->
+                    <p><a href="{ROW.image}" download class="btn btn-success btn-xs"><i class="fa fa-download"></i> Download</a></p>
+                    <!-- END: allow_use -->
                 </div>
             </div>
         </div>
