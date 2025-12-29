@@ -62,4 +62,7 @@ $lang_module['error_alias'] = 'Lỗi: Liên kết tĩnh đã tồn tại';
 $lang_module['error_insert'] = 'Lỗi: Không thể thêm dữ liệu';
 $lang_module['error_update'] = 'Lỗi: Không thể cập nhật dữ liệu';
 $lang_module['category'] = 'Danh mục';
-$lang_module['per_page'] = 'Số lượng hiển thị trên một trang';
+
+// Config
+$lang_module['config_per_page_cat'] = 'Số danh mục trên 1 trang';
+$lang_module['config_per_page_row'] = 'Số khung hình trên 1 trang';

@@ -72,5 +72,6 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 
 // Default Config
 $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config VALUES
-('per_page', '20')
+('per_page_cat', '20'),
+('per_page_row', '20')
 ";

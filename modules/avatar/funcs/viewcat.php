@@ -45,7 +45,7 @@ if (!defined('NV_IS_ADMIN')) {
     }
 }
 
-$per_page = isset($module_config['per_page']) ? intval($module_config['per_page']) : 20;
+$per_page = isset($module_config['per_page_row']) ? intval($module_config['per_page_row']) : 20;
 
 $base_url = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $cat_info['alias'];
 $page = $nv_Request->get_int('page', 'get', 1);

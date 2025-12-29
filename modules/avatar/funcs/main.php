@@ -15,8 +15,15 @@ if (!defined('NV_IS_MOD_AVATAR')) {
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
 
-// Get top level categories
-$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid=0 AND status=1 ORDER BY weight ASC";
+$per_page = isset($module_config['per_page_cat']) ? intval($module_config['per_page_cat']) : 20;
+$page = $nv_Request->get_int('page', 'get', 1);
+
+// Count total top-level categories
+$sql = "SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid=0 AND status=1";
+$num_items = $db->query($sql)->fetchColumn();
+
+// Get top level categories with pagination
+$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid=0 AND status=1 ORDER BY weight ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 $result = $db->query($sql);
 $array_cat = array();
 while ($row = $result->fetch()) {
@@ -37,7 +44,10 @@ while ($row = $result->fetch()) {
     }
 }
 
-$contents = nv_theme_avatar_main($array_cat);
+$base_url = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name;
+$generate_page = nv_generate_page($base_url, $num_items, $per_page, $page);
+
+$contents = nv_theme_avatar_main($array_cat, $generate_page);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

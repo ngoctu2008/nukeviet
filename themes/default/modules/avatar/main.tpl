@@ -17,5 +17,8 @@
         </div>
         <!-- END: cat -->
     </div>
+    <!-- BEGIN: page -->
+    <div class="text-center">{GENERATE_PAGE}</div>
+    <!-- END: page -->
 </div>
 <!-- END: main -->

@@ -15,7 +15,7 @@ if (!defined('NV_IS_MOD_AVATAR')) {
 /**
  * Frontend main view
  */
-function nv_theme_avatar_main($array_cat)
+function nv_theme_avatar_main($array_cat, $generate_page = '')
 {
     global $module_info, $lang_module, $module_file, $op, $module_name;
 
@@ -31,8 +31,17 @@ function nv_theme_avatar_main($array_cat)
     $xtpl->assign('OP', $op);
 
     foreach ($array_cat as $cat) {
+        if (!empty($cat['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $cat['image'])) {
+            $cat['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $cat['image'];
+        }
         $xtpl->assign('CAT', $cat);
+        if (!empty($cat['image'])) $xtpl->parse('main.cat.image');
         $xtpl->parse('main.cat');
+    }
+
+    if (!empty($generate_page)) {
+        $xtpl->assign('GENERATE_PAGE', $generate_page);
+        $xtpl->parse('main.page');
     }
 
     $xtpl->parse('main');
@@ -100,6 +109,7 @@ function nv_theme_avatar_detail($row, $cat_info, $allow_use = true)
     $xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);
     $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
     $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
+    $xtpl->assign('NV_ASSETS_DIR', NV_ASSETS_DIR);
 
     if (!empty($row['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['image'])) {
         $row['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'];

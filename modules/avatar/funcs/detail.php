@@ -12,28 +12,29 @@ if (!defined('NV_IS_MOD_AVATAR')) {
     die('Stop!!!');
 }
 
-// Global variables set in functions.php
-global $id;
+global $id, $catid;
 
-if (empty($id) || $id == 0) {
+if ($id == 0) {
     nv_info_die($lang_global['error_404_title'], $lang_global['error_404_title'], $lang_global['error_404_content']);
 }
-$id = intval($id);
 
-$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id=" . $id;
+// Fetch Row
+$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id=" . $id . " AND status=1";
 $row = $db->query($sql)->fetch();
 
 if (empty($row)) {
     nv_info_die($lang_global['error_404_title'], $lang_global['error_404_title'], $lang_global['error_404_content']);
 }
 
-// Update views
-$db->query("UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_rows SET views=views+1 WHERE id=" . $id);
+// Cat Info
+if ($row['catid'] > 0) {
+    $cat_info = nv_avatar_get_cat($row['catid']);
+} else {
+    $cat_info = array('alias' => '');
+}
 
-$cat_info = nv_avatar_get_cat($row['catid']);
-
-// Check View Permissions
-if (!defined('NV_IS_ADMIN')) {
+// Check permissions
+if (!defined('NV_IS_ADMIN') && !empty($cat_info)) {
     if (!empty($cat_info['groups_view'])) {
         $groups_view = explode(',', $cat_info['groups_view']);
         if (!nv_user_in_groups($groups_view)) {
@@ -44,7 +45,7 @@ if (!defined('NV_IS_ADMIN')) {
 
 // Check Use Permissions
 $allow_use = true;
-if (!defined('NV_IS_ADMIN')) {
+if (!defined('NV_IS_ADMIN') && !empty($cat_info)) {
     if (!empty($cat_info['groups_use'])) {
         $groups_use = explode(',', $cat_info['groups_use']);
         if (!nv_user_in_groups($groups_use)) {
@@ -53,10 +54,12 @@ if (!defined('NV_IS_ADMIN')) {
     }
 }
 
-$cat_info['link'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $cat_info['alias'];
-
 $page_title = $row['title'];
 $key_words = $row['title'];
+
+// Update View
+$sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_rows SET views=views+1 WHERE id=" . $id;
+$db->query($sql);
 
 $contents = nv_theme_avatar_detail($row, $cat_info, $allow_use);
 
