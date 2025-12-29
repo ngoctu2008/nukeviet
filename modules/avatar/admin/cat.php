@@ -14,6 +14,59 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $lang_module['categories'];
 
+// Change status
+if ($nv_Request->isset_request('change_status', 'post, get')) {
+    $catid = $nv_Request->get_int('catid', 'post, get', 0);
+    $content = 'NO_' . $catid;
+
+    $query = 'SELECT status FROM ' . NV_PREFIXLANG . '_' . $module_data . '_cat WHERE catid=' . $catid;
+    $row = $db->query($query)->fetch();
+    if (isset($row['status'])) {
+        $status = ($row['status']) ? 0 : 1;
+        $query = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_cat SET status=' . intval($status) . ' WHERE catid=' . $catid;
+        $db->query($query);
+        $content = 'OK_' . $catid;
+    }
+    $nv_Cache->delMod($module_name);
+    include NV_ROOTDIR . '/includes/header.php';
+    echo $content;
+    include NV_ROOTDIR . '/includes/footer.php';
+    exit();
+}
+
+// Ajax Action (Weight)
+if ($nv_Request->isset_request('ajax_action', 'post')) {
+    $catid = $nv_Request->get_int('catid', 'post', 0);
+    $new_vid = $nv_Request->get_int('new_vid', 'post', 0);
+    $content = 'NO_' . $catid;
+    if ($new_vid > 0) {
+        // Get parentid of current cat to only reorder siblings
+        $parentid = $db->query("SELECT parentid FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE catid=" . $catid)->fetchColumn();
+
+        $sql = 'SELECT catid FROM ' . NV_PREFIXLANG . '_' . $module_data . '_cat WHERE parentid=' . $parentid . ' AND catid!=' . $catid . ' ORDER BY weight ASC';
+        $result = $db->query($sql);
+        $weight = 0;
+        while ($row = $result->fetch()) {
+            ++$weight;
+            if ($weight == $new_vid) ++$weight;
+            $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_cat SET weight=' . $weight . ' WHERE catid=' . $row['catid'];
+            $db->query($sql);
+        }
+        $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_cat SET weight=' . $new_vid . ' WHERE catid=' . $catid;
+        $db->query($sql);
+
+        // Fix order recursively just in case
+        nv_avatar_fix_cat_order($parentid);
+
+        $content = 'OK_' . $catid;
+    }
+    $nv_Cache->delMod($module_name);
+    include NV_ROOTDIR . '/includes/header.php';
+    echo $content;
+    include NV_ROOTDIR . '/includes/footer.php';
+    exit();
+}
+
 if ($nv_Request->isset_request('get_alias_title', 'post')) {
     $alias = $nv_Request->get_title('get_alias_title', 'post', '');
     $alias = change_alias($alias);
@@ -23,15 +76,16 @@ if ($nv_Request->isset_request('get_alias_title', 'post')) {
 // Call nv_avatar_fix_cat_order to ensure order is correct on load
 nv_avatar_fix_cat_order();
 
-$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat ORDER BY sort ASC";
-$result = $db->query($sql);
-$array_cat = array();
-while ($row = $result->fetch()) {
-    $array_cat[$row['catid']] = $row;
-}
-
 $catid = $nv_Request->get_int('catid', 'get', 0);
 $parentid = $nv_Request->get_int('parentid', 'get', 0);
+
+// Get all cats for Parent Dropdown (Flat list with level indentation)
+$sql = "SELECT catid, title, lev, parentid FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat ORDER BY sort ASC";
+$result = $db->query($sql);
+$array_cat_list = array();
+while ($row = $result->fetch()) {
+    $array_cat_list[$row['catid']] = $row;
+}
 
 if ($nv_Request->isset_request('save', 'post')) {
     $row = array();
@@ -53,7 +107,7 @@ if ($nv_Request->isset_request('save', 'post')) {
     }
 
     if ($row['catid'] > 0 && $row['catid'] == $row['parentid']) {
-        $row['parentid'] = $array_cat[$row['catid']]['parentid'];
+        $row['parentid'] = $array_cat_list[$row['catid']]['parentid'];
     }
 
     if (empty($row['title'])) {
@@ -125,7 +179,7 @@ if ($nv_Request->isset_request('save', 'post')) {
         }
     }
 } elseif ($catid > 0) {
-    $row = $array_cat[$catid];
+    $row = $db->query("SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE catid=" . $catid)->fetch();
 } else {
     $row = array(
         'catid' => 0,
@@ -143,7 +197,9 @@ if ($nv_Request->isset_request('save', 'post')) {
 // Delete
 if ($nv_Request->isset_request('delete', 'post')) {
     $catid = $nv_Request->get_int('catid', 'post', 0);
-    if ($catid > 0) {
+    $checkss = $nv_Request->get_string('checkss', 'post', '');
+
+    if ($catid > 0 and $checkss == md5($catid . NV_CACHE_PREFIX . $client_info['session_id'])) {
         $check_parent = $db->query("SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid=" . $catid)->fetchColumn();
         if ($check_parent > 0) {
             die('ERR_PARENT');
@@ -156,6 +212,8 @@ if ($nv_Request->isset_request('delete', 'post')) {
         nv_avatar_fix_cat_order();
         nv_insert_logs(NV_LANG_DATA, $module_name, 'Delete Category', "ID: " . $catid, $admin_info['userid']);
         die('OK');
+    } else {
+        die('NO');
     }
 }
 
@@ -168,30 +226,149 @@ $xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
 $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
+$xtpl->assign('MODULE_UPLOAD', $module_upload);
 $xtpl->assign('OP', $op);
+$xtpl->assign('NV_ASSETS_DIR', NV_ASSETS_DIR);
 
 if (!empty($error)) {
     $xtpl->assign('ERROR', $error);
     $xtpl->parse('main.error');
 }
 
-// List Categories
-foreach ($array_cat as $cat) {
-    $cat['link_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&catid=" . $cat['catid'];
-    $cat['link_delete'] = "javascript:void(0);";
-    $cat['onclick_delete'] = "nv_del_cat(" . $cat['catid'] . ")";
-    $cat['title'] = str_repeat('&nbsp;&nbsp;', $cat['lev']) . $cat['title'];
-    $xtpl->assign('ROW', $cat);
-    $xtpl->parse('main.list.row');
+// FETCH LIST FOR TABLE (Pagination on Root only)
+$per_page = isset($module_config['per_page_cat']) ? intval($module_config['per_page_cat']) : 20;
+$page = $nv_Request->get_int('page', 'get', 1);
+
+// Count root categories
+$num_items = $db->query("SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid=0")->fetchColumn();
+
+// Get root categories
+$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid=0 ORDER BY weight ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
+$result = $db->query($sql);
+
+$base_url = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat";
+$generate_page = nv_generate_page($base_url, $num_items, $per_page, $page);
+
+if (!empty($generate_page)) {
+    $xtpl->assign('NV_GENERATE_PAGE', $generate_page);
+    $xtpl->parse('main.view.generate_page');
 }
-$xtpl->parse('main.list');
+
+function recursive_cat_list($parentid, $xtpl, $groups_list, $module_upload, $module_name, $client_info) {
+    global $db, $module_data;
+
+    // Fetch children
+    $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid=" . $parentid . " ORDER BY weight ASC";
+    $result = $db->query($sql);
+
+    // Count siblings for weight select
+    $num_siblings = $db->query("SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid=" . $parentid)->fetchColumn();
+
+    while ($row = $result->fetch()) {
+        $row['link_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&catid=" . $row['catid'];
+        $row['link_delete'] = "javascript:void(0);";
+        $row['onclick_delete'] = "nv_del_cat(" . $row['catid'] . ", '" . md5($row['catid'] . NV_CACHE_PREFIX . $client_info['session_id']) . "')";
+
+        // Image
+        if (!empty($row['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['image'])) {
+            $row['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'];
+        } else {
+             $row['image'] = '';
+        }
+
+        // Permissions Display
+        $groups_view = !empty($row['groups_view']) ? explode(',', $row['groups_view']) : array();
+        $row['groups_view_str'] = array();
+        foreach ($groups_view as $gid) {
+            if (isset($groups_list[$gid])) $row['groups_view_str'][] = $groups_list[$gid];
+        }
+        $row['groups_view_str'] = implode(', ', $row['groups_view_str']);
+
+        $groups_use = !empty($row['groups_use']) ? explode(',', $row['groups_use']) : array();
+        $row['groups_use_str'] = array();
+        foreach ($groups_use as $gid) {
+            if (isset($groups_list[$gid])) $row['groups_use_str'][] = $groups_list[$gid];
+        }
+        $row['groups_use_str'] = implode(', ', $row['groups_use_str']);
+
+        // Weight Select
+        for ($i = 1; $i <= $num_siblings; ++$i) {
+            $xtpl->assign('WEIGHT', array(
+                'key' => $i,
+                'title' => $i,
+                'selected' => ($i == $row['weight']) ? ' selected="selected"' : ''
+            ));
+            $xtpl->parse('main.view.loop.weight_loop');
+        }
+
+        $row['title'] = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $row['lev']) . ($row['lev'] > 0 ? '↳ ' : '') . $row['title'];
+        $row['check_status'] = $row['status'] == 1 ? 'checked' : '';
+
+        $xtpl->assign('ROW', $row);
+        $xtpl->parse('main.view.loop');
+
+        // Recursive call for children
+        recursive_cat_list($row['catid'], $xtpl, $groups_list, $module_upload, $module_name, $client_info);
+    }
+}
+
+// Start recursion with roots from current page (already fetched above)
+// Note: recursive_cat_list usually fetches children. But we need to handle the roots we already have from pagination.
+$num_siblings_root = $num_items; // Approximately, for weight loop of roots
+
+while ($row = $result->fetch()) {
+     // Identical processing for Root Rows
+     $row['link_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&catid=" . $row['catid'];
+     $row['link_delete'] = "javascript:void(0);";
+     $row['onclick_delete'] = "nv_del_cat(" . $row['catid'] . ", '" . md5($row['catid'] . NV_CACHE_PREFIX . $client_info['session_id']) . "')";
+
+     if (!empty($row['image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $row['image'])) {
+         $row['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'];
+     } else {
+         $row['image'] = '';
+     }
+
+     $groups_view = !empty($row['groups_view']) ? explode(',', $row['groups_view']) : array();
+     $row['groups_view_str'] = array();
+     foreach ($groups_view as $gid) {
+         if (isset($groups_list[$gid])) $row['groups_view_str'][] = $groups_list[$gid];
+     }
+     $row['groups_view_str'] = implode(', ', $row['groups_view_str']);
+
+     $groups_use = !empty($row['groups_use']) ? explode(',', $row['groups_use']) : array();
+     $row['groups_use_str'] = array();
+     foreach ($groups_use as $gid) {
+         if (isset($groups_list[$gid])) $row['groups_use_str'][] = $groups_list[$gid];
+     }
+     $row['groups_use_str'] = implode(', ', $row['groups_use_str']);
+
+     for ($i = 1; $i <= $num_siblings_root; ++$i) {
+         $xtpl->assign('WEIGHT', array(
+             'key' => $i,
+             'title' => $i,
+             'selected' => ($i == $row['weight']) ? ' selected="selected"' : ''
+         ));
+         $xtpl->parse('main.view.loop.weight_loop');
+     }
+
+     $row['check_status'] = $row['status'] == 1 ? 'checked' : '';
+
+     $xtpl->assign('ROW', $row);
+     $xtpl->parse('main.view.loop');
+
+     // Render Children
+     recursive_cat_list($row['catid'], $xtpl, $groups_list, $module_upload, $module_name, $client_info);
+}
+
+$xtpl->parse('main.view');
+
 
 // Form
 $xtpl->assign('DATA', $row);
 
-// Parent select
+// Parent select (Use flat list)
 $xtpl->assign('parentid', $row['parentid']);
-foreach ($array_cat as $cat) {
+foreach ($array_cat_list as $cat) {
     if ($cat['catid'] != $row['catid']) {
         $cat['selected'] = ($cat['catid'] == $row['parentid']) ? 'selected="selected"' : '';
         $cat['title'] = str_repeat('&nbsp;&nbsp;', $cat['lev']) . $cat['title'];
