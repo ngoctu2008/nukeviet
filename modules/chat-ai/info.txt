@@ -1,0 +1,6 @@
+Module Name: chat-ai
+Version: 4.5.07
+Author: Jules
+Email: jules@google.com
+Website: http://google.com
+Description: Module Chat AI tích hợp OpenAI/Gemini với khả năng học dữ liệu (RAG) từ News, Laws và dữ liệu tùy chỉnh.
