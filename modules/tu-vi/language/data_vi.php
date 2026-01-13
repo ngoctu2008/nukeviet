@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author VINADES.,JSC <contact@vinades.vn>
+ * @Copyright (C) 2014 VINADES.,JSC. All rights reserved
+ * @License: GNU/GPL version 2 or any later version
+ * @Createdate: 2023-10-27
+ */
+
+if (!defined('NV_ADMIN')) {
+    exit('Stop!!!');
+}
+
+// We need to map module name 'tu-vi' to table prefix 'tu_vi'
+// $module_data usually holds 'tu-vi' during install if directory is 'tu-vi'
+// But we need to be safe.
+$module_table_prefix = str_replace('-', '_', $module_data);
+$table_interpretations = $db_config['prefix'] . "_" . $lang . "_" . $module_table_prefix . "_interpretations";
+
+// Insert Sample Data
+// Stars: Tử Vi, Thiên Cơ, Thái Dương, Vũ Khúc, Thiên Đồng, Liêm Trinh, Thiên Phủ, Thái Âm, Tham Lang, Cự Môn, Thiên Tướng, Thiên Lương, Thất Sát, Phá Quân
+// Palaces: Tý, Sửu, Dần, Mão, Thìn, Tỵ, Ngọ, Mùi, Thân, Dậu, Tuất, Hợi
+
+$db->query("INSERT INTO " . $table_interpretations . " (star_key, palace_key, content) VALUES
+('Tử Vi', 'Tý', '<p><strong>Tử Vi tại Tý:</strong> Bình hòa. Chủ về người khoan dung, nhân hậu nhưng thiếu quyết đoán nếu không có Tả Hữu hội chiếu. Ưa làm việc công chức, giáo dục.</p>'),
+('Tử Vi', 'Ngọ', '<p><strong>Tử Vi tại Ngọ:</strong> Miếu địa (Cực hướng Ly minh). Rất tốt. Chủ về uy quyền, tài năng lãnh đạo, phú quý song toàn. Thích hợp làm chính trị, kinh doanh lớn.</p>'),
+('Thiên Cơ', 'Tỵ', '<p><strong>Thiên Cơ tại Tỵ:</strong> Đắc địa. Người thông minh, khéo léo, giỏi tính toán, thích hợp các nghề kỹ thuật, thiết kế, mưu sĩ.</p>'),
+('Thái Dương', 'Dần', '<p><strong>Thái Dương tại Dần:</strong> Vượng địa (Nhật mọc). Chủ về sự nghiệp thăng tiến như mặt trời mọc, danh tiếng lẫy lừng, thông minh bác học.</p>'),
+('Thái Dương', 'Thân', '<p><strong>Thái Dương tại Thân:</strong> Hãm địa. Mặt trời lặn, chủ về vất vả buổi đầu, mắt kém, hay lo âu, về già mới an nhàn.</p>'),
+('Vũ Khúc', 'Thìn', '<p><strong>Vũ Khúc tại Thìn:</strong> Miếu địa. Chủ về tài lộc dồi dào, kinh doanh phát đạt, tính tình cương trực, quả quyết.</p>'),
+('Thiên Đồng', 'Tuất', '<p><strong>Thiên Đồng tại Tuất:</strong> Hãm địa. Chủ về thay đổi, nay đây mai đó, hay gặp thị phi, cần tu tâm dưỡng tính mới bền.</p>'),
+('Liêm Trinh', 'Dần', '<p><strong>Liêm Trinh tại Dần:</strong> Vượng địa. Chủ về uy quyền, liêm khiết, làm việc trong ngành luật pháp, công an rất tốt.</p>'),
+('Thiên Phủ', 'Tuất', '<p><strong>Thiên Phủ tại Tuất:</strong> Miếu địa. Kho lộc trời, chủ về giàu có, sung túc, tính tình ôn hòa, cẩn trọng, giỏi quản lý tài chính.</p>'),
+('Thái Âm', 'Hợi', '<p><strong>Thái Âm tại Hợi:</strong> Miếu địa (Nguyệt lãng thiên môn). Rất đẹp. Chủ về phú quý, văn chương, nghệ thuật, tình cảm phong phú.</p>'),
+('Tham Lang', 'Tý', '<p><strong>Tham Lang tại Tý:</strong> Vượng địa (Phiếm thủy đào hoa). Chủ về tài hoa, nghệ sĩ nhưng đa tình, dễ vướng vào rắc rối tình cảm nếu không có sao giải.</p>'),
+('Cự Môn', 'Ngọ', '<p><strong>Cự Môn tại Ngọ:</strong> Vượng địa (Thạch trung ẩn ngọc). Ngọc trong đá, cần mài dũa mới sáng. Chủ về tài năng ẩn giấu, thành công muộn nhưng bền vững.</p>'),
+('Thiên Tướng', 'Mão', '<p><strong>Thiên Tướng tại Mão:</strong> Hãm địa. Chủ về vất vả, hay bị lấn át, nhưng nếu có Tuần Triệt án ngữ thì lại trở nên tốt đẹp.</p>'),
+('Thiên Lương', 'Ngọ', '<p><strong>Thiên Lương tại Ngọ:</strong> Miếu địa. Chủ về thọ trường, phúc đức, được người đời kính trọng, thích hợp làm thầy thuốc, giáo viên.</p>'),
+('Thất Sát', 'Dần', '<p><strong>Thất Sát tại Dần:</strong> Miếu địa (Thất Sát triều đẩu). Chủ về uy dũng, quyền biến, làm tướng soái, lãnh đạo rất hợp.</p>'),
+('Phá Quân', 'Tý', '<p><strong>Phá Quân tại Tý:</strong> Miếu địa (Anh tinh nhập miếu). Chủ về khai phá, sáng tạo, dám nghĩ dám làm, thành công trong biến động.</p>')
+");
