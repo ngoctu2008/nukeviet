@@ -63,7 +63,7 @@ $xtpl->assign('ERROR', $error);
 $xtpl->assign('ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content&id=' . $id);
 
 if (defined('NV_EDITOR')) {
-    require_once NV_ROOTDIR . '/' . NV_EDITOR . '/nv.php';
+    require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 }
 if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
     $row['content'] = nv_aleditor('content', '100%', '300px', $row['content']);

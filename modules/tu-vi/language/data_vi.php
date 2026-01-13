@@ -38,5 +38,7 @@ $db->query("INSERT INTO " . $table_interpretations . " (star_key, palace_key, co
 ('Thiên Tướng', 'Mão', '<p><strong>Thiên Tướng tại Mão:</strong> Hãm địa. Chủ về vất vả, hay bị lấn át, nhưng nếu có Tuần Triệt án ngữ thì lại trở nên tốt đẹp.</p>'),
 ('Thiên Lương', 'Ngọ', '<p><strong>Thiên Lương tại Ngọ:</strong> Miếu địa. Chủ về thọ trường, phúc đức, được người đời kính trọng, thích hợp làm thầy thuốc, giáo viên.</p>'),
 ('Thất Sát', 'Dần', '<p><strong>Thất Sát tại Dần:</strong> Miếu địa (Thất Sát triều đẩu). Chủ về uy dũng, quyền biến, làm tướng soái, lãnh đạo rất hợp.</p>'),
-('Phá Quân', 'Tý', '<p><strong>Phá Quân tại Tý:</strong> Miếu địa (Anh tinh nhập miếu). Chủ về khai phá, sáng tạo, dám nghĩ dám làm, thành công trong biến động.</p>')
+('Phá Quân', 'Tý', '<p><strong>Phá Quân tại Tý:</strong> Miếu địa (Anh tinh nhập miếu). Chủ về khai phá, sáng tạo, dám nghĩ dám làm, thành công trong biến động.</p>'),
+('Tổng Quan', 'Mệnh', '<p><strong>Tổng quan trọn đời:</strong> Người này có tính cách mạnh mẽ, cương trực. Cuộc đời có nhiều thăng trầm nhưng hậu vận tốt đẹp. Cần chú ý tu dưỡng đạo đức để giữ gìn phúc lộc.</p>'),
+('Vận Hạn', 'Tiểu Vận', '<p><strong>Vận hạn năm nay:</strong> Năm nay công việc có nhiều biến động, cần cẩn trọng trong đầu tư. Sức khỏe cần chú ý các bệnh về đường tiêu hóa.</p>')
 ");
