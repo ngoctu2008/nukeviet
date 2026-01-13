@@ -8,7 +8,7 @@
  * @Createdate: 2023-10-27
  */
 
-if (!defined('NV_SYSTEM')) {
+if (!defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 
