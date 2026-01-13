@@ -30,43 +30,27 @@ $horoscope = new NukeViet\Module\TuVi\Horoscope($lunar, $hour_chi_id, $gender);
 $chart = $horoscope->lapLaSo();
 
 // Fetch Interpretations from Database
-// We need to fetch interpretations for every star in every palace if available.
-// Optimization: Fetch all interpretations for relevant stars? Or query specifically?
-// Query specifically is safer.
-
 $interpretations = [];
-// Get list of stars in Menh, Than, and maybe all Palaces?
-// Usually only Main Stars (Chinh Tinh) in Menh/Than are most important, but user wants "Knowledge Base".
-// Let's loop through all palaces, gather star names, and try to find interpretations.
-
-// Prepare keys to search
-// Key format: star_key (Star Name), palace_key (Palace Name like 'Mệnh', 'Thân' or 'Tý', 'Sửu'?)
-// The requirements said: "Knowledge Base: Content for stars when located at palaces".
-// Usually: "Tử Vi tại Ngọ", "Tham Lang tại Dần".
-// Also "Sao X cung Y".
-// Let's assume star_key = "Tử Vi", palace_key = "Ngọ" (The Earthly Branch of the palace) OR "Mệnh" (The Functional Palace).
-// Let's support both if possible.
-
-// We will build a list of lookups.
 $lookups = [];
 
+// Standard interpretations (Star in Palace)
 foreach ($chart as $cung) {
-    // Palace Earthly Branch Name: $cung['name'] (Tý, Sửu...)
-    // Palace Function Name: $cung['cung_chuc'] (Mệnh, Phụ Mẫu...)
-
     foreach ($cung['stars'] as $star) {
-        // Look for: Star in 'Ty', Star in 'Ngo'...
         $lookups[] = "(star_key = " . $db->quote($star['name']) . " AND palace_key = " . $db->quote($cung['name']) . ")";
-
-        // Also: Star in 'Menh', Star in 'Phu Mau' ?
         if ($cung['is_menh']) {
              $lookups[] = "(star_key = " . $db->quote($star['name']) . " AND palace_key = 'Mệnh')";
         }
     }
 }
 
+// Fetch general interpretations
+$lookups[] = "(star_key = 'Tổng Quan' AND palace_key = 'Mệnh')";
+$lookups[] = "(star_key = 'Vận Hạn' AND palace_key = 'Tiểu Vận')";
+
+// Fetch Yearly Detail Interpretations
+$lookups[] = "(star_key = 'Bình Giải Năm')";
+
 if (!empty($lookups)) {
-    // Chunking if too many
     $sql_where = implode(' OR ', $lookups);
     $sql = "SELECT * FROM " . NV_PRE_TUVI . "_interpretations WHERE " . $sql_where;
     $result = $db->query($sql);
@@ -74,7 +58,6 @@ if (!empty($lookups)) {
         $interpretations[] = $row;
     }
 }
-
 
 $data = [
     'info' => [
@@ -117,12 +100,27 @@ foreach ($data['cung'] as $cung) {
 }
 
 // Parse Interpretations
+$year_detail = [];
 if (!empty($data['interpretations'])) {
     foreach ($data['interpretations'] as $interp) {
-        $xtpl->assign('INTERP', $interp);
-        $xtpl->parse('main.interpretations.loop');
+        if ($interp['star_key'] == 'Bình Giải Năm') {
+            $year_detail[] = $interp;
+        } else {
+            $xtpl->assign('INTERP', $interp);
+            $xtpl->parse('main.interpretations.loop');
+        }
     }
     $xtpl->parse('main.interpretations');
+}
+
+// Parse Year Detail
+if (!empty($year_detail)) {
+    // Sort by Month (custom sort needed or rely on DB order? DB order is insert order, which is 1-12)
+    foreach ($year_detail as $detail) {
+        $xtpl->assign('DETAIL', $detail);
+        $xtpl->parse('main.year_detail.loop');
+    }
+    $xtpl->parse('main.year_detail');
 }
 
 $xtpl->parse('main');

@@ -33,11 +33,13 @@
     <!-- Interpretations Section -->
     <div class="tu-vi-interpretations" style="margin-top: 20px;">
         <h3>{LANG.interpretations}</h3>
+
+        <!-- General Interpretations -->
         <!-- BEGIN: interpretations -->
         <div class="panel-group">
             <!-- BEGIN: loop -->
             <div class="panel panel-info">
-                <div class="panel-heading"><strong>{INTERP.star_key}</strong> tại <strong>{INTERP.palace_key}</strong></div>
+                <div class="panel-heading"><strong>{INTERP.star_key}</strong> - <strong>{INTERP.palace_key}</strong></div>
                 <div class="panel-body">
                     {INTERP.content}
                 </div>
@@ -45,6 +47,21 @@
             <!-- END: loop -->
         </div>
         <!-- END: interpretations -->
+
+        <!-- Yearly Detail Interpretations -->
+        <!-- BEGIN: year_detail -->
+        <h3>Bình giải chi tiết trong năm</h3>
+        <div class="panel-group">
+            <!-- BEGIN: loop -->
+            <div class="panel panel-success">
+                <div class="panel-heading"><strong>{DETAIL.palace_key}</strong></div>
+                <div class="panel-body">
+                    {DETAIL.content}
+                </div>
+            </div>
+            <!-- END: loop -->
+        </div>
+        <!-- END: year_detail -->
     </div>
 
 </div>

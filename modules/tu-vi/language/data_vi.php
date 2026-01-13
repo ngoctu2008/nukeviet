@@ -40,5 +40,19 @@ $db->query("INSERT INTO " . $table_interpretations . " (star_key, palace_key, co
 ('Thất Sát', 'Dần', '<p><strong>Thất Sát tại Dần:</strong> Miếu địa (Thất Sát triều đẩu). Chủ về uy dũng, quyền biến, làm tướng soái, lãnh đạo rất hợp.</p>'),
 ('Phá Quân', 'Tý', '<p><strong>Phá Quân tại Tý:</strong> Miếu địa (Anh tinh nhập miếu). Chủ về khai phá, sáng tạo, dám nghĩ dám làm, thành công trong biến động.</p>'),
 ('Tổng Quan', 'Mệnh', '<p><strong>Tổng quan trọn đời:</strong> Người này có tính cách mạnh mẽ, cương trực. Cuộc đời có nhiều thăng trầm nhưng hậu vận tốt đẹp. Cần chú ý tu dưỡng đạo đức để giữ gìn phúc lộc.</p>'),
-('Vận Hạn', 'Tiểu Vận', '<p><strong>Vận hạn năm nay:</strong> Năm nay công việc có nhiều biến động, cần cẩn trọng trong đầu tư. Sức khỏe cần chú ý các bệnh về đường tiêu hóa.</p>')
+('Vận Hạn', 'Tiểu Vận', '<p><strong>Vận hạn năm nay:</strong> Năm nay công việc có nhiều biến động, cần cẩn trọng trong đầu tư. Sức khỏe cần chú ý các bệnh về đường tiêu hóa.</p>'),
+('Bình Giải Năm', 'Tổng Quan', '<p><strong>Tổng quan năm:</strong> Một năm nhiều cơ hội nhưng cũng lắm thách thức. Cần kiên nhẫn chờ đợi thời cơ.</p>'),
+('Bình Giải Năm', 'Tháng 1', '<p><strong>Tháng 1:</strong> Vui xuân đón tết, hao tốn tiền bạc nhưng tinh thần thoải mái.</p>'),
+('Bình Giải Năm', 'Tháng 2', '<p><strong>Tháng 2:</strong> Công việc bắt đầu vào guồng, có quý nhân phù trợ.</p>'),
+('Bình Giải Năm', 'Tháng 3', '<p><strong>Tháng 3:</strong> Cẩn thận lời ăn tiếng nói, đề phòng thị phi.</p>'),
+('Bình Giải Năm', 'Tháng 4', '<p><strong>Tháng 4:</strong> Tài lộc có chút khởi sắc, có thể đầu tư nhỏ.</p>'),
+('Bình Giải Năm', 'Tháng 5', '<p><strong>Tháng 5:</strong> Sức khỏe cần chú ý, tránh đi xa.</p>'),
+('Bình Giải Năm', 'Tháng 6', '<p><strong>Tháng 6:</strong> Gia đạo bình an, có tin vui từ xa.</p>'),
+('Bình Giải Năm', 'Tháng 7', '<p><strong>Tháng 7:</strong> Tháng cô hồn, làm việc thiện tích đức, tránh tranh chấp.</p>'),
+('Bình Giải Năm', 'Tháng 8', '<p><strong>Tháng 8:</strong> Công việc thuận lợi, được cấp trên khen ngợi.</p>'),
+('Bình Giải Năm', 'Tháng 9', '<p><strong>Tháng 9:</strong> Tài lộc dồi dào, kinh doanh phát đạt.</p>'),
+('Bình Giải Năm', 'Tháng 10', '<p><strong>Tháng 10:</strong> Cẩn thận xe cộ đi lại, giữ gìn sức khỏe.</p>'),
+('Bình Giải Năm', 'Tháng 11', '<p><strong>Tháng 11:</strong> Có lộc ăn uống, tiệc tùng.</p>'),
+('Bình Giải Năm', 'Tháng 12', '<p><strong>Tháng 12:</strong> Tổng kết cuối năm, chuẩn bị cho kế hoạch mới, mọi sự hanh thông.</p>'),
+('Bình Giải Năm', 'Sao Hạn', '<p><strong>Sao Hạn trong năm:</strong> Năm nay gặp sao Thái Bạch (nếu Nam) hoặc Thái Âm (nếu Nữ). Cần làm lễ dâng sao giải hạn đầu năm.</p>')
 ");
