@@ -7,7 +7,7 @@
  * @Createdate Mon, 28 Oct 2024 00:00:00 GMT
  */
 
-if (!defined('NV_SYSTEM')) {
+if (!defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
 
