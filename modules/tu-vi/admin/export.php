@@ -9,7 +9,7 @@
  */
 
 if (!defined('NV_IS_TU_VI_ADMIN')) {
-    require_once NV_ROOTDIR . '/modules/' . $module_file . '/admin/admin.functions.php';
+    require_once NV_ROOTDIR . '/modules/' . $module_file . '/admin.functions.php';
 }
 
 // Export logic
