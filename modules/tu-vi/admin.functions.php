@@ -8,7 +8,7 @@
  * @Createdate: 2023-10-27
  */
 
-if (!defined('NV_ADMIN') or !defined('NV_MAINFILE') or !defined('NV_IS_MODADMIN')) {
+if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
     exit('Stop!!!');
 }
 
@@ -29,5 +29,4 @@ if (!defined('NV_PRE_TUVI')) {
     define('NV_PRE_TUVI', $db_config['prefix'] . '_' . $lang . '_' . $module_table_prefix);
 }
 
-// Define layout for Admin
-// Using standard NV4 layout
+define('NV_IS_FILE_ADMIN', true);

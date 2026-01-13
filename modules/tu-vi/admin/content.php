@@ -8,8 +8,8 @@
  * @Createdate: 2023-10-27
  */
 
-if (!defined('NV_IS_TU_VI_ADMIN')) {
-    require_once NV_ROOTDIR . '/modules/' . $module_file . '/admin.functions.php';
+if (!defined('NV_IS_FILE_ADMIN')) {
+    exit('Stop!!!');
 }
 
 $id = $nv_Request->get_int('id', 'get,post', 0);
