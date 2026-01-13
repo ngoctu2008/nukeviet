@@ -13,6 +13,9 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $lang_module['config'];
 
+// Ensure we use the underscore version for table queries
+$module_data_table = str_replace('-', '_', $module_data);
+
 if ($nv_Request->isset_request('save', 'post')) {
     $array_config = array();
     $array_config['provider'] = $nv_Request->get_string('provider', 'post', 'openai');
@@ -25,7 +28,7 @@ if ($nv_Request->isset_request('save', 'post')) {
     $array_config['history_limit'] = $nv_Request->get_int('history_limit', 'post', 5);
 
     foreach ($array_config as $config_name => $config_value) {
-        $db->query("REPLACE INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config (config_name, config_value) VALUES (" . $db->quote($config_name) . ", " . $db->quote($config_value) . ")");
+        $db->query("REPLACE INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_config (config_name, config_value) VALUES (" . $db->quote($config_name) . ", " . $db->quote($config_value) . ")");
     }
 
     $nv_Cache->delMod($module_name);
@@ -33,7 +36,7 @@ if ($nv_Request->isset_request('save', 'post')) {
     die();
 }
 
-$sql = "SELECT config_name, config_value FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config";
+$sql = "SELECT config_name, config_value FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_config";
 $result = $db->query($sql);
 $array_config = array();
 while ($row = $result->fetch()) {

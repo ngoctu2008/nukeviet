@@ -11,8 +11,14 @@ if (!defined('NV_IS_MOD_CHAT_AI')) {
     die('Stop!!!');
 }
 
+// Ensure module_data_table is available
+global $module_data_table;
+if (empty($module_data_table)) {
+    $module_data_table = str_replace('-', '_', $module_data);
+}
+
 // Get Config
-$sql = "SELECT config_name, config_value FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_config";
+$sql = "SELECT config_name, config_value FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_config";
 $result = $db->query($sql);
 $chat_config = array();
 while ($row = $result->fetch()) {
@@ -25,10 +31,10 @@ if (empty($session_code)) {
     $session_code = md5(session_id() . NV_CURRENTTIME . rand(1000, 9999));
     $nv_Request->set_Cookie('chat_ai_session', $session_code, NV_CURRENTTIME + 31536000); // 1 year
     // Create session in DB
-    $db->query("INSERT INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_sessions (session_code, user_id, created_at, updated_at) VALUES (" . $db->quote($session_code) . ", " . ($user_info['userid'] ?? 0) . ", " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ")");
+    $db->query("INSERT INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_sessions (session_code, user_id, created_at, updated_at) VALUES (" . $db->quote($session_code) . ", " . ($user_info['userid'] ?? 0) . ", " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ")");
 } else {
     // Update timestamp
-    $db->query("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_sessions SET updated_at=" . NV_CURRENTTIME . ", user_id=" . ($user_info['userid'] ?? 0) . " WHERE session_code=" . $db->quote($session_code));
+    $db->query("UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_sessions SET updated_at=" . NV_CURRENTTIME . ", user_id=" . ($user_info['userid'] ?? 0) . " WHERE session_code=" . $db->quote($session_code));
 }
 
 // Handle User Message
@@ -40,14 +46,14 @@ if (empty($message)) {
 }
 
 // 1. Save User Message
-$db->query("INSERT INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_messages (session_code, role, content, created_at) VALUES (" . $db->quote($session_code) . ", 'user', " . $db->quote($message) . ", " . NV_CURRENTTIME . ")");
+$db->query("INSERT INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_messages (session_code, role, content, created_at) VALUES (" . $db->quote($session_code) . ", 'user', " . $db->quote($message) . ", " . NV_CURRENTTIME . ")");
 
 // 2. Get Context (RAG)
 $context_data = nv_chat_get_context($message);
 
 // 3. Get History
 $history_limit = isset($chat_config['history_limit']) ? intval($chat_config['history_limit']) : 5;
-$sql = "SELECT role, content FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_messages WHERE session_code=" . $db->quote($session_code) . " ORDER BY id DESC LIMIT " . ($history_limit * 2);
+$sql = "SELECT role, content FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_messages WHERE session_code=" . $db->quote($session_code) . " ORDER BY id DESC LIMIT " . ($history_limit * 2);
 $result = $db->query($sql);
 $history = array();
 while ($row = $result->fetch()) {
@@ -77,10 +83,6 @@ if ($provider == 'openai') {
     foreach ($history as $msg) {
         $messages_payload[] = ['role' => $msg['role'], 'content' => $msg['content']];
     }
-    // Note: The user message is already in history because we saved it first.
-    // Wait, usually we don't save to DB until success to avoid duplicates if retry?
-    // But for simplicity of history retrieval, we saved it.
-    // Optimization: The last message in $history IS the current message.
 
     $url = 'https://api.openai.com/v1/chat/completions';
     $data = [
@@ -113,19 +115,11 @@ if ($provider == 'openai') {
 
 } elseif ($provider == 'gemini') {
     // Gemini API Structure (v1beta)
-    // URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=API_KEY
 
     $url = "https://generativelanguage.googleapis.com/v1beta/models/" . $model . ":generateContent?key=" . $api_key;
 
-    // Construct Gemini Content
     $contents = [];
 
-    // System instruction is supported in some Gemini versions or simulated via first user message.
-    // Gemini 1.5 Pro supports system_instruction, Gemini Pro 1.0 does not explicitly in the same way.
-    // Safest way for generic Gemini: Prepend system prompt to first user message or use 'user' role.
-
-    // Add History
-    // Gemini roles: 'user' and 'model'
     $first_msg = true;
     foreach ($history as $msg) {
         $role = ($msg['role'] == 'user') ? 'user' : 'model';
@@ -142,7 +136,6 @@ if ($provider == 'openai') {
         ];
     }
 
-    // If history was empty (rare as we just inserted user msg), ensure we send something
     if (empty($contents)) {
          $contents[] = [
             'role' => 'user',
@@ -175,7 +168,7 @@ if ($provider == 'openai') {
 }
 
 // 5. Save Bot Response
-$db->query("INSERT INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_messages (session_code, role, content, created_at) VALUES (" . $db->quote($session_code) . ", 'assistant', " . $db->quote($bot_reply) . ", " . NV_CURRENTTIME . ")");
+$db->query("INSERT INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_messages (session_code, role, content, created_at) VALUES (" . $db->quote($session_code) . ", 'assistant', " . $db->quote($bot_reply) . ", " . NV_CURRENTTIME . ")");
 
 echo json_encode(['status' => 'success', 'message' => $bot_reply]);
 die();

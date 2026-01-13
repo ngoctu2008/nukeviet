@@ -12,12 +12,13 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 }
 
 $page_title = $lang_module['knowledge'];
+$module_data_table = str_replace('-', '_', $module_data);
 
 // Handle Delete
 if ($nv_Request->isset_request('delete_id', 'post')) {
     $id = $nv_Request->get_int('delete_id', 'post', 0);
     if ($id > 0) {
-        $db->query("DELETE FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_knowledge WHERE id=" . $id);
+        $db->query("DELETE FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_knowledge WHERE id=" . $id);
         $nv_Cache->delMod($module_name);
         die('OK');
     }
@@ -35,10 +36,10 @@ if ($nv_Request->isset_request('save', 'post')) {
         $error = $lang_module['error_empty_title']; // Make sure to define this if needed
     } else {
         if ($id > 0) {
-            $sql = "UPDATE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_knowledge SET title=" . $db->quote($title) . ", content=" . $db->quote($content) . ", status=" . $status . ", edit_time=" . NV_CURRENTTIME . " WHERE id=" . $id;
+            $sql = "UPDATE " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_knowledge SET title=" . $db->quote($title) . ", content=" . $db->quote($content) . ", status=" . $status . ", edit_time=" . NV_CURRENTTIME . " WHERE id=" . $id;
             $db->query($sql);
         } else {
-            $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_knowledge (title, content, status, add_time, edit_time) VALUES (" . $db->quote($title) . ", " . $db->quote($content) . ", " . $status . ", " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ")";
+            $sql = "INSERT INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_knowledge (title, content, status, add_time, edit_time) VALUES (" . $db->quote($title) . ", " . $db->quote($content) . ", " . $status . ", " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ")";
             $db->query($sql);
         }
         $nv_Cache->delMod($module_name);
@@ -56,7 +57,7 @@ $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('OP', 'knowledge');
 
 // List Data
-$sql = "SELECT * FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_knowledge ORDER BY id DESC";
+$sql = "SELECT * FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_knowledge ORDER BY id DESC";
 $result = $db->query($sql);
 
 while ($row = $result->fetch()) {
@@ -70,7 +71,7 @@ while ($row = $result->fetch()) {
 $id = $nv_Request->get_int('id', 'get', 0);
 $row_edit = array('id' => 0, 'title' => '', 'content' => '', 'status' => 1);
 if ($id > 0) {
-    $sql = "SELECT * FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_knowledge WHERE id=" . $id;
+    $sql = "SELECT * FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_knowledge WHERE id=" . $id;
     $result = $db->query($sql);
     $row_edit = $result->fetch();
 }

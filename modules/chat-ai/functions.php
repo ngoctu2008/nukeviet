@@ -13,6 +13,10 @@ if (!defined('NV_MAINFILE')) {
 
 define('NV_IS_MOD_CHAT_AI', true);
 
+// Standardize table name for this module (replace hyphen with underscore)
+// Only sanitize if module_data has hyphens
+$module_data_table = str_replace('-', '_', $module_data);
+
 /**
  * Get table name for a module (handling virtual modules)
  */
@@ -78,10 +82,10 @@ function nv_chat_search_table($table, $keyword, $limit = 3) {
  * Get Context (RAG)
  */
 function nv_chat_get_context($user_message) {
-    global $db, $db_config, $module_data, $site_mods;
+    global $db, $db_config, $module_data_table, $site_mods;
 
     // Get config
-    $sql = "SELECT config_name, config_value FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_config";
+    $sql = "SELECT config_name, config_value FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_config";
     $result = $db->query($sql);
     $config = array();
     while ($row = $result->fetch()) {
@@ -92,7 +96,7 @@ function nv_chat_get_context($user_message) {
     $context_data = [];
 
     // Search Custom Knowledge
-    $table_knowledge = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_knowledge";
+    $table_knowledge = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_knowledge";
     // Custom logic for knowledge table (has 'content' column instead of hometext/bodyhtml)
     $sql = "SELECT title, content FROM " . $table_knowledge . " WHERE status=1 AND (title LIKE :keyword OR content LIKE :keyword) LIMIT " . $limit;
     $sth = $db->prepare($sql);

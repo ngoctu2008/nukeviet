@@ -11,23 +11,26 @@ if (!defined('NV_IS_FILE_MODULES')) {
     die('Stop!!!');
 }
 
+// Sanitize module_data for table name (chat-ai -> chat_ai)
+$module_data_table = str_replace('-', '_', $module_data);
+
 $sql_drop_module = array();
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config";
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_knowledge";
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_sessions";
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_messages";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_config";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_knowledge";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_sessions";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_messages";
 
 $sql_create_module = $sql_drop_module;
 
 // Table config: Stores API settings, etc.
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config (
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_config (
   config_name varchar(30) NOT NULL,
   config_value text NOT NULL,
   UNIQUE KEY config_name (config_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
 // Table knowledge: Custom text data for RAG
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_knowledge (
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_knowledge (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   title varchar(255) NOT NULL,
   content text NOT NULL,
@@ -39,7 +42,7 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
 // Table sessions: Chat sessions
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_sessions (
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_sessions (
   session_code varchar(32) NOT NULL,
   user_id int(11) NOT NULL DEFAULT '0',
   created_at int(11) NOT NULL DEFAULT '0',
@@ -49,7 +52,7 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
 // Table messages: Chat history
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_messages (
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_messages (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   session_code varchar(32) NOT NULL,
   role enum('user','assistant') NOT NULL,
@@ -60,7 +63,7 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
 // Insert default config
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_config (config_name, config_value) VALUES
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_table . "_config (config_name, config_value) VALUES
 ('provider', 'openai'),
 ('api_key', ''),
 ('model', 'gpt-3.5-turbo'),
