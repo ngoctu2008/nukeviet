@@ -26,7 +26,7 @@ if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/functions.php')) {
 // Ensure NV_PRE_TUVI is defined if functions.php failed to define it (e.g. wrong context)
 if (!defined('NV_PRE_TUVI')) {
     $module_table_prefix = str_replace('-', '_', $module_data);
-    define('NV_PRE_TUVI', $db_config['prefix'] . '_' . $lang . '_' . $module_table_prefix);
+    define('NV_PRE_TUVI', NV_PREFIXLANG . '_' . $module_table_prefix);
 }
 
 define('NV_IS_FILE_ADMIN', true);

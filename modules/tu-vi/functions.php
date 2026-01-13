@@ -20,7 +20,7 @@ require_once NV_ROOTDIR . '/modules/' . $module_file . '/includes/Horoscope.php'
 
 // Helper to check for existing tables or mapping if needed
 $module_table_prefix = str_replace('-', '_', $module_data);
-define('NV_PRE_TUVI', $db_config['prefix'] . '_' . $lang . '_' . $module_table_prefix);
+define('NV_PRE_TUVI', NV_PREFIXLANG . '_' . $module_table_prefix);
 
 /**
  * Common functions for Tu Vi can be added here
