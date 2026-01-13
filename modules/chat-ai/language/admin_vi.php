@@ -37,3 +37,5 @@ $lang_module['use_laws'] = 'Học từ Module Laws';
 $lang_module['search_limit'] = 'Số lượng bài viết tham khảo';
 $lang_module['history_limit'] = 'Số tin nhắn lịch sử ghi nhớ';
 $lang_module['error_empty_title'] = 'Tiêu đề không được để trống';
+$lang_module['widget_bottom'] = 'Khoảng cách từ dưới lên (px)';
+$lang_module['widget_right'] = 'Khoảng cách từ phải qua (px)';

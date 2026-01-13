@@ -26,6 +26,8 @@ if ($nv_Request->isset_request('save', 'post')) {
     $array_config['use_laws'] = $nv_Request->get_int('use_laws', 'post', 0);
     $array_config['search_limit'] = $nv_Request->get_int('search_limit', 'post', 3);
     $array_config['history_limit'] = $nv_Request->get_int('history_limit', 'post', 5);
+    $array_config['widget_bottom'] = $nv_Request->get_int('widget_bottom', 'post', 20);
+    $array_config['widget_right'] = $nv_Request->get_int('widget_right', 'post', 20);
 
     foreach ($array_config as $config_name => $config_value) {
         $db->query("REPLACE INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_config (config_name, config_value) VALUES (" . $db->quote($config_name) . ", " . $db->quote($config_value) . ")");
@@ -42,6 +44,10 @@ $array_config = array();
 while ($row = $result->fetch()) {
     $array_config[$row['config_name']] = $row['config_value'];
 }
+
+// Defaults
+if (!isset($array_config['widget_bottom'])) $array_config['widget_bottom'] = 20;
+if (!isset($array_config['widget_right'])) $array_config['widget_right'] = 20;
 
 $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/admin_default/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);

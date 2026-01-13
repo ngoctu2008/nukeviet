@@ -1,10 +1,10 @@
 <!-- BEGIN: main -->
-<div id="chat-ai-widget">
+<div id="chat-ai-widget" style="bottom: {WIDGET_BOTTOM}px; right: {WIDGET_RIGHT}px;">
     <div class="chat-toggle-btn" onclick="toggleChatWindow()">
         <i class="fa fa-comments"></i>
     </div>
 
-    <div class="chat-window" id="chat-window">
+    <div class="chat-window" id="chat-window" style="bottom: 70px; right: 0;">
         <div class="chat-header">
             <span>{LANG.chat_title}</span>
             <span class="close-chat" onclick="toggleChatWindow()">&times;</span>

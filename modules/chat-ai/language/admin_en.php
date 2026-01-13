@@ -37,3 +37,5 @@ $lang_module['use_laws'] = 'Learn from Laws';
 $lang_module['search_limit'] = 'Context Search Limit';
 $lang_module['history_limit'] = 'Chat History Limit';
 $lang_module['error_empty_title'] = 'Title cannot be empty';
+$lang_module['widget_bottom'] = 'Bottom Distance (px)';
+$lang_module['widget_right'] = 'Right Distance (px)';
