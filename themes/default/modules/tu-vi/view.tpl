@@ -12,11 +12,19 @@
             <p>Cục: {INFO.cuc}</p>
             <p>Tuổi Âm: {INFO.age} - Năm xem: {INFO.current_year}</p>
             <p>Sao: <strong>{INFO.sao}</strong> - Hạn: <strong>{INFO.han}</strong></p>
+            <p class="text-danger"><strong>{INFO.bad_luck}</strong></p>
         </div>
 
         <!-- Loop 12 Cung -->
         <!-- BEGIN: loop -->
         <div class="cung-box cung-{CUNG.css_class}">
+            <!-- BEGIN: daivan_label -->
+            <span class="cung-label daivan-label">{LABEL_DAIVAN}</span>
+            <!-- END: daivan_label -->
+            <!-- BEGIN: tieuvan_label -->
+            <span class="cung-label tieuvan-label">{LABEL_TIEUVAN}</span>
+            <!-- END: tieuvan_label -->
+
             <div class="cung-header">{CUNG.cung_chuc}</div>
             <div class="star-list">
                 <!-- BEGIN: chinh_tinh -->

@@ -73,6 +73,29 @@ if (!empty($lookups)) {
     }
 }
 
+// New Calculations: Dai Van, Tieu Van, Bad Luck
+$cuc = $horoscope->info['cuc'];
+$dai_van_id = $horoscope->getDaiVan($age_am, $gender, $cuc);
+
+// Get current year Chi ID (e.g. 2024 -> Thin=4)
+// Need lunisolar conversion for current year? Or simple offset.
+// 2024 is Giap Thin. 1900 is Canh Ty (0).
+// (2024 - 1900) % 12 = 124 % 12 = 4 (Thin). Correct.
+$current_year_chi = ($current_year - 1900) % 12;
+$birth_chi = $horoscope->info['chi_year_id'];
+
+$tieu_van_id = $horoscope->getTieuVan($age_am, $gender, $birth_chi);
+
+$bad_luck = [];
+$tam_tai = $horoscope->getTamTai($current_year_chi, $birth_chi);
+if ($tam_tai) $bad_luck[] = $tam_tai;
+
+$kim_lau = $horoscope->getKimLau($age_am);
+if ($kim_lau) $bad_luck[] = $kim_lau;
+
+$hoang_oc = $horoscope->getHoangOc($age_am);
+if ($hoang_oc) $bad_luck[] = $hoang_oc;
+
 $data = [
     'info' => [
         'fullname' => $fullname,
@@ -83,7 +106,8 @@ $data = [
         'age' => $age_am,
         'sao' => $sao_han['sao'],
         'han' => $sao_han['han'],
-        'current_year' => $current_year
+        'current_year' => $current_year,
+        'bad_luck' => implode(', ', $bad_luck)
     ],
     'cung' => $chart,
     'interpretations' => $interpretations
@@ -99,6 +123,10 @@ foreach ($data['cung'] as $cung) {
     $ids = ['ty', 'suu', 'dan', 'mao', 'thin', 'ty_snake', 'ngo', 'mui', 'than', 'dau', 'tuat', 'hoi'];
     $cung['css_class'] = $ids[$cung['id']];
 
+    // Add highlighting classes
+    if ($cung['id'] == $dai_van_id) $cung['css_class'] .= ' daivan-highlight';
+    if ($cung['id'] == $tieu_van_id) $cung['css_class'] .= ' tieuvan-highlight';
+
     // Assign stars
     if (!empty($cung['chinh_tinh'])) {
         foreach ($cung['chinh_tinh'] as $star) {
@@ -111,6 +139,16 @@ foreach ($data['cung'] as $cung) {
             $xtpl->assign('STAR_NAME', $star);
             $xtpl->parse('main.loop.phu_tinh');
         }
+    }
+
+    // Labels for Dai Van/Tieu Van
+    if ($cung['id'] == $dai_van_id) {
+        $xtpl->assign('LABEL_DAIVAN', 'Đại Vận');
+        $xtpl->parse('main.loop.daivan_label');
+    }
+    if ($cung['id'] == $tieu_van_id) {
+        $xtpl->assign('LABEL_TIEUVAN', 'Tiểu Vận');
+        $xtpl->parse('main.loop.tieuvan_label');
     }
 
     $xtpl->assign('CUNG', $cung);

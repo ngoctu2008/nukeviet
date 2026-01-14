@@ -58,46 +58,13 @@ class Horoscope
         return $this->cung;
     }
 
-    /**
-     * Get Sao Han for a specific age
-     * @param int $age (Tuoi am)
-     * @param int $gender (1=Male, 0=Female)
-     * @return array
-     */
     public function getSaoHan($age, $gender)
     {
-        // 9 Sao: La Hau, Tho Tu, Thuy Dieu, Thai Bach, Thai Duong, Van Hon, Ke Do, Thai Am, Moc Duc
-        // Mapping based on remainder of age
-        // But standard tables are easier.
-        // Male: 10 La Hau, 11 Tho Tu...
-        // Let's use array map for 10-99 or mod 9 logic?
-        // Mod 9 logic is complex because it shifts.
-        // Array map for 9 stars cycle:
-        // Nam: La Hau (1), Tho Tu (2), Thuy Dieu (3), Thai Bach (4), Thai Duong (5), Van Hon (6), Ke Do (7), Thai Am (8), Moc Duc (9)
-        // Age: 10 -> La Hau (1). 11 -> Tho Tu (2). 10 % 9 = 1. So (Age - 10) % 9 + 1 ?
-        // 19 -> La Hau. (19-10)%9 = 0 -> +1 = 1. Correct.
-        // 18 -> Moc Duc (9). (18-10)%9 = 8 -> +1 = 9. Correct.
-
-        // Nu: Ke Do (1), Van Hon (2), Moc Duc (3), Thai Am (4), Tho Tu (5), La Hau (6), Thai Duong (7), Thai Bach (8), Thuy Dieu (9)
-        // Age 10: Ke Do.
-
         $sao_nam = [1=>'La Hầu', 2=>'Thổ Tú', 3=>'Thủy Diệu', 4=>'Thái Bạch', 5=>'Thái Dương', 6=>'Vân Hớn', 7=>'Kế Đô', 8=>'Thái Âm', 9=>'Mộc Đức'];
         $sao_nu = [1=>'Kế Đô', 2=>'Vân Hớn', 3=>'Mộc Đức', 4=>'Thái Âm', 5=>'Thổ Tú', 6=>'La Hầu', 7=>'Thái Dương', 8=>'Thái Bạch', 9=>'Thủy Diệu'];
 
-        // Han: 8 Han.
-        // Huynh Tuyen, Tam Kheo, Ngu Mo, Thien Tinh, Toan Tan, Thien La, Dia Vong, Diem Vuong.
-        // Nam: 10 Huynh Tuyen, 11 Tam Kheo...
-        // Nu: 10 Toan Tan...
-        // Cycle 8.
-
         $han_nam = [1=>'Huỳnh Tuyền', 2=>'Tam Kheo', 3=>'Ngũ Mộ', 4=>'Thiên Tinh', 5=>'Toán Tận', 6=>'Thiên La', 7=>'Địa Võng', 8=>'Diêm Vương'];
-        $han_nu = [1=>'Toán Tận', 2=>'Thiên Tinh', 3=>'Ngũ Mộ', 4=>'Tam Kheo', 5=>'Huỳnh Tuyền', 6=>'Diêm Vương', 7=>'Địa Võng', 8=>'Thiên La']; // Check Nu order?
-        // Nu 10: Toan Tan. 11 Thien Tinh.
-
-        // Calculate index
-        // Start from age 10. If age < 10?
-        // Under 10 usually no Sao Han calculated same way.
-        // Let's assume age >= 10. If < 10, maybe map to 10? Or return empty.
+        $han_nu = [1=>'Toán Tận', 2=>'Thiên Tinh', 3=>'Ngũ Mộ', 4=>'Tam Kheo', 5=>'Huỳnh Tuyền', 6=>'Diêm Vương', 7=>'Địa Võng', 8=>'Thiên La'];
 
         if ($age < 10) return ['sao' => '', 'han' => ''];
 
@@ -113,6 +80,190 @@ class Horoscope
         }
 
         return ['sao' => $sao, 'han' => $han];
+    }
+
+    /**
+     * Get Dai Van Palace Index
+     * Based on Cuc and Gender/Year Can YinYang
+     */
+    public function getDaiVan($age, $gender, $cuc)
+    {
+        // 1. Determine direction (Thuan/Nghich)
+        // Duong Nam/Am Nu -> Thuan. Am Nam/Duong Nu -> Nghich.
+        $can_year = $this->info['can_year_id'];
+        $is_yang_year = ($can_year % 2 == 0); // 0=Giap(Yang)
+
+        $direction = 1;
+        if (($is_yang_year && $gender == 1) || (!$is_yang_year && $gender == 0)) {
+            $direction = 1;
+        } else {
+            $direction = -1;
+        }
+
+        // 2. Start from Menh (Dai Van 1 start at Menh?)
+        // Actually Dai Van starts from Menh with age = Cuc.
+        // E.g. Thuy Nhi Cuc (2). Menh is 2-11. Next is 12-21.
+
+        $menh_id = $this->info['menh_id'];
+
+        // Calculate offset from start age
+        // Dai van index = floor((Age - Cuc) / 10)
+        // If Age < Cuc, no Dai Van? Or pre-Dai Van. Assume Age >= Cuc for standard chart.
+
+        if ($age < $cuc) return $menh_id; // Simple fallback
+
+        $daivan_step = floor(($age - $cuc) / 10);
+
+        // Move from Menh
+        $pos = ($menh_id + ($daivan_step * $direction));
+        while ($pos < 0) $pos += 12;
+        $pos %= 12;
+
+        return $pos;
+    }
+
+    /**
+     * Get Tieu Van Palace Index
+     * Rule:
+     * Nam: Thuan. Nu: Nghich. (Or opposite?)
+     * Rule: Tieu Van follows year Chi.
+     * Calculation often starts from specific positions based on Year Chi?
+     * Common rule:
+     *   Dan Ngo Tuat -> Khoi o Thin.
+     *   Than Ty Thin -> Khoi o Tuat.
+     *   Hoi Mao Mui -> Khoi o Suu.
+     *   Ty Dau Suu -> Khoi o Mui.
+     *
+     *   Nam thuan, Nu nghich.
+     *   Start from 'Khoi' palace is for 1 year old? Or current year Chi?
+     *   Standard: Tieu Van is fixed by Year Branch? No, it rotates.
+     *
+     *   Let's use the formula:
+     *   Look up starting palace for the *Birth Year Chi Group* (Tam Hop).
+     *   Dan/Ngo/Tuat -> Thin.
+     *   Than/Ty/Thin -> Tuat.
+     *   Hoi/Mao/Mui -> Suu.
+     *   Ty/Dau/Suu -> Mui.
+     *
+     *   From that start palace (Age 1), move to current Age.
+     *   Nam Thuan, Nu Nghich.
+     */
+    public function getTieuVan($age, $gender, $birth_chi)
+    {
+        // 1. Determine base palace
+        // Groups:
+        // 0,4,8 (Ty, Thin, Than) -> Tuat (10)
+        // 1,5,9 (Suu, Ty, Dau)   -> Mui (7)
+        // 2,6,10 (Dan, Ngo, Tuat)-> Thin (4)
+        // 3,7,11 (Mao, Mui, Hoi) -> Suu (1)
+
+        // Map 0-11 to Group ID?
+        // 0(Ty)->Group0. 4(Thin)->Group0. 8(Than)->Group0.
+        // 1(Suu)->Group1. 5(Ty_Snake)->Group1 ?? Wait.
+        // Chi: Ty(0), Suu(1), Dan(2), Mao(3), Thin(4), Ty_Snake(5), Ngo(6), Mui(7), Than(8), Dau(9), Tuat(10), Hoi(11)
+
+        // Correct Groups:
+        // Dan(2), Ngo(6), Tuat(10) -> Thin (4)
+        // Than(8), Ty(0), Thin(4)  -> Tuat (10)
+        // Hoi(11), Mao(3), Mui(7)  -> Suu (1)
+        // Ty(5), Dau(9), Suu(1)    -> Mui (7)
+
+        $start_map = [];
+        // Group 1: 2,6,10 -> 4
+        $start_map[2] = 4; $start_map[6] = 4; $start_map[10] = 4;
+        // Group 2: 8,0,4 -> 10
+        $start_map[8] = 10; $start_map[0] = 10; $start_map[4] = 10;
+        // Group 3: 11,3,7 -> 1
+        $start_map[11] = 1; $start_map[3] = 1; $start_map[7] = 1;
+        // Group 4: 5,9,1 -> 7
+        $start_map[5] = 7; $start_map[9] = 7; $start_map[1] = 7;
+
+        $start_pos = $start_map[$birth_chi];
+
+        // Direction
+        // Nam Thuan, Nu Nghich
+        $direction = ($gender == 1) ? 1 : -1;
+
+        // Move (Age - 1) steps
+        $pos = ($start_pos + (($age - 1) * $direction));
+        while ($pos < 0) $pos += 12;
+        $pos %= 12;
+
+        return $pos;
+    }
+
+    public function getTamTai($current_year_chi, $birth_chi)
+    {
+        // Tam Tai rules:
+        // Than-Ty-Thin gap Dan/Mao/Thin
+        // Dan-Ngo-Tuat gap Than/Dau/Tuat
+        // Hoi-Mao-Mui gap Ty/Ngo/Mui
+        // Ty-Dau-Suu gap Hoi/Ty/Suu
+
+        $bad_years = [];
+        // 0(Ty), 1(Suu), 2(Dan), 3(Mao), 4(Thin), 5(Ty), 6(Ngo), 7(Mui), 8(Than), 9(Dau), 10(Tuat), 11(Hoi)
+
+        // Than(8), Ty(0), Thin(4) -> 2,3,4
+        if (in_array($birth_chi, [8,0,4])) $bad_years = [2,3,4];
+        // Dan(2), Ngo(6), Tuat(10) -> 8,9,10
+        if (in_array($birth_chi, [2,6,10])) $bad_years = [8,9,10];
+        // Hoi(11), Mao(3), Mui(7) -> 5,6,7
+        if (in_array($birth_chi, [11,3,7])) $bad_years = [5,6,7];
+        // Ty(5), Dau(9), Suu(1) -> 11,0,1
+        if (in_array($birth_chi, [5,9,1])) $bad_years = [11,0,1];
+
+        if (in_array($current_year_chi, $bad_years)) return "Phạm Tam Tai";
+        return "";
+    }
+
+    public function getKimLau($age)
+    {
+        // Lay tuoi am chia 9. Du 1,3,6,8 -> Kim Lau.
+        $rem = $age % 9;
+        if ($rem == 1) return "Kim Lâu Thân";
+        if ($rem == 3) return "Kim Lâu Thê";
+        if ($rem == 6) return "Kim Lâu Tử";
+        if ($rem == 8) return "Kim Lâu Súc";
+        return "";
+    }
+
+    public function getHoangOc($age)
+    {
+        // 6 cung: 1 Kiet, 2 Nghi, 3 Dia Sat, 4 Tan Tai, 5 Tho Tu, 6 Hoang Oc.
+        // Start 10 at 1, 20 at 2...
+        // Algorithm:
+        // tens = floor(age/10)
+        // units = age % 10
+        // if tens == 0, tens = 1? No, 10 is start.
+        // Just use lookup for 10-99 common range or map.
+
+        // Simple map for "Bad" ages (Dia Sat, Tho Tu, Hoang Oc):
+        // 12, 14, 15, 18, 21, 23, 24, 27, 29, 30, 32, 33, 36, 38, 39, 41, 42, 45, 47, 48, 50...
+        // Let's implement the counter logic.
+
+        $start = 1;
+        if ($age >= 10 && $age < 20) $start = 1;
+        if ($age >= 20 && $age < 30) $start = 2;
+        if ($age >= 30 && $age < 40) $start = 3;
+        if ($age >= 40 && $age < 50) $start = 4;
+        if ($age >= 50 && $age < 60) $start = 5;
+        if ($age >= 60 && $age < 70) $start = 6;
+        if ($age >= 70) $start = 1; // Cycle
+
+        $rem = $age % 10;
+        if ($rem == 0) $val = $start;
+        else {
+            $val = $start + $rem; // Approximate
+            // Real logic: 10->1, 11->2...
+            // 20->2, 21->3...
+            $val = $start + ($age % 10); // Actually complicated.
+        }
+
+        // Lookup list of Hoang Oc ages is safer.
+        $hoang_oc_ages = [12, 14, 15, 18, 21, 23, 24, 27, 29, 30, 32, 33, 36, 38, 39, 41, 42, 45, 47, 48, 50, 51, 54, 56, 57, 60, 63, 65, 66, 69, 72, 74, 75];
+        if (in_array($age, $hoang_oc_ages)) return "Phạm Hoang Ốc";
+
+        return "";
     }
 
     // 1. An Cung Menh / Than

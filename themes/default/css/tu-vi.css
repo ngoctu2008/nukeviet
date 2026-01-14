@@ -19,6 +19,33 @@
     border: 1px solid #eee;
 }
 
+.daivan-highlight {
+    border: 2px solid #007bff !important; /* Blue for Dai Van */
+}
+
+.tieuvan-highlight {
+    border: 2px dashed #dc3545 !important; /* Red dashed for Tieu Van */
+}
+
+.cung-label {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.daivan-label {
+    background-color: #007bff;
+}
+
+.tieuvan-label {
+    background-color: #dc3545;
+    top: 20px; /* Offset if both present */
+}
+
 /* Center Box (Thien Ban) spans 2x2 in the middle */
 .center-box {
     grid-column: 2 / span 2;
