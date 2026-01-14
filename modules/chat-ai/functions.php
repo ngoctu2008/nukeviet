@@ -43,6 +43,7 @@ function nv_chat_search_table($table, $keyword, $limit = 3) {
     if (empty($keyword)) return $results;
 
     // Search by phrase first
+    // Use distinct parameter names to avoid PDO driver issues
     $sql = "SELECT title, bodyhtml, hometext FROM " . $table . " WHERE (title LIKE :keyword1 OR hometext LIKE :keyword2) AND status=1 LIMIT " . $limit;
     $sth = $db->prepare($sql);
     $sth->bindValue(':keyword1', '%' . $keyword . '%', PDO::PARAM_STR);
@@ -56,23 +57,25 @@ function nv_chat_search_table($table, $keyword, $limit = 3) {
     // If not enough results, fallback to split keywords (nouns)
     if (count($results) < $limit) {
         $keywords = explode(' ', $keyword);
-        // Filter small words (simple length check for now, can be improved)
+        // Filter small words
         $keywords = array_filter($keywords, function($k) { return mb_strlen($k) > 3; });
 
         if (!empty($keywords)) {
             $sql_parts = [];
             foreach ($keywords as $k) {
+                // Warning: This loop performs multiple unparameterized queries or complex building.
+                // For safety and simplicity in this shared hosting context, we skip complex binding here
+                // and rely on $db->dblikeescape which is safe.
                 $sql_parts[] = "(title LIKE '%" . $db->dblikeescape($k) . "%' OR hometext LIKE '%" . $db->dblikeescape($k) . "%')";
             }
-            $sql_where = implode(' OR ', $sql_parts);
-
-            // Exclude already found items? Complex to track IDs across tables, so we just grab more and dedupe text later if needed.
-            // Simplified: Just run the query
-             $sql = "SELECT title, bodyhtml, hometext FROM " . $table . " WHERE (" . $sql_where . ") AND status=1 LIMIT " . ($limit - count($results));
-             $result = $db->query($sql);
-             while ($row = $result->fetch()) {
-                 $results[] = strip_tags($row['title'] . ". " . $row['hometext'] . " " . $row['bodyhtml']);
-             }
+            if (!empty($sql_parts)) {
+                $sql_where = implode(' OR ', $sql_parts);
+                $sql = "SELECT title, bodyhtml, hometext FROM " . $table . " WHERE (" . $sql_where . ") AND status=1 LIMIT " . ($limit - count($results));
+                $result = $db->query($sql);
+                while ($row = $result->fetch()) {
+                    $results[] = strip_tags($row['title'] . ". " . $row['hometext'] . " " . $row['bodyhtml']);
+                }
+            }
         }
     }
 
@@ -98,23 +101,23 @@ function nv_chat_get_context($user_message) {
 
     // Search Custom Knowledge
     $table_knowledge = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_knowledge";
-    // Custom logic for knowledge table (has 'content' column instead of hometext/bodyhtml)
+
+    // Use distinct parameter names to avoid PDO driver issues
     $sql = "SELECT title, content FROM " . $table_knowledge . " WHERE status=1 AND (title LIKE :keyword1 OR content LIKE :keyword2) LIMIT " . $limit;
     $sth = $db->prepare($sql);
     $sth->bindValue(':keyword1', '%' . $user_message . '%', PDO::PARAM_STR);
     $sth->bindValue(':keyword2', '%' . $user_message . '%', PDO::PARAM_STR);
     $sth->execute();
+
     while ($row = $sth->fetch()) {
         $context_data[] = strip_tags($row['title'] . ": " . $row['content']);
     }
 
     // Search News
     if (!empty($config['use_news'])) {
-        // Iterate through site_mods to find all 'news' modules
         foreach ($site_mods as $mod_name => $mod_info) {
             if ($mod_info['module_data'] == 'news') {
-                $table_news = $db_config['prefix'] . "_" . $mod_info['module_data'] . "_rows"; // Standard news table
-                // Check if table exists (optional but safe)
+                $table_news = $db_config['prefix'] . "_" . $mod_info['module_data'] . "_rows";
                 $res = nv_chat_search_table($table_news, $user_message, $limit);
                 $context_data = array_merge($context_data, $res);
             }
@@ -124,7 +127,7 @@ function nv_chat_get_context($user_message) {
     // Search Laws
     if (!empty($config['use_laws'])) {
          foreach ($site_mods as $mod_name => $mod_info) {
-            if ($mod_info['module_data'] == 'laws') { // Assuming laws module data is 'laws'
+            if ($mod_info['module_data'] == 'laws') {
                 $table_laws = $db_config['prefix'] . "_" . $mod_info['module_data'] . "_rows";
                 $res = nv_chat_search_table($table_laws, $user_message, $limit);
                 $context_data = array_merge($context_data, $res);
@@ -135,7 +138,7 @@ function nv_chat_get_context($user_message) {
     // Deduplicate and Truncate
     $context_data = array_unique($context_data);
 
-    // Truncate total context to avoid token limits (e.g., 2000 chars)
+    // Truncate total context to avoid token limits
     $final_context = implode("\n---\n", $context_data);
     if (mb_strlen($final_context) > 3000) {
         $final_context = mb_substr($final_context, 0, 3000) . "...";
