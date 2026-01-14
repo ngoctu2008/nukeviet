@@ -29,6 +29,14 @@ $hour_chi_id = floor(($hour + 1) / 2) % 12;
 $horoscope = new NukeViet\Module\TuVi\Horoscope($lunar, $hour_chi_id, $gender);
 $chart = $horoscope->lapLaSo();
 
+// Calculate Age and Sao/Han first to use in query
+$current_year = date('Y');
+$birth_year = $lunar['year'];
+$age_am = $current_year - $birth_year + 1;
+if ($age_am < 1) $age_am = 1;
+
+$sao_han = $horoscope->getSaoHan($age_am, $gender);
+
 // Fetch Interpretations from Database
 $interpretations = [];
 $lookups = [];
@@ -48,18 +56,18 @@ $lookups[] = "(star_key = 'Tổng Quan' AND palace_key = 'Mệnh')";
 $lookups[] = "(star_key = 'Vận Hạn' AND palace_key = 'Tiểu Vận')";
 
 // Fetch Yearly Detail Interpretations
-$lookups[] = "(star_key = 'Bình Giải Năm')";
+// Fetch generic "Bình Giải Năm" (Overview only)
+$lookups[] = "(star_key = 'Bình Giải Năm' AND palace_key = 'Tổng Quan')";
 
-// Calculate Age and Sao/Han
-$current_year = date('Y');
-$birth_year = $lunar['year'];
-$age_am = $current_year - $birth_year + 1;
-if ($age_am < 1) $age_am = 1;
-
-$sao_han = $horoscope->getSaoHan($age_am, $gender);
+// Fetch Specific Monthly Interpretations based on Sao Hạn
 if (!empty($sao_han['sao'])) {
     $lookups[] = "(star_key = 'Sao Chiếu Mệnh' AND palace_key = " . $db->quote($sao_han['sao']) . ")";
+    // Fetch monthly details for this Star
+    // We look for star_key = [StarName] AND palace_key LIKE 'Tháng %'
+    // Note: In data_vi.php we inserted: ('La Hầu', 'Tháng 1', ...)
+    $lookups[] = "(star_key = " . $db->quote($sao_han['sao']) . " AND palace_key LIKE 'Tháng %')";
 }
+
 if (!empty($sao_han['han'])) {
     $lookups[] = "(star_key = 'Hạn' AND palace_key = " . $db->quote($sao_han['han']) . ")";
 }
@@ -77,10 +85,6 @@ if (!empty($lookups)) {
 $cuc = $horoscope->info['cuc'];
 $dai_van_id = $horoscope->getDaiVan($age_am, $gender, $cuc);
 
-// Get current year Chi ID (e.g. 2024 -> Thin=4)
-// Need lunisolar conversion for current year? Or simple offset.
-// 2024 is Giap Thin. 1900 is Canh Ty (0).
-// (2024 - 1900) % 12 = 124 % 12 = 4 (Thin). Correct.
 $current_year_chi = ($current_year - 1900) % 12;
 $birth_chi = $horoscope->info['chi_year_id'];
 
@@ -161,9 +165,16 @@ $sao_han_detail = [];
 
 if (!empty($data['interpretations'])) {
     foreach ($data['interpretations'] as $interp) {
-        if ($interp['star_key'] == 'Bình Giải Năm') {
+        // Collect specific monthly details for the current Star
+        if ($interp['star_key'] == $sao_han['sao'] && strpos($interp['palace_key'], 'Tháng') === 0) {
             $year_detail[] = $interp;
-        } elseif ($interp['star_key'] == 'Sao Chiếu Mệnh' || $interp['star_key'] == 'Hạn') {
+        }
+        // Collect generic overview
+        elseif ($interp['star_key'] == 'Bình Giải Năm' && $interp['palace_key'] == 'Tổng Quan') {
+            // Prepend to year detail or separate? Let's add to year detail list as header
+            array_unshift($year_detail, $interp);
+        }
+        elseif ($interp['star_key'] == 'Sao Chiếu Mệnh' || $interp['star_key'] == 'Hạn') {
             $sao_han_detail[] = $interp;
         } else {
             $xtpl->assign('INTERP', $interp);
@@ -185,6 +196,8 @@ if (!empty($sao_han_detail)) {
 // Parse Year Detail
 if (!empty($year_detail)) {
     foreach ($year_detail as $detail) {
+        // Simple sort to keep months in order if array_unshift messed it up?
+        // Database retrieval order usually preserves insertion order.
         $xtpl->assign('DETAIL', $detail);
         $xtpl->parse('main.year_detail.loop');
     }
