@@ -20,12 +20,6 @@ $array_table = [
 ];
 
 // Handle table prefix mapping tu-vi -> tu_vi
-// The system variable $module_data usually holds 'tu_vi' if the module dir is 'tu-vi' BUT
-// usually $module_data matches the directory name unless handled.
-// However, the prompt specifically requested mapping logic.
-// NV4 typically sets $module_data = $module_name (e.g., 'tu-vi').
-// We will replace '-' with '_' for table names.
-
 $module_table_prefix = str_replace('-', '_', $module_data);
 
 $table = $db_config['prefix'] . '_' . $lang . '_' . $module_table_prefix;
@@ -56,6 +50,7 @@ $sql_create_module[] = "CREATE TABLE " . $table . "_interpretations (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   star_key varchar(50) NOT NULL DEFAULT '',
   palace_key varchar(50) NOT NULL DEFAULT '',
+  topic varchar(50) NOT NULL DEFAULT 'tong_quan',
   content mediumtext,
   PRIMARY KEY (id),
   KEY star_palace (star_key, palace_key)

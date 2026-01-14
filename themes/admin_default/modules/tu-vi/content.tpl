@@ -14,6 +14,14 @@
                 <input class="form-control" type="text" name="palace_key" value="{ROW.palace_key}" required />
             </div>
             <div class="form-group">
+                <label>{LANG.topic}</label>
+                <select class="form-control" name="topic">
+                    <!-- BEGIN: topic -->
+                    <option value="{TOPIC.key}" {TOPIC.selected}>{TOPIC.title}</option>
+                    <!-- END: topic -->
+                </select>
+            </div>
+            <div class="form-group">
                 <label>{LANG.content}</label>
                 {CONTENT}
             </div>

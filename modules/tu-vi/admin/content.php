@@ -19,10 +19,24 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $id = $nv_Request->get_int('id', 'get,post', 0);
 $error = '';
 
+$topics = [
+    'tong_quan' => $lang_module['topic_tong_quan'],
+    'tinh_cach' => $lang_module['topic_tinh_cach'],
+    'ngoai_hinh' => $lang_module['topic_ngoai_hinh'],
+    'cong_danh' => $lang_module['topic_cong_danh'],
+    'tai_loc' => $lang_module['topic_tai_loc'],
+    'tinh_duyen' => $lang_module['topic_tinh_duyen'],
+    'tai_san' => $lang_module['topic_tai_san'],
+    'benh_tat' => $lang_module['topic_benh_tat'],
+    'van_han' => $lang_module['topic_van_han'],
+    'quan_he' => $lang_module['topic_quan_he']
+];
+
 if ($nv_Request->isset_request('submit', 'post')) {
     $row = [
         'star_key' => $nv_Request->get_title('star_key', 'post', ''),
         'palace_key' => $nv_Request->get_title('palace_key', 'post', ''),
+        'topic' => $nv_Request->get_title('topic', 'post', 'tong_quan'),
         'content' => $nv_Request->get_editor('content', '', NV_ALLOWED_HTML_TAGS)
     ];
 
@@ -32,13 +46,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $error = $lang_module['error_palace_key'];
     } else {
         if ($id > 0) {
-            $stmt = $db->prepare("UPDATE " . NV_PRE_TUVI . "_interpretations SET star_key = :star, palace_key = :palace, content = :content WHERE id = :id");
+            $stmt = $db->prepare("UPDATE " . NV_PRE_TUVI . "_interpretations SET star_key = :star, palace_key = :palace, topic = :topic, content = :content WHERE id = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         } else {
-            $stmt = $db->prepare("INSERT INTO " . NV_PRE_TUVI . "_interpretations (star_key, palace_key, content) VALUES (:star, :palace, :content)");
+            $stmt = $db->prepare("INSERT INTO " . NV_PRE_TUVI . "_interpretations (star_key, palace_key, topic, content) VALUES (:star, :palace, :topic, :content)");
         }
         $stmt->bindParam(':star', $row['star_key'], PDO::PARAM_STR);
         $stmt->bindParam(':palace', $row['palace_key'], PDO::PARAM_STR);
+        $stmt->bindParam(':topic', $row['topic'], PDO::PARAM_STR);
         $stmt->bindParam(':content', $row['content'], PDO::PARAM_STR);
 
         if ($stmt->execute()) {
@@ -51,7 +66,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     if ($id > 0) {
         $row = $db->query("SELECT * FROM " . NV_PRE_TUVI . "_interpretations WHERE id=" . $id)->fetch();
     } else {
-        $row = ['star_key' => '', 'palace_key' => '', 'content' => ''];
+        $row = ['star_key' => '', 'palace_key' => '', 'topic' => 'tong_quan', 'content' => ''];
     }
 }
 
@@ -61,6 +76,16 @@ $xtpl->assign('GLANG', $lang_global);
 $xtpl->assign('ROW', $row);
 $xtpl->assign('ERROR', $error);
 $xtpl->assign('ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content&id=' . $id);
+
+// Assign Topics
+foreach ($topics as $key => $title) {
+    $xtpl->assign('TOPIC', [
+        'key' => $key,
+        'title' => $title,
+        'selected' => ($key == $row['topic']) ? 'selected="selected"' : ''
+    ]);
+    $xtpl->parse('main.topic');
+}
 
 if (defined('NV_EDITOR')) {
     require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';

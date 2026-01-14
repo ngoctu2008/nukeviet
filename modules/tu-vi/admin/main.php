@@ -30,6 +30,12 @@ while ($row = $result->fetch()) {
     $row['link_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content&id=' . $row['id'];
     $row['link_delete'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=del&id=' . $row['id'];
 
+    // Map topic key to title if exists
+    $topic_lang_key = 'topic_' . $row['topic'];
+    if (isset($lang_module[$topic_lang_key])) {
+        $row['topic'] = $lang_module[$topic_lang_key];
+    }
+
     $xtpl->assign('ROW', $row);
     $xtpl->parse('main.loop');
 }

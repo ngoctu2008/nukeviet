@@ -30,8 +30,8 @@ if ($nv_Request->isset_request('import', 'post')) {
             foreach ($data as $item) {
                 if (isset($item['star_key'], $item['palace_key'], $item['content'])) {
                     // Upsert logic
-                    $sql = "INSERT INTO " . NV_PRE_TUVI . "_interpretations (star_key, palace_key, content)
-                            VALUES (:star, :palace, :content)";
+                    $sql = "INSERT INTO " . NV_PRE_TUVI . "_interpretations (star_key, palace_key, topic, content)
+                            VALUES (:star, :palace, :topic, :content)";
                     // Note: ON DUPLICATE KEY UPDATE is cleaner if we had UNIQUE index on (star, palace)
                     // But we used index, so just insert or ignore?
                     // Let's assume we append or simple insert.
@@ -40,6 +40,10 @@ if ($nv_Request->isset_request('import', 'post')) {
                     $stmt->bindParam(':star', $item['star_key']);
                     $stmt->bindParam(':palace', $item['palace_key']);
                     $stmt->bindParam(':content', $item['content']);
+
+                    $topic = isset($item['topic']) ? $item['topic'] : 'tong_quan';
+                    $stmt->bindParam(':topic', $topic);
+
                     $stmt->execute();
                     $count++;
                 }

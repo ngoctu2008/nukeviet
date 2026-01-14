@@ -6,6 +6,7 @@
                 <th>ID</th>
                 <th>{LANG.star}</th>
                 <th>{LANG.palace}</th>
+                <th>{LANG.topic}</th>
                 <th class="text-center">{LANG.content}</th>
                 <th class="text-center" width="150">{GLANG.actions}</th>
             </tr>
@@ -16,6 +17,7 @@
                 <td>{ROW.id}</td>
                 <td>{ROW.star_key}</td>
                 <td>{ROW.palace_key}</td>
+                <td>{ROW.topic}</td>
                 <td>{ROW.content}</td>
                 <td class="text-center">
                     <a href="{ROW.link_edit}" class="btn btn-default btn-xs"><i class="fa fa-edit"></i> {GLANG.edit}</a>
