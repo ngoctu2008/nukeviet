@@ -10,6 +10,8 @@
             <p>Âm Lịch: {INFO.lunar_date}</p>
             <p>Giới tính: {INFO.gender}</p>
             <p>Cục: {INFO.cuc}</p>
+            <p>Tuổi Âm: {INFO.age} - Năm xem: {INFO.current_year}</p>
+            <p>Sao: <strong>{INFO.sao}</strong> - Hạn: <strong>{INFO.han}</strong></p>
         </div>
 
         <!-- Loop 12 Cung -->
@@ -47,6 +49,21 @@
             <!-- END: loop -->
         </div>
         <!-- END: interpretations -->
+
+        <!-- Sao Han Detail -->
+        <!-- BEGIN: sao_han_detail -->
+        <h3>Bình giải Sao Hạn năm nay</h3>
+        <div class="panel-group">
+            <!-- BEGIN: loop -->
+            <div class="panel panel-warning">
+                <div class="panel-heading"><strong>{DETAIL.star_key}: {DETAIL.palace_key}</strong></div>
+                <div class="panel-body">
+                    {DETAIL.content}
+                </div>
+            </div>
+            <!-- END: loop -->
+        </div>
+        <!-- END: sao_han_detail -->
 
         <!-- Yearly Detail Interpretations -->
         <!-- BEGIN: year_detail -->

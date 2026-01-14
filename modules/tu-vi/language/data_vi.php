@@ -54,5 +54,21 @@ $db->query("INSERT INTO " . $table_interpretations . " (star_key, palace_key, co
 ('Bình Giải Năm', 'Tháng 10', '<p><strong>Tháng 10:</strong> Cẩn thận xe cộ đi lại, giữ gìn sức khỏe.</p>'),
 ('Bình Giải Năm', 'Tháng 11', '<p><strong>Tháng 11:</strong> Có lộc ăn uống, tiệc tùng.</p>'),
 ('Bình Giải Năm', 'Tháng 12', '<p><strong>Tháng 12:</strong> Tổng kết cuối năm, chuẩn bị cho kế hoạch mới, mọi sự hanh thông.</p>'),
-('Bình Giải Năm', 'Sao Hạn', '<p><strong>Sao Hạn trong năm:</strong> Năm nay gặp sao Thái Bạch (nếu Nam) hoặc Thái Âm (nếu Nữ). Cần làm lễ dâng sao giải hạn đầu năm.</p>')
+('Sao Chiếu Mệnh', 'La Hầu', '<p><strong>La Hầu (Khẩu thiệt tinh):</strong> Là sao chính thất kiến hung tai, cho nên năm nào người có sao này chiếu mệnh thì dễ bị tao ráng, tranh chấp rồi đưa đến cò bót nếu nặng, làm ăn mọi việc đều hắc ám.</p>'),
+('Sao Chiếu Mệnh', 'Kế Đô', '<p><strong>Kế Đô (Hung tinh):</strong> Là sao tam cửu khóc bi ai, cho nên năm nào người có sao này chiếu mệnh thì dễ bị tai nạn, người âm phá rối, hay ốm đau bệnh tật, hao tài tốn của, dễ bị chuyện buồn rầu.</p>'),
+('Sao Chiếu Mệnh', 'Thái Bạch', '<p><strong>Thái Bạch (Kim tinh):</strong> Là sao bạch triều, cho nên năm nào người có sao này chiếu mệnh thì dễ bị hao tài tốn của, ốm đau, làm ăn lận đận, đề phòng tiểu nhân.</p>'),
+('Sao Chiếu Mệnh', 'Thái Dương', '<p><strong>Thái Dương (Nhật tinh):</strong> Tốt cho nam giới, rực rỡ như mặt trời, thăng quan tiến chức. Nữ giới thì vất vả, hay đau ốm.</p>'),
+('Sao Chiếu Mệnh', 'Thái Âm', '<p><strong>Thái Âm (Nguyệt tinh):</strong> Tốt cho nữ giới, chủ về danh lợi, hỉ sự. Nam giới thì cũng tốt nhưng không bằng nữ, đi xa có lợi.</p>'),
+('Sao Chiếu Mệnh', 'Mộc Đức', '<p><strong>Mộc Đức (Mộc tinh):</strong> Sao tốt, chủ về sự an vui, hòa hợp, có quý nhân giúp đỡ. Tuy nhiên nữ giới đề phòng bệnh máu huyết.</p>'),
+('Sao Chiếu Mệnh', 'Vân Hớn', '<p><strong>Vân Hớn (Hỏa tinh):</strong> Sao trung tính, chủ về thủ cựu, đề phòng khẩu thiệt, kiện tụng, nóng nảy.</p>'),
+('Sao Chiếu Mệnh', 'Thổ Tú', '<p><strong>Thổ Tú (Thổ tinh):</strong> Sao trung tính, chủ về tiểu nhân, xuất hành không thuận, gia đạo bất an, chăn nuôi thua lỗ.</p>'),
+('Sao Chiếu Mệnh', 'Thủy Diệu', '<p><strong>Thủy Diệu (Thủy tinh):</strong> Sao tốt nhưng kỵ tháng 4, tháng 8. Chủ về tài lộc, hỉ sự, nhưng đi sông nước cần cẩn thận.</p>'),
+('Hạn', 'Huỳnh Tuyền', '<p><strong>Hạn Huỳnh Tuyền:</strong> Chủ về sức khỏe, bệnh nặng, nguy hiểm. Không nên bảo chứng cho người khác, dễ nảy sinh chuyện bất lợi.</p>'),
+('Hạn', 'Tam Kheo', '<p><strong>Hạn Tam Kheo:</strong> Chủ về chân tay, đau mắt. Đề phòng té ngã, xe cộ, các bệnh xương khớp.</p>'),
+('Hạn', 'Ngũ Mộ', '<p><strong>Hạn Ngũ Mộ:</strong> Chủ về hao tài, mất của. Cẩn thận tiền bạc, không nên cho vay mượn, đề phòng trộm cắp.</p>'),
+('Hạn', 'Thiên Tinh', '<p><strong>Hạn Thiên Tinh:</strong> Chủ về thị phi, kiện tụng, ngộ độc. Cẩn thận ăn uống, lời ăn tiếng nói.</p>'),
+('Hạn', 'Toán Tận', '<p><strong>Hạn Toán Tận:</strong> Chủ về hao tài, ngộ nạn thình lình. Nam giới kỵ hơn nữ. Cẩn thận khi mang tiền bạc đi đường.</p>'),
+('Hạn', 'Thiên La', '<p><strong>Hạn Thiên La:</strong> Chủ về tâm linh, ma quỷ quấy phá, bệnh kỳ quái. Tâm trạng hay lo âu, bồn chồn.</p>'),
+('Hạn', 'Địa Võng', '<p><strong>Hạn Địa Võng:</strong> Chủ về rắc rối, thị phi, cấm kỵ đi xa vào giờ Tuất, ngày Tuất. Gia đạo có chuyện buồn.</p>'),
+('Hạn', 'Diêm Vương', '<p><strong>Hạn Diêm Vương:</strong> Kỵ người già, bệnh nặng khó qua. Nhưng tốt cho việc cầu tài lộc, kinh doanh.</p>')
 ");

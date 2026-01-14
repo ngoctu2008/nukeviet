@@ -58,6 +58,63 @@ class Horoscope
         return $this->cung;
     }
 
+    /**
+     * Get Sao Han for a specific age
+     * @param int $age (Tuoi am)
+     * @param int $gender (1=Male, 0=Female)
+     * @return array
+     */
+    public function getSaoHan($age, $gender)
+    {
+        // 9 Sao: La Hau, Tho Tu, Thuy Dieu, Thai Bach, Thai Duong, Van Hon, Ke Do, Thai Am, Moc Duc
+        // Mapping based on remainder of age
+        // But standard tables are easier.
+        // Male: 10 La Hau, 11 Tho Tu...
+        // Let's use array map for 10-99 or mod 9 logic?
+        // Mod 9 logic is complex because it shifts.
+        // Array map for 9 stars cycle:
+        // Nam: La Hau (1), Tho Tu (2), Thuy Dieu (3), Thai Bach (4), Thai Duong (5), Van Hon (6), Ke Do (7), Thai Am (8), Moc Duc (9)
+        // Age: 10 -> La Hau (1). 11 -> Tho Tu (2). 10 % 9 = 1. So (Age - 10) % 9 + 1 ?
+        // 19 -> La Hau. (19-10)%9 = 0 -> +1 = 1. Correct.
+        // 18 -> Moc Duc (9). (18-10)%9 = 8 -> +1 = 9. Correct.
+
+        // Nu: Ke Do (1), Van Hon (2), Moc Duc (3), Thai Am (4), Tho Tu (5), La Hau (6), Thai Duong (7), Thai Bach (8), Thuy Dieu (9)
+        // Age 10: Ke Do.
+
+        $sao_nam = [1=>'La Hầu', 2=>'Thổ Tú', 3=>'Thủy Diệu', 4=>'Thái Bạch', 5=>'Thái Dương', 6=>'Vân Hớn', 7=>'Kế Đô', 8=>'Thái Âm', 9=>'Mộc Đức'];
+        $sao_nu = [1=>'Kế Đô', 2=>'Vân Hớn', 3=>'Mộc Đức', 4=>'Thái Âm', 5=>'Thổ Tú', 6=>'La Hầu', 7=>'Thái Dương', 8=>'Thái Bạch', 9=>'Thủy Diệu'];
+
+        // Han: 8 Han.
+        // Huynh Tuyen, Tam Kheo, Ngu Mo, Thien Tinh, Toan Tan, Thien La, Dia Vong, Diem Vuong.
+        // Nam: 10 Huynh Tuyen, 11 Tam Kheo...
+        // Nu: 10 Toan Tan...
+        // Cycle 8.
+
+        $han_nam = [1=>'Huỳnh Tuyền', 2=>'Tam Kheo', 3=>'Ngũ Mộ', 4=>'Thiên Tinh', 5=>'Toán Tận', 6=>'Thiên La', 7=>'Địa Võng', 8=>'Diêm Vương'];
+        $han_nu = [1=>'Toán Tận', 2=>'Thiên Tinh', 3=>'Ngũ Mộ', 4=>'Tam Kheo', 5=>'Huỳnh Tuyền', 6=>'Diêm Vương', 7=>'Địa Võng', 8=>'Thiên La']; // Check Nu order?
+        // Nu 10: Toan Tan. 11 Thien Tinh.
+
+        // Calculate index
+        // Start from age 10. If age < 10?
+        // Under 10 usually no Sao Han calculated same way.
+        // Let's assume age >= 10. If < 10, maybe map to 10? Or return empty.
+
+        if ($age < 10) return ['sao' => '', 'han' => ''];
+
+        $idx_sao = ($age - 10) % 9 + 1;
+        $idx_han = ($age - 10) % 8 + 1;
+
+        if ($gender == 1) { // Nam
+            $sao = $sao_nam[$idx_sao];
+            $han = $han_nam[$idx_han];
+        } else { // Nu
+            $sao = $sao_nu[$idx_sao];
+            $han = $han_nu[$idx_han];
+        }
+
+        return ['sao' => $sao, 'han' => $han];
+    }
+
     // 1. An Cung Menh / Than
     private function anCungMenhThan()
     {

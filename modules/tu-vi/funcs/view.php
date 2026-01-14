@@ -50,6 +50,20 @@ $lookups[] = "(star_key = 'Vận Hạn' AND palace_key = 'Tiểu Vận')";
 // Fetch Yearly Detail Interpretations
 $lookups[] = "(star_key = 'Bình Giải Năm')";
 
+// Calculate Age and Sao/Han
+$current_year = date('Y');
+$birth_year = $lunar['year'];
+$age_am = $current_year - $birth_year + 1;
+if ($age_am < 1) $age_am = 1;
+
+$sao_han = $horoscope->getSaoHan($age_am, $gender);
+if (!empty($sao_han['sao'])) {
+    $lookups[] = "(star_key = 'Sao Chiếu Mệnh' AND palace_key = " . $db->quote($sao_han['sao']) . ")";
+}
+if (!empty($sao_han['han'])) {
+    $lookups[] = "(star_key = 'Hạn' AND palace_key = " . $db->quote($sao_han['han']) . ")";
+}
+
 if (!empty($lookups)) {
     $sql_where = implode(' OR ', $lookups);
     $sql = "SELECT * FROM " . NV_PRE_TUVI . "_interpretations WHERE " . $sql_where;
@@ -65,7 +79,11 @@ $data = [
         'solar_date' => "$day/$month/$year",
         'lunar_date' => $lunar['day'] . '/' . $lunar['month'] . '/' . $lunar['year'],
         'gender' => $gender ? $lang_module['male'] : $lang_module['female'],
-        'cuc' => $horoscope->info['cuc_name']
+        'cuc' => $horoscope->info['cuc_name'],
+        'age' => $age_am,
+        'sao' => $sao_han['sao'],
+        'han' => $sao_han['han'],
+        'current_year' => $current_year
     ],
     'cung' => $chart,
     'interpretations' => $interpretations
@@ -101,10 +119,14 @@ foreach ($data['cung'] as $cung) {
 
 // Parse Interpretations
 $year_detail = [];
+$sao_han_detail = [];
+
 if (!empty($data['interpretations'])) {
     foreach ($data['interpretations'] as $interp) {
         if ($interp['star_key'] == 'Bình Giải Năm') {
             $year_detail[] = $interp;
+        } elseif ($interp['star_key'] == 'Sao Chiếu Mệnh' || $interp['star_key'] == 'Hạn') {
+            $sao_han_detail[] = $interp;
         } else {
             $xtpl->assign('INTERP', $interp);
             $xtpl->parse('main.interpretations.loop');
@@ -113,9 +135,17 @@ if (!empty($data['interpretations'])) {
     $xtpl->parse('main.interpretations');
 }
 
+// Parse Sao Han
+if (!empty($sao_han_detail)) {
+    foreach ($sao_han_detail as $detail) {
+        $xtpl->assign('DETAIL', $detail);
+        $xtpl->parse('main.sao_han_detail.loop');
+    }
+    $xtpl->parse('main.sao_han_detail');
+}
+
 // Parse Year Detail
 if (!empty($year_detail)) {
-    // Sort by Month (custom sort needed or rely on DB order? DB order is insert order, which is 1-12)
     foreach ($year_detail as $detail) {
         $xtpl->assign('DETAIL', $detail);
         $xtpl->parse('main.year_detail.loop');
