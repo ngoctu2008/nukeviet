@@ -43,9 +43,10 @@ function nv_chat_search_table($table, $keyword, $limit = 3) {
     if (empty($keyword)) return $results;
 
     // Search by phrase first
-    $sql = "SELECT title, bodyhtml, hometext FROM " . $table . " WHERE (title LIKE :keyword OR hometext LIKE :keyword) AND status=1 LIMIT " . $limit;
+    $sql = "SELECT title, bodyhtml, hometext FROM " . $table . " WHERE (title LIKE :keyword1 OR hometext LIKE :keyword2) AND status=1 LIMIT " . $limit;
     $sth = $db->prepare($sql);
-    $sth->bindValue(':keyword', '%' . $keyword . '%', PDO::PARAM_STR);
+    $sth->bindValue(':keyword1', '%' . $keyword . '%', PDO::PARAM_STR);
+    $sth->bindValue(':keyword2', '%' . $keyword . '%', PDO::PARAM_STR);
     $sth->execute();
 
     while ($row = $sth->fetch()) {
@@ -98,9 +99,10 @@ function nv_chat_get_context($user_message) {
     // Search Custom Knowledge
     $table_knowledge = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_knowledge";
     // Custom logic for knowledge table (has 'content' column instead of hometext/bodyhtml)
-    $sql = "SELECT title, content FROM " . $table_knowledge . " WHERE status=1 AND (title LIKE :keyword OR content LIKE :keyword) LIMIT " . $limit;
+    $sql = "SELECT title, content FROM " . $table_knowledge . " WHERE status=1 AND (title LIKE :keyword1 OR content LIKE :keyword2) LIMIT " . $limit;
     $sth = $db->prepare($sql);
-    $sth->bindValue(':keyword', '%' . $user_message . '%');
+    $sth->bindValue(':keyword1', '%' . $user_message . '%', PDO::PARAM_STR);
+    $sth->bindValue(':keyword2', '%' . $user_message . '%', PDO::PARAM_STR);
     $sth->execute();
     while ($row = $sth->fetch()) {
         $context_data[] = strip_tags($row['title'] . ": " . $row['content']);
