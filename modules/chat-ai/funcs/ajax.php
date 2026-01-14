@@ -11,6 +11,9 @@ if (!defined('NV_IS_MOD_CHAT_AI')) {
     die('Stop!!!');
 }
 
+// Clean buffer to prevent unwanted output
+ob_start();
+
 // Ensure module_data_table is available
 global $module_data_table;
 if (empty($module_data_table)) {
@@ -41,6 +44,8 @@ if (empty($session_code)) {
 $message = $nv_Request->get_string('message', 'post', '');
 
 if (empty($message)) {
+    ob_end_clean();
+    header('Content-Type: application/json');
     echo json_encode(['status' => 'error', 'message' => $lang_module['error_empty']]);
     die();
 }
@@ -170,5 +175,7 @@ if ($provider == 'openai') {
 // 5. Save Bot Response
 $db->query("INSERT INTO " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data_table . "_messages (session_code, role, content, created_at) VALUES (" . $db->quote($session_code) . ", 'assistant', " . $db->quote($bot_reply) . ", " . NV_CURRENTTIME . ")");
 
+ob_end_clean();
+header('Content-Type: application/json');
 echo json_encode(['status' => 'success', 'message' => $bot_reply]);
 die();
