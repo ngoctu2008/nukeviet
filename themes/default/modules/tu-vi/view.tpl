@@ -28,11 +28,25 @@
             <div class="cung-header">{CUNG.cung_chuc}</div>
             <div class="star-list">
                 <!-- BEGIN: chinh_tinh -->
-                <span class="chinh-tinh">{STAR_NAME}</span>
+                <span class="chinh-tinh">
+                    <a href="javascript:void(0);"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       data-original-title="{STAR_NAME}"
+                       data-html="true"
+                       data-content="{STAR_NAME}">{STAR_NAME}</a>
+                </span>
                 <!-- END: chinh_tinh -->
 
                 <!-- BEGIN: phu_tinh -->
-                <span class="phu_tinh">{STAR_NAME}</span>
+                <span class="phu_tinh">
+                    <a href="javascript:void(0);"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       data-original-title="{STAR_NAME}"
+                       data-html="true"
+                       data-content="{STAR_NAME}">{STAR_NAME}</a>
+                </span>
                 <!-- END: phu_tinh -->
             </div>
             <div class="cung-footer">{CUNG.name}</div>
@@ -90,4 +104,10 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 <!-- END: main -->
