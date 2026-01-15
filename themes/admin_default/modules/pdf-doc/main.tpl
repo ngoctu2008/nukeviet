@@ -1,6 +1,13 @@
 <!-- BEGIN: main -->
 <form action="{ACTION_URL}" method="post" class="form-horizontal">
     <input type="hidden" name="checkss" value="{CHECKSS}" />
+
+    <!-- BEGIN: error_dependency -->
+    <div class="alert alert-danger">
+        {ERROR_DEPENDENCY}
+    </div>
+    <!-- END: error_dependency -->
+
     <div class="panel panel-default">
         <div class="panel-heading">{LANG.config}</div>
         <div class="panel-body">
