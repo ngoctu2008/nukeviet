@@ -53,10 +53,11 @@ if (!defined('NV_MAINFILE')) {
 }
 
 // Global variables needed
-global $module_name, $module_data, $op, $db, $nv_Request, $my_head, $my_footer, $nv_Cache;
+global $module_name, $module_data, $module_info, $op, $db, $nv_Request, $my_head, $my_footer, $nv_Cache;
 
-// Chỉ chạy nếu đang ở trong module News (hoặc các module ảo của News)
-if (isset($module_name) && $module_name != '' && isset($module_data)) {
+// Chỉ chạy nếu đang ở trong module News (và đúng loại module là 'news')
+// Kiểm tra $module_info['module_file'] để đảm bảo đây là module News (bao gồm cả module ảo)
+if (isset($module_name) && $module_name != '' && isset($module_data) && isset($module_info['module_file']) && $module_info['module_file'] === 'news') {
 
     // --- LOGIC TẠO BẢNG DATABASE (Tự động kiểm tra trong Admin) ---
     if (defined('NV_IS_FILE_ADMIN') && defined('NV_IS_ADMIN_MODULE')) {
