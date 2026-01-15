@@ -13,8 +13,8 @@ if (!defined('NV_SYSTEM')) {
 define('NV_IS_MOD_PDF_DOC', true);
 
 // Nạp Composer Autoload nếu tồn tại
-if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/vendor/autoload.php')) {
-    require_once NV_ROOTDIR . '/modules/' . $module_file . '/vendor/autoload.php';
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
 }
 
 function nv_pdf_doc_check_ext($ext)

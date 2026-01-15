@@ -17,6 +17,12 @@ if (!nv_pdf_doc_check_perm($module_name, $module_config)) {
 if ($nv_Request->isset_request('ajax', 'post')) {
     $response = array('status' => 'error', 'mess' => $lang_module['error_upload']);
 
+    // Check dependencies
+    if (!class_exists('\setasign\Fpdi\Fpdi')) {
+        $response['mess'] = 'Libraries not found. Please run "composer install" in ' . NV_ROOTDIR . '/modules/' . $module_file;
+        die(json_encode($response));
+    }
+
     if (isset($_FILES['upload_file']) && !empty($_FILES['upload_file']['name'][0])) {
         $files = $_FILES['upload_file'];
         $file_count = count($files['name']);
