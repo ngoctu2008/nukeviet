@@ -39,3 +39,7 @@ $lang_module['login_required'] = 'Bạn cần đăng nhập để tham gia cuộ
 $lang_module['submit_success'] = 'Nộp bài thành công';
 $lang_module['fill_answer'] = 'Điền đáp án...';
 $lang_module['essay_placeholder'] = 'Nhập câu trả lời của bạn...';
+$lang_module['exam_time_start'] = 'Thời gian bắt đầu';
+$lang_module['exam_time_end'] = 'Thời gian kết thúc';
+$lang_module['exam_duration'] = 'Thời gian làm bài';
+$lang_module['minutes'] = 'phút';
