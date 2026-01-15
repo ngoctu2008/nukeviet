@@ -18,6 +18,7 @@ $lang_translator['copyright'] = '@Copyright (C) 2024 Jules. All rights reserved'
 $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
+$lang_module['main'] = 'Trang chính';
 $lang_module['exam_manager'] = 'Quản lý cuộc thi';
 $lang_module['question_manager'] = 'Ngân hàng câu hỏi';
 $lang_module['unit_manager'] = 'Quản lý đơn vị';

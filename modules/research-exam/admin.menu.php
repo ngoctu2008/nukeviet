@@ -16,7 +16,8 @@ $menu_top = array(
     'exam' => $lang_module['exam_manager'],
     'questions' => $lang_module['question_manager'],
     'units' => $lang_module['unit_manager'],
-    'report' => $lang_module['report_manager']
+    'report' => $lang_module['report_manager'],
+    'custom_title' => $lang_module['main']
 );
 
 $allow_func = array('main', 'config', 'exam', 'questions', 'units', 'report', 'result');
