@@ -14,7 +14,8 @@ if (!defined('NV_IS_MOD_RESEARCH_EXAM')) {
 
 $exam_id = $nv_Request->get_int('exam_id', 'post', 0);
 $checkss = $nv_Request->get_string('checkss', 'post', '');
-$user_session = $nv_Request->get_Session($module_data . '_user', array());
+// Use standard PHP Session
+$user_session = isset($_SESSION[$module_data . '_user']) ? $_SESSION[$module_data . '_user'] : array();
 
 // Security Check
 if ($checkss != NV_CHECK_SESSION || empty($user_session) || $user_session['exam_id'] != $exam_id) {
@@ -198,7 +199,9 @@ $stmt_up->bindParam(':id', $result_id, PDO::PARAM_INT);
 $stmt_up->execute();
 
 // Clear Session
-$nv_Request->unset_Session($module_data . '_user');
+if (isset($_SESSION[$module_data . '_user'])) {
+    unset($_SESSION[$module_data . '_user']);
+}
 
 // Render Result Page (or Redirect)
 // We will simply display the result here.

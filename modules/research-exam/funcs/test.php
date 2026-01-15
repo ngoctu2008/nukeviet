@@ -13,7 +13,8 @@ if (!defined('NV_IS_MOD_RESEARCH_EXAM')) {
 }
 
 $exam_id = $nv_Request->get_int('id', 'get', 0);
-$user_session = $nv_Request->get_Session($module_data . '_user', array());
+// Use standard PHP Session
+$user_session = isset($_SESSION[$module_data . '_user']) ? $_SESSION[$module_data . '_user'] : array();
 
 if (empty($user_session) || $user_session['exam_id'] != $exam_id) {
     Header('Location: ' . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang_global['abbr'] . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $exam_id);

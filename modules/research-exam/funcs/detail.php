@@ -34,7 +34,9 @@ if ($nv_Request->isset_request('start_exam', 'post')) {
     );
 
     if (!empty($user_info_exam['fullname']) && !empty($user_info_exam['phone']) && $user_info_exam['unit_id'] > 0) {
-        $nv_Request->set_Session($module_data . '_user', $user_info_exam);
+        // Use standard PHP Session
+        $_SESSION[$module_data . '_user'] = $user_info_exam;
+
         Header('Location: ' . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang_global['abbr'] . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=test&id=' . $exam_id);
         die();
     }
@@ -46,26 +48,16 @@ $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', 'detail');
 
 // Format dates
-$row['time_start'] = date('d/m/Y H:i', $row['time_start']);
-$row['time_end'] = date('d/m/Y H:i', $row['time_end']);
+$row_display = $row;
+$row_display['time_start'] = date('d/m/Y H:i', $row['time_start']);
+$row_display['time_end'] = date('d/m/Y H:i', $row['time_end']);
 
-$xtpl->assign('ROW', $row);
+$xtpl->assign('ROW', $row_display);
 
 // Check time
 $current_time = NV_CURRENTTIME;
-// Need raw timestamps for comparison, so we must reload or keep raw values.
-// Actually $row is already modified. But $row was modified AFTER fetch.
-// Wait, I fetched $row at top. Then modified it.
-// Ah, $current_time comparison uses $row['time_start'] which is now string. THIS IS A BUG.
-// I need to keep raw values for logic.
 
-// Refetch or simpler: modify assigned variables, not $row logic variables.
-// Let's reload logic.
-
-// REVERTED LOGIC to be safe
-$row_raw = $db->query("SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_exams WHERE id=" . $exam_id)->fetch();
-
-if ($current_time >= $row_raw['time_start'] && $current_time <= $row_raw['time_end']) {
+if ($current_time >= $row['time_start'] && $current_time <= $row['time_end']) {
     // Show form
 
     // Units Dropdown
@@ -86,7 +78,7 @@ if ($current_time >= $row_raw['time_start'] && $current_time <= $row_raw['time_e
     $xtpl->assign('PHONE', $phone);
 
     $xtpl->parse('main.form');
-} elseif ($current_time < $row_raw['time_start']) {
+} elseif ($current_time < $row['time_start']) {
     $xtpl->parse('main.not_started');
 } else {
     $xtpl->parse('main.ended');
