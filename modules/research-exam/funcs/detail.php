@@ -46,18 +46,19 @@ $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', 'detail');
 $xtpl->assign('ROW', $row);
 
-// Units Dropdown
-$sql_units = "SELECT id, title FROM " . NV_PREFIXLANG . "_" . $module_data . "_units WHERE status=1 ORDER BY weight ASC";
-$res_units = $db->query($sql_units);
-while ($unit = $res_units->fetch()) {
-    $xtpl->assign('UNIT', $unit);
-    $xtpl->parse('main.unit_loop');
-}
-
 // Check time
 $current_time = NV_CURRENTTIME;
 if ($current_time >= $row['time_start'] && $current_time <= $row['time_end']) {
     // Show form
+
+    // Units Dropdown
+    $sql_units = "SELECT id, title FROM " . NV_PREFIXLANG . "_" . $module_data . "_units WHERE status=1 ORDER BY weight ASC";
+    $res_units = $db->query($sql_units);
+    while ($unit = $res_units->fetch()) {
+        $xtpl->assign('UNIT', $unit);
+        $xtpl->parse('main.form.unit_loop');
+    }
+
     // Pre-fill if logged in
     $fullname = ''; $phone = '';
     if (defined('NV_IS_USER')) {
