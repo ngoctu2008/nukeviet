@@ -13,6 +13,11 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $page_title = $lang_module['config'];
 
 if ($nv_Request->isset_request('save', 'post')) {
+    $checkss = $nv_Request->get_title('checkss', 'post', '');
+    if ($checkss != NV_CHECK_SESSION) {
+        die('Security Violation');
+    }
+
     $cfg = array();
     $cfg['upload_max_size'] = $nv_Request->get_int('upload_max_size', 'post', 5);
     $cfg['cleanup_time'] = $nv_Request->get_int('cleanup_time', 'post', 30);
@@ -22,11 +27,12 @@ if ($nv_Request->isset_request('save', 'post')) {
         if (is_array($config_value)) {
             $config_value = implode(',', $config_value);
         }
+
         $sth = $db->prepare("REPLACE INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES (:lang, :module, :config_name, :config_value)");
-        $sth->bindParam(':lang', $lang_global);
-        $sth->bindParam(':module', $module_name);
-        $sth->bindParam(':config_name', $config_name);
-        $sth->bindParam(':config_value', $config_value);
+        $sth->bindValue(':lang', $lang_global);
+        $sth->bindValue(':module', $module_name);
+        $sth->bindValue(':config_name', $config_name);
+        $sth->bindValue(':config_value', (string)$config_value);
         $sth->execute();
     }
 
@@ -38,6 +44,7 @@ if ($nv_Request->isset_request('save', 'post')) {
 $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $global_config['admin_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('ACTION_URL', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
+$xtpl->assign('CHECKSS', NV_CHECK_SESSION);
 
 $config = array();
 $config['upload_max_size'] = isset($module_config[$module_name]['upload_max_size']) ? $module_config[$module_name]['upload_max_size'] : 5;

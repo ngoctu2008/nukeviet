@@ -1,5 +1,6 @@
 <!-- BEGIN: main -->
 <form action="{ACTION_URL}" method="post" class="form-horizontal">
+    <input type="hidden" name="checkss" value="{CHECKSS}" />
     <div class="panel panel-default">
         <div class="panel-heading">{LANG.config}</div>
         <div class="panel-body">
