@@ -137,7 +137,6 @@ $examid = $nv_Request->get_int('examid', 'get', 0);
 foreach ($exams as $id => $title) {
     $xtpl->assign('EXAM', array('id' => $id, 'title' => $title, 'selected' => ($id == $examid) ? 'selected' : ''));
     $xtpl->parse('main.filter_exam');
-    $xtpl->parse('main.form_exam');
 }
 
 if (!empty($error)) {
@@ -200,6 +199,13 @@ if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
     $row['title'] = nv_aleditor('title', '100%', '200px', $row['title']);
 } else {
     $row['title'] = '<textarea style="width:100%;height:200px" name="title">' . $row['title'] . '</textarea>';
+}
+
+// Parse Form Exams
+foreach ($exams as $eid => $etitle) {
+    $selected = ($eid == $row['exam_id']) ? 'selected' : '';
+    $xtpl->assign('EXAM', array('id' => $eid, 'title' => $etitle, 'selected' => $selected));
+    $xtpl->parse('main.form.form_exam');
 }
 
 $xtpl->assign('DATA', $row);
