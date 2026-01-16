@@ -66,6 +66,7 @@ $values[] = "('Hạn', 'Địa Võng', 'van_han', '<p><strong>Hạn Địa Võng
 $values[] = "('Hạn', 'Diêm Vương', 'van_han', '<p><strong>Hạn Diêm Vương:</strong> Kỵ người già, bệnh nặng khó qua. Nhưng tốt cho việc cầu tài lộc, kinh doanh.</p>', 0)";
 
 // Detailed Monthly Interpretations by Star
+
 // La Hau (Bad)
 $values[] = "('La Hầu', 'Tháng 1', 'van_han', 'Tháng Giêng (La Hầu): Đầu năm hao tài, có chuyện buồn phiền, lo âu.', 0)";
 $values[] = "('La Hầu', 'Tháng 2', 'van_han', 'Tháng Hai (La Hầu): Cẩn thận bệnh tật, gia đạo bất an.', 0)";
@@ -107,5 +108,89 @@ $values[] = "('Thái Dương', 'Tháng 9', 'van_han', 'Tháng Chín (Thái Dươ
 $values[] = "('Thái Dương', 'Tháng 10', 'van_han', 'Tháng Mười (Thái Dương): Cẩn thận thời tiết chuyển mùa, bệnh vặt.', 0)";
 $values[] = "('Thái Dương', 'Tháng 11', 'van_han', 'Tháng Mười Một (Thái Dương): Tổng kết thành quả, nhiều niềm vui.', 0)";
 $values[] = "('Thái Dương', 'Tháng 12', 'van_han', 'Tháng Chạp (Thái Dương): Mọi sự viên mãn, đón tết vui vẻ.', 0)";
+
+// Ke Do (Bad, Hung tinh)
+$values[] = "('Kế Đô', 'Tháng 1', 'van_han', 'Tháng Giêng (Kế Đô): Đầu năm gặp chuyện không may, tinh thần bất an.', 0)";
+$values[] = "('Kế Đô', 'Tháng 2', 'van_han', 'Tháng Hai (Kế Đô): Tiền bạc hao tán, cẩn thận mất mát.', 0)";
+$values[] = "('Kế Đô', 'Tháng 3', 'van_han', 'Tháng Ba (Kế Đô): Kỵ nhất tháng này (đặc biệt nữ giới), đề phòng thị phi, bệnh tật.', 0)";
+$values[] = "('Kế Đô', 'Tháng 4', 'van_han', 'Tháng Tư (Kế Đô): Gia đạo có xáo trộn, cần nhẫn nại.', 0)";
+$values[] = "('Kế Đô', 'Tháng 5', 'van_han', 'Tháng Năm (Kế Đô): Tránh đi xa, cẩn thận tai nạn nhỏ.', 0)";
+$values[] = "('Kế Đô', 'Tháng 6', 'van_han', 'Tháng Sáu (Kế Đô): Công việc trì trệ, không nên khởi sự mới.', 0)";
+$values[] = "('Kế Đô', 'Tháng 7', 'van_han', 'Tháng Bảy (Kế Đô): Gặp quý nhân giúp đỡ nhưng vẫn cần thận trọng.', 0)";
+$values[] = "('Kế Đô', 'Tháng 8', 'van_han', 'Tháng Tám (Kế Đô): Tài lộc trung bình, chi tiêu hợp lý.', 0)";
+$values[] = "('Kế Đô', 'Tháng 9', 'van_han', 'Tháng Chín (Kế Đô): Kỵ tháng này (như tháng 3), không nên lo chuyện bao đồng.', 0)";
+$values[] = "('Kế Đô', 'Tháng 10', 'van_han', 'Tháng Mười (Kế Đô): Sức khỏe có vấn đề, chú ý đường tiêu hóa.', 0)";
+$values[] = "('Kế Đô', 'Tháng 11', 'van_han', 'Tháng Mười Một (Kế Đô): Tinh thần thoải mái hơn, công việc dần ổn định.', 0)";
+$values[] = "('Kế Đô', 'Tháng 12', 'van_han', 'Tháng Chạp (Kế Đô): Cuối năm cẩn thận lời ăn tiếng nói.', 0)";
+
+// Thai Am (Good, Nguyet tinh)
+$values[] = "('Thái Âm', 'Tháng 1', 'van_han', 'Tháng Giêng (Thái Âm): Đầu năm an vui, gia đình hạnh phúc.', 0)";
+$values[] = "('Thái Âm', 'Tháng 2', 'van_han', 'Tháng Hai (Thái Âm): Có tin vui từ phương xa, hoặc gặp lại người xưa.', 0)";
+$values[] = "('Thái Âm', 'Tháng 3', 'van_han', 'Tháng Ba (Thái Âm): Tài lộc dồi dào, công việc thuận lợi.', 0)";
+$values[] = "('Thái Âm', 'Tháng 4', 'van_han', 'Tháng Tư (Thái Âm): Cẩn thận sức khỏe khi giao mùa.', 0)";
+$values[] = "('Thái Âm', 'Tháng 5', 'van_han', 'Tháng Năm (Thái Âm): Tình cảm thăng hoa, có thể tính chuyện hỷ sự.', 0)";
+$values[] = "('Thái Âm', 'Tháng 6', 'van_han', 'Tháng Sáu (Thái Âm): Công danh có bước tiến mới.', 0)";
+$values[] = "('Thái Âm', 'Tháng 7', 'van_han', 'Tháng Bảy (Thái Âm): Làm việc thiện tích đức, mọi sự hanh thông.', 0)";
+$values[] = "('Thái Âm', 'Tháng 8', 'van_han', 'Tháng Tám (Thái Âm): Tiền bạc vào như nước, kinh doanh phát đạt.', 0)";
+$values[] = "('Thái Âm', 'Tháng 9', 'van_han', 'Tháng Chín (Thái Âm): Tháng đại cát (đặc biệt nữ giới), mọi mong cầu đều toại nguyện.', 0)";
+$values[] = "('Thái Âm', 'Tháng 10', 'van_han', 'Tháng Mười (Thái Âm): Gia đạo yên ấm, con cái ngoan ngoãn.', 0)";
+$values[] = "('Thái Âm', 'Tháng 11', 'van_han', 'Tháng Mười Một (Thái Âm): Cẩn thận tiểu nhân đố kỵ, nhưng không đáng ngại.', 0)";
+$values[] = "('Thái Âm', 'Tháng 12', 'van_han', 'Tháng Chạp (Thái Âm): Kết thúc năm viên mãn, chuẩn bị đón xuân.', 0)";
+
+// Moc Duc (Good, Moc tinh)
+$values[] = "('Mộc Đức', 'Tháng 1', 'van_han', 'Tháng Giêng (Mộc Đức): Vui vẻ đón xuân, may mắn gõ cửa.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 2', 'van_han', 'Tháng Hai (Mộc Đức): Công việc hanh thông, được cấp trên tin tưởng.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 3', 'van_han', 'Tháng Ba (Mộc Đức): Có lộc nhỏ, tinh thần phấn chấn.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 4', 'van_han', 'Tháng Tư (Mộc Đức): Gia đạo hòa thuận, sức khỏe tốt.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 5', 'van_han', 'Tháng Năm (Mộc Đức): Cẩn thận các bệnh về mắt, nhưng mau khỏi.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 6', 'van_han', 'Tháng Sáu (Mộc Đức): Tài chính ổn định, có thể đầu tư.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 7', 'van_han', 'Tháng Bảy (Mộc Đức): Tránh tranh chấp không cần thiết.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 8', 'van_han', 'Tháng Tám (Mộc Đức): Công danh sáng lạn, gặp cơ hội tốt.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 9', 'van_han', 'Tháng Chín (Mộc Đức): Đi xa có lợi, gặp quý nhân.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 10', 'van_han', 'Tháng Mười (Mộc Đức): Tháng tốt nhất trong năm, mọi việc như ý.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 11', 'van_han', 'Tháng Mười Một (Mộc Đức): Cẩn thận dao kéo, vật sắc nhọn.', 0)";
+$values[] = "('Mộc Đức', 'Tháng 12', 'van_han', 'Tháng Chạp (Mộc Đức): Tổng kết năm thành công, tài lộc dồi dào.', 0)";
+
+// Van Hon (Average/Bad, Hoa tinh)
+$values[] = "('Vân Hớn', 'Tháng 1', 'van_han', 'Tháng Giêng (Vân Hớn): Bình thường, không có biến động lớn.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 2', 'van_han', 'Tháng Hai (Vân Hớn): Kỵ tháng này, cẩn thận thị phi, nóng nảy hỏng việc.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 3', 'van_han', 'Tháng Ba (Vân Hớn): Công việc ở mức trung bình, nên giữ nguyên hiện trạng.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 4', 'van_han', 'Tháng Tư (Vân Hớn): Đề phòng khẩu thiệt, tai tiếng.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 5', 'van_han', 'Tháng Năm (Vân Hớn): Sức khỏe ổn định, tránh làm việc quá sức.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 6', 'van_han', 'Tháng Sáu (Vân Hớn): Tài lộc kém, chi tiêu cần tiết kiệm.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 7', 'van_han', 'Tháng Bảy (Vân Hớn): Gia đạo có chút bất hòa, cần nhường nhịn.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 8', 'van_han', 'Tháng Tám (Vân Hớn): Kỵ tháng này, cẩn thận xe cộ, đi lại.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 9', 'van_han', 'Tháng Chín (Vân Hớn): Mọi việc dần trở lại bình thường.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 10', 'van_han', 'Tháng Mười (Vân Hớn): Có tin vui từ con cái, học hành.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 11', 'van_han', 'Tháng Mười Một (Vân Hớn): Công việc bận rộn nhưng hiệu quả chưa cao.', 0)";
+$values[] = "('Vân Hớn', 'Tháng 12', 'van_han', 'Tháng Chạp (Vân Hớn): Cuối năm bình an, tránh kiện tụng.', 0)";
+
+// Tho Tu (Average/Bad, Tho tinh)
+$values[] = "('Thổ Tú', 'Tháng 1', 'van_han', 'Tháng Giêng (Thổ Tú): Đầu năm tâm trạng lo âu, chưa an tâm.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 2', 'van_han', 'Tháng Hai (Thổ Tú): Công việc gặp trở ngại, tiểu nhân quấy phá.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 3', 'van_han', 'Tháng Ba (Thổ Tú): Cẩn thận giấy tờ, ký kết hợp đồng.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 4', 'van_han', 'Tháng Tư (Thổ Tú): Kỵ tháng này, gia đạo bất an, chăn nuôi thất bát.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 5', 'van_han', 'Tháng Năm (Thổ Tú): Sức khỏe kém, đề phòng bệnh dạ dày.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 6', 'van_han', 'Tháng Sáu (Thổ Tú): Không nên đi xa, xuất hành bất lợi.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 7', 'van_han', 'Tháng Bảy (Thổ Tú): Cẩn thận lời nói, tránh hiểu lầm.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 8', 'van_han', 'Tháng Tám (Thổ Tú): Kỵ tháng này, đề phòng mất của.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 9', 'van_han', 'Tháng Chín (Thổ Tú): Tài lộc có chút khởi sắc, nhưng không nhiều.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 10', 'van_han', 'Tháng Mười (Thổ Tú): Gia đạo dần ổn định, bớt lo âu.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 11', 'van_han', 'Tháng Mười Một (Thổ Tú): Có người giúp đỡ trong công việc.', 0)";
+$values[] = "('Thổ Tú', 'Tháng 12', 'van_han', 'Tháng Chạp (Thổ Tú): Tổng kết năm, mọi sự trung bình.', 0)";
+
+// Thuy Dieu (Good/Bad mixed, Thuy tinh)
+$values[] = "('Thủy Diệu', 'Tháng 1', 'van_han', 'Tháng Giêng (Thủy Diệu): Vui xuân, tài lộc vào nhà.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 2', 'van_han', 'Tháng Hai (Thủy Diệu): Công việc thuận lợi, đi xa có lợi.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 3', 'van_han', 'Tháng Ba (Thủy Diệu): Có hỷ sự hoặc tin vui từ người thân.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 4', 'van_han', 'Tháng Tư (Thủy Diệu): Kỵ tháng này, tránh sông nước, đi biển.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 5', 'van_han', 'Tháng Năm (Thủy Diệu): Cẩn thận lời ăn tiếng nói, tránh thị phi.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 6', 'van_han', 'Tháng Sáu (Thủy Diệu): Tài chính tốt, kinh doanh có lãi.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 7', 'van_han', 'Tháng Bảy (Thủy Diệu): Bình an, làm việc thiện tích đức.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 8', 'van_han', 'Tháng Tám (Thủy Diệu): Kỵ tháng này (đặc biệt nữ giới), đề phòng tai nạn.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 9', 'van_han', 'Tháng Chín (Thủy Diệu): Sức khỏe tốt, tinh thần sảng khoái.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 10', 'van_han', 'Tháng Mười (Thủy Diệu): Gia đạo hòa thuận, con cái vui vẻ.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 11', 'van_han', 'Tháng Mười Một (Thủy Diệu): Công việc phát triển, mở rộng quy mô.', 0)";
+$values[] = "('Thủy Diệu', 'Tháng 12', 'van_han', 'Tháng Chạp (Thủy Diệu): Kết thúc năm viên mãn, đón nhiều tài lộc.', 0)";
 
 $db->query($sql . implode(',', $values));
