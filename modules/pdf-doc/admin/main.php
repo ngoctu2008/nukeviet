@@ -12,6 +12,38 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $lang_module['config'];
 
+// Handle Composer Install
+if ($nv_Request->isset_request('install_composer', 'post')) {
+    $checkss = $nv_Request->get_title('checkss', 'post', '');
+    if ($checkss != NV_CHECK_SESSION) {
+        die('Security Violation');
+    }
+
+    // Try to run composer install
+    $module_dir = NV_ROOTDIR . '/modules/' . $module_file;
+    if (is_dir($module_dir)) {
+        $output = array();
+        $return_var = 0;
+
+        // Put env to help composer find home
+        putenv('COMPOSER_HOME=' . NV_ROOTDIR . '/tmp/composer');
+
+        // Attempt to run composer. This assumes 'composer' is in the system path.
+        // Redirect stderr to stdout to capture errors
+        exec('cd ' . escapeshellarg($module_dir) . ' && composer install --no-dev 2>&1', $output, $return_var);
+
+        if ($return_var === 0 && file_exists($module_dir . '/vendor/autoload.php')) {
+            $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_success']);
+            $xtpl->assign('INSTALL_CLASS', 'alert-success');
+        } else {
+            $error_detail = implode("<br>", $output);
+            $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_error'] . '<br><pre>' . $error_detail . '</pre>');
+            $xtpl->assign('INSTALL_CLASS', 'alert-danger');
+        }
+        $xtpl->parse('main.install_result');
+    }
+}
+
 if ($nv_Request->isset_request('save', 'post')) {
     $checkss = $nv_Request->get_title('checkss', 'post', '');
     if ($checkss != NV_CHECK_SESSION) {
@@ -48,7 +80,7 @@ $xtpl->assign('CHECKSS', NV_CHECK_SESSION);
 
 // Check if vendor exists
 if (!file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/vendor/autoload.php')) {
-    $xtpl->assign('ERROR_DEPENDENCY', 'Cảnh báo: Thư viện chưa được cài đặt! Vui lòng chạy "composer install" trong thư mục module.');
+    $xtpl->assign('ERROR_DEPENDENCY', 'Cảnh báo: Thư viện chưa được cài đặt! Vui lòng chạy "composer install" trong thư mục module hoặc nhấn nút bên dưới.');
     $xtpl->parse('main.error_dependency');
 }
 

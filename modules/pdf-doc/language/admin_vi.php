@@ -29,3 +29,6 @@ $lang_module['log_file_name'] = 'Tên file';
 $lang_module['log_action_time'] = 'Thời gian';
 $lang_module['log_ip'] = 'IP';
 $lang_module['log_user'] = 'Thành viên';
+$lang_module['install_composer'] = 'Cài đặt Thư viện (Composer Install)';
+$lang_module['install_composer_success'] = 'Cài đặt thư viện thành công!';
+$lang_module['install_composer_error'] = 'Cài đặt thư viện thất bại. Vui lòng kiểm tra log hoặc cài đặt thủ công.';

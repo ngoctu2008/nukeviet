@@ -1,10 +1,19 @@
 <!-- BEGIN: main -->
+<!-- BEGIN: install_result -->
+<div class="alert {INSTALL_CLASS}">
+    {INSTALL_MESSAGE}
+</div>
+<!-- END: install_result -->
+
 <form action="{ACTION_URL}" method="post" class="form-horizontal">
     <input type="hidden" name="checkss" value="{CHECKSS}" />
 
     <!-- BEGIN: error_dependency -->
     <div class="alert alert-danger">
         {ERROR_DEPENDENCY}
+        <div class="margin-top">
+            <button type="submit" name="install_composer" value="1" class="btn btn-warning btn-xs">{LANG.install_composer}</button>
+        </div>
     </div>
     <!-- END: error_dependency -->
 
