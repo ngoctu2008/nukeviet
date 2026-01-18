@@ -101,12 +101,14 @@ foreach ($questions as $index => $q) {
     $res_a = $db->query($sql_a);
 
     if ($q['type'] == 1) { // Radio
+        $xtpl->parse('main.loop.default_title');
         while ($ans = $res_a->fetch()) {
             $xtpl->assign('ANS', $ans);
             $xtpl->parse('main.loop.type_1.loop');
         }
         $xtpl->parse('main.loop.type_1');
     } elseif ($q['type'] == 2) { // Checkbox
+        $xtpl->parse('main.loop.default_title');
         while ($ans = $res_a->fetch()) {
             $xtpl->assign('ANS', $ans);
             $xtpl->parse('main.loop.type_2.loop');
@@ -124,6 +126,7 @@ foreach ($questions as $index => $q) {
         $xtpl->assign('Q_PARSED', $q);
         $xtpl->parse('main.loop.type_3');
     } elseif ($q['type'] == 4) { // Essay
+        $xtpl->parse('main.loop.default_title');
         $xtpl->parse('main.loop.type_4');
     }
 
