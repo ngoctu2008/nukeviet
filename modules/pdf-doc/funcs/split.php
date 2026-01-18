@@ -108,6 +108,11 @@ if ($nv_Request->isset_request('ajax', 'post')) {
 }
 
 $page_title = $lang_module['split'];
+$array_mod_title[] = array(
+    'title' => $page_title,
+    'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op
+);
+
 $xtpl = new XTemplate('split.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_FILE', $module_file);

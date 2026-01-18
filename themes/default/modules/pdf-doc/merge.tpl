@@ -1,42 +1,49 @@
 <!-- BEGIN: main -->
 <div class="pdf-doc-tool">
     <div class="row">
-        <div class="col-md-24">
-             <h2 class="text-center mb-4">{LANG.merge}</h2>
-             <p class="text-center text-muted">{LANG.merge_guide}</p>
+        <div class="col-md-24 text-center">
+             <h2>{LANG.merge}</h2>
+             <p class="text-muted">{LANG.merge_guide}</p>
         </div>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <form id="pdf-doc-form" action="{FORM_ACTION}" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="upload_file">{LANG.select_file}</label>
-                    <input type="file" class="form-control-file" id="upload_file" name="upload_file[]" accept="{ACCEPT_EXT}" multiple required>
-                </div>
-
-                <!-- File List Container -->
-                <div id="file-list-container" class="mt-3 mb-3 d-none">
-                     <div class="card">
-                        <div class="card-header bg-light">
-                            <strong>Selected Files</strong> <span class="badge badge-secondary" id="file-count">0</span>
+    <div class="row">
+        <div class="col-md-16 col-md-offset-4 col-xs-24">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form id="pdf-doc-form" action="{FORM_ACTION}" method="post" enctype="multipart/form-data">
+                        <div class="form-group text-center">
+                            <label for="upload_file" class="btn btn-primary btn-lg">
+                                <i class="fa fa-cloud-upload"></i> {LANG.select_file}
+                                <input type="file" class="form-control-file" id="upload_file" name="upload_file[]" accept="{ACCEPT_EXT}" multiple required style="display: none;">
+                            </label>
+                            <div id="file-selected-text" class="help-block"></div>
                         </div>
-                        <ul class="list-group list-group-flush" id="file-list-ul" style="max-height: 300px; overflow-y: auto;">
-                            <!-- List items will be injected here -->
-                        </ul>
-                     </div>
-                </div>
 
-                <div class="progress mt-3 d-none" id="upload-progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                </div>
+                        <!-- File List Container -->
+                        <div id="file-list-container" class="mt-3 mb-3 hidden">
+                             <div class="panel panel-default" style="margin-bottom:0;">
+                                <div class="panel-heading">
+                                    <strong>Selected Files</strong> <span class="badge" id="file-count">0</span>
+                                </div>
+                                <ul class="list-group" id="file-list-ul" style="max-height: 300px; overflow-y: auto;">
+                                    <!-- List items will be injected here -->
+                                </ul>
+                             </div>
+                        </div>
 
-                <div id="result-area" class="mt-3 text-center"></div>
+                        <div class="progress mt-3 hidden" id="upload-progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                        </div>
 
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-success" id="btn-submit">{LANG.upload}</button>
+                        <div id="result-area" class="mt-3 text-center"></div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-success btn-lg" id="btn-submit">{LANG.upload}</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -54,24 +61,22 @@
             var files = this.files;
 
             if (files.length > 0) {
-                fileListContainer.classList.remove('d-none');
+                fileListContainer.classList.remove('hidden');
                 fileCountBadge.textContent = files.length;
 
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     var li = document.createElement('li');
                     li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                    li.innerHTML = `
-                        <div>
-                            <i class="fa fa-file-pdf-o text-danger mr-2"></i> ${file.name}
-                            <small class="text-muted ml-2">(${formatBytes(file.size)})</small>
-                        </div>
-                        <span class="status-icon text-muted"><i class="fa fa-circle-o"></i></span>
-                    `;
+                    li.innerHTML = '<div>' +
+                            '<i class="fa fa-file-pdf-o text-danger mr-2"></i> ' + file.name +
+                            '<small class="text-muted ml-2">(' + formatBytes(file.size) + ')</small>' +
+                        '</div>' +
+                        '<span class="status-icon text-muted"><i class="fa fa-circle-o"></i></span>';
                     fileListUl.appendChild(li);
                 }
             } else {
-                fileListContainer.classList.add('d-none');
+                fileListContainer.classList.add('hidden');
             }
         });
     }
@@ -98,7 +103,7 @@
             var btnSubmit = document.getElementById('btn-submit');
             var statusIcons = document.querySelectorAll('#file-list-ul .status-icon');
 
-            if (progressContainer) progressContainer.classList.remove('d-none');
+            if (progressContainer) progressContainer.classList.remove('hidden');
             if (progressBar) {
                 progressBar.style.width = '0%';
                 progressBar.setAttribute('aria-valuenow', 0);

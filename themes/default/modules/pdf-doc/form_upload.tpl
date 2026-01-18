@@ -1,35 +1,55 @@
 <!-- BEGIN: main -->
 <div class="pdf-doc-tool">
     <div class="row">
-        <div class="col-md-24">
-             <h2 class="text-center mb-4">{LANG.upload}</h2>
+        <div class="col-md-24 text-center">
+             <h2>{LANG.upload}</h2>
         </div>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <form id="pdf-doc-form" action="{FORM_ACTION}" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="upload_file">{LANG.select_file}</label>
-                    <input type="file" class="form-control-file" id="upload_file" name="upload_file" accept="{ACCEPT_EXT}" required>
-                </div>
+    <div class="row">
+        <div class="col-md-16 col-md-offset-4 col-xs-24">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form id="pdf-doc-form" action="{FORM_ACTION}" method="post" enctype="multipart/form-data">
+                        <div class="form-group text-center">
+                            <label for="upload_file" class="btn btn-primary btn-lg">
+                                <i class="fa fa-cloud-upload"></i> {LANG.select_file}
+                                <input type="file" class="form-control-file" id="upload_file" name="upload_file" accept="{ACCEPT_EXT}" required style="display: none;">
+                            </label>
+                            <div id="file-name-display" class="help-block"></div>
+                        </div>
 
-                <div class="progress mt-3 d-none" id="upload-progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                </div>
+                        <div class="progress mt-3 hidden" id="upload-progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                        </div>
 
-                <div id="result-area" class="mt-3 text-center"></div>
+                        <div id="result-area" class="mt-3 text-center"></div>
 
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-success" id="btn-submit">{LANG.upload}</button>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-success btn-lg" id="btn-submit">{LANG.upload}</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 <script>
 (function() {
     var form = document.getElementById('pdf-doc-form');
+    var fileInput = document.getElementById('upload_file');
+    var fileNameDisplay = document.getElementById('file-name-display');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileNameDisplay.textContent = this.files[0].name;
+            } else {
+                fileNameDisplay.textContent = '';
+            }
+        });
+    }
+
     if (form) {
         form.onsubmit = function(e) {
             e.preventDefault();
@@ -42,7 +62,7 @@
             var resultArea = document.getElementById('result-area');
             var btnSubmit = document.getElementById('btn-submit');
 
-            if (progressContainer) progressContainer.classList.remove('d-none');
+            if (progressContainer) progressContainer.classList.remove('hidden');
             if (progressBar) {
                 progressBar.style.width = '0%';
                 progressBar.setAttribute('aria-valuenow', 0);

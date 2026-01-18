@@ -71,7 +71,7 @@ if ($nv_Request->isset_request('ajax', 'post')) {
                 );
                 $db->insert_id($sql, 'id', $data_insert);
 
-                $download_link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=download&file=' . $out_filename . '&name=merged';
+                $download_link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=download&file=' . $out_filename . '&name=merged.pdf';
 
                 $response['status'] = 'ok';
                 $response['mess'] = $lang_module['success'];
@@ -89,6 +89,11 @@ if ($nv_Request->isset_request('ajax', 'post')) {
 }
 
 $page_title = $lang_module['merge'];
+$array_mod_title[] = array(
+    'title' => $page_title,
+    'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op
+);
+
 $xtpl = new XTemplate('merge.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_FILE', $module_file);
