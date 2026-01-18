@@ -113,17 +113,23 @@
         height: 35px;
         border-radius: 50%;
         font-weight: bold;
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        color: #495057;
+        background-color: #fff !important; /* Force white background */
+        border: 1px solid #ced4da !important; /* Darker border */
+        color: #333 !important; /* Force dark text */
     }
     .grid-btn:hover {
-        background-color: #e2e6ea;
+        background-color: #e9ecef !important;
     }
     .btn-answered {
         background-color: #28a745 !important;
         color: white !important;
         border-color: #28a745 !important;
+    }
+    .question-card .form-control.d-inline-block {
+        min-width: 200px;
+        margin: 0 5px;
+        display: inline-block;
+        width: auto;
     }
     html {
         scroll-behavior: smooth;
