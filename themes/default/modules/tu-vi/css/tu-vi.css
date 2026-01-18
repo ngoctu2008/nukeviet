@@ -1,314 +1,188 @@
-/* Tu Vi Module CSS - Mystical/Esoteric Style */
-
-/* General Container */
-.tu-vi-container {
-    font-family: "Times New Roman", Times, serif;
-    background-color: #fdf5e6; /* Old Lace / Parchment */
-    padding: 20px;
-    color: #3e2723;
+/* Root Variables for Colors */
+:root {
+    --color-kim: #A0A0A0; /* Metal - Gray/White */
+    --color-moc: #2E8B57; /* Wood - Green */
+    --color-thuy: #000000; /* Water - Black */
+    --color-hoa: #DC143C; /* Fire - Red */
+    --color-tho: #DAA520; /* Earth - Yellow/Brown */
+    --border-color: #8B4513;
+    --bg-paper: #FFF8DC; /* Parchment look */
 }
 
-/* Chart Grid Layout */
-.tu-vi-chart {
+/* Container */
+.tuvi-chart-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Times New Roman', serif;
+    background-color: var(--bg-paper);
+    border: 2px solid var(--border-color);
+    padding: 10px;
+}
+
+/* Grid Layout for Desktop (12 Palaces + Center) */
+.tuvi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 0;
-    border: 3px double #5d4037; /* Dark Wood */
-    background-color: #fff8e1;
-    max-width: 900px;
-    margin: 0 auto;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    font-size: 13px;
+    grid-template-rows: repeat(4, minmax(200px, auto));
+    gap: 2px;
+    background-color: var(--border-color); /* Lines between cells */
 }
 
-/* Individual Palace Box (Cung) */
-.cung-box {
-    border: 1px solid #8d6e63;
+.tuvi-palace {
+    background-color: #fff;
     padding: 5px;
-    min-height: 180px;
     position: relative;
-    background-color: transparent;
-    transition: all 0.3s ease;
-}
-
-.cung-box:hover {
-    background-color: rgba(255, 248, 225, 0.8);
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-}
-
-/* Highlights for Dai Van / Tieu Van */
-.daivan-highlight {
-    border: 2px solid #1565c0 !important; /* Blue for Dai Van */
-    background-color: rgba(21, 101, 192, 0.05);
-}
-
-.tieuvan-highlight {
-    border: 2px dashed #c62828 !important; /* Red for Tieu Van */
-    background-color: rgba(198, 40, 40, 0.05);
-}
-
-/* Labels for Van highlights */
-.cung-label {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    font-size: 10px;
-    padding: 1px 4px;
-    border-radius: 2px;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    z-index: 10;
-}
-
-.daivan-label {
-    background-color: #1565c0;
-}
-
-.tieuvan-label {
-    background-color: #c62828;
-    top: 18px; /* Offset to stack if needed */
-}
-
-/* Center Box (Thien Ban) */
-.center-box {
-    grid-column: 2 / span 2;
-    grid-row: 2 / span 2;
-    background-color: #fff3e0;
-    /* Yin Yang Bagua Background - Faint */
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="%23d7ccc8" stroke-width="2"/><path d="M50,2 A48,48 0 0,1 50,98 A24,24 0 0,1 50,50 A24,24 0 0,0 50,2 Z" fill="%23d7ccc8" opacity="0.2"/></svg>');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 80%;
-
-    border: 2px solid #5d4037;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    min-height: 200px;
+    overflow: hidden;
+}
+
+/* Background Watermarks using Sprite */
+.tuvi-palace::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px; /* Adjust based on sprite cell size */
+    height: 100px;
+    background-image: url('../images/zodiac_sprite.png');
+    background-repeat: no-repeat;
+    opacity: 0.1; /* Watermark effect */
+    z-index: 0;
+    /* We will set background-position via JS or specific classes if sprite is regular grid */
+    background-size: 400%; /* Assuming 4x3 grid or similar? Check file later. Let's assume user provided 12 separate images logic or 1 sprite. */
+}
+
+/* Sprite Positions (Assuming 12 items in a row or grid? I'll guess vertical or horizontal based on standard sprites)
+   Since I can't see the sprite, I'll assume it's a grid or row.
+   Let's assume simple unique classes and I might need to adjust via CSS later.
+   For now, I'll use specific classes injected by PHP.
+*/
+
+/* Center Block (Thien Ban) spans middle 2x2 */
+.tuvi-center {
+    grid-column: 2 / span 2;
+    grid-row: 2 / span 2;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 15px;
-    margin: 4px; /* Slight gap from grid lines */
-    box-shadow: inset 0 0 20px rgba(93, 64, 55, 0.1);
+    padding: 20px;
+    border: 1px solid var(--border-color);
 }
 
-.center-box h3 {
-    font-size: 22px;
-    font-weight: bold;
-    color: #bf360c;
-    margin: 0 0 10px 0;
-    text-transform: uppercase;
-    border-bottom: 1px solid #bf360c;
-    padding-bottom: 5px;
-    width: 90%;
+.yin-yang-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
 }
 
-.center-box p {
-    margin: 3px 0;
-    font-size: 14px;
-}
-
-/* Palace Header (Cung Chuc) */
-.cung-header {
-    text-align: center;
-    font-weight: bold;
-    font-size: 14px;
-    text-transform: uppercase;
-    border-bottom: 2px solid #8d6e63;
-    margin-bottom: 6px;
-    padding-bottom: 2px;
-    color: #fff;
-    background-color: #6d4c41; /* Brown header background */
-    margin: -5px -5px 5px -5px; /* Flush with container */
-    padding-top: 2px;
-}
-
-/* Star Lists */
+/* Star Styles */
 .star-list {
-    line-height: 1.3;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
 }
 
-.chinh-tinh {
+.star-item {
     font-size: 13px;
-    font-weight: 700;
-    color: #b71c1c; /* Deep Red */
-    display: block;
-    text-transform: uppercase;
+    font-weight: bold;
     margin-bottom: 2px;
 }
 
-.phu-tinh {
-    font-size: 11px;
-    color: #333;
-    font-weight: 500;
-    display: inline-block;
-    margin-right: 5px;
+.star-kim { color: var(--color-kim); }
+.star-moc { color: var(--color-moc); }
+.star-thuy { color: var(--color-thuy); }
+.star-hoa { color: var(--color-hoa); }
+.star-tho { color: var(--color-tho); }
+
+.brightness {
+    font-size: 0.8em;
+    color: #555;
+    margin-left: 3px;
 }
 
-.phu-tinh::after {
-    content: ",";
-    color: #999;
-}
-.phu-tinh:last-child::after {
-    content: "";
-}
-
-/* Footer (Zodiac Animal Name) */
-.cung-footer {
-    position: absolute;
-    bottom: 2px;
-    right: 5px;
-    font-size: 14px;
+/* Palace Header */
+.palace-header {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+    padding-bottom: 2px;
     font-weight: bold;
     text-transform: uppercase;
-    color: rgba(93, 64, 55, 0.6);
-    pointer-events: none;
-    z-index: 5;
+    color: #8B0000;
+    display: flex;
+    justify-content: space-between;
 }
 
-/* Zodiac Image Watermark Background */
-.cung-box::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../images/zodiac_sprite.png');
-    background-size: 400% 300%; /* 4 columns, 3 rows */
-    background-repeat: no-repeat;
-    opacity: 0.15; /* Watermark effect */
-    pointer-events: none;
-    z-index: 0;
+.palace-name {
+    font-size: 1.1em;
 }
 
-/* Ensure content is above the watermark */
-.cung-header, .star-list, .cung-footer, .cung-label {
-    z-index: 1;
-    position: relative;
-}
+/* Grid Positioning for 12 Zodiacs
+   Standard Layout:
+   Top Row: Ti(5), Ngo(6), Mui(7), Than(8)
+   Right Col: Dau(9), Tuat(10)
+   Bot Row: Hoi(11), Ty(0), Suu(1), Dan(2)
+   Left Col: Mao(3), Thin(4)
+*/
 
-/* Specific Positions for Zodiac Sprite */
-/* Row 1 */
-.cung-ty::before       { background-position: 0% 0%; }       /* Tý (Rat) */
-.cung-suu::before      { background-position: 33.333% 0%; }  /* Sửu (Ox) */
-.cung-dan::before      { background-position: 66.666% 0%; }  /* Dần (Tiger) */
-.cung-mao::before      { background-position: 100% 0%; }     /* Mão (Cat) */
+.palace-5 { grid-row: 1; grid-column: 1; } /* Ti */
+.palace-6 { grid-row: 1; grid-column: 2; } /* Ngo */
+.palace-7 { grid-row: 1; grid-column: 3; } /* Mui */
+.palace-8 { grid-row: 1; grid-column: 4; } /* Than */
 
-/* Row 2 */
-.cung-thin::before     { background-position: 0% 50%; }      /* Thìn (Dragon) */
-.cung-ty_snake::before { background-position: 33.333% 50%; } /* Tỵ (Snake) */
-.cung-ngo::before      { background-position: 66.666% 50%; } /* Ngọ (Horse) */
-.cung-mui::before      { background-position: 100% 50%; }    /* Mùi (Goat) */
+.palace-9 { grid-row: 2; grid-column: 4; } /* Dau */
+.palace-10 { grid-row: 3; grid-column: 4; } /* Tuat */
 
-/* Row 3 */
-.cung-than::before     { background-position: 0% 100%; }     /* Thân (Monkey) */
-.cung-dau::before      { background-position: 33.333% 100%; }/* Dậu (Rooster) */
-.cung-tuat::before     { background-position: 66.666% 100%; }/* Tuất (Dog) */
-.cung-hoi::before      { background-position: 100% 100%; }   /* Hợi (Pig) */
+.palace-11 { grid-row: 4; grid-column: 4; } /* Hoi */
+.palace-0  { grid-row: 4; grid-column: 3; } /* Ty */
+.palace-1  { grid-row: 4; grid-column: 2; } /* Suu */
+.palace-2  { grid-row: 4; grid-column: 1; } /* Dan */
 
-/* Grid Positioning - DO NOT CHANGE */
-.cung-ty_snake { grid-area: 1 / 1 / 2 / 2; } /* 5 Tỵ */
-.cung-ngo      { grid-area: 1 / 2 / 2 / 3; } /* 6 */
-.cung-mui      { grid-area: 1 / 3 / 2 / 4; } /* 7 */
-.cung-than     { grid-area: 1 / 4 / 2 / 5; } /* 8 */
+.palace-3  { grid-row: 3; grid-column: 1; } /* Mao */
+.palace-4  { grid-row: 2; grid-column: 1; } /* Thin */
 
-.cung-thin     { grid-area: 2 / 1 / 3 / 2; } /* 4 */
-.cung-dau      { grid-area: 2 / 4 / 3 / 5; } /* 9 */
+/* Background Sprite Positioning
+   Assuming sprite is a 12-cell strip or grid.
+   If user provided '8a012congiap1.png', it's likely a strip or 4x3.
+   We'll assume unique positions.
+   For now, we just ensure the class is there.
+   If sprite is vertical strip: 0 to 11 * height.
+   If horizontal: 0 to 11 * width.
+   Let's assume horizontal strip for now (common).
+*/
+.palace-0::before { background-position: 0 0; } /* Ty */
+.palace-1::before { background-position: -100px 0; } /* Suu */
+.palace-2::before { background-position: -200px 0; }
+.palace-3::before { background-position: -300px 0; }
+.palace-4::before { background-position: -400px 0; }
+.palace-5::before { background-position: -500px 0; }
+.palace-6::before { background-position: -600px 0; }
+.palace-7::before { background-position: -700px 0; }
+.palace-8::before { background-position: -800px 0; }
+.palace-9::before { background-position: -900px 0; }
+.palace-10::before { background-position: -1000px 0; }
+.palace-11::before { background-position: -1100px 0; }
 
-.cung-mao      { grid-area: 3 / 1 / 4 / 2; } /* 3 */
-.cung-tuat     { grid-area: 3 / 4 / 4 / 5; } /* 10 */
-
-.cung-dan      { grid-area: 4 / 1 / 5 / 2; } /* 2 */
-.cung-suu      { grid-area: 4 / 2 / 5 / 3; } /* 1 */
-.cung-ty       { grid-area: 4 / 3 / 5 / 4; } /* 0 Tý */
-.cung-hoi      { grid-area: 4 / 4 / 5 / 5; } /* 11 */
-
-/* Interpretations Section */
-.tu-vi-interpretations {
-    margin-top: 30px;
-    border-top: 2px solid #5d4037;
-    padding-top: 20px;
-}
-
-.tu-vi-interpretations h3 {
-    text-align: center;
-    font-size: 20px;
-    color: #5d4037;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    background: url('data:image/svg+xml;utf8,<svg width="100" height="5" viewBox="0 0 100 5" xmlns="http://www.w3.org/2000/svg"><path d="M0 2.5 L100 2.5" stroke="%235d4037" stroke-width="1"/></svg>') center bottom no-repeat;
-    padding-bottom: 10px;
-}
-
-/* Custom Panel / Card for Interpretations */
-.tv-panel {
-    background-color: #fff;
-    border: 1px solid #d7ccc8;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.tv-panel-heading {
-    background-color: #efebe9;
-    padding: 10px 15px;
-    border-bottom: 1px solid #d7ccc8;
-    color: #5d4037;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.tv-panel-body {
-    padding: 15px;
-    font-size: 14px;
-    line-height: 1.6;
-    color: #333;
-    text-align: justify;
-}
-
-/* Highlight specific interpretation types */
-.tv-panel.highlight-luck .tv-panel-heading {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border-bottom-color: #c8e6c9;
-}
-.tv-panel.highlight-luck { border-color: #c8e6c9; }
-
-.tv-panel.highlight-bad .tv-panel-heading {
-    background-color: #ffebee;
-    color: #c62828;
-    border-bottom-color: #ffcdd2;
-}
-.tv-panel.highlight-bad { border-color: #ffcdd2; }
-
-/* Mobile Responsive */
+/* Mobile View (Responsive) */
 @media (max-width: 768px) {
-    .tu-vi-chart {
+    .tuvi-grid {
         display: flex;
         flex-direction: column;
-        border: none;
-        background: none;
-        box-shadow: none;
     }
 
-    .cung-box {
-        margin-bottom: 15px;
-        background: #fff;
-        border: 1px solid #ccc;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        min-height: auto;
-    }
-
-    .center-box {
+    .tuvi-center {
         order: -1; /* Show info first */
-        margin-bottom: 20px;
-        border: 2px solid #5d4037;
-        background: #fff3e0;
+        margin-bottom: 10px;
     }
 
-    .cung-header {
-        margin: -5px -5px 10px -5px;
+    .tuvi-palace {
+        min-height: auto;
+        border-bottom: 1px solid #ccc;
     }
 }

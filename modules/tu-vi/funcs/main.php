@@ -15,30 +15,34 @@ if (!defined('NV_IS_MOD_TU_VI')) {
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
 
-$xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_info['module_theme']);
+$xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
-$xtpl->assign('GLANG', $lang_global);
-$xtpl->assign('ACTION', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view');
+$xtpl->assign('ACTION', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=view');
 
-// Render days/months/years options
+// Generate Hours dropdown
+for ($i = 0; $i < 24; $i++) {
+    $xtpl->assign('HOUR', ['val' => $i, 'title' => $i . 'h']);
+    $xtpl->parse('main.hour');
+}
+
+// Generate Days
 for ($i = 1; $i <= 31; $i++) {
-    $xtpl->assign('DAY', ['value' => $i, 'title' => $i]);
+    $xtpl->assign('DAY', ['val' => $i, 'title' => $i]);
     $xtpl->parse('main.day');
 }
+
+// Generate Months
 for ($i = 1; $i <= 12; $i++) {
-    $xtpl->assign('MONTH', ['value' => $i, 'title' => $i]);
+    $xtpl->assign('MONTH', ['val' => $i, 'title' => $i]);
     $xtpl->parse('main.month');
 }
+
+// Generate Years (1920-2030)
 $curYear = date('Y');
-for ($i = 1900; $i <= $curYear + 1; $i++) {
-    $sel = ($i == 1990) ? 'selected="selected"' : '';
-    $xtpl->assign('YEAR', ['value' => $i, 'title' => $i, 'selected' => $sel]);
+for ($i = 1950; $i <= $curYear + 1; $i++) {
+    $sel = ($i == 2000) ? 'selected' : '';
+    $xtpl->assign('YEAR', ['val' => $i, 'title' => $i, 'selected' => $sel]);
     $xtpl->parse('main.year');
-}
-// Hours (0-23)
-for ($i = 0; $i < 24; $i++) {
-    $xtpl->assign('HOUR', ['value' => $i, 'title' => $i . ':00 - ' . $i . ':59']);
-    $xtpl->parse('main.hour');
 }
 
 $xtpl->parse('main');
