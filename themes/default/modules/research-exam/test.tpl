@@ -6,8 +6,8 @@
 
         <div class="row">
             <!-- Sidebar: Info & Grid -->
-            <div class="col-md-4 col-lg-3 mb-4">
-                <div class="sticky-top" style="top: 20px; z-index: 1000;">
+            <div class="col-md-6 col-lg-6 mb-4">
+                <div class="sticky-sidebar">
                     <div class="card border-primary mb-3">
                         <div class="card-header bg-primary text-white text-center">
                             <div style="font-size: 0.9rem;">{LANG.time_remaining}</div>
@@ -18,7 +18,7 @@
                             <div class="text-center font-weight-bold mb-2">{LANG.list_question}</div>
                             <div class="d-flex flex-wrap justify-content-center" id="question-grid">
                                 <!-- BEGIN: question_grid -->
-                                <a href="#question_{Q_GRID.id}" id="grid_btn_{Q_GRID.id}" class="btn btn-outline-secondary btn-sm m-1 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px; border-radius: 50%; font-weight: bold;">
+                                <a href="#question_{Q_GRID.id}" id="grid_btn_{Q_GRID.id}" class="btn btn-outline-secondary btn-sm m-1 d-flex align-items-center justify-content-center grid-btn">
                                     {Q_GRID.index}
                                 </a>
                                 <!-- END: question_grid -->
@@ -32,7 +32,7 @@
             </div>
 
             <!-- Main Content: Questions -->
-            <div class="col-md-8 col-lg-9">
+            <div class="col-md-18 col-lg-18">
                 <h2 class="text-primary border-bottom pb-2 mb-4">{EXAM.title}</h2>
 
                 <!-- BEGIN: loop -->
@@ -102,6 +102,24 @@
 </div>
 
 <style>
+    .sticky-sidebar {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 20px;
+        z-index: 1000;
+    }
+    .grid-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        font-weight: bold;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        color: #495057;
+    }
+    .grid-btn:hover {
+        background-color: #e2e6ea;
+    }
     .btn-answered {
         background-color: #28a745 !important;
         color: white !important;
