@@ -81,6 +81,7 @@ $xtpl = new XTemplate('test.tpl', NV_ROOTDIR . '/themes/' . $module_info['templa
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', 'test');
+$exam['num_questions_actual'] = count($questions);
 $xtpl->assign('EXAM', $exam);
 $xtpl->assign('NV_CHECK_SESSION', NV_CHECK_SESSION);
 

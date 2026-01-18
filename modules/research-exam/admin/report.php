@@ -39,8 +39,16 @@ if ($nv_Request->isset_request('export', 'post')) {
         echo '<table border="1">';
         echo '<tr><th>STT</th><th>' . $lang_module['fullname'] . '</th><th>' . $lang_module['phone'] . '</th><th>' . $lang_module['unit'] . '</th><th>' . $lang_module['correct_count'] . '</th><th>' . $lang_module['score'] . '</th><th>' . $lang_module['essay_score'] . '</th><th>' . $lang_module['total_score'] . '</th><th>Dự đoán</th><th>Thời gian nộp</th></tr>';
 
-        // Correct sorting by Score -> Prediction Accuracy -> Time
-        $sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " ORDER BY r.total_score DESC, ABS(r.prediction - (SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id=" . $examid . " AND correct_count = (SELECT num_questions FROM " . NV_PREFIXLANG . "_" . $module_data . "_exams WHERE id=" . $examid . "))) ASC, r.time_submit ASC";
+        // Calculate Perfect Score Count properly
+        // If structured, we need to know max questions. If not, num_questions.
+        // Or simpler: The prediction question is usually "How many people answer correctly X questions" or "All questions".
+        // Let's assume "All". We need max questions count for this exam.
+        // We can get it by counting questions linked to exam.
+        $total_questions = $db->query("SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $examid)->fetchColumn();
+
+        // Correct sorting by Score -> Prediction Accuracy (Diff from Count of Perfect Scores) -> Time
+        // We inject the subquery with the calculated total_questions variable
+        $sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " ORDER BY r.total_score DESC, ABS(r.prediction - (SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id=" . $examid . " AND correct_count = " . intval($total_questions) . ")) ASC, r.time_submit ASC";
 
         $res = $db->query($sql);
         $i = 1;
