@@ -71,6 +71,7 @@ $lang_module['report_individual'] = 'Giải cá nhân';
 $lang_module['report_collective'] = 'Giải tập thể';
 $lang_module['export_excel'] = 'Xuất Excel';
 $lang_module['grading'] = 'Chấm điểm';
+$lang_module['grade_essay'] = 'Chấm tự luận';
 $lang_module['essay_score'] = 'Điểm tự luận';
 $lang_module['total_score'] = 'Tổng điểm';
 $lang_module['status'] = 'Trạng thái';

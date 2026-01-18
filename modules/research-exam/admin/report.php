@@ -127,29 +127,60 @@ $sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module
 $res = $db->query($sql);
 while ($row = $res->fetch()) {
     $row['time_submit'] = date('d/m/Y H:i', $row['time_submit']);
+
     $xtpl->assign('ROW', $row);
 
-    // Check if there are essay questions to grade
-    // For simplicity, we just show grade button if essay_score is 0 or needed.
-    // Ideally check if exam has essay questions.
+    // Logic to show/hide button or styling
+    // We need to know if this row HAS essay data in the JSON we prepared below?
+    // But we prepare JSON below. We should move the JSON prep UP or just parse row later?
+    // Moving query up is cleaner.
 
     $xtpl->parse('main.individual.row');
 }
-$xtpl->parse('main.individual');
 
-// Modal for Grading (We load Essay Content via Ajax or just hidden div - implementing simple one-page load for this plan would be complex, so let's use a separate page or a simple expand mechanism.
-// Plan: Grading is done by clicking "Grade" -> Loads `admin/grade.php` (new file) or just expands.
-// Let's implement a simple inline grading form for the row or a popup.
-// I'll make a `grade_modal` that populates via JS.
-// Need to fetch essay answer. Filter by current Exam ID to avoid performance issues.
+// Fetch Essay Data first to check existence in loop if needed,
+// OR simpler: Prepare array first.
 $sql_essay = "SELECT d.result_id, d.user_answer, q.title as question_title, q.score as max_score FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_detail d JOIN " . NV_PREFIXLANG . "_" . $module_data . "_questions q ON d.question_id = q.id JOIN " . NV_PREFIXLANG . "_" . $module_data . "_users_result r ON d.result_id = r.id WHERE q.type = 4 AND r.exam_id = " . $examid;
 $res_e = $db->query($sql_essay);
 $essay_data = array();
 while ($e = $res_e->fetch()) {
     $essay_data[$e['result_id']][] = $e;
 }
-// Pass this to JS
 $xtpl->assign('ESSAY_DATA_JSON', json_encode($essay_data));
+
+// Now loop rows (reset pointer or just do it logic correctly? The code above loop was already executed in memory model?
+// No, I need to replace the loop block.
+// Let's restart the loop logic here in the replacement block.
+
+// Clear previous loop (in concept, but I am replacing the block).
+// Re-query or just re-iterate?
+// I cannot easily re-iterate $res.
+// So I will move the essay query BEFORE the loop in my replacement block.
+
+$res->closeCursor(); // Close previous cursor if needed
+// Re-run main query or fetch all to array?
+// Fetch all to array is safer.
+$sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " ORDER BY r.total_score DESC, ABS(r.prediction - (SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id=" . $examid . " AND correct_count = " . intval($total_questions) . ")) ASC, r.time_submit ASC LIMIT 50";
+$res_rows = $db->query($sql);
+
+while ($row = $res_rows->fetch()) {
+    $row['time_submit'] = date('d/m/Y H:i', $row['time_submit']);
+
+    // Check if has essay
+    if (isset($essay_data[$row['id']])) {
+        $xtpl->assign('BTN_CLASS', 'btn-primary');
+        $xtpl->assign('BTN_ICON', 'fa-pencil-square-o');
+        $xtpl->assign('BTN_TEXT', $lang_module['grade_essay']);
+        $xtpl->parse('main.individual.row.has_essay');
+    } else {
+         // Optional: Show disabled button or nothing?
+         // If no essay, maybe just "View Detail" if we had it, but for now just hide or show generic
+    }
+
+    $xtpl->assign('ROW', $row);
+    $xtpl->parse('main.individual.row');
+}
+$xtpl->parse('main.individual');
 
 
 $xtpl->parse('main');
