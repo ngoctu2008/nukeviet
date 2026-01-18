@@ -26,30 +26,34 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
 
     $module_dir = NV_ROOTDIR . '/modules/' . $module_file;
     if (is_dir($module_dir)) {
-        if (!function_exists('exec')) {
-             $xtpl->assign('INSTALL_MESSAGE', 'Error: exec() function is disabled. Please run "composer install" manually via terminal.');
+        if (!function_exists('exec') && !function_exists('shell_exec')) {
+             $xtpl->assign('INSTALL_MESSAGE', 'Error: exec() and shell_exec() functions are disabled. Please run "composer install" manually via terminal.');
              $xtpl->assign('INSTALL_CLASS', 'alert-danger');
         } else {
             $output = array();
             $return_var = 0;
 
-            // Setup environment - remove if causing issues, but usually helpful
+            // Setup environment
             putenv('COMPOSER_HOME=' . NV_ROOTDIR . '/tmp/composer');
 
-            // Determine PHP executable
+            // Determine PHP executable correctly
             $php_bin = defined('PHP_BINARY') ? PHP_BINARY : 'php';
+            // Fix for Apache running PHP as module where PHP_BINARY might be httpd.exe
+            if (stripos($php_bin, 'httpd') !== false || stripos($php_bin, 'apache') !== false) {
+                $php_bin = 'php'; // Fallback to PATH
+            }
 
             // Check if composer is globally installed
             $composer_bin = 'composer';
-            // Use 'where' on Windows, 'which' on Linux
-            $check_cmd = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? 'where composer' : 'which composer';
+            $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+            $check_cmd = $is_windows ? 'where composer' : 'which composer';
             $check_composer = @shell_exec($check_cmd);
 
             if (empty($check_composer)) {
                 // Fallback to local composer.phar
                 $composer_phar = $module_dir . '/composer.phar';
                 if (!file_exists($composer_phar)) {
-                    // Download composer.phar
+                    // Download composer.phar logic
                     $phar_url = 'https://getcomposer.org/download/latest-stable/composer.phar';
                     $downloaded = false;
 
@@ -88,8 +92,18 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
             }
 
             if ($return_var === 0) {
-                // Run install
-                $cmd = 'cd ' . escapeshellarg($module_dir) . ' && ' . $composer_bin . ' install --no-dev 2>&1';
+                // Construct command
+                $install_cmd = $composer_bin . ' install --no-dev 2>&1';
+
+                if ($is_windows) {
+                    // Windows specific command construction
+                    // cd /d ensures drive change if needed
+                    $cmd = 'cmd /c "cd /d ' . escapeshellarg($module_dir) . ' && ' . $install_cmd . '"';
+                } else {
+                    $cmd = 'cd ' . escapeshellarg($module_dir) . ' && ' . $install_cmd;
+                }
+
+                // Run
                 @exec($cmd, $output, $return_var);
             }
 
