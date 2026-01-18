@@ -43,45 +43,71 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
             // Composer not found globally, check for local composer.phar
             $composer_phar = $module_dir . '/composer.phar';
             if (!file_exists($composer_phar)) {
-                // Download composer.phar
                 $installer_url = 'https://getcomposer.org/installer';
                 $setup_file = $module_dir . '/composer-setup.php';
+                $phar_url = 'https://getcomposer.org/download/latest-stable/composer.phar';
 
-                $installer = false;
+                $downloaded = false;
+
+                // Method 1: file_get_contents (installer)
                 if (ini_get('allow_url_fopen')) {
                     $installer = @file_get_contents($installer_url);
+                    if ($installer) {
+                        file_put_contents($setup_file, $installer);
+                        exec($php_bin . ' ' . escapeshellarg($setup_file) . ' --install-dir=' . escapeshellarg($module_dir), $output, $return_var);
+                        @unlink($setup_file);
+                        if (file_exists($composer_phar)) $downloaded = true;
+                    }
                 }
 
-                if ($installer === false && function_exists('curl_version')) {
+                // Method 2: cURL (installer)
+                if (!$downloaded && function_exists('curl_version')) {
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $installer_url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     $installer = curl_exec($ch);
+
+                    if ($installer && curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
+                        file_put_contents($setup_file, $installer);
+                        exec($php_bin . ' ' . escapeshellarg($setup_file) . ' --install-dir=' . escapeshellarg($module_dir), $output, $return_var);
+                        @unlink($setup_file);
+                        if (file_exists($composer_phar)) $downloaded = true;
+                    } else {
+                        $output[] = "cURL download failed: " . curl_error($ch);
+                    }
                     curl_close($ch);
                 }
 
-                if ($installer) {
-                    file_put_contents($setup_file, $installer);
-                    exec($php_bin . ' ' . escapeshellarg($setup_file) . ' --install-dir=' . escapeshellarg($module_dir), $output, $return_var);
-                    @unlink($setup_file);
-                } else {
-                    $output[] = "Failed to download composer installer via file_get_contents or cURL.";
-                    // Last resort: try to just wget/curl binary directly if system has them (unlikely if php fails but worth checking?)
-                    // Actually, direct download of phar is easier:
-                    $phar_url = 'https://getcomposer.org/download/latest-stable/composer.phar';
-                    if (ini_get('allow_url_fopen')) {
-                        $phar_content = @file_get_contents($phar_url);
-                        if ($phar_content) file_put_contents($composer_phar, $phar_content);
+                // Method 3: Direct Download (copy)
+                if (!$downloaded && ini_get('allow_url_fopen')) {
+                    if (@copy($phar_url, $composer_phar)) {
+                        $downloaded = true;
+                    } else {
+                        $output[] = "Direct copy failed.";
                     }
+                }
+
+                // Method 4: Direct Download (cURL phar)
+                if (!$downloaded && function_exists('curl_version')) {
+                    $fp = fopen($composer_phar, 'w+');
+                    $ch = curl_init($phar_url);
+                    curl_setopt($ch, CURLOPT_FILE, $fp);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_exec($ch);
+                    if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
+                        $downloaded = true;
+                    }
+                    curl_close($ch);
+                    fclose($fp);
                 }
             }
 
             if (file_exists($composer_phar)) {
                 $composer_bin = $php_bin . ' ' . escapeshellarg($composer_phar);
                 $return_var = 0; // Reset return var if we found/downloaded it
-                $output = array(); // Clear download logs
             } else {
                 $output[] = "Could not find or download composer.phar. Please ensure allow_url_fopen is On or cURL is enabled.";
                 $return_var = 1;
