@@ -49,11 +49,11 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
             if (stripos($php_bin, 'httpd') !== false || stripos($php_bin, 'apache') !== false) {
                 $possible_paths = [];
                 if ($is_windows) {
+                    $possible_paths[] = 'E:/webs/php/php.exe'; // Specific user path based on error log
                     $possible_paths[] = dirname($php_bin) . '/php.exe'; // same dir
                     $possible_paths[] = dirname(dirname($php_bin)) . '/php/php.exe'; // ../php/php.exe
                     $possible_paths[] = 'C:/xampp/php/php.exe';
-                    $possible_paths[] = 'C:/wamp/bin/php/php*/php.exe'; // Wildcard logic not simple here, just specific paths
-                    $possible_paths[] = 'E:/webs/php/php.exe'; // Guessing from user path structure E:/webs/apache...
+                    $possible_paths[] = 'C:/wamp/bin/php/php*/php.exe';
                 } else {
                     $possible_paths[] = '/usr/bin/php';
                     $possible_paths[] = '/usr/local/bin/php';
@@ -111,9 +111,9 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
                 }
 
                 if (file_exists($composer_phar)) {
-                    // On Windows, if php_bin has spaces, it needs quoting.
-                    // But if we wrap the whole command in cmd /c "...", inner quotes need care.
-                    $composer_bin = '"' . $php_bin . '" ' . escapeshellarg($composer_phar);
+                    // Use full path to PHP binary when running phar
+                    // Wrap paths in quotes to handle spaces
+                    $composer_bin = '"' . $php_bin . '" "' . $composer_phar . '"';
                 } else {
                     $output[] = "Could not find or download composer.phar.";
                     $return_var = 1;
