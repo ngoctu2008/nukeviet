@@ -27,4 +27,4 @@ function nv_get_units()
     return $units;
 }
 
-$allow_func = array('main', 'exam', 'units', 'questions', 'report', 'result', 'save');
+$allow_func = array('main', 'exam', 'units', 'questions', 'report', 'result', 'save', 'topics');
