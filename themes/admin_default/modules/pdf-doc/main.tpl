@@ -12,7 +12,17 @@
     <div class="alert alert-danger">
         {ERROR_DEPENDENCY}
         <div class="margin-top">
-            <button type="submit" name="install_composer" value="1" class="btn btn-warning btn-xs" onclick="this.innerHTML='Installing... Please wait (this can take 1-2 minutes)'; this.disabled=true; this.form.submit();">{LANG.install_composer}</button>
+             <button type="button" class="btn btn-warning btn-xs" id="btn-install-composer">{LANG.install_composer}</button>
+        </div>
+    </div>
+
+    <div class="panel panel-info" id="install-terminal-container" style="display:none;">
+        <div class="panel-heading">Terminal Log</div>
+        <div class="panel-body" style="padding:0;">
+            <iframe id="install-frame" src="about:blank" style="width:100%; height:300px; border:none; background:#1e1e1e;"></iframe>
+        </div>
+        <div class="panel-footer text-right">
+             <button type="button" class="btn btn-default btn-xs" onclick="$('#install-terminal-container').hide();">Close</button>
         </div>
     </div>
     <!-- END: error_dependency -->
@@ -50,4 +60,36 @@
         </div>
     </div>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('btn-install-composer');
+    if (btn) {
+        btn.addEventListener('click', function() {
+            var container = document.getElementById('install-terminal-container');
+            var frame = document.getElementById('install-frame');
+
+            container.style.display = 'block';
+            frame.src = '{STREAM_URL}';
+            btn.disabled = true;
+            btn.innerHTML = 'Installing...';
+        });
+    }
+});
+
+function installComplete(success) {
+    var btn = document.getElementById('btn-install-composer');
+    if (btn) {
+        btn.disabled = false;
+        if (success) {
+            btn.innerHTML = 'Install Completed (Reload to apply)';
+            btn.className = 'btn btn-success btn-xs';
+            btn.onclick = function() { location.reload(); };
+        } else {
+            btn.innerHTML = 'Install Failed - Retry';
+            btn.className = 'btn btn-danger btn-xs';
+        }
+    }
+}
+</script>
 <!-- END: main -->

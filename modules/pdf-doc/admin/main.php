@@ -10,161 +10,163 @@ if (!defined('NV_IS_FILE_ADMIN')) {
     die('Stop!!!');
 }
 
+// Handle Composer Install Stream
+if ($op == 'install_composer_stream') {
+    if (!defined('NV_IS_AJAX')) define('NV_IS_AJAX', true);
+
+    // Check permission - strictly require admin
+    if (!defined('NV_IS_ADMIN')) {
+        die('Access Denied');
+    }
+
+    // Disable buffering and compression
+    @ini_set('output_buffering', 'off');
+    @ini_set('zlib.output_compression', false);
+    while (@ob_end_flush());
+
+    // Headers
+    header('Content-Type: text/html; charset=utf-8');
+    header('Cache-Control: no-cache');
+
+    echo '<!DOCTYPE html><html><head><style>body { background: #1e1e1e; color: #00ff00; font-family: "Courier New", Courier, monospace; font-size: 14px; margin: 0; padding: 10px; } .error { color: #ff0000; } .success { color: #00ff00; font-weight: bold; }</style></head><body>';
+    echo '<div>Starting installation process...</div>';
+    echo '<script>window.scrollTo(0, document.body.scrollHeight);</script>';
+    flush();
+
+    // Increase limits
+    @set_time_limit(0);
+    @ini_set('memory_limit', '-1');
+
+    $module_dir = NV_ROOTDIR . '/modules/' . $module_file;
+
+    // Check disk space (warn if < 200MB)
+    $free_space = @disk_free_space($module_dir);
+    if ($free_space !== false && $free_space < 200 * 1024 * 1024) {
+        echo '<div class="error">Warning: Low disk space detected (' . nv_convertfromBytes($free_space) . '). Installation may fail.</div>';
+        flush();
+    }
+
+    if (!function_exists('proc_open')) {
+        echo '<div class="error">Error: proc_open() function is disabled. Cannot stream output.</div>';
+        die('</body></html>');
+    }
+
+    // --- Command Construction Logic (Reused) ---
+    putenv('COMPOSER_HOME=' . NV_ROOTDIR . '/tmp/composer');
+    $php_bin = (defined('PHP_BINARY') && PHP_BINARY != '') ? PHP_BINARY : 'php';
+    $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+
+    // Fix PHP path if it looks like apache
+    if (stripos($php_bin, 'httpd') !== false || stripos($php_bin, 'apache') !== false) {
+        $possible_paths = $is_windows ?
+            ['E:/webs/php/php.exe', dirname($php_bin) . '/php.exe', dirname(dirname($php_bin)) . '/php/php.exe', 'C:/xampp/php/php.exe'] :
+            ['/usr/bin/php', '/usr/local/bin/php'];
+
+        foreach ($possible_paths as $path) {
+            if (file_exists($path)) {
+                $php_bin = $path;
+                break;
+            }
+        }
+        if (stripos($php_bin, 'httpd') !== false) $php_bin = 'php'; // Fallback
+    }
+
+    // Locate Composer
+    $composer_bin = 'composer';
+    $check_cmd = $is_windows ? 'where composer' : 'which composer';
+    $check_composer = @shell_exec($check_cmd);
+
+    if (empty($check_composer)) {
+        $composer_phar = $module_dir . '/composer.phar';
+        if (!file_exists($composer_phar)) {
+            echo '<div>Downloading composer.phar...</div>';
+            flush();
+            $phar_url = 'https://getcomposer.org/download/latest-stable/composer.phar';
+            $downloaded = false;
+            if (ini_get('allow_url_fopen')) {
+                $content = @file_get_contents($phar_url);
+                if ($content) { file_put_contents($composer_phar, $content); $downloaded = true; }
+            }
+            if (!$downloaded && function_exists('curl_version')) {
+                $fp = fopen($composer_phar, 'w+');
+                $ch = curl_init($phar_url);
+                curl_setopt($ch, CURLOPT_FILE, $fp);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_exec($ch);
+                if (curl_errno($ch) == 0 && curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) $downloaded = true;
+                curl_close($ch);
+                fclose($fp);
+            }
+        }
+
+        if (file_exists($composer_phar)) {
+            $composer_bin = '"' . $php_bin . '" "' . $composer_phar . '"';
+        } else {
+            echo '<div class="error">Could not find or download composer.phar.</div></body></html>';
+            die();
+        }
+    } else {
+        $lines = explode("\n", trim($check_composer));
+        $composer_bin = '"' . trim($lines[0]) . '"';
+    }
+
+    $install_cmd = $composer_bin . ' install --no-dev 2>&1';
+    $cmd = $is_windows ? 'cd /d ' . escapeshellarg($module_dir) . ' && ' . $install_cmd : 'cd ' . escapeshellarg($module_dir) . ' && ' . $install_cmd;
+
+    echo '<div>Executing: ' . $cmd . '</div><br>';
+    echo '<script>window.scrollTo(0, document.body.scrollHeight);</script>';
+    flush();
+
+    // Stream Execution
+    $descriptorspec = array(
+       0 => array("pipe", "r"),
+       1 => array("pipe", "w"),
+       2 => array("pipe", "w")
+    );
+
+    $process = proc_open($cmd, $descriptorspec, $pipes);
+
+    if (is_resource($process)) {
+        fclose($pipes[0]); // Close stdin
+
+        while (!feof($pipes[1])) {
+            $line = fgets($pipes[1]);
+            if ($line) {
+                echo '<div>' . htmlspecialchars($line) . '</div>';
+                echo '<script>window.scrollTo(0, document.body.scrollHeight);</script>';
+                flush();
+                @ob_flush();
+            }
+        }
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        $return_value = proc_close($process);
+
+        if ($return_value === 0 && file_exists($module_dir . '/vendor/autoload.php')) {
+            echo '<br><div class="success">Installation Completed Successfully!</div>';
+            echo '<script>if(window.parent && window.parent.installComplete) window.parent.installComplete(true);</script>';
+        } else {
+            echo '<br><div class="error">Installation Failed with code ' . $return_value . '.</div>';
+            echo '<script>if(window.parent && window.parent.installComplete) window.parent.installComplete(false);</script>';
+        }
+    } else {
+        echo '<div class="error">Failed to launch process.</div>';
+    }
+
+    echo '</body></html>';
+    die();
+}
+
 $page_title = $lang_module['config'];
 
 $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $global_config['admin_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('ACTION_URL', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
 $xtpl->assign('CHECKSS', NV_CHECK_SESSION);
+$xtpl->assign('STREAM_URL', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=install_composer_stream");
 
-// Handle Composer Install
-if ($nv_Request->isset_request('install_composer', 'post')) {
-    $checkss = $nv_Request->get_title('checkss', 'post', '');
-    if ($checkss != NV_CHECK_SESSION) {
-        die('Security Violation');
-    }
-
-    // Increase limits for installation
-    @set_time_limit(0);
-    @ini_set('memory_limit', '-1');
-
-    $module_dir = NV_ROOTDIR . '/modules/' . $module_file;
-    if (is_dir($module_dir)) {
-        // Check disk space (warn if < 200MB)
-        $free_space = @disk_free_space($module_dir);
-        if ($free_space !== false && $free_space < 200 * 1024 * 1024) {
-             $xtpl->assign('INSTALL_MESSAGE', 'Warning: Low disk space detected (' . nv_convertfromBytes($free_space) . '). Installation may fail.');
-             $xtpl->assign('INSTALL_CLASS', 'alert-warning');
-             $xtpl->parse('main.install_result');
-        }
-
-        if (!function_exists('exec') && !function_exists('shell_exec')) {
-             $xtpl->assign('INSTALL_MESSAGE', 'Error: exec() and shell_exec() functions are disabled. Please run "composer install" manually via terminal.');
-             $xtpl->assign('INSTALL_CLASS', 'alert-danger');
-             $xtpl->parse('main.install_result');
-        } else {
-            $output = array();
-            $return_var = 0;
-
-            // Setup environment
-            putenv('COMPOSER_HOME=' . NV_ROOTDIR . '/tmp/composer');
-
-            // Determine PHP executable correctly
-            $php_bin = 'php'; // Default
-
-            if (defined('PHP_BINARY') && PHP_BINARY != '') {
-                $php_bin = PHP_BINARY;
-            }
-
-            $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
-
-            // If PHP_BINARY looks like apache/httpd, try to find php.exe
-            if (stripos($php_bin, 'httpd') !== false || stripos($php_bin, 'apache') !== false) {
-                $possible_paths = [];
-                if ($is_windows) {
-                    $possible_paths[] = 'E:/webs/php/php.exe';
-                    $possible_paths[] = dirname($php_bin) . '/php.exe';
-                    $possible_paths[] = dirname(dirname($php_bin)) . '/php/php.exe';
-                    $possible_paths[] = 'C:/xampp/php/php.exe';
-                    $possible_paths[] = 'C:/wamp/bin/php/php*/php.exe';
-                } else {
-                    $possible_paths[] = '/usr/bin/php';
-                    $possible_paths[] = '/usr/local/bin/php';
-                }
-
-                $found_php = false;
-                foreach ($possible_paths as $path) {
-                    if (file_exists($path)) {
-                        $php_bin = $path;
-                        $found_php = true;
-                        break;
-                    }
-                }
-
-                if (!$found_php) {
-                    $php_bin = 'php';
-                }
-            }
-
-            // Check if composer is globally installed
-            $composer_bin = 'composer';
-            $check_cmd = $is_windows ? 'where composer' : 'which composer';
-            $check_composer = @shell_exec($check_cmd);
-
-            if (empty($check_composer)) {
-                // Fallback to local composer.phar
-                $composer_phar = $module_dir . '/composer.phar';
-                if (!file_exists($composer_phar)) {
-                    // Download composer.phar logic
-                    $phar_url = 'https://getcomposer.org/download/latest-stable/composer.phar';
-                    $downloaded = false;
-
-                    if (ini_get('allow_url_fopen')) {
-                        $content = @file_get_contents($phar_url);
-                        if ($content) {
-                            file_put_contents($composer_phar, $content);
-                            $downloaded = true;
-                        }
-                    }
-
-                    if (!$downloaded && function_exists('curl_version')) {
-                        $fp = fopen($composer_phar, 'w+');
-                        $ch = curl_init($phar_url);
-                        curl_setopt($ch, CURLOPT_FILE, $fp);
-                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                        curl_exec($ch);
-                        if (curl_errno($ch) == 0 && curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
-                            $downloaded = true;
-                        }
-                        curl_close($ch);
-                        fclose($fp);
-                    }
-                }
-
-                if (file_exists($composer_phar)) {
-                    $composer_bin = '"' . $php_bin . '" "' . $composer_phar . '"';
-                } else {
-                    $output[] = "Could not find or download composer.phar.";
-                    $return_var = 1;
-                }
-            } else {
-                 $lines = explode("\n", trim($check_composer));
-                 $composer_bin = '"' . trim($lines[0]) . '"';
-            }
-
-            if ($return_var === 0) {
-                // Construct command
-                $install_cmd = $composer_bin . ' install --no-dev 2>&1';
-
-                if ($is_windows) {
-                    $cmd = 'cmd /c "cd /d ' . escapeshellarg($module_dir) . ' && ' . $install_cmd . '"';
-                } else {
-                    $cmd = 'cd ' . escapeshellarg($module_dir) . ' && ' . $install_cmd;
-                }
-
-                // Run
-                @exec($cmd, $output, $return_var);
-            }
-
-            if ($return_var === 0 && file_exists($module_dir . '/vendor/autoload.php')) {
-                $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_success']);
-                $xtpl->assign('INSTALL_CLASS', 'alert-success');
-            } else {
-                $error_detail = implode("<br>", $output);
-
-                // Add friendly message for disk space
-                if (strpos($error_detail, 'No space left on device') !== false) {
-                    $error_detail .= '<br><strong>ERROR: Your disk is full. Please free up space on your server.</strong>';
-                }
-
-                $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_error'] . '<br>Command: ' . $cmd . '<br><pre>' . $error_detail . '</pre>');
-                $xtpl->assign('INSTALL_CLASS', 'alert-danger');
-            }
-            $xtpl->parse('main.install_result');
-        }
-    }
-}
 
 if ($nv_Request->isset_request('save', 'post')) {
     $checkss = $nv_Request->get_title('checkss', 'post', '');
@@ -197,7 +199,7 @@ if ($nv_Request->isset_request('save', 'post')) {
 
 // Check if vendor exists
 if (!file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/vendor/autoload.php')) {
-    $xtpl->assign('ERROR_DEPENDENCY', 'Cảnh báo: Thư viện chưa được cài đặt! <br>Vui lòng chạy lệnh sau trong thư mục <strong>' . NV_ROOTDIR . '/modules/' . $module_file . '</strong>:<br><code>composer install</code><br>Hoặc nhấn nút bên dưới để thử cài đặt tự động.');
+    $xtpl->assign('ERROR_DEPENDENCY', 'Cảnh báo: Thư viện chưa được cài đặt!');
     $xtpl->parse('main.error_dependency');
 }
 
