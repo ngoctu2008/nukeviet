@@ -120,23 +120,8 @@ foreach ($exams as $id => $title) {
 }
 
 // Tab 1: Individual List
-$sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " ORDER BY r.total_score DESC, r.id DESC LIMIT 50";
-$res = $db->query($sql);
-while ($row = $res->fetch()) {
-    $row['time_submit'] = date('d/m/Y H:i', $row['time_submit']);
 
-    $xtpl->assign('ROW', $row);
-
-    // Logic to show/hide button or styling
-    // We need to know if this row HAS essay data in the JSON we prepared below?
-    // But we prepare JSON below. We should move the JSON prep UP or just parse row later?
-    // Moving query up is cleaner.
-
-    $xtpl->parse('main.individual.row');
-}
-
-// Fetch Essay Data first to check existence in loop if needed,
-// OR simpler: Prepare array first.
+// Fetch Essay Data first to check existence in loop
 $sql_essay = "SELECT d.result_id, d.user_answer, q.title as question_title, q.score as max_score FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_detail d JOIN " . NV_PREFIXLANG . "_" . $module_data . "_questions q ON d.question_id = q.id JOIN " . NV_PREFIXLANG . "_" . $module_data . "_users_result r ON d.result_id = r.id WHERE q.type = 4 AND r.exam_id = " . $examid;
 $res_e = $db->query($sql_essay);
 $essay_data = array();
@@ -145,18 +130,7 @@ while ($e = $res_e->fetch()) {
 }
 $xtpl->assign('ESSAY_DATA_JSON', json_encode($essay_data));
 
-// Now loop rows (reset pointer or just do it logic correctly? The code above loop was already executed in memory model?
-// No, I need to replace the loop block.
-// Let's restart the loop logic here in the replacement block.
-
-// Clear previous loop (in concept, but I am replacing the block).
-// Re-query or just re-iterate?
-// I cannot easily re-iterate $res.
-// So I will move the essay query BEFORE the loop in my replacement block.
-
-$res->closeCursor(); // Close previous cursor if needed
-// Re-run main query or fetch all to array?
-// Fetch all to array is safer.
+// Main Query for Report List
 $sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " GROUP BY r.id ORDER BY r.total_score DESC, ABS(r.prediction - (SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id=" . $examid . " AND correct_count = " . intval($total_questions) . ")) ASC, r.time_submit ASC LIMIT 50";
 $res_rows = $db->query($sql);
 
@@ -165,9 +139,17 @@ while ($row = $res_rows->fetch()) {
 
     // Check if has essay
     if (isset($essay_data[$row['id']])) {
-        $xtpl->assign('BTN_CLASS', 'btn-primary');
-        $xtpl->assign('BTN_ICON', 'fa-pencil-square-o');
-        $xtpl->assign('BTN_TEXT', $lang_module['grade_essay']);
+        // Check if already graded (essay_score > 0) or simply distinguish style
+        // If essay_score > 0, we assume it's graded. Show different style.
+        if ($row['essay_score'] > 0) {
+            $xtpl->assign('BTN_CLASS', 'btn-success btn-xs'); // Graded: Green/Success or Default
+            $xtpl->assign('BTN_ICON', 'fa-check-square-o');
+            $xtpl->assign('BTN_TEXT', $lang_module['graded'] ?? $lang_module['grade_essay']); // Use specific text if available
+        } else {
+            $xtpl->assign('BTN_CLASS', 'btn-primary btn-xs'); // Not graded: Primary Blue
+            $xtpl->assign('BTN_ICON', 'fa-pencil-square-o');
+            $xtpl->assign('BTN_TEXT', $lang_module['grade_essay']);
+        }
         $xtpl->parse('main.individual.row.has_essay');
     } else {
          // Optional: Show disabled button or nothing?

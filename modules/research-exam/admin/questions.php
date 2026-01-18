@@ -125,9 +125,13 @@ if ($nv_Request->isset_request('save', 'post')) {
                 // Answers are stored as correct keywords (is_correct = 1 by default for storage simplicity or just plain text)
                 foreach ($answers as $val) {
                     if (!empty($val)) {
-                        $stmt_ans = $db->prepare("INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_answers (question_id, title, is_correct) VALUES (:qid, :title, 1)");
+                        // Use bindValue or simple query execution if variable is constant.
+                        // But strictly following PDO:
+                        $is_correct_default = 1;
+                        $stmt_ans = $db->prepare("INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_answers (question_id, title, is_correct) VALUES (:qid, :title, :is_correct)");
                         $stmt_ans->bindParam(':qid', $qid, PDO::PARAM_INT);
                         $stmt_ans->bindParam(':title', $val, PDO::PARAM_STR);
+                        $stmt_ans->bindParam(':is_correct', $is_correct_default, PDO::PARAM_INT);
                         $stmt_ans->execute();
                     }
                 }

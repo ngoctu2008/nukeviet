@@ -106,8 +106,14 @@
         if (essayData[id]) {
             var html = '';
             $.each(essayData[id], function(i, item) {
-                // Handle newlines
-                var content = item.user_answer.replace(/\n/g, "<br>");
+                // Sanitize content to prevent XSS
+                var content = item.user_answer
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;")
+                    .replace(/\n/g, "<br>");
                 html += '<div class="alert alert-info"><strong>' + item.question_title + ' (Max: ' + item.max_score + ')</strong><br><div style="margin-top:5px; padding:10px; background:#fff; border:1px solid #ddd;">' + content + '</div></div>';
             });
             $('#essay_content').html(html);
