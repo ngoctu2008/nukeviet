@@ -44,29 +44,52 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
             $composer_phar = $module_dir . '/composer.phar';
             if (!file_exists($composer_phar)) {
                 // Download composer.phar
-                $installer = file_get_contents('https://getcomposer.org/installer');
+                $installer_url = 'https://getcomposer.org/installer';
+                $setup_file = $module_dir . '/composer-setup.php';
+
+                $installer = false;
+                if (ini_get('allow_url_fopen')) {
+                    $installer = @file_get_contents($installer_url);
+                }
+
+                if ($installer === false && function_exists('curl_version')) {
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $installer_url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    $installer = curl_exec($ch);
+                    curl_close($ch);
+                }
+
                 if ($installer) {
-                    file_put_contents($module_dir . '/composer-setup.php', $installer);
-                    exec($php_bin . ' ' . escapeshellarg($module_dir . '/composer-setup.php') . ' --install-dir=' . escapeshellarg($module_dir), $output, $return_var);
-                    unlink($module_dir . '/composer-setup.php');
+                    file_put_contents($setup_file, $installer);
+                    exec($php_bin . ' ' . escapeshellarg($setup_file) . ' --install-dir=' . escapeshellarg($module_dir), $output, $return_var);
+                    @unlink($setup_file);
+                } else {
+                    $output[] = "Failed to download composer installer via file_get_contents or cURL.";
+                    // Last resort: try to just wget/curl binary directly if system has them (unlikely if php fails but worth checking?)
+                    // Actually, direct download of phar is easier:
+                    $phar_url = 'https://getcomposer.org/download/latest-stable/composer.phar';
+                    if (ini_get('allow_url_fopen')) {
+                        $phar_content = @file_get_contents($phar_url);
+                        if ($phar_content) file_put_contents($composer_phar, $phar_content);
+                    }
                 }
             }
 
             if (file_exists($composer_phar)) {
                 $composer_bin = $php_bin . ' ' . escapeshellarg($composer_phar);
+                $return_var = 0; // Reset return var if we found/downloaded it
+                $output = array(); // Clear download logs
             } else {
-                $output[] = "Could not find or download composer.phar";
+                $output[] = "Could not find or download composer.phar. Please ensure allow_url_fopen is On or cURL is enabled.";
                 $return_var = 1;
             }
         } else {
-             // If global composer exists but isn't in PATH for the web user, full path might be needed.
-             // But usually 'composer' works if 'which' found it.
-             // For Windows 'where' returns the path including extension
              $composer_bin = trim($check_composer);
-             // On Windows, 'where' might return multiple lines, take the first
              $lines = explode("\n", $composer_bin);
              $composer_bin = trim($lines[0]);
-             // Wrap in quotes for safety
              $composer_bin = '"' . $composer_bin . '"';
         }
 
