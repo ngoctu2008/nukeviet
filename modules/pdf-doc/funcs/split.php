@@ -19,7 +19,7 @@ if ($nv_Request->isset_request('ajax', 'post')) {
 
     // Check dependencies
     if (!class_exists('\setasign\Fpdi\Fpdi')) {
-        $response['mess'] = 'Libraries not found. Please run "composer install" in ' . NV_ROOTDIR . '/modules/' . $module_file;
+        $response['mess'] = $lang_module['lib_not_found'];
         die(json_encode($response));
     }
 
@@ -35,7 +35,7 @@ if ($nv_Request->isset_request('ajax', 'post')) {
         }
 
         if (empty($range) || !preg_match('/^(\d+)-(\d+)$/', $range, $matches)) {
-             $response['mess'] = $lang_module['split_range']; // Should be "Invalid range" ideally
+             $response['mess'] = $lang_module['invalid_range'];
              die(json_encode($response));
         }
 
@@ -43,7 +43,7 @@ if ($nv_Request->isset_request('ajax', 'post')) {
         $end_page = (int)$matches[2];
 
         if ($start_page > $end_page || $start_page < 1) {
-             $response['mess'] = 'Invalid page range';
+             $response['mess'] = $lang_module['invalid_page_range'];
              die(json_encode($response));
         }
 
@@ -99,7 +99,14 @@ if ($nv_Request->isset_request('ajax', 'post')) {
                 $response['link'] = $download_link;
 
             } catch (Exception $e) {
-                $response['mess'] = $e->getMessage();
+                $msg = $e->getMessage();
+                if (strpos($msg, 'The archive failed to load') !== false || strpos($msg, 'File is encrypted') !== false) {
+                     $code = 'Unknown';
+                     if (preg_match('/code[:\s]+(\d+)/i', $msg, $m)) $code = $m[1];
+                     $response['mess'] = sprintf($lang_module['file_corrupt_or_encrypted'], $code);
+                } else {
+                     $response['mess'] = $lang_module['process_error'] . $msg;
+                }
             }
         }
     }

@@ -19,7 +19,7 @@ if ($nv_Request->isset_request('ajax', 'post')) {
 
     // Check dependencies
     if (!class_exists('\setasign\Fpdi\Fpdi')) {
-        $response['mess'] = 'Libraries not found. Please run "composer install" in ' . NV_ROOTDIR . '/modules/' . $module_file;
+        $response['mess'] = $lang_module['lib_not_found'];
         die(json_encode($response));
     }
 
@@ -77,11 +77,19 @@ if ($nv_Request->isset_request('ajax', 'post')) {
                 $response['mess'] = $lang_module['success'];
                 $response['link'] = $download_link;
             } else {
-                $response['mess'] = 'No valid PDF files to merge';
+                $response['mess'] = $lang_module['no_valid_files'];
             }
 
         } catch (Exception $e) {
-            $response['mess'] = $e->getMessage();
+            $msg = $e->getMessage();
+            if (strpos($msg, 'The archive failed to load') !== false || strpos($msg, 'File is encrypted') !== false) {
+                 // Try to extract code if present
+                 $code = 'Unknown';
+                 if (preg_match('/code[:\s]+(\d+)/i', $msg, $m)) $code = $m[1];
+                 $response['mess'] = sprintf($lang_module['file_corrupt_or_encrypted'], $code);
+            } else {
+                 $response['mess'] = $lang_module['process_error'] . $msg;
+            }
         }
     }
 
