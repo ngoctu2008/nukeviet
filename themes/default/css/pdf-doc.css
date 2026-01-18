@@ -14,6 +14,65 @@
     margin-bottom: 30px;
 }
 
+/* Stepper */
+.pdf-stepper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.pdf-step {
+    text-align: center;
+    position: relative;
+    width: 150px;
+    z-index: 2;
+}
+
+.pdf-step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #ddd;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.pdf-step.active .pdf-step-circle {
+    border-color: #337ab7;
+    background: #337ab7;
+    color: #fff;
+}
+
+.pdf-step-text {
+    color: #999;
+    font-size: 14px;
+}
+
+.pdf-step.active .pdf-step-text {
+    color: #337ab7;
+    font-weight: 500;
+}
+
+.pdf-stepper::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px; /* Adjust based on step width */
+    height: 2px;
+    background: #ddd;
+    z-index: 1;
+}
+
 /* Panel Styling */
 .pdf-doc-tool .panel {
     border: none;
@@ -114,4 +173,8 @@
 #result-area .alert {
     border-radius: 6px;
     margin-top: 20px;
+}
+
+.hidden {
+    display: none !important;
 }

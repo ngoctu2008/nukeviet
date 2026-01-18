@@ -1,6 +1,6 @@
 /**
  * PDF-Doc Module JS
- * Handles file selection, drag & drop, and AJAX uploads.
+ * Handles file selection, drag & drop, and AJAX uploads with Stepper UI.
  */
 
 var PdfDoc = (function() {
@@ -15,6 +15,8 @@ var PdfDoc = (function() {
         var fileListUl = document.getElementById('file-list-ul');
         var fileCountBadge = document.getElementById('file-count');
         var fileNameDisplay = document.getElementById('file-name-display');
+        var btnSubmit = document.getElementById('btn-submit');
+        var splitRangeGroup = document.getElementById('split-range-group');
 
         // Drag & Drop Events
         if (dropZone) {
@@ -61,10 +63,14 @@ var PdfDoc = (function() {
         }
 
         function handleFiles(files) {
-            // Logic for Merge (List View)
-            if (fileListUl) {
-                fileListUl.innerHTML = '';
-                if (files.length > 0) {
+            if (files.length > 0) {
+                // Show Submit Button
+                if(btnSubmit) btnSubmit.classList.remove('hidden');
+                if(splitRangeGroup) splitRangeGroup.classList.remove('hidden');
+
+                // Logic for Merge (List View)
+                if (fileListUl) {
+                    fileListUl.innerHTML = '';
                     fileListContainer.classList.remove('hidden');
                     if(fileCountBadge) fileCountBadge.textContent = files.length;
 
@@ -79,18 +85,40 @@ var PdfDoc = (function() {
                             '<span class="status-icon text-muted"><i class="fa fa-circle-o"></i></span>';
                         fileListUl.appendChild(li);
                     }
-                } else {
-                    fileListContainer.classList.add('hidden');
                 }
-            }
-            // Logic for Single File (Display Name)
-            else if (fileNameDisplay) {
-                if (files.length > 0) {
+                // Logic for Single File (Display Name)
+                else if (fileNameDisplay) {
                     fileNameDisplay.innerHTML = '<i class="fa fa-check text-success"></i> ' + files[0].name + ' (' + formatBytes(files[0].size) + ')';
-                } else {
+                }
+            } else {
+                if(btnSubmit) btnSubmit.classList.add('hidden');
+                if(splitRangeGroup) splitRangeGroup.classList.add('hidden');
+
+                if (fileListUl) {
+                    fileListContainer.classList.add('hidden');
+                } else if (fileNameDisplay) {
                     fileNameDisplay.textContent = '';
                 }
             }
+        }
+
+        // Stepper Control
+        function updateStepper(step) {
+            document.querySelectorAll('.pdf-step').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            var stepEl = document.getElementById('step-' + step);
+            if(stepEl) stepEl.classList.add('active');
+        }
+
+        function showStepContent(step) {
+            document.getElementById('step-content-1').classList.add('hidden');
+            document.getElementById('step-content-2').classList.add('hidden');
+            document.getElementById('result-area').classList.add('hidden');
+
+            if(step === 1) document.getElementById('step-content-1').classList.remove('hidden');
+            if(step === 2) document.getElementById('step-content-2').classList.remove('hidden');
+            if(step === 3) document.getElementById('result-area').classList.remove('hidden');
         }
 
         // Form Submit
@@ -100,24 +128,15 @@ var PdfDoc = (function() {
             var formData = new FormData(form);
             formData.append('ajax', 1);
 
-            var progressBar = document.querySelector('#upload-progress .progress-bar');
-            var progressContainer = document.getElementById('upload-progress');
-            var resultArea = document.getElementById('result-area');
-            var btnSubmit = document.getElementById('btn-submit');
-            var statusIcons = document.querySelectorAll('#file-list-ul .status-icon');
+            // Move to Step 2
+            updateStepper(2);
+            showStepContent(2);
 
-            if (progressContainer) progressContainer.classList.remove('hidden');
+            var progressBar = document.querySelector('#upload-progress .progress-bar');
+
             if (progressBar) {
                 progressBar.style.width = '0%';
                 progressBar.setAttribute('aria-valuenow', 0);
-            }
-            if (resultArea) resultArea.innerHTML = '';
-            if (btnSubmit) btnSubmit.disabled = true;
-
-            if (statusIcons.length > 0) {
-                statusIcons.forEach(function(icon) {
-                    icon.innerHTML = '<i class="fa fa-spinner fa-spin text-primary"></i>';
-                });
             }
 
             var xhr = new XMLHttpRequest();
@@ -132,39 +151,48 @@ var PdfDoc = (function() {
             };
 
             xhr.onload = function() {
-                if (btnSubmit) btnSubmit.disabled = false;
+                // Move to Step 3
+                updateStepper(3);
+                showStepContent(3);
+
+                var resultArea = document.getElementById('result-area');
+
                 if (xhr.status == 200) {
                     try {
                         var response = JSON.parse(xhr.responseText);
                         if (response.status == 'ok') {
-                             if (resultArea) resultArea.innerHTML = '<div class="alert alert-success">' + response.mess + '<br><a href="' + response.link + '" class="btn btn-primary btn-lg-custom mt-2"><i class="fa fa-download"></i> ' + (window.lang_download || 'Download') + '</a></div>';
-
-                             if (statusIcons.length > 0) {
-                                statusIcons.forEach(function(icon) {
-                                    icon.innerHTML = '<i class="fa fa-check-circle text-success"></i>';
-                                });
+                             var html = '<div class="alert alert-success">';
+                             html += '<h4><i class="fa fa-check-circle"></i> ' + response.mess + '</h4>';
+                             // Add File Info if available (backend needs to send file_info object)
+                             if(response.file_info) {
+                                 html += '<div class="file-result-info mt-2 mb-3">';
+                                 html += '<i class="fa fa-file-o fa-3x"></i><br>';
+                                 html += '<strong>' + response.file_info.name + '</strong><br>';
+                                 html += '<span class="text-muted">' + response.file_info.size + '</span>';
+                                 html += '</div>';
                              }
-                        } else {
-                            if (resultArea) resultArea.innerHTML = '<div class="alert alert-danger">' + response.mess + '</div>';
 
-                            if (statusIcons.length > 0) {
-                                statusIcons.forEach(function(icon) {
-                                    icon.innerHTML = '<i class="fa fa-exclamation-triangle text-warning"></i>';
-                                });
-                            }
+                             html += '<a href="' + response.link + '" class="btn btn-primary btn-lg-custom mt-2"><i class="fa fa-download"></i> ' + (window.lang_download || 'Download') + '</a>';
+                             html += '<br><br><a href="" class="btn btn-default btn-xs" onclick="location.reload(); return false;">Start Over</a>';
+                             html += '</div>';
+
+                             resultArea.innerHTML = html;
+                        } else {
+                            resultArea.innerHTML = '<div class="alert alert-danger">' + response.mess + '<br><br><a href="" class="btn btn-default" onclick="location.reload(); return false;">Try Again</a></div>';
                         }
                     } catch (e) {
-                        if (resultArea) resultArea.innerHTML = '<div class="alert alert-danger">Error parsing response</div>';
+                        resultArea.innerHTML = '<div class="alert alert-danger">Error parsing response<br><br><a href="" class="btn btn-default" onclick="location.reload(); return false;">Try Again</a></div>';
                         console.error(xhr.responseText);
                     }
                 } else {
-                    if (resultArea) resultArea.innerHTML = '<div class="alert alert-danger">Upload failed. Status: ' + xhr.status + '</div>';
+                    resultArea.innerHTML = '<div class="alert alert-danger">Upload failed. Status: ' + xhr.status + '<br><br><a href="" class="btn btn-default" onclick="location.reload(); return false;">Try Again</a></div>';
                 }
             };
 
             xhr.onerror = function() {
-                if (btnSubmit) btnSubmit.disabled = false;
-                if (resultArea) resultArea.innerHTML = '<div class="alert alert-danger">Network error.</div>';
+                updateStepper(3);
+                showStepContent(3);
+                document.getElementById('result-area').innerHTML = '<div class="alert alert-danger">Network error.<br><br><a href="" class="btn btn-default" onclick="location.reload(); return false;">Try Again</a></div>';
             };
 
             xhr.send(formData);
