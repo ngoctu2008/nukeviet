@@ -27,6 +27,9 @@ $examid = $nv_Request->get_int('examid', 'get', key($exams)); // Default to late
 // Get Units
 $units = nv_get_units();
 
+// Calculate Total Questions for Prediction Logic (Used in both Export and Main View)
+$total_questions = $db->query("SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $examid)->fetchColumn();
+
 // Export Excel Logic (Simple HTML/CSV)
 if ($nv_Request->isset_request('export', 'post')) {
     $type = $nv_Request->get_string('export_type', 'post', 'individual');
@@ -38,13 +41,6 @@ if ($nv_Request->isset_request('export', 'post')) {
     if ($type == 'individual') {
         echo '<table border="1">';
         echo '<tr><th>STT</th><th>' . $lang_module['fullname'] . '</th><th>' . $lang_module['phone'] . '</th><th>' . $lang_module['unit'] . '</th><th>' . $lang_module['correct_count'] . '</th><th>' . $lang_module['score'] . '</th><th>' . $lang_module['essay_score'] . '</th><th>' . $lang_module['total_score'] . '</th><th>Dự đoán</th><th>Thời gian nộp</th></tr>';
-
-        // Calculate Perfect Score Count properly
-        // If structured, we need to know max questions. If not, num_questions.
-        // Or simpler: The prediction question is usually "How many people answer correctly X questions" or "All questions".
-        // Let's assume "All". We need max questions count for this exam.
-        // We can get it by counting questions linked to exam.
-        $total_questions = $db->query("SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $examid)->fetchColumn();
 
         // Correct sorting by Score -> Prediction Accuracy (Diff from Count of Perfect Scores) -> Time
         // We inject the subquery with the calculated total_questions variable

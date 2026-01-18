@@ -81,3 +81,4 @@ $lang_module['save'] = 'Lưu lại';
 $lang_module['delete'] = 'Xóa';
 $lang_module['delete_confirm'] = 'Bạn có chắc chắn muốn xóa?';
 $lang_module['quantity'] = 'Số lượng câu hỏi';
+$lang_module['time_submit'] = 'Thời gian nộp';

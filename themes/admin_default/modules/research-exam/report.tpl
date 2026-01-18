@@ -37,7 +37,7 @@
                         <th class="text-center">{LANG.score}</th>
                         <th class="text-center">{LANG.essay_score}</th>
                         <th class="text-center">{LANG.total_score}</th>
-                        <th class="text-center">Time</th>
+                        <th class="text-center">{LANG.time_submit}</th>
                         <th class="text-center"></th>
                     </tr>
                 </thead>
