@@ -166,20 +166,46 @@
     z-index: 5;
 }
 
-/* Zodiac Kanji Watermark Background */
+/* Zodiac Image Watermark Background */
 .cung-box::before {
-    content: attr(data-zodiac-char);
+    content: "";
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 80px;
-    font-family: "Noto Serif", "Times New Roman", serif;
-    color: rgba(93, 64, 55, 0.08); /* Faint watermark */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/zodiac_sprite.png');
+    background-size: 400% 300%; /* 4 columns, 3 rows */
+    background-repeat: no-repeat;
+    opacity: 0.15; /* Watermark effect */
     pointer-events: none;
-    z-index: 1;
-    font-weight: bold;
+    z-index: 0;
 }
+
+/* Ensure content is above the watermark */
+.cung-header, .star-list, .cung-footer, .cung-label {
+    z-index: 1;
+    position: relative;
+}
+
+/* Specific Positions for Zodiac Sprite */
+/* Row 1 */
+.cung-ty::before       { background-position: 0% 0%; }       /* Tý (Rat) */
+.cung-suu::before      { background-position: 33.333% 0%; }  /* Sửu (Ox) */
+.cung-dan::before      { background-position: 66.666% 0%; }  /* Dần (Tiger) */
+.cung-mao::before      { background-position: 100% 0%; }     /* Mão (Cat) */
+
+/* Row 2 */
+.cung-thin::before     { background-position: 0% 50%; }      /* Thìn (Dragon) */
+.cung-ty_snake::before { background-position: 33.333% 50%; } /* Tỵ (Snake) */
+.cung-ngo::before      { background-position: 66.666% 50%; } /* Ngọ (Horse) */
+.cung-mui::before      { background-position: 100% 50%; }    /* Mùi (Goat) */
+
+/* Row 3 */
+.cung-than::before     { background-position: 0% 100%; }     /* Thân (Monkey) */
+.cung-dau::before      { background-position: 33.333% 100%; }/* Dậu (Rooster) */
+.cung-tuat::before     { background-position: 66.666% 100%; }/* Tuất (Dog) */
+.cung-hoi::before      { background-position: 100% 100%; }   /* Hợi (Pig) */
 
 /* Grid Positioning - DO NOT CHANGE */
 .cung-ty_snake { grid-area: 1 / 1 / 2 / 2; } /* 5 Tỵ */

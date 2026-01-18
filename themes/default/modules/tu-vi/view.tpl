@@ -1,5 +1,5 @@
 <!-- BEGIN: main -->
-<link rel="stylesheet" href="{NV_BASE_SITEURL}themes/default/css/tu-vi.css">
+<link rel="stylesheet" href="{NV_BASE_SITEURL}themes/default/modules/tu-vi/css/tu-vi.css">
 
 <div class="tu-vi-container">
     <div class="tu-vi-chart">
