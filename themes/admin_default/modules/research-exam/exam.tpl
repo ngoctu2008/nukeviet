@@ -95,8 +95,36 @@
                 <label class="col-sm-4 control-label">{LANG.exam_num_questions}</label>
                 <div class="col-sm-8">
                     <input type="number" class="form-control" name="num_questions" value="{DATA.num_questions}" />
+                    <span class="help-block text-warning">(Chỉ dùng nếu không cấu hình theo Chuyên đề)</span>
                 </div>
             </div>
+
+            <!-- BEGIN: topics -->
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{LANG.exam_structure}</label>
+                <div class="col-sm-20">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>{LANG.topic_title}</th>
+                                <th width="150">{LANG.quantity}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- BEGIN: loop -->
+                            <tr>
+                                <td>{TOPIC.title}</td>
+                                <td>
+                                    <input type="number" class="form-control input-sm" name="structure[{TOPIC.id}]" value="{TOPIC.quantity}" />
+                                </td>
+                            </tr>
+                            <!-- END: loop -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END: topics -->
+
             <div class="form-group">
                 <label class="col-sm-4 control-label">{LANG.exam_has_prediction}</label>
                 <div class="col-sm-8">

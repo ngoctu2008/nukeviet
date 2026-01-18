@@ -30,6 +30,7 @@
                     <tr>
                         <th class="text-center" width="50">ID</th>
                         <th>{LANG.question_title}</th>
+                        <th>{LANG.topic_title}</th>
                         <th class="text-center">{LANG.question_type}</th>
                         <th class="text-center">{LANG.question_score}</th>
                         <th class="text-center" width="150"></th>
@@ -40,6 +41,7 @@
                     <tr>
                         <td class="text-center">{ROW.id}</td>
                         <td>{ROW.title}</td>
+                        <td>{ROW.topic_title}</td>
                         <td class="text-center">{ROW.type_text}</td>
                         <td class="text-center">{ROW.score}</td>
                         <td class="text-center">
@@ -73,6 +75,18 @@
                         <!-- BEGIN: form_exam -->
                         <option value="{EXAM.id}" {EXAM.selected}>{EXAM.title}</option>
                         <!-- END: form_exam -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{LANG.topic_title}</label>
+                <div class="col-sm-20">
+                    <select class="form-control" name="topic_id">
+                        <option value="0">--- {LANG.select_topic} ---</option>
+                        <!-- BEGIN: form_topic -->
+                        <option value="{TOPIC.id}" {TOPIC.selected}>{TOPIC.title}</option>
+                        <!-- END: form_topic -->
                     </select>
                 </div>
             </div>

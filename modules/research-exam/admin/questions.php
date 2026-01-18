@@ -26,11 +26,20 @@ while ($row = $result->fetch()) {
     $exams[$row['id']] = $row['title'];
 }
 
+// Get Topics List
+$sql = "SELECT id, title FROM " . NV_PREFIXLANG . "_" . $module_data . "_topics ORDER BY id DESC";
+$result = $db->query($sql);
+$topics = array();
+while ($row = $result->fetch()) {
+    $topics[$row['id']] = $row['title'];
+}
+
 // Process Form Submit (Add/Edit Question)
 if ($nv_Request->isset_request('save', 'post')) {
     $row = array();
     $row['id'] = $nv_Request->get_int('id', 'post', 0);
     $row['exam_id'] = $nv_Request->get_int('exam_id', 'post', 0);
+    $row['topic_id'] = $nv_Request->get_int('topic_id', 'post', 0);
     $row['title'] = $nv_Request->get_editor('title', '', NV_ALLOWED_HTML_TAGS);
     $row['type'] = $nv_Request->get_int('type', 'post', 1);
     $row['score'] = $nv_Request->get_float('score', 'post', 1);
@@ -47,12 +56,13 @@ if ($nv_Request->isset_request('save', 'post')) {
         $error = $lang_module['error_exam_empty'];
     } else {
         if ($row['id'] > 0) {
-            $stmt = $db->prepare("UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_questions SET exam_id = :exam_id, title = :title, type = :type, score = :score, note = :note WHERE id = :id");
+            $stmt = $db->prepare("UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_questions SET exam_id = :exam_id, topic_id = :topic_id, title = :title, type = :type, score = :score, note = :note WHERE id = :id");
             $stmt->bindParam(':id', $row['id'], PDO::PARAM_INT);
         } else {
-            $stmt = $db->prepare("INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_questions (exam_id, title, type, score, note) VALUES (:exam_id, :title, :type, :score, :note)");
+            $stmt = $db->prepare("INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_questions (exam_id, topic_id, title, type, score, note) VALUES (:exam_id, :topic_id, :title, :type, :score, :note)");
         }
         $stmt->bindParam(':exam_id', $row['exam_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':topic_id', $row['topic_id'], PDO::PARAM_INT);
         $stmt->bindParam(':title', $row['title'], PDO::PARAM_STR);
         $stmt->bindParam(':type', $row['type'], PDO::PARAM_INT);
         $stmt->bindParam(':score', $row['score']); // PDO might treat float as str, usually fine
@@ -146,7 +156,7 @@ if (!empty($error)) {
 
 // List Questions
 if ($examid > 0) {
-    $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $examid . " ORDER BY id DESC";
+    $sql = "SELECT q.*, t.title as topic_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions q LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_topics t ON q.topic_id = t.id WHERE q.exam_id=" . $examid . " ORDER BY q.id DESC";
     $result = $db->query($sql);
     while ($item = $result->fetch()) {
         $item['type_text'] = $lang_module['question_type_' . $item['type']];
@@ -190,7 +200,7 @@ if ($id > 0) {
     if ($row['type'] == 3) $xtpl->parse('main.form.answers_fill');
 
 } else {
-    $row = array('id' => 0, 'exam_id' => $examid, 'title' => '', 'type' => 1, 'score' => 1, 'note' => '');
+    $row = array('id' => 0, 'exam_id' => $examid, 'topic_id' => 0, 'title' => '', 'type' => 1, 'score' => 1, 'note' => '');
     // Empty blocks for JS to populate or show default
     $xtpl->parse('main.form.answers_radio'); // Default show radio container
 }
@@ -206,6 +216,13 @@ foreach ($exams as $eid => $etitle) {
     $selected = ($eid == $row['exam_id']) ? 'selected' : '';
     $xtpl->assign('EXAM', array('id' => $eid, 'title' => $etitle, 'selected' => $selected));
     $xtpl->parse('main.form.form_exam');
+}
+
+// Parse Form Topics
+foreach ($topics as $tid => $ttitle) {
+    $selected = ($tid == $row['topic_id']) ? 'selected' : '';
+    $xtpl->assign('TOPIC', array('id' => $tid, 'title' => $ttitle, 'selected' => $selected));
+    $xtpl->parse('main.form.form_topic');
 }
 
 $xtpl->assign('DATA', $row);

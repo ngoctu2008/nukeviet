@@ -30,21 +30,51 @@ if (empty($exam)) {
 
 $page_title = $exam['title'];
 
-// Get Questions
-// If num_questions > 0, we should random. But for simplicity and consistency (and keeping questions associated with exam), we will select random if configured, or all.
-// Constraint: "Strict Binding" - questions are strictly in this exam.
-// We select questions for this exam.
-$limit = ($exam['num_questions'] > 0) ? "LIMIT " . $exam['num_questions'] : "";
-$sql_q = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $exam_id . " ORDER BY weight ASC, id ASC " . $limit;
-// Note: If random is needed per user session, we need to store question order in session. For now, simple ordering.
-if ($exam['num_questions'] > 0) {
-    $sql_q = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $exam_id . " ORDER BY RAND() " . $limit;
+// Get Questions based on Structure or Legacy
+$questions = array();
+
+// Check for structure
+$sql_struct = "SELECT topic_id, quantity FROM " . NV_PREFIXLANG . "_" . $module_data . "_exam_structure WHERE exam_id=" . $exam_id;
+$res_struct = $db->query($sql_struct);
+$structure = array();
+while ($s = $res_struct->fetch()) {
+    $structure[] = $s;
 }
 
-$questions = array();
-$result = $db->query($sql_q);
-while ($row = $result->fetch()) {
-    $questions[] = $row;
+if (!empty($structure)) {
+    // Random selection based on structure
+    foreach ($structure as $s) {
+        $qty = $s['quantity'];
+        if ($qty > 0) {
+            // Select random questions from topic AND exam
+            $sql_random = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $exam_id . " AND topic_id=" . $s['topic_id'] . " ORDER BY RAND() LIMIT " . $qty;
+            $res_random = $db->query($sql_random);
+            while ($row = $res_random->fetch()) {
+                $questions[] = $row;
+            }
+        }
+    }
+    // Shuffle the final combined list (Optional: user asked for "trộn câu hỏi" - mix all parts? or keep parts?
+    // "trong mỗi đề thì cần có các phần" implies parts. But "trộn câu hỏi" usually means shuffle.
+    // If we keep parts, we just iterate. If we shuffle, we shuffle.
+    // User request: "trong mỗi đề thì cần có các phần... Chuyên đề 1... Chuyên đề 4".
+    // This implies order might matter (Section 1 then Section 2).
+    // BUT "Thêm chức năng trộn câu hỏi" suggests mixing.
+    // Let's assume shuffling is preferred for anti-cheating unless "Parts" are clearly labeled sections in UI.
+    // Given the UI is a simple list, shuffling is safer.
+    shuffle($questions);
+
+} else {
+    // Legacy / Fallback
+    $limit = ($exam['num_questions'] > 0) ? "LIMIT " . $exam['num_questions'] : "";
+    $sql_q = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $exam_id . " ORDER BY weight ASC, id ASC " . $limit;
+    if ($exam['num_questions'] > 0) {
+        $sql_q = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_questions WHERE exam_id=" . $exam_id . " ORDER BY RAND() " . $limit;
+    }
+    $result = $db->query($sql_q);
+    while ($row = $result->fetch()) {
+        $questions[] = $row;
+    }
 }
 
 $xtpl = new XTemplate('test.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
@@ -55,9 +85,6 @@ $xtpl->assign('EXAM', $exam);
 $xtpl->assign('NV_CHECK_SESSION', NV_CHECK_SESSION);
 
 // Calculate end time
-// Duration is in minutes.
-// We use client side countdown mostly, but server check on save.
-// We pass seconds remaining to template.
 $elapsed = NV_CURRENTTIME - $user_session['start_time'];
 $duration_seconds = $exam['duration'] * 60;
 $remaining = $duration_seconds - $elapsed;
@@ -70,7 +97,7 @@ foreach ($questions as $index => $q) {
     $xtpl->assign('Q', $q);
 
     // Get Answers
-    $sql_a = "SELECT id, title FROM " . NV_PREFIXLANG . "_" . $module_data . "_answers WHERE question_id=" . $q['id'] . " ORDER BY id ASC"; // Do not select is_correct
+    $sql_a = "SELECT id, title FROM " . NV_PREFIXLANG . "_" . $module_data . "_answers WHERE question_id=" . $q['id'] . " ORDER BY id ASC";
     $res_a = $db->query($sql_a);
 
     if ($q['type'] == 1) { // Radio
@@ -86,9 +113,6 @@ foreach ($questions as $index => $q) {
         }
         $xtpl->parse('main.loop.type_2');
     } elseif ($q['type'] == 3) { // Fill
-        // Replace [[input]] with <input>
-        // We need to know how many inputs to name them uniquely or use array.
-        // name="answer[qid][index]"
         $content = $q['title'];
         $count = 0;
         $content = preg_replace_callback('/\[\[input\]\]/', function($matches) use (&$count, $q, $lang_module) {
@@ -106,6 +130,7 @@ foreach ($questions as $index => $q) {
     $xtpl->parse('main.loop');
 }
 
+// Prediction is always last as per template structure
 if ($exam['has_prediction'] == 1) {
     $xtpl->parse('main.prediction');
 }

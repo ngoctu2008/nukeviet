@@ -43,3 +43,4 @@ $lang_module['exam_time_start'] = 'Thời gian bắt đầu';
 $lang_module['exam_time_end'] = 'Thời gian kết thúc';
 $lang_module['exam_duration'] = 'Thời gian làm bài';
 $lang_module['minutes'] = 'phút';
+$lang_module['active'] = 'Đang diễn ra';

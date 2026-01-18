@@ -26,7 +26,7 @@ $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_exams WHERE sta
 $result = $db->query($sql);
 
 while ($row = $result->fetch()) {
-    $row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang_global['abbr'] . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $row['id'];
+    $row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $row['id'];
     $row['time_start'] = date('d/m/Y H:i', $row['time_start']);
     $row['time_end'] = date('d/m/Y H:i', $row['time_end']);
 

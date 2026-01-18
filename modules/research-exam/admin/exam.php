@@ -32,6 +32,9 @@ if ($nv_Request->isset_request('save', 'post')) {
     $row['status'] = $nv_Request->get_int('status', 'post', 1);
     $row['has_prediction'] = $nv_Request->get_int('has_prediction', 'post', 0);
 
+    // Structure Data
+    $structure = $nv_Request->get_array('structure', 'post', array()); // Array [topic_id => quantity]
+
     // Convert date to timestamp
     if (preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/', $row['time_start'], $m)) {
         $row['time_start'] = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
@@ -64,6 +67,22 @@ if ($nv_Request->isset_request('save', 'post')) {
         $stmt->bindParam(':has_prediction', $row['has_prediction'], PDO::PARAM_INT);
 
         if ($stmt->execute()) {
+            $exam_id = ($row['id'] > 0) ? $row['id'] : $db->lastInsertId();
+
+            // Save Structure
+            $db->query("DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_exam_structure WHERE exam_id=" . $exam_id);
+            if (!empty($structure)) {
+                $stmt_struct = $db->prepare("INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_exam_structure (exam_id, topic_id, quantity) VALUES (:exam_id, :topic_id, :quantity)");
+                foreach ($structure as $topic_id => $qty) {
+                    if ($qty > 0) {
+                        $stmt_struct->bindParam(':exam_id', $exam_id, PDO::PARAM_INT);
+                        $stmt_struct->bindParam(':topic_id', $topic_id, PDO::PARAM_INT);
+                        $stmt_struct->bindParam(':quantity', $qty, PDO::PARAM_INT);
+                        $stmt_struct->execute();
+                    }
+                }
+            }
+
             Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang_global['abbr'] . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=exam');
             die();
         } else {
@@ -79,6 +98,8 @@ if ($nv_Request->isset_request('delete', 'post')) {
         $stmt = $db->prepare("DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_exams WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()) {
+            // Delete structure
+            $db->query("DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_exam_structure WHERE exam_id=" . $id);
             die('OK');
         }
     }
@@ -113,6 +134,8 @@ $xtpl->parse('main.list');
 
 // Add/Edit Form
 $id = $nv_Request->get_int('id', 'get', 0);
+$structure_data = array();
+
 if ($id > 0) {
     $stmt = $db->prepare("SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_exams WHERE id = :id");
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -120,6 +143,12 @@ if ($id > 0) {
     $row = $stmt->fetch();
     $row['time_start'] = ($row['time_start'] > 0) ? date('d/m/Y', $row['time_start']) : '';
     $row['time_end'] = ($row['time_end'] > 0) ? date('d/m/Y', $row['time_end']) : '';
+
+    // Get Structure
+    $res_struct = $db->query("SELECT topic_id, quantity FROM " . NV_PREFIXLANG . "_" . $module_data . "_exam_structure WHERE exam_id=" . $id);
+    while ($s = $res_struct->fetch()) {
+        $structure_data[$s['topic_id']] = $s['quantity'];
+    }
 } else {
     $row = array(
         'id' => 0, 'title' => '', 'description' => '',
@@ -135,6 +164,16 @@ if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
 } else {
     $row['description'] = '<textarea style="width:100%;height:300px" name="description">' . $row['description'] . '</textarea>';
 }
+
+// Load Topics for Structure Config
+$sql_topics = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_topics ORDER BY id DESC";
+$res_topics = $db->query($sql_topics);
+while ($topic = $res_topics->fetch()) {
+    $topic['quantity'] = isset($structure_data[$topic['id']]) ? $structure_data[$topic['id']] : 0;
+    $xtpl->assign('TOPIC', $topic);
+    $xtpl->parse('main.form.topics.loop');
+}
+$xtpl->parse('main.form.topics');
 
 $xtpl->assign('DATA', $row);
 $xtpl->assign('STATUS_CHECKED', $row['status'] == 1 ? 'checked' : '');

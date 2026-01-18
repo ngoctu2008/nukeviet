@@ -211,7 +211,7 @@ $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('SCORE', $score);
 $xtpl->assign('CORRECT_COUNT', $correct_count);
-$xtpl->assign('TOTAL_QUESTIONS', $exam['num_questions']);
+$xtpl->assign('TOTAL_QUESTIONS', count($questions_map));
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');

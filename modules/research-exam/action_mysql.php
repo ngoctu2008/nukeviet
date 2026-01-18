@@ -26,6 +26,15 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
+// Table: _topics (New)
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_topics";
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_topics (
+    id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+    title varchar(255) NOT NULL,
+    note text,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+
 // Table: _exams
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_exams";
 $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_exams (
@@ -43,18 +52,30 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
     UNIQUE KEY alias (alias)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
-// Table: _questions
+// Table: _exam_structure (New)
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_exam_structure";
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_exam_structure (
+    exam_id mediumint(8) unsigned NOT NULL,
+    topic_id mediumint(8) unsigned NOT NULL,
+    quantity smallint(4) unsigned NOT NULL DEFAULT '0',
+    PRIMARY KEY (exam_id, topic_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+
+
+// Table: _questions (Updated with topic_id)
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_questions";
 $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_questions (
     id int(11) unsigned NOT NULL AUTO_INCREMENT,
     exam_id mediumint(8) unsigned NOT NULL,
+    topic_id mediumint(8) unsigned NOT NULL DEFAULT '0',
     title text NOT NULL,
     type tinyint(1) NOT NULL DEFAULT '1' COMMENT '1:Radio, 2:Checkbox, 3:Fill, 4:Essay',
     note text,
     score float NOT NULL DEFAULT '1',
     weight smallint(4) NOT NULL DEFAULT '0',
     PRIMARY KEY (id),
-    KEY exam_id (exam_id)
+    KEY exam_id (exam_id),
+    KEY topic_id (topic_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
 // Table: _answers
