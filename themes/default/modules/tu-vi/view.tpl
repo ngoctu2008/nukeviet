@@ -16,7 +16,7 @@
 
         <!-- Loop 12 Cung -->
         <!-- BEGIN: loop -->
-        <div class="cung-box cung-{CUNG.css_class}">
+        <div class="cung-box cung-{CUNG.css_class}" data-zodiac-char="{CUNG.kanji}">
             <!-- BEGIN: daivan_label -->
             <span class="cung-label daivan-label">{LABEL_DAIVAN}</span>
             <!-- END: daivan_label -->
@@ -24,7 +24,10 @@
             <span class="cung-label tieuvan-label">{LABEL_TIEUVAN}</span>
             <!-- END: tieuvan_label -->
 
-            <div class="cung-header">{CUNG.cung_chuc}</div>
+            <div class="cung-header"
+                 data-toggle="tooltip"
+                 data-placement="top"
+                 title="{CUNG.cung_desc}">{CUNG.cung_chuc}</div>
 
             <div class="star-list">
                 <!-- BEGIN: chinh_tinh -->

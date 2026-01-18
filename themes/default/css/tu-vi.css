@@ -75,6 +75,12 @@
     grid-column: 2 / span 2;
     grid-row: 2 / span 2;
     background-color: #fff3e0;
+    /* Yin Yang Bagua Background - Faint */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="%23d7ccc8" stroke-width="2"/><path d="M50,2 A48,48 0 0,1 50,98 A24,24 0 0,1 50,50 A24,24 0 0,0 50,2 Z" fill="%23d7ccc8" opacity="0.2"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+
     border: 2px solid #5d4037;
     display: flex;
     flex-direction: column;
@@ -152,11 +158,27 @@
     position: absolute;
     bottom: 2px;
     right: 5px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
-    color: rgba(93, 64, 55, 0.3); /* Watermark style */
+    color: rgba(93, 64, 55, 0.6);
     pointer-events: none;
+    z-index: 5;
+}
+
+/* Zodiac Kanji Watermark Background */
+.cung-box::before {
+    content: attr(data-zodiac-char);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    font-family: "Noto Serif", "Times New Roman", serif;
+    color: rgba(93, 64, 55, 0.08); /* Faint watermark */
+    pointer-events: none;
+    z-index: 1;
+    font-weight: bold;
 }
 
 /* Grid Positioning - DO NOT CHANGE */

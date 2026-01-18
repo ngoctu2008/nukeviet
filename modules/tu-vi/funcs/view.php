@@ -42,6 +42,22 @@ $interpretations = [];
 $lookups = [];
 $star_definitions = []; // Store tooltip info
 
+// Palace Definitions for Tooltips
+$palace_definitions = [
+    'Mệnh' => 'Cung Mệnh là cung quan trọng nhất, biểu thị bản mệnh, tính cách, ngoại hình và vận mệnh tổng quát của đời người.',
+    'Phụ Mẫu' => 'Cung Phụ Mẫu biểu thị về cha mẹ, mối quan hệ với cha mẹ, và sự giúp đỡ hay khắc hãm từ cha mẹ.',
+    'Phúc Đức' => 'Cung Phúc Đức biểu thị về phúc phần dòng họ, may mắn, sự hưởng thụ tinh thần và tuổi thọ.',
+    'Điền Trạch' => 'Cung Điền Trạch biểu thị về đất đai, nhà cửa, gia sản thừa kế hoặc tự tạo.',
+    'Quan Lộc' => 'Cung Quan Lộc biểu thị về công danh, sự nghiệp, chức vụ, học hành và địa vị xã hội.',
+    'Nô Bộc' => 'Cung Nô Bộc biểu thị về bạn bè, đồng nghiệp, cấp dưới, người giúp việc và các mối quan hệ xã hội.',
+    'Thiên Di' => 'Cung Thiên Di biểu thị về việc đi lại, xuất ngoại, giao tiếp bên ngoài và môi trường xã hội.',
+    'Tật Ách' => 'Cung Tật Ách biểu thị về sức khỏe, bệnh tật, tai nạn và những kiếp nạn trong đời.',
+    'Tài Bạch' => 'Cung Tài Bạch biểu thị về tiền bạc, khả năng kiếm tiền, cách quản lý tài chính và sự giàu nghèo.',
+    'Tử Tức' => 'Cung Tử Tức biểu thị về con cái, số lượng con, giới tính và sự hiếu thuận của con cái.',
+    'Phu Thê' => 'Cung Phu Thê biểu thị về hôn nhân, người phối ngẫu, hạnh phúc gia đình và duyên nợ vợ chồng.',
+    'Huynh Đệ' => 'Cung Huynh Đệ biểu thị về anh chị em ruột, mối quan hệ anh em và sự giúp đỡ lẫn nhau.'
+];
+
 // 1. Fetch Star Definitions (Generic info for tooltips)
 // We assume there are not too many "star_info" entries, so we fetch all.
 // In a large system, we would filter by the stars actually present in the chart, but usually all stars are in the chart somewhere.
@@ -135,7 +151,16 @@ $xtpl->assign('INFO', $data['info']);
 foreach ($data['cung'] as $cung) {
     // Add CSS class for grid positioning
     $ids = ['ty', 'suu', 'dan', 'mao', 'thin', 'ty_snake', 'ngo', 'mui', 'than', 'dau', 'tuat', 'hoi'];
+    $kanji = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
     $cung['css_class'] = $ids[$cung['id']];
+    $cung['kanji'] = $kanji[$cung['id']]; // Assign Kanji for watermark
+
+    // Assign Palace Tooltip
+    if (isset($palace_definitions[$cung['cung_chuc']])) {
+        $cung['cung_desc'] = $palace_definitions[$cung['cung_chuc']];
+    } else {
+        $cung['cung_desc'] = '';
+    }
 
     // Add highlighting classes
     if ($cung['id'] == $dai_van_id) $cung['css_class'] .= ' daivan-highlight';
@@ -219,8 +244,14 @@ if (!empty($sao_han_detail)) {
 // Parse Year Detail
 if (!empty($year_detail)) {
     foreach ($year_detail as $detail) {
-        // Simple sort to keep months in order if array_unshift messed it up?
-        // Database retrieval order usually preserves insertion order.
+        // Remove repeated star name pattern like "(La Hầu):" or "Tháng X (La Hầu):"
+        // Pattern: (Any Text):
+        // We want to remove the "(StarName):" part specifically if it repeats.
+        // Based on user request: "Bỏ hiển thị tên sao trong phần chi tiết... (La Hầu):"
+        // Content example: "Tháng Giêng (La Hầu): Đầu năm..."
+        // Regex to remove "(Text):"
+        $detail['content'] = preg_replace('/\([^)]+\):/', '', $detail['content']);
+
         $xtpl->assign('DETAIL', $detail);
         $xtpl->parse('main.year_detail.loop');
     }
