@@ -27,9 +27,9 @@ if (file_exists($filepath)) {
         die('Access denied');
     }
 
-    require_once NV_ROOTDIR . '/includes/class/download.class.php';
-    // Fix: Use global namespace for Download class in NV4
-    $download = new Download($filepath, $upload_dir, $name);
+    // Fix: Use namespaced Download class for NukeViet 4.5+
+    // No need to require file manually as it is autoloaded
+    $download = new NukeViet\Files\Download($filepath, $upload_dir, $name);
     $download->download_file();
     exit();
 }

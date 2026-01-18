@@ -163,6 +163,7 @@ $page_title = $lang_module['config'];
 
 $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $global_config['admin_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
+// Correct Form Action to include $op (which defaults to main but explicit is better)
 $xtpl->assign('ACTION_URL', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
 $xtpl->assign('CHECKSS', NV_CHECK_SESSION);
 $xtpl->assign('STREAM_URL', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=install_composer_stream");
@@ -185,7 +186,8 @@ if ($nv_Request->isset_request('save', 'post')) {
         }
 
         $sth = $db->prepare("REPLACE INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES (:lang, :module, :config_name, :config_value)");
-        $sth->bindValue(':lang', $lang_global);
+        // FIX: Use NV_LANG_DATA instead of array $lang_global
+        $sth->bindValue(':lang', NV_LANG_DATA);
         $sth->bindValue(':module', $module_name);
         $sth->bindValue(':config_name', $config_name);
         $sth->bindValue(':config_value', (string)$config_value);
@@ -193,8 +195,8 @@ if ($nv_Request->isset_request('save', 'post')) {
     }
 
     $nv_Cache->delMod($module_name);
-    Header("Location: " . NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
-    die();
+    // Use nv_redirect_location for proper redirect
+    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
 }
 
 // Check if vendor exists
