@@ -37,15 +37,45 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
             putenv('COMPOSER_HOME=' . NV_ROOTDIR . '/tmp/composer');
 
             // Determine PHP executable correctly
-            $php_bin = defined('PHP_BINARY') ? PHP_BINARY : 'php';
-            // Fix for Apache running PHP as module where PHP_BINARY might be httpd.exe
+            $php_bin = 'php'; // Default
+
+            if (defined('PHP_BINARY') && PHP_BINARY != '') {
+                $php_bin = PHP_BINARY;
+            }
+
+            $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+
+            // If PHP_BINARY looks like apache/httpd, try to find php.exe in the same dir or parent
             if (stripos($php_bin, 'httpd') !== false || stripos($php_bin, 'apache') !== false) {
-                $php_bin = 'php'; // Fallback to PATH
+                $possible_paths = [];
+                if ($is_windows) {
+                    $possible_paths[] = dirname($php_bin) . '/php.exe'; // same dir
+                    $possible_paths[] = dirname(dirname($php_bin)) . '/php/php.exe'; // ../php/php.exe
+                    $possible_paths[] = 'C:/xampp/php/php.exe';
+                    $possible_paths[] = 'C:/wamp/bin/php/php*/php.exe'; // Wildcard logic not simple here, just specific paths
+                    $possible_paths[] = 'E:/webs/php/php.exe'; // Guessing from user path structure E:/webs/apache...
+                } else {
+                    $possible_paths[] = '/usr/bin/php';
+                    $possible_paths[] = '/usr/local/bin/php';
+                }
+
+                $found_php = false;
+                foreach ($possible_paths as $path) {
+                    if (file_exists($path)) {
+                        $php_bin = $path;
+                        $found_php = true;
+                        break;
+                    }
+                }
+
+                if (!$found_php) {
+                    // Fallback to simple 'php' and hope it is in PATH
+                    $php_bin = 'php';
+                }
             }
 
             // Check if composer is globally installed
             $composer_bin = 'composer';
-            $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
             $check_cmd = $is_windows ? 'where composer' : 'which composer';
             $check_composer = @shell_exec($check_cmd);
 
@@ -81,7 +111,9 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
                 }
 
                 if (file_exists($composer_phar)) {
-                    $composer_bin = $php_bin . ' ' . escapeshellarg($composer_phar);
+                    // On Windows, if php_bin has spaces, it needs quoting.
+                    // But if we wrap the whole command in cmd /c "...", inner quotes need care.
+                    $composer_bin = '"' . $php_bin . '" ' . escapeshellarg($composer_phar);
                 } else {
                     $output[] = "Could not find or download composer.phar.";
                     $return_var = 1;
