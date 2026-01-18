@@ -24,18 +24,57 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
         die('Security Violation');
     }
 
-    // Try to run composer install
     $module_dir = NV_ROOTDIR . '/modules/' . $module_file;
     if (is_dir($module_dir)) {
         $output = array();
         $return_var = 0;
 
-        // Put env to help composer find home
+        // Setup environment
         putenv('COMPOSER_HOME=' . NV_ROOTDIR . '/tmp/composer');
 
-        // Attempt to run composer. This assumes 'composer' is in the system path.
-        // Redirect stderr to stdout to capture errors
-        exec('cd ' . escapeshellarg($module_dir) . ' && composer install --no-dev 2>&1', $output, $return_var);
+        // Determine PHP executable
+        $php_bin = defined('PHP_BINARY') ? PHP_BINARY : 'php';
+
+        // Check if composer is globally installed
+        $composer_bin = 'composer';
+        $check_composer = shell_exec(stripos(PHP_OS, 'WIN') === 0 ? 'where composer' : 'which composer');
+
+        if (empty($check_composer)) {
+            // Composer not found globally, check for local composer.phar
+            $composer_phar = $module_dir . '/composer.phar';
+            if (!file_exists($composer_phar)) {
+                // Download composer.phar
+                $installer = file_get_contents('https://getcomposer.org/installer');
+                if ($installer) {
+                    file_put_contents($module_dir . '/composer-setup.php', $installer);
+                    exec($php_bin . ' ' . escapeshellarg($module_dir . '/composer-setup.php') . ' --install-dir=' . escapeshellarg($module_dir), $output, $return_var);
+                    unlink($module_dir . '/composer-setup.php');
+                }
+            }
+
+            if (file_exists($composer_phar)) {
+                $composer_bin = $php_bin . ' ' . escapeshellarg($composer_phar);
+            } else {
+                $output[] = "Could not find or download composer.phar";
+                $return_var = 1;
+            }
+        } else {
+             // If global composer exists but isn't in PATH for the web user, full path might be needed.
+             // But usually 'composer' works if 'which' found it.
+             // For Windows 'where' returns the path including extension
+             $composer_bin = trim($check_composer);
+             // On Windows, 'where' might return multiple lines, take the first
+             $lines = explode("\n", $composer_bin);
+             $composer_bin = trim($lines[0]);
+             // Wrap in quotes for safety
+             $composer_bin = '"' . $composer_bin . '"';
+        }
+
+        if ($return_var === 0) {
+            // Run install
+            $cmd = 'cd ' . escapeshellarg($module_dir) . ' && ' . $composer_bin . ' install --no-dev 2>&1';
+            exec($cmd, $output, $return_var);
+        }
 
         if ($return_var === 0 && file_exists($module_dir . '/vendor/autoload.php')) {
             $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_success']);
