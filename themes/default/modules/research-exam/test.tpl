@@ -4,7 +4,7 @@
         <input type="hidden" name="exam_id" value="{EXAM.id}">
         <input type="hidden" name="checkss" value="{NV_CHECK_SESSION}">
 
-        <div class="row">
+        <div class="row" style="display: flex; flex-wrap: wrap;">
             <!-- Sidebar: Info & Grid -->
             <div class="col-md-6 col-lg-6 mb-4">
                 <div class="sticky-sidebar">
@@ -102,11 +102,13 @@
 </div>
 
 <style>
-    .sticky-sidebar {
-        position: -webkit-sticky;
-        position: sticky;
-        top: 20px;
-        z-index: 1000;
+    @media (min-width: 992px) {
+        .sticky-sidebar {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+        }
     }
     .grid-btn {
         width: 35px;
