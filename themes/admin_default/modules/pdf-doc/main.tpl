@@ -12,7 +12,7 @@
     <div class="alert alert-danger">
         {ERROR_DEPENDENCY}
         <div class="margin-top">
-            <button type="submit" name="install_composer" value="1" class="btn btn-warning btn-xs">{LANG.install_composer}</button>
+            <button type="submit" name="install_composer" value="1" class="btn btn-warning btn-xs" onclick="this.innerHTML='Installing... Please wait (this can take 1-2 minutes)'; this.disabled=true; this.form.submit();">{LANG.install_composer}</button>
         </div>
     </div>
     <!-- END: error_dependency -->

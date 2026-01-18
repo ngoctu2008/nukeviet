@@ -24,11 +24,24 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
         die('Security Violation');
     }
 
+    // Increase limits for installation
+    @set_time_limit(0);
+    @ini_set('memory_limit', '-1');
+
     $module_dir = NV_ROOTDIR . '/modules/' . $module_file;
     if (is_dir($module_dir)) {
+        // Check disk space (warn if < 200MB)
+        $free_space = @disk_free_space($module_dir);
+        if ($free_space !== false && $free_space < 200 * 1024 * 1024) {
+             $xtpl->assign('INSTALL_MESSAGE', 'Warning: Low disk space detected (' . nv_convertfromBytes($free_space) . '). Installation may fail.');
+             $xtpl->assign('INSTALL_CLASS', 'alert-warning');
+             $xtpl->parse('main.install_result');
+        }
+
         if (!function_exists('exec') && !function_exists('shell_exec')) {
              $xtpl->assign('INSTALL_MESSAGE', 'Error: exec() and shell_exec() functions are disabled. Please run "composer install" manually via terminal.');
              $xtpl->assign('INSTALL_CLASS', 'alert-danger');
+             $xtpl->parse('main.install_result');
         } else {
             $output = array();
             $return_var = 0;
@@ -45,13 +58,13 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
 
             $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 
-            // If PHP_BINARY looks like apache/httpd, try to find php.exe in the same dir or parent
+            // If PHP_BINARY looks like apache/httpd, try to find php.exe
             if (stripos($php_bin, 'httpd') !== false || stripos($php_bin, 'apache') !== false) {
                 $possible_paths = [];
                 if ($is_windows) {
-                    $possible_paths[] = 'E:/webs/php/php.exe'; // Specific user path based on error log
-                    $possible_paths[] = dirname($php_bin) . '/php.exe'; // same dir
-                    $possible_paths[] = dirname(dirname($php_bin)) . '/php/php.exe'; // ../php/php.exe
+                    $possible_paths[] = 'E:/webs/php/php.exe';
+                    $possible_paths[] = dirname($php_bin) . '/php.exe';
+                    $possible_paths[] = dirname(dirname($php_bin)) . '/php/php.exe';
                     $possible_paths[] = 'C:/xampp/php/php.exe';
                     $possible_paths[] = 'C:/wamp/bin/php/php*/php.exe';
                 } else {
@@ -69,7 +82,6 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
                 }
 
                 if (!$found_php) {
-                    // Fallback to simple 'php' and hope it is in PATH
                     $php_bin = 'php';
                 }
             }
@@ -111,8 +123,6 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
                 }
 
                 if (file_exists($composer_phar)) {
-                    // Use full path to PHP binary when running phar
-                    // Wrap paths in quotes to handle spaces
                     $composer_bin = '"' . $php_bin . '" "' . $composer_phar . '"';
                 } else {
                     $output[] = "Could not find or download composer.phar.";
@@ -128,8 +138,6 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
                 $install_cmd = $composer_bin . ' install --no-dev 2>&1';
 
                 if ($is_windows) {
-                    // Windows specific command construction
-                    // cd /d ensures drive change if needed
                     $cmd = 'cmd /c "cd /d ' . escapeshellarg($module_dir) . ' && ' . $install_cmd . '"';
                 } else {
                     $cmd = 'cd ' . escapeshellarg($module_dir) . ' && ' . $install_cmd;
@@ -144,11 +152,17 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
                 $xtpl->assign('INSTALL_CLASS', 'alert-success');
             } else {
                 $error_detail = implode("<br>", $output);
+
+                // Add friendly message for disk space
+                if (strpos($error_detail, 'No space left on device') !== false) {
+                    $error_detail .= '<br><strong>ERROR: Your disk is full. Please free up space on your server.</strong>';
+                }
+
                 $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_error'] . '<br>Command: ' . $cmd . '<br><pre>' . $error_detail . '</pre>');
                 $xtpl->assign('INSTALL_CLASS', 'alert-danger');
             }
+            $xtpl->parse('main.install_result');
         }
-        $xtpl->parse('main.install_result');
     }
 }
 
