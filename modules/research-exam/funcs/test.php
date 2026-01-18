@@ -92,6 +92,12 @@ if ($remaining < 0) $remaining = 0;
 
 $xtpl->assign('REMAINING_SECONDS', $remaining);
 
+// Grid loop
+foreach ($questions as $index => $q) {
+    $xtpl->assign('Q_GRID', array('id' => $q['id'], 'index' => $index + 1));
+    $xtpl->parse('main.question_grid');
+}
+
 foreach ($questions as $index => $q) {
     $q['index'] = $index + 1;
     $xtpl->assign('Q', $q);
