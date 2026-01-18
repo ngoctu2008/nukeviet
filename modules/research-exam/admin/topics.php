@@ -15,6 +15,19 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $page_title = $lang_module['topic_manager'];
 $error = '';
 
+// Check and Create Table if missing (Auto-fix for update)
+$table_name = NV_PREFIXLANG . "_" . $module_data . "_topics";
+$sql_check = "SHOW TABLES LIKE '" . $table_name . "'";
+if ($db->query($sql_check)->fetchColumn() != $table_name) {
+    $sql_create = "CREATE TABLE " . $table_name . " (
+        id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+        title varchar(255) NOT NULL,
+        note text,
+        PRIMARY KEY (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    $db->query($sql_create);
+}
+
 // Process Form Submit
 if ($nv_Request->isset_request('save', 'post')) {
     $row = array();

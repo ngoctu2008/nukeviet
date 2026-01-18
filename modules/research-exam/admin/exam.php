@@ -15,6 +15,27 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $page_title = $lang_module['exam_manager'];
 $error = '';
 
+// Check and Create Table if missing (Auto-fix for update)
+$table_struct = NV_PREFIXLANG . "_" . $module_data . "_exam_structure";
+$sql_check = "SHOW TABLES LIKE '" . $table_struct . "'";
+if ($db->query($sql_check)->fetchColumn() != $table_struct) {
+    $sql_create = "CREATE TABLE " . $table_struct . " (
+        exam_id mediumint(8) unsigned NOT NULL,
+        topic_id mediumint(8) unsigned NOT NULL,
+        quantity smallint(4) unsigned NOT NULL DEFAULT '0',
+        PRIMARY KEY (exam_id, topic_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    $db->query($sql_create);
+}
+
+// Check and Create Column if missing (Auto-fix for update)
+$table_questions = NV_PREFIXLANG . "_" . $module_data . "_questions";
+$sql_check_col = "SHOW COLUMNS FROM " . $table_questions . " LIKE 'topic_id'";
+if (!$db->query($sql_check_col)->fetch()) {
+    $db->query("ALTER TABLE " . $table_questions . " ADD topic_id mediumint(8) unsigned NOT NULL DEFAULT '0' AFTER exam_id");
+    $db->query("ALTER TABLE " . $table_questions . " ADD INDEX topic_id (topic_id)");
+}
+
 // Include DatePicker
 if (defined('NV_EDITOR')) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 

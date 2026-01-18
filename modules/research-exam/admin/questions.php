@@ -15,6 +15,14 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $page_title = $lang_module['question_manager'];
 $error = '';
 
+// Check and Create Column if missing (Auto-fix for update)
+$table_questions = NV_PREFIXLANG . "_" . $module_data . "_questions";
+$sql_check_col = "SHOW COLUMNS FROM " . $table_questions . " LIKE 'topic_id'";
+if (!$db->query($sql_check_col)->fetch()) {
+    $db->query("ALTER TABLE " . $table_questions . " ADD topic_id mediumint(8) unsigned NOT NULL DEFAULT '0' AFTER exam_id");
+    $db->query("ALTER TABLE " . $table_questions . " ADD INDEX topic_id (topic_id)");
+}
+
 // Include Editor
 if (defined('NV_EDITOR')) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 
@@ -27,6 +35,22 @@ while ($row = $result->fetch()) {
 }
 
 // Get Topics List
+// Check table topics exists first, handled in topics.php mostly but we need it here.
+// Re-using the check logic or suppressing error is better.
+// Assuming topics.php was visited or I should check here too.
+// Let's add the check here too for robustness.
+$table_name = NV_PREFIXLANG . "_" . $module_data . "_topics";
+$sql_check = "SHOW TABLES LIKE '" . $table_name . "'";
+if ($db->query($sql_check)->fetchColumn() != $table_name) {
+    $sql_create = "CREATE TABLE " . $table_name . " (
+        id mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+        title varchar(255) NOT NULL,
+        note text,
+        PRIMARY KEY (id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    $db->query($sql_create);
+}
+
 $sql = "SELECT id, title FROM " . NV_PREFIXLANG . "_" . $module_data . "_topics ORDER BY id DESC";
 $result = $db->query($sql);
 $topics = array();
