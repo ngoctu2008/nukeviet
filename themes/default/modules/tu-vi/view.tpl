@@ -32,9 +32,9 @@
                     <a href="javascript:void(0);"
                        data-toggle="tooltip"
                        data-placement="top"
-                       data-original-title="{STAR_NAME}"
+                       data-original-title="{STAR_INFO}"
                        data-html="true"
-                       data-content="{STAR_NAME}">{STAR_NAME}</a>
+                       data-content="{STAR_INFO}">{STAR_NAME}</a>
                 </span>
                 <!-- END: chinh_tinh -->
 
@@ -43,9 +43,9 @@
                     <a href="javascript:void(0);"
                        data-toggle="tooltip"
                        data-placement="top"
-                       data-original-title="{STAR_NAME}"
+                       data-original-title="{STAR_INFO}"
                        data-html="true"
-                       data-content="{STAR_NAME}">{STAR_NAME}</a>
+                       data-content="{STAR_INFO}">{STAR_NAME}</a>
                 </span>
                 <!-- END: phu_tinh -->
             </div>

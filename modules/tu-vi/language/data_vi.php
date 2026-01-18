@@ -23,7 +23,17 @@ $table_interpretations = $db_config['prefix'] . "_" . $lang . "_" . $module_tabl
 $sql = "INSERT INTO " . $table_interpretations . " (star_key, palace_key, topic, content, weight) VALUES ";
 $values = [];
 
-// Main Stars
+// STAR DEFINITIONS (New Section for Tooltips)
+// Format: star_key = [StarName], palace_key = '', topic = 'star_info'
+$values[] = "('Liêm Trinh', '', 'star_info', 'Sao Liêm Trinh trong Tử Vi là một chính tinh thuộc hành Hỏa, có tính chất đối lập, vừa biểu trưng sự quyết đoán, tài năng, quyền lực, nhưng cũng mang đến thử thách tình cảm và tài chính, dễ gặp lận đận nếu gặp sát tinh như Hóa Kỵ, Kình Dương, Đà La. Khi đắc địa, Liêm Trinh chủ công danh, sự nghiệp thăng tiến, có khả năng quản lý; gặp Xương Khúc thì văn chương, nghệ thuật; nhưng hãm địa (Tỵ, Hợi) hoặc gặp sát tinh thì dễ gặp tai họa, tranh chấp, sức khỏe kém, tình cảm bất hòa', 0)";
+
+// Placeholder for other main stars to avoid empty tooltips (Generic)
+$generic_stars = ['Tử Vi', 'Thiên Cơ', 'Thái Dương', 'Vũ Khúc', 'Thiên Đồng', 'Thiên Phủ', 'Thái Âm', 'Tham Lang', 'Cự Môn', 'Thiên Tướng', 'Thiên Lương', 'Thất Sát', 'Phá Quân'];
+foreach ($generic_stars as $star) {
+    $values[] = "('" . $star . "', '', 'star_info', '<strong>" . $star . "</strong>: Là một trong 14 chính tinh quan trọng. Tính chất cụ thể phụ thuộc vào vị trí cung và các sao đi kèm.', 0)";
+}
+
+// Main Stars (Position specific)
 $values[] = "('Tử Vi', 'Tý', 'tong_quan', '<p><strong>Tử Vi tại Tý:</strong> Bình hòa. Chủ về người khoan dung, nhân hậu nhưng thiếu quyết đoán nếu không có Tả Hữu hội chiếu. Ưa làm việc công chức, giáo dục.</p>', 0)";
 $values[] = "('Tử Vi', 'Ngọ', 'tong_quan', '<p><strong>Tử Vi tại Ngọ:</strong> Miếu địa (Cực hướng Ly minh). Rất tốt. Chủ về uy quyền, tài năng lãnh đạo, phú quý song toàn. <br><br><strong>Về Công Danh:</strong> Đường công danh rộng mở, dễ đạt được vị trí cao trong xã hội, được người đời kính trọng. Thích hợp làm chính trị, quản lý doanh nghiệp lớn.<br><br><strong>Về Tài Lộc:</strong> Tài vận hanh thông, cả đời không lo thiếu thốn tiền bạc. Có khả năng quản lý tài chính xuất sắc, tiền đẻ ra tiền.<br><br><strong>Về Gia Đạo:</strong> Gia đình êm ấm, vợ chồng hòa thuận, con cái thành đạt, hiếu thảo. Tuy nhiên cần chú ý không nên quá độc đoán trong gia đình.<br><br><strong>Về Sức Khỏe:</strong> Sức khỏe dồi dào, ít bệnh tật. Cần chú ý các bệnh về tiêu hóa do ăn uống tiệc tùng nhiều.</p>', 0)";
 $values[] = "('Thiên Cơ', 'Tỵ', 'tong_quan', '<p><strong>Thiên Cơ tại Tỵ:</strong> Đắc địa. Người thông minh, khéo léo, giỏi tính toán, thích hợp các nghề kỹ thuật, thiết kế, mưu sĩ.</p>', 0)";

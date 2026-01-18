@@ -40,8 +40,18 @@ $sao_han = $horoscope->getSaoHan($age_am, $gender);
 // Fetch Interpretations from Database
 $interpretations = [];
 $lookups = [];
+$star_definitions = []; // Store tooltip info
 
-// Standard interpretations (Star in Palace)
+// 1. Fetch Star Definitions (Generic info for tooltips)
+// We assume there are not too many "star_info" entries, so we fetch all.
+// In a large system, we would filter by the stars actually present in the chart, but usually all stars are in the chart somewhere.
+$sql_def = "SELECT star_key, content FROM " . NV_PRE_TUVI . "_interpretations WHERE topic = 'star_info'";
+$result_def = $db->query($sql_def);
+while ($row = $result_def->fetch()) {
+    $star_definitions[$row['star_key']] = $row['content'];
+}
+
+// 2. Standard Interpretations (Star in Palace)
 foreach ($chart as $cung) {
     foreach ($cung['stars'] as $star) {
         $lookups[] = "(star_key = " . $db->quote($star['name']) . " AND palace_key = " . $db->quote($cung['name']) . ")";
@@ -135,12 +145,25 @@ foreach ($data['cung'] as $cung) {
     if (!empty($cung['chinh_tinh'])) {
         foreach ($cung['chinh_tinh'] as $star) {
             $xtpl->assign('STAR_NAME', $star);
+            // Check for definition
+            $star_info = isset($star_definitions[$star]) ? $star_definitions[$star] : $star;
+            // Strip tags for title attribute to avoid breaking HTML, unless using data-html="true" which we are.
+            // But standard title attribute doesn't support HTML. Bootstrap tooltip with data-html="true" does.
+            // However, to be safe against quotes breaking the attribute:
+            $star_info_safe = htmlspecialchars($star_info, ENT_QUOTES, 'UTF-8');
+
+            $xtpl->assign('STAR_INFO', $star_info_safe);
             $xtpl->parse('main.loop.chinh_tinh');
         }
     }
     if (!empty($cung['phu_tinh'])) {
         foreach ($cung['phu_tinh'] as $star) {
             $xtpl->assign('STAR_NAME', $star);
+            // Check for definition
+            $star_info = isset($star_definitions[$star]) ? $star_definitions[$star] : $star;
+            $star_info_safe = htmlspecialchars($star_info, ENT_QUOTES, 'UTF-8');
+
+            $xtpl->assign('STAR_INFO', $star_info_safe);
             $xtpl->parse('main.loop.phu_tinh');
         }
     }
