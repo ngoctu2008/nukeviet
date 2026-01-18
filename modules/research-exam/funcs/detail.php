@@ -54,10 +54,30 @@ $row_display['time_end'] = date('d/m/Y H:i', $row['time_end']);
 
 $xtpl->assign('ROW', $row_display);
 
+// Check if User has already taken this exam
+$has_result = false;
+if (defined('NV_IS_USER')) {
+    $stmt = $db->prepare("SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id = :exam_id AND user_id = :user_id");
+    $stmt->bindParam(':exam_id', $exam_id, PDO::PARAM_INT);
+    $stmt->bindParam(':user_id', $user_info['userid'], PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch();
+
+    if ($result) {
+        $has_result = true;
+        $result['time_submit'] = date('d/m/Y H:i', $result['time_submit']);
+        $xtpl->assign('RESULT', $result);
+        $xtpl->parse('main.has_result');
+    }
+}
+
 // Check time
 $current_time = NV_CURRENTTIME;
 
-if ($current_time >= $row['time_start'] && $current_time <= $row['time_end']) {
+if ($has_result) {
+    // Do nothing, already parsed result block above.
+    // Do not show form.
+} elseif ($current_time >= $row['time_start'] && $current_time <= $row['time_end']) {
     // Show form
 
     // Units Dropdown

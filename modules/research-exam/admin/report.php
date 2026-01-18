@@ -44,7 +44,8 @@ if ($nv_Request->isset_request('export', 'post')) {
 
         // Correct sorting by Score -> Prediction Accuracy (Diff from Count of Perfect Scores) -> Time
         // We inject the subquery with the calculated total_questions variable
-        $sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " ORDER BY r.total_score DESC, ABS(r.prediction - (SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id=" . $examid . " AND correct_count = " . intval($total_questions) . ")) ASC, r.time_submit ASC";
+        // Added GROUP BY r.id to ensure no duplicates if joins cause issues (though 1:1 unit join shouldn't, safety first)
+        $sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " GROUP BY r.id ORDER BY r.total_score DESC, ABS(r.prediction - (SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id=" . $examid . " AND correct_count = " . intval($total_questions) . ")) ASC, r.time_submit ASC";
 
         $res = $db->query($sql);
         $i = 1;
@@ -156,7 +157,7 @@ $xtpl->assign('ESSAY_DATA_JSON', json_encode($essay_data));
 $res->closeCursor(); // Close previous cursor if needed
 // Re-run main query or fetch all to array?
 // Fetch all to array is safer.
-$sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " ORDER BY r.total_score DESC, ABS(r.prediction - (SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id=" . $examid . " AND correct_count = " . intval($total_questions) . ")) ASC, r.time_submit ASC LIMIT 50";
+$sql = "SELECT r.*, u.title as unit_title FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result r LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_units u ON r.unit_id = u.id WHERE r.exam_id=" . $examid . " GROUP BY r.id ORDER BY r.total_score DESC, ABS(r.prediction - (SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id=" . $examid . " AND correct_count = " . intval($total_questions) . ")) ASC, r.time_submit ASC LIMIT 50";
 $res_rows = $db->query($sql);
 
 while ($row = $res_rows->fetch()) {

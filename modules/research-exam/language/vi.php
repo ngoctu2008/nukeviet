@@ -50,3 +50,6 @@ $lang_module['list_question'] = 'Danh sách câu hỏi';
 $lang_module['question_title'] = 'Câu';
 $lang_module['time_out'] = 'Đã hết thời gian làm bài!';
 $lang_module['note_review'] = 'Lưu ý: Hãy kiểm tra kỹ lại bài làm trước khi nhấn nộp bài.';
+$lang_module['exam_already_taken'] = 'Bạn đã tham gia cuộc thi này!';
+$lang_module['your_result'] = 'Kết quả của bạn';
+$lang_module['time_submit'] = 'Thời gian nộp';

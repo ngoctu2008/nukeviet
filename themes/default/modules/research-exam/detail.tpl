@@ -46,6 +46,22 @@
     </div>
     <!-- END: ended -->
 
+    <!-- BEGIN: has_result -->
+    <div class="alert alert-info shadow-sm text-center">
+        <h4 class="mb-3"><i class="fa fa-check-circle"></i> {LANG.exam_already_taken}</h4>
+        <div class="card d-inline-block text-left" style="min-width: 300px; max-width: 100%;">
+            <div class="card-header bg-success text-white">
+                <strong>{LANG.your_result}</strong>
+            </div>
+            <div class="card-body">
+                <p><strong>{LANG.fullname}:</strong> {RESULT.fullname}</p>
+                <p><strong>{LANG.score}:</strong> <span class="text-danger font-weight-bold" style="font-size: 1.2rem;">{RESULT.score}</span></p>
+                <p><strong>{LANG.time_submit}:</strong> {RESULT.time_submit}</p>
+            </div>
+        </div>
+    </div>
+    <!-- END: has_result -->
+
     <!-- BEGIN: form -->
     <div class="card shadow border-primary">
         <div class="card-header text-white" style="background-color: #337ab7;">

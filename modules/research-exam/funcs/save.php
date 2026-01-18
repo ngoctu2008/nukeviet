@@ -27,6 +27,19 @@ $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_exams WHERE id=
 $exam = $db->query($sql)->fetch();
 if (empty($exam)) die('Exam not found');
 
+$user_id = defined('NV_IS_USER') ? $user_info['userid'] : 0;
+
+// Prevent Duplicate Submission
+if ($user_id > 0) {
+    $check_stmt = $db->prepare("SELECT id FROM " . NV_PREFIXLANG . "_" . $module_data . "_users_result WHERE exam_id = :exam_id AND user_id = :user_id");
+    $check_stmt->bindParam(':exam_id', $exam_id, PDO::PARAM_INT);
+    $check_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $check_stmt->execute();
+    if ($check_stmt->fetch()) {
+        die($lang_module['exam_already_taken']);
+    }
+}
+
 // Get User Answers
 $answers = $nv_Request->get_array('answer', 'post', array());
 $prediction = $nv_Request->get_int('prediction', 'post', 0);
@@ -54,7 +67,7 @@ $stmt_res = $db->prepare("INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "
     VALUES (:exam_id, :unit_id, :user_id, :fullname, :phone, :address, 0, 0, 0, 0, :prediction, :time_submit, :duration_used)");
 
 $duration_used = NV_CURRENTTIME - $user_session['start_time'];
-$user_id = defined('NV_IS_USER') ? $user_info['userid'] : 0;
+// $user_id already defined above
 
 $stmt_res->bindParam(':exam_id', $exam_id, PDO::PARAM_INT);
 $stmt_res->bindParam(':unit_id', $user_session['unit_id'], PDO::PARAM_INT);
