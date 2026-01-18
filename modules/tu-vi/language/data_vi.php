@@ -23,8 +23,10 @@ $table_interpretations = $db_config['prefix'] . "_" . $lang . "_" . $module_tabl
 $sql = "INSERT INTO " . $table_interpretations . " (star_key, palace_key, topic, content, weight) VALUES ";
 $values = [];
 
-// STAR DEFINITIONS (New Section for Tooltips)
-// Format: star_key = [StarName], palace_key = '', topic = 'star_info'
+// ============================================================================
+// 1. MAIN STARS DEFINITIONS (14 Chính Tinh)
+// ============================================================================
+
 $values[] = "('Liêm Trinh', '', 'star_info', 'Sao Liêm Trinh trong Tử Vi là một chính tinh thuộc hành Hỏa, có tính chất đối lập, vừa biểu trưng sự quyết đoán, tài năng, quyền lực, nhưng cũng mang đến thử thách tình cảm và tài chính, dễ gặp lận đận nếu gặp sát tinh như Hóa Kỵ, Kình Dương, Đà La. Khi đắc địa, Liêm Trinh chủ công danh, sự nghiệp thăng tiến, có khả năng quản lý; gặp Xương Khúc thì văn chương, nghệ thuật; nhưng hãm địa (Tỵ, Hợi) hoặc gặp sát tinh thì dễ gặp tai họa, tranh chấp, sức khỏe kém, tình cảm bất hòa', 0)";
 
 $values[] = "('Tử Vi', '', 'star_info', 'Sao Tử Vi là Đế Tinh, thuộc hành Thổ, đứng đầu 14 chính tinh. Tử Vi chủ về quyền uy, tài lộc và phúc đức. Sao này có khả năng giải trừ tai ách, kéo dài tuổi thọ và mang lại sự ổn định. Người có sao Tử Vi thủ mệnh thường có dáng vẻ tôn nghiêm, tính tình đôn hậu, trọng danh dự và có khả năng lãnh đạo. Khi gặp Tả Phù, Hữu Bật thì như vua có quần thần, sự nghiệp hiển hách; gặp sát tinh thì giảm bớt uy lực nhưng vẫn giữ được sự bình an.', 0)";
@@ -53,8 +55,54 @@ $values[] = "('Thất Sát', '', 'star_info', 'Sao Thất Sát thuộc hành Kim
 
 $values[] = "('Phá Quân', '', 'star_info', 'Sao Phá Quân thuộc hành Thủy, là Hao Tinh, chủ về sự hao tán, phu thê và nô bộc. Người có Phá Quân thủ mệnh thường có tính cách ngang tàng, thích phá cũ đổi mới, dũng cảm nhưng đôi khi liều lĩnh. Cuộc đời nhiều biến động, tiền bạc tụ tán thất thường. Thích hợp với các công việc đòi hỏi sự sáng tạo, khai phá thị trường mới. Nếu gặp Lộc Tồn, Hóa Lộc thì phát phú; gặp sát tinh thì vất vả, bôn ba, dễ gặp tai nạn.', 0)";
 
+// ============================================================================
+// 2. AUXILIARY STARS DEFINITIONS (Phụ Tinh)
+// ============================================================================
 
-// Main Stars (Position specific)
+// Vong Thai Tue
+$values[] = "('Thái Tuế', '', 'star_info', 'Sao Thái Tuế chủ về lời ăn tiếng nói, tranh chấp, kiện tụng. Đóng ở Mệnh thì hay lý luận, thích phê bình, nhưng cũng dễ gặp thị phi.', 0)";
+$values[] = "('Thiếu Dương', '', 'star_info', 'Sao Thiếu Dương thuộc Hỏa, chủ về sự thông minh, nhân hậu, nhưng đôi khi nóng nảy, vội vàng. Đóng ở Mệnh thì sáng suốt, nhưng dễ bị nhầm lẫn vì quá tin người.', 0)";
+$values[] = "('Tang Môn', '', 'star_info', 'Sao Tang Môn thuộc Mộc, là Bại Tinh, chủ về u sầu, buồn phiền, tang tóc. Đóng đâu lo đó, gặp Hạn thì đề phòng chuyện buồn trong gia đạo.', 0)";
+$values[] = "('Thiếu Âm', '', 'star_info', 'Sao Thiếu Âm thuộc Thủy, chủ về sự nhẫn nhịn, nhẹ nhàng, nhưng đôi khi yếu đuối, dễ bị lấn lướt.', 0)";
+$values[] = "('Quan Phù', '', 'star_info', 'Sao Quan Phù chủ về sự ngăn trở, pháp luật, kiện tụng. Đóng Mệnh thì tính tình kỹ lưỡng, nhưng dễ vướng vào rắc rối giấy tờ.', 0)";
+$values[] = "('Tử Phù', '', 'star_info', 'Sao Tử Phù chủ về sự rắc rối nhỏ, buồn phiền vặt vãnh, hay quên.', 0)";
+$values[] = "('Tuế Phá', '', 'star_info', 'Sao Tuế Phá chủ về sự chống đối, ngang ngược, phá tán. Răng xấu hoặc hay đau răng.', 0)";
+$values[] = "('Long Đức', '', 'star_info', 'Sao Long Đức là sao tốt, chủ về sự đoan chính, nhân hậu, giải trừ tai ách nhỏ.', 0)";
+$values[] = "('Bạch Hổ', '', 'star_info', 'Sao Bạch Hổ thuộc Kim, chủ về uy quyền nhưng cũng mang ý nghĩa tai nạn, máu huyết, hình thương. Nữ mệnh gặp Bạch Hổ thì khí huyết kém.', 0)";
+$values[] = "('Phúc Đức', '', 'star_info', 'Sao Phúc Đức thuộc Thổ, là sao tốt chủ về phước thiện, giải cứu tai nạn, gia đạo êm ấm.', 0)";
+$values[] = "('Điếu Khách', '', 'star_info', 'Sao Điếu Khách chủ về ăn nói, cờ bạc, vui chơi, phóng khoáng nhưng hay khoác lác.', 0)";
+$values[] = "('Trực Phù', '', 'star_info', 'Sao Trực Phù chủ về sự ngay thẳng nhưng hay bị thua thiệt, vất vả, lo toan.', 0)";
+
+// Vong Loc Ton
+$values[] = "('Lộc Tồn', '', 'star_info', 'Sao Lộc Tồn thuộc Thổ, là Tài Tinh, chủ về tài lộc trời cho, sự dư giả, cẩn trọng. Đóng đâu giáng phúc đó, nhưng kỵ gặp Không Kiếp.', 0)";
+$values[] = "('Lực Sĩ', '', 'star_info', 'Sao Lực Sĩ chủ về sức khỏe, quyền biến, nhưng nếu gặp Kình Dương thì thành có công mà không được hưởng (kẻ khác hưởng).', 0)";
+$values[] = "('Thanh Long', '', 'star_info', 'Sao Thanh Long thuộc Thủy, chủ về may mắn, vui vẻ, thi cử đỗ đạt, giải ách (rồng xanh).', 0)";
+$values[] = "('Tiểu Hao', '', 'star_info', 'Sao Tiểu Hao thuộc Hỏa, chủ về hao tán nhỏ, thay đổi, không giữ được tiền.', 0)";
+$values[] = "('Tướng Quân', '', 'star_info', 'Sao Tướng Quân chủ về sự uy quyền, nóng nảy, dũng mãnh, thích cầm đầu.', 0)";
+$values[] = "('Tấu Thư', '', 'star_info', 'Sao Tấu Thư chủ về văn chương, bằng sắc, ăn nói khéo léo, tế nhị.', 0)";
+$values[] = "('Phi Liêm', '', 'star_info', 'Sao Phi Liêm chủ về sự nhanh nhẹn, vui vẻ, nhưng cũng có nghĩa là thị phi, bay nhảy.', 0)";
+$values[] = "('Hỷ Thần', '', 'star_info', 'Sao Hỷ Thần thuộc Hỏa, chủ về tin vui, hỷ sự, sự may mắn, hay cười.', 0)";
+$values[] = "('Bệnh Phù', '', 'star_info', 'Sao Bệnh Phù chủ về bệnh tật, đau yếu, sức khỏe kém.', 0)";
+$values[] = "('Đại Hao', '', 'star_info', 'Sao Đại Hao thuộc Hỏa, chủ về hao tán lớn, ly tán, thay đổi công việc/chỗ ở thường xuyên.', 0)";
+$values[] = "('Phục Binh', '', 'star_info', 'Sao Phục Binh chủ về sự rình rập, tiểu nhân, lừa gạt, hoặc mưu mẹo.', 0)";
+$values[] = "('Quan Phủ', '', 'star_info', 'Sao Quan Phủ chủ về pháp luật, hình ngục, sự phán xét.', 0)";
+
+// Vong Trang Sinh
+$values[] = "('Tràng Sinh', '', 'star_info', 'Sao Tràng Sinh chủ về sự khởi đầu, sức sống mãnh liệt, nhân hậu, phúc thọ.', 0)";
+$values[] = "('Mộc Dục', '', 'star_info', 'Sao Mộc Dục chủ về sự tắm gội, làm dáng, chưng diện, nhưng cũng có ý nghĩa dâm dật, nông nổi.', 0)";
+$values[] = "('Quan Đới', '', 'star_info', 'Sao Quan Đới chủ về chức vụ, quyền hành, sự trưởng thành, mũ áo cân đai.', 0)";
+$values[] = "('Lâm Quan', '', 'star_info', 'Sao Lâm Quan chủ về sự phát triển, thịnh vượng, tài lộc, làm quan.', 0)";
+$values[] = "('Đế Vượng', '', 'star_info', 'Sao Đế Vượng chủ về cực thịnh, uy quyền, lãnh đạo, nhưng coi chừng thịnh quá hóa suy.', 0)";
+$values[] = "('Suy', '', 'star_info', 'Sao Suy chủ về sự yếu đuối, sa sút, tinh thần kém, ôn hòa, nhu mì.', 0)";
+$values[] = "('Bệnh', '', 'star_info', 'Sao Bệnh chủ về đau yếu, bệnh tật, hay lo nghĩ, thiếu kiên quyết.', 0)";
+$values[] = "('Tử', '', 'star_info', 'Sao Tử chủ về sự chết chóc, tàng ẩn, kín đáo, thâm trầm, hoặc bế tắc.', 0)";
+$values[] = "('Mộ', '', 'star_info', 'Sao Mộ chủ về sự chôn cất, tàng trữ, ngu đần hoặc sự kết thúc, nhập kho.', 0)";
+$values[] = "('Tuyệt', '', 'star_info', 'Sao Tuyệt chủ về sự hết đường, bế tắc, hoặc sự thông minh sắc sảo đến mức tinh quái.', 0)";
+$values[] = "('Thai', '', 'star_info', 'Sao Thai chủ về sự thụ thai, sinh nở, hoặc sự bắt đầu ý tưởng mới, có khi là sự mê muội.', 0)";
+$values[] = "('Dưỡng', '', 'star_info', 'Sao Dưỡng chủ về sự nuôi dưỡng, chăm sóc, phù trì, hoặc nhận con nuôi.', 0)";
+
+
+// Main Stars (Position specific - KEEP EXISTING DATA)
 $values[] = "('Tử Vi', 'Tý', 'tong_quan', '<p><strong>Tử Vi tại Tý:</strong> Bình hòa. Chủ về người khoan dung, nhân hậu nhưng thiếu quyết đoán nếu không có Tả Hữu hội chiếu. Ưa làm việc công chức, giáo dục.</p>', 0)";
 $values[] = "('Tử Vi', 'Ngọ', 'tong_quan', '<p><strong>Tử Vi tại Ngọ:</strong> Miếu địa (Cực hướng Ly minh). Rất tốt. Chủ về uy quyền, tài năng lãnh đạo, phú quý song toàn. <br><br><strong>Về Công Danh:</strong> Đường công danh rộng mở, dễ đạt được vị trí cao trong xã hội, được người đời kính trọng. Thích hợp làm chính trị, quản lý doanh nghiệp lớn.<br><br><strong>Về Tài Lộc:</strong> Tài vận hanh thông, cả đời không lo thiếu thốn tiền bạc. Có khả năng quản lý tài chính xuất sắc, tiền đẻ ra tiền.<br><br><strong>Về Gia Đạo:</strong> Gia đình êm ấm, vợ chồng hòa thuận, con cái thành đạt, hiếu thảo. Tuy nhiên cần chú ý không nên quá độc đoán trong gia đình.<br><br><strong>Về Sức Khỏe:</strong> Sức khỏe dồi dào, ít bệnh tật. Cần chú ý các bệnh về tiêu hóa do ăn uống tiệc tùng nhiều.</p>', 0)";
 $values[] = "('Thiên Cơ', 'Tỵ', 'tong_quan', '<p><strong>Thiên Cơ tại Tỵ:</strong> Đắc địa. Người thông minh, khéo léo, giỏi tính toán, thích hợp các nghề kỹ thuật, thiết kế, mưu sĩ.</p>', 0)";
