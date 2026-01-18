@@ -102,6 +102,10 @@ $array_mod_title[] = array(
     'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op
 );
 
+// Include Assets
+$my_head .= '<link rel="stylesheet" href="' . NV_BASE_SITEURL . 'themes/default/css/pdf-doc.css">';
+$my_footer .= '<script src="' . NV_BASE_SITEURL . 'themes/default/js/pdf-doc.js"></script>';
+
 $xtpl = new XTemplate('merge.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_FILE', $module_file);
