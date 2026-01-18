@@ -26,11 +26,14 @@ function nv_pdf_doc_check_ext($ext)
 function nv_pdf_doc_check_perm($module_name, $module_config)
 {
     global $user_info;
-    $groups_use = isset($module_config[$module_name]['groups_use']) ? explode(',', $module_config[$module_name]['groups_use']) : array();
+    $groups_use = isset($module_config[$module_name]['groups_use']) ? $module_config[$module_name]['groups_use'] : array();
+    if (!is_array($groups_use)) {
+        $groups_use = explode(',', $groups_use);
+    }
 
     if (empty($groups_use)) {
         return true; // No restriction if not configured? Or restrict? Let's assume open if empty to avoid lockout on install.
     }
 
-    return nv_user_in_groups($groups_use);
+    return nv_user_in_groups(implode(',', $groups_use));
 }
