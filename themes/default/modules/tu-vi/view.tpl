@@ -6,13 +6,12 @@
         <!-- Center Box (Thien Ban) -->
         <div class="center-box">
             <h3>{INFO.fullname}</h3>
-            <p>Dương Lịch: {INFO.solar_date}</p>
-            <p>Âm Lịch: {INFO.lunar_date}</p>
-            <p>Giới tính: {INFO.gender}</p>
-            <p>Cục: {INFO.cuc}</p>
-            <p>Tuổi Âm: {INFO.age} - Năm xem: {INFO.current_year}</p>
-            <p>Sao: <strong>{INFO.sao}</strong> - Hạn: <strong>{INFO.han}</strong></p>
-            <p class="text-danger"><strong>{INFO.bad_luck}</strong></p>
+            <p><strong>Dương Lịch:</strong> {INFO.solar_date}</p>
+            <p><strong>Âm Lịch:</strong> {INFO.lunar_date}</p>
+            <p><strong>Giới tính:</strong> {INFO.gender} | <strong>Cục:</strong> {INFO.cuc}</p>
+            <p><strong>Tuổi Âm:</strong> {INFO.age} | <strong>Năm xem:</strong> {INFO.current_year}</p>
+            <p>Sao chủ: <strong>{INFO.sao}</strong> - Hạn: <strong>{INFO.han}</strong></p>
+            <p style="color: #c62828; font-weight: bold; margin-top: 5px;">{INFO.bad_luck}</p>
         </div>
 
         <!-- Loop 12 Cung -->
@@ -26,45 +25,41 @@
             <!-- END: tieuvan_label -->
 
             <div class="cung-header">{CUNG.cung_chuc}</div>
+
             <div class="star-list">
                 <!-- BEGIN: chinh_tinh -->
-                <span class="chinh-tinh">
-                    <a href="javascript:void(0);"
-                       data-toggle="tooltip"
-                       data-placement="top"
-                       data-original-title="{STAR_INFO}"
-                       data-html="true"
-                       data-content="{STAR_INFO}">{STAR_NAME}</a>
-                </span>
+                <span class="chinh-tinh"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="{STAR_INFO}">{STAR_NAME}</span>
                 <!-- END: chinh_tinh -->
 
+                <div style="margin-top: 5px;">
                 <!-- BEGIN: phu_tinh -->
-                <span class="phu_tinh">
-                    <a href="javascript:void(0);"
-                       data-toggle="tooltip"
-                       data-placement="top"
-                       data-original-title="{STAR_INFO}"
-                       data-html="true"
-                       data-content="{STAR_INFO}">{STAR_NAME}</a>
-                </span>
+                <span class="phu-tinh"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="{STAR_INFO}">{STAR_NAME}</span>
                 <!-- END: phu_tinh -->
+                </div>
             </div>
+
             <div class="cung-footer">{CUNG.name}</div>
         </div>
         <!-- END: loop -->
     </div>
 
     <!-- Interpretations Section -->
-    <div class="tu-vi-interpretations" style="margin-top: 20px;">
+    <div class="tu-vi-interpretations">
         <h3>{LANG.interpretations}</h3>
 
         <!-- General Interpretations -->
         <!-- BEGIN: interpretations -->
-        <div class="panel-group">
+        <div class="interpretation-group">
             <!-- BEGIN: loop -->
-            <div class="panel panel-info">
-                <div class="panel-heading"><strong>{INTERP.star_key}</strong> - <strong>{INTERP.palace_key}</strong></div>
-                <div class="panel-body">
+            <div class="tv-panel">
+                <div class="tv-panel-heading">{INTERP.star_key} - {INTERP.palace_key}</div>
+                <div class="tv-panel-body">
                     {INTERP.content}
                 </div>
             </div>
@@ -75,11 +70,11 @@
         <!-- Sao Han Detail -->
         <!-- BEGIN: sao_han_detail -->
         <h3>Bình giải Sao Hạn năm nay</h3>
-        <div class="panel-group">
+        <div class="interpretation-group">
             <!-- BEGIN: loop -->
-            <div class="panel panel-warning">
-                <div class="panel-heading"><strong>{DETAIL.star_key}: {DETAIL.palace_key}</strong></div>
-                <div class="panel-body">
+            <div class="tv-panel highlight-bad">
+                <div class="tv-panel-heading">{DETAIL.star_key} : {DETAIL.palace_key}</div>
+                <div class="tv-panel-body">
                     {DETAIL.content}
                 </div>
             </div>
@@ -90,11 +85,11 @@
         <!-- Yearly Detail Interpretations -->
         <!-- BEGIN: year_detail -->
         <h3>Bình giải chi tiết trong năm</h3>
-        <div class="panel-group">
+        <div class="interpretation-group">
             <!-- BEGIN: loop -->
-            <div class="panel panel-success">
-                <div class="panel-heading"><strong>{DETAIL.palace_key}</strong></div>
-                <div class="panel-body">
+            <div class="tv-panel highlight-luck">
+                <div class="tv-panel-heading">{DETAIL.palace_key}</div>
+                <div class="tv-panel-body">
                     {DETAIL.content}
                 </div>
             </div>
@@ -107,7 +102,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip({html: true});
 });
 </script>
 <!-- END: main -->

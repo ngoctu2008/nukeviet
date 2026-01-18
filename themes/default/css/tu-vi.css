@@ -1,70 +1,165 @@
-/* Tu Vi Module CSS */
+/* Tu Vi Module CSS - Mystical/Esoteric Style */
+
+/* General Container */
+.tu-vi-container {
+    font-family: "Times New Roman", Times, serif;
+    background-color: #fdf5e6; /* Old Lace / Parchment */
+    padding: 20px;
+    color: #3e2723;
+}
+
+/* Chart Grid Layout */
 .tu-vi-chart {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    gap: 2px;
-    background-color: #ddd;
-    border: 1px solid #999;
-    max-width: 800px;
+    gap: 0;
+    border: 3px double #5d4037; /* Dark Wood */
+    background-color: #fff8e1;
+    max-width: 900px;
     margin: 0 auto;
-    font-size: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-size: 13px;
 }
 
+/* Individual Palace Box (Cung) */
 .cung-box {
-    background-color: #fff;
+    border: 1px solid #8d6e63;
     padding: 5px;
-    min-height: 150px;
+    min-height: 180px;
     position: relative;
-    border: 1px solid #eee;
+    background-color: transparent;
+    transition: all 0.3s ease;
 }
 
+.cung-box:hover {
+    background-color: rgba(255, 248, 225, 0.8);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* Highlights for Dai Van / Tieu Van */
 .daivan-highlight {
-    border: 2px solid #007bff !important; /* Blue for Dai Van */
+    border: 2px solid #1565c0 !important; /* Blue for Dai Van */
+    background-color: rgba(21, 101, 192, 0.05);
 }
 
 .tieuvan-highlight {
-    border: 2px dashed #dc3545 !important; /* Red dashed for Tieu Van */
+    border: 2px dashed #c62828 !important; /* Red for Tieu Van */
+    background-color: rgba(198, 40, 40, 0.05);
 }
 
+/* Labels for Van highlights */
 .cung-label {
     position: absolute;
     top: 2px;
     right: 2px;
     font-size: 10px;
-    padding: 2px 4px;
-    border-radius: 3px;
+    padding: 1px 4px;
+    border-radius: 2px;
     color: #fff;
+    font-family: Arial, sans-serif;
+    z-index: 10;
 }
 
 .daivan-label {
-    background-color: #007bff;
+    background-color: #1565c0;
 }
 
 .tieuvan-label {
-    background-color: #dc3545;
-    top: 20px; /* Offset if both present */
+    background-color: #c62828;
+    top: 18px; /* Offset to stack if needed */
 }
 
-/* Center Box (Thien Ban) spans 2x2 in the middle */
+/* Center Box (Thien Ban) */
 .center-box {
     grid-column: 2 / span 2;
     grid-row: 2 / span 2;
-    background-color: #f9f9f9;
+    background-color: #fff3e0;
+    border: 2px solid #5d4037;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 20px;
+    padding: 15px;
+    margin: 4px; /* Slight gap from grid lines */
+    box-shadow: inset 0 0 20px rgba(93, 64, 55, 0.1);
 }
 
-/* Positioning based on standard layout */
-/* Tỵ(5)   Ngọ(6)  Mùi(7)   Thân(8) */
-/* Thìn(4)                  Dậu(9) */
-/* Mão(3)                   Tuất(10) */
-/* Dần(2)  Sửu(1)  Tý(0)    Hợi(11) */
+.center-box h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #bf360c;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid #bf360c;
+    padding-bottom: 5px;
+    width: 90%;
+}
 
+.center-box p {
+    margin: 3px 0;
+    font-size: 14px;
+}
+
+/* Palace Header (Cung Chuc) */
+.cung-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #8d6e63;
+    margin-bottom: 6px;
+    padding-bottom: 2px;
+    color: #fff;
+    background-color: #6d4c41; /* Brown header background */
+    margin: -5px -5px 5px -5px; /* Flush with container */
+    padding-top: 2px;
+}
+
+/* Star Lists */
+.star-list {
+    line-height: 1.3;
+}
+
+.chinh-tinh {
+    font-size: 13px;
+    font-weight: 700;
+    color: #b71c1c; /* Deep Red */
+    display: block;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.phu-tinh {
+    font-size: 11px;
+    color: #333;
+    font-weight: 500;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.phu-tinh::after {
+    content: ",";
+    color: #999;
+}
+.phu-tinh:last-child::after {
+    content: "";
+}
+
+/* Footer (Zodiac Animal Name) */
+.cung-footer {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: rgba(93, 64, 55, 0.3); /* Watermark style */
+    pointer-events: none;
+}
+
+/* Grid Positioning - DO NOT CHANGE */
 .cung-ty_snake { grid-area: 1 / 1 / 2 / 2; } /* 5 Tỵ */
 .cung-ngo      { grid-area: 1 / 2 / 2 / 3; } /* 6 */
 .cung-mui      { grid-area: 1 / 3 / 2 / 4; } /* 7 */
@@ -81,50 +176,91 @@
 .cung-ty       { grid-area: 4 / 3 / 5 / 4; } /* 0 Tý */
 .cung-hoi      { grid-area: 4 / 4 / 5 / 5; } /* 11 */
 
-.cung-header {
+/* Interpretations Section */
+.tu-vi-interpretations {
+    margin-top: 30px;
+    border-top: 2px solid #5d4037;
+    padding-top: 20px;
+}
+
+.tu-vi-interpretations h3 {
     text-align: center;
-    font-weight: bold;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 5px;
-    color: #b00;
-}
-
-.star-list {
-    font-size: 11px;
-}
-
-.chinh-tinh {
-    color: #d00;
+    font-size: 20px;
+    color: #5d4037;
     font-weight: bold;
     text-transform: uppercase;
-    display: block;
+    margin-bottom: 20px;
+    background: url('data:image/svg+xml;utf8,<svg width="100" height="5" viewBox="0 0 100 5" xmlns="http://www.w3.org/2000/svg"><path d="M0 2.5 L100 2.5" stroke="%235d4037" stroke-width="1"/></svg>') center bottom no-repeat;
+    padding-bottom: 10px;
 }
 
-.phu-tinh {
-    color: #333;
-    display: inline-block;
-    margin-right: 5px;
+/* Custom Panel / Card for Interpretations */
+.tv-panel {
+    background-color: #fff;
+    border: 1px solid #d7ccc8;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.cung-footer {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
+.tv-panel-heading {
+    background-color: #efebe9;
+    padding: 10px 15px;
+    border-bottom: 1px solid #d7ccc8;
+    color: #5d4037;
     font-weight: bold;
-    color: #666;
+    font-size: 14px;
 }
+
+.tv-panel-body {
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+    text-align: justify;
+}
+
+/* Highlight specific interpretation types */
+.tv-panel.highlight-luck .tv-panel-heading {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-bottom-color: #c8e6c9;
+}
+.tv-panel.highlight-luck { border-color: #c8e6c9; }
+
+.tv-panel.highlight-bad .tv-panel-heading {
+    background-color: #ffebee;
+    color: #c62828;
+    border-bottom-color: #ffcdd2;
+}
+.tv-panel.highlight-bad { border-color: #ffcdd2; }
 
 /* Mobile Responsive */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .tu-vi-chart {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        border: none;
+        background: none;
+        box-shadow: none;
     }
+
     .cung-box {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        background: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         min-height: auto;
     }
+
     .center-box {
-        display: none; /* Hide center info on list view or move to top */
+        order: -1; /* Show info first */
+        margin-bottom: 20px;
+        border: 2px solid #5d4037;
+        background: #fff3e0;
     }
-    /* Or make center box appear first */
+
+    .cung-header {
+        margin: -5px -5px 10px -5px;
+    }
 }
