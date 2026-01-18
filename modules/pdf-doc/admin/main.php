@@ -26,112 +26,81 @@ if ($nv_Request->isset_request('install_composer', 'post')) {
 
     $module_dir = NV_ROOTDIR . '/modules/' . $module_file;
     if (is_dir($module_dir)) {
-        $output = array();
-        $return_var = 0;
+        if (!function_exists('exec')) {
+             $xtpl->assign('INSTALL_MESSAGE', 'Error: exec() function is disabled. Please run "composer install" manually via terminal.');
+             $xtpl->assign('INSTALL_CLASS', 'alert-danger');
+        } else {
+            $output = array();
+            $return_var = 0;
 
-        // Setup environment
-        putenv('COMPOSER_HOME=' . NV_ROOTDIR . '/tmp/composer');
+            // Setup environment - remove if causing issues, but usually helpful
+            putenv('COMPOSER_HOME=' . NV_ROOTDIR . '/tmp/composer');
 
-        // Determine PHP executable
-        $php_bin = defined('PHP_BINARY') ? PHP_BINARY : 'php';
+            // Determine PHP executable
+            $php_bin = defined('PHP_BINARY') ? PHP_BINARY : 'php';
 
-        // Check if composer is globally installed
-        $composer_bin = 'composer';
-        $check_composer = shell_exec(stripos(PHP_OS, 'WIN') === 0 ? 'where composer' : 'which composer');
+            // Check if composer is globally installed
+            $composer_bin = 'composer';
+            // Use 'where' on Windows, 'which' on Linux
+            $check_cmd = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? 'where composer' : 'which composer';
+            $check_composer = @shell_exec($check_cmd);
 
-        if (empty($check_composer)) {
-            // Composer not found globally, check for local composer.phar
-            $composer_phar = $module_dir . '/composer.phar';
-            if (!file_exists($composer_phar)) {
-                $installer_url = 'https://getcomposer.org/installer';
-                $setup_file = $module_dir . '/composer-setup.php';
-                $phar_url = 'https://getcomposer.org/download/latest-stable/composer.phar';
+            if (empty($check_composer)) {
+                // Fallback to local composer.phar
+                $composer_phar = $module_dir . '/composer.phar';
+                if (!file_exists($composer_phar)) {
+                    // Download composer.phar
+                    $phar_url = 'https://getcomposer.org/download/latest-stable/composer.phar';
+                    $downloaded = false;
 
-                $downloaded = false;
+                    if (ini_get('allow_url_fopen')) {
+                        $content = @file_get_contents($phar_url);
+                        if ($content) {
+                            file_put_contents($composer_phar, $content);
+                            $downloaded = true;
+                        }
+                    }
 
-                // Method 1: file_get_contents (installer)
-                if (ini_get('allow_url_fopen')) {
-                    $installer = @file_get_contents($installer_url);
-                    if ($installer) {
-                        file_put_contents($setup_file, $installer);
-                        exec($php_bin . ' ' . escapeshellarg($setup_file) . ' --install-dir=' . escapeshellarg($module_dir), $output, $return_var);
-                        @unlink($setup_file);
-                        if (file_exists($composer_phar)) $downloaded = true;
+                    if (!$downloaded && function_exists('curl_version')) {
+                        $fp = fopen($composer_phar, 'w+');
+                        $ch = curl_init($phar_url);
+                        curl_setopt($ch, CURLOPT_FILE, $fp);
+                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        curl_exec($ch);
+                        if (curl_errno($ch) == 0 && curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
+                            $downloaded = true;
+                        }
+                        curl_close($ch);
+                        fclose($fp);
                     }
                 }
 
-                // Method 2: cURL (installer)
-                if (!$downloaded && function_exists('curl_version')) {
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $installer_url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    $installer = curl_exec($ch);
-
-                    if ($installer && curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
-                        file_put_contents($setup_file, $installer);
-                        exec($php_bin . ' ' . escapeshellarg($setup_file) . ' --install-dir=' . escapeshellarg($module_dir), $output, $return_var);
-                        @unlink($setup_file);
-                        if (file_exists($composer_phar)) $downloaded = true;
-                    } else {
-                        $output[] = "cURL download failed: " . curl_error($ch);
-                    }
-                    curl_close($ch);
+                if (file_exists($composer_phar)) {
+                    $composer_bin = $php_bin . ' ' . escapeshellarg($composer_phar);
+                } else {
+                    $output[] = "Could not find or download composer.phar.";
+                    $return_var = 1;
                 }
-
-                // Method 3: Direct Download (copy)
-                if (!$downloaded && ini_get('allow_url_fopen')) {
-                    if (@copy($phar_url, $composer_phar)) {
-                        $downloaded = true;
-                    } else {
-                        $output[] = "Direct copy failed.";
-                    }
-                }
-
-                // Method 4: Direct Download (cURL phar)
-                if (!$downloaded && function_exists('curl_version')) {
-                    $fp = fopen($composer_phar, 'w+');
-                    $ch = curl_init($phar_url);
-                    curl_setopt($ch, CURLOPT_FILE, $fp);
-                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_exec($ch);
-                    if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
-                        $downloaded = true;
-                    }
-                    curl_close($ch);
-                    fclose($fp);
-                }
-            }
-
-            if (file_exists($composer_phar)) {
-                $composer_bin = $php_bin . ' ' . escapeshellarg($composer_phar);
-                $return_var = 0; // Reset return var if we found/downloaded it
             } else {
-                $output[] = "Could not find or download composer.phar. Please ensure allow_url_fopen is On or cURL is enabled.";
-                $return_var = 1;
+                 $lines = explode("\n", trim($check_composer));
+                 $composer_bin = '"' . trim($lines[0]) . '"';
             }
-        } else {
-             $composer_bin = trim($check_composer);
-             $lines = explode("\n", $composer_bin);
-             $composer_bin = trim($lines[0]);
-             $composer_bin = '"' . $composer_bin . '"';
-        }
 
-        if ($return_var === 0) {
-            // Run install
-            $cmd = 'cd ' . escapeshellarg($module_dir) . ' && ' . $composer_bin . ' install --no-dev 2>&1';
-            exec($cmd, $output, $return_var);
-        }
+            if ($return_var === 0) {
+                // Run install
+                $cmd = 'cd ' . escapeshellarg($module_dir) . ' && ' . $composer_bin . ' install --no-dev 2>&1';
+                @exec($cmd, $output, $return_var);
+            }
 
-        if ($return_var === 0 && file_exists($module_dir . '/vendor/autoload.php')) {
-            $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_success']);
-            $xtpl->assign('INSTALL_CLASS', 'alert-success');
-        } else {
-            $error_detail = implode("<br>", $output);
-            $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_error'] . '<br><pre>' . $error_detail . '</pre>');
-            $xtpl->assign('INSTALL_CLASS', 'alert-danger');
+            if ($return_var === 0 && file_exists($module_dir . '/vendor/autoload.php')) {
+                $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_success']);
+                $xtpl->assign('INSTALL_CLASS', 'alert-success');
+            } else {
+                $error_detail = implode("<br>", $output);
+                $xtpl->assign('INSTALL_MESSAGE', $lang_module['install_composer_error'] . '<br>Command: ' . $cmd . '<br><pre>' . $error_detail . '</pre>');
+                $xtpl->assign('INSTALL_CLASS', 'alert-danger');
+            }
         }
         $xtpl->parse('main.install_result');
     }
@@ -168,7 +137,7 @@ if ($nv_Request->isset_request('save', 'post')) {
 
 // Check if vendor exists
 if (!file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/vendor/autoload.php')) {
-    $xtpl->assign('ERROR_DEPENDENCY', 'Cảnh báo: Thư viện chưa được cài đặt! Vui lòng chạy "composer install" trong thư mục module hoặc nhấn nút bên dưới.');
+    $xtpl->assign('ERROR_DEPENDENCY', 'Cảnh báo: Thư viện chưa được cài đặt! <br>Vui lòng chạy lệnh sau trong thư mục <strong>' . NV_ROOTDIR . '/modules/' . $module_file . '</strong>:<br><code>composer install</code><br>Hoặc nhấn nút bên dưới để thử cài đặt tự động.');
     $xtpl->parse('main.error_dependency');
 }
 

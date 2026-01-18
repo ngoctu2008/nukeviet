@@ -28,7 +28,8 @@ if (file_exists($filepath)) {
     }
 
     require_once NV_ROOTDIR . '/includes/class/download.class.php';
-    $download = new NukeViet\Core\Download($filepath, $upload_dir, $name);
+    // Fix: Use global namespace for Download class in NV4
+    $download = new Download($filepath, $upload_dir, $name);
     $download->download_file();
     exit();
 }
