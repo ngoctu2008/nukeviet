@@ -20,5 +20,8 @@ $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['main'] = 'Trang chính';
 $lang_module['content'] = 'Quản lý Lời giải';
+$lang_module['add_interpretation'] = 'Thêm lời giải';
 $lang_module['config'] = 'Cấu hình';
 $lang_module['save'] = 'Lưu lại';
+$lang_module['import_json'] = 'Nhập dữ liệu (JSON)';
+$lang_module['export_json'] = 'Xuất dữ liệu (JSON)';

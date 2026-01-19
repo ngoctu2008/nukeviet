@@ -8,56 +8,55 @@
  * @Createdate: 2023-10-27
  */
 
-if (!defined('NV_IS_TU_VI_ADMIN')) {
-    require_once NV_ROOTDIR . '/modules/' . $module_file . '/admin.functions.php';
-}
-
 if (!defined('NV_IS_FILE_ADMIN')) {
     exit('Stop!!!');
 }
 
-$xtpl = new XTemplate('import.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
-$xtpl->assign('LANG', $lang_module);
-$xtpl->assign('GLANG', $lang_global);
+$page_title = "Import Interpretations (JSON)";
+$table_name = $db_config['prefix'] . '_' . $lang . '_' . str_replace('-', '_', $module_data) . '_interpretations';
 
-if ($nv_Request->isset_request('import', 'post')) {
-    if (isset($_FILES['import_file']) && is_uploaded_file($_FILES['import_file']['tmp_name'])) {
-        $json = file_get_contents($_FILES['import_file']['tmp_name']);
-        $data = json_decode($json, true);
+$error = '';
+$msg = '';
 
-        if (is_array($data)) {
+if ($nv_Request->isset_request('submit', 'post')) {
+    if (isset($_FILES['import_file']) && $_FILES['import_file']['error'] == 0) {
+        $content = file_get_contents($_FILES['import_file']['tmp_name']);
+        $data = json_decode($content, true);
+
+        if (json_last_error() === JSON_ERROR_NONE && is_array($data)) {
             $count = 0;
-            foreach ($data as $item) {
-                if (isset($item['star_key'], $item['palace_key'], $item['content'])) {
-                    // Upsert logic
-                    $sql = "INSERT INTO " . NV_PRE_TUVI . "_interpretations (star_key, palace_key, topic, content)
-                            VALUES (:star, :palace, :topic, :content)";
-                    // Note: ON DUPLICATE KEY UPDATE is cleaner if we had UNIQUE index on (star, palace)
-                    // But we used index, so just insert or ignore?
-                    // Let's assume we append or simple insert.
+            $stmt = $db->prepare("INSERT INTO " . $table_name . " (star_key, palace_key, topic, content, weight) VALUES (:star_key, :palace_key, :topic, :content, :weight)");
 
-                    $stmt = $db->prepare($sql);
-                    $stmt->bindParam(':star', $item['star_key']);
-                    $stmt->bindParam(':palace', $item['palace_key']);
-                    $stmt->bindParam(':content', $item['content']);
-
-                    $topic = isset($item['topic']) ? $item['topic'] : 'tong_quan';
-                    $stmt->bindParam(':topic', $topic);
-
+            foreach ($data as $row) {
+                // Basic validation
+                if (isset($row['star_key'])) {
+                    $stmt->bindValue(':star_key', $row['star_key']);
+                    $stmt->bindValue(':palace_key', $row['palace_key'] ?? '');
+                    $stmt->bindValue(':topic', $row['topic'] ?? 'tong_quan');
+                    $stmt->bindValue(':content', $row['content'] ?? '');
+                    $stmt->bindValue(':weight', $row['weight'] ?? 0);
                     $stmt->execute();
                     $count++;
                 }
             }
-            $xtpl->assign('MESSAGE', "Imported $count records successfully.");
-            $xtpl->parse('main.message');
+            $msg = "Imported $count records successfully.";
         } else {
-            $xtpl->assign('MESSAGE', "Invalid JSON format.");
-            $xtpl->parse('main.error');
+            $error = "Invalid JSON format.";
         }
+    } else {
+        $error = "Upload failed.";
     }
 }
 
-$xtpl->assign('ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=import');
+$xtpl = new XTemplate('import.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+$xtpl->assign('LANG', $lang_module);
+$xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
+$xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
+$xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
+$xtpl->assign('MODULE_NAME', $module_name);
+$xtpl->assign('OP', $op);
+$xtpl->assign('ERROR', $error);
+$xtpl->assign('MSG', $msg);
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');

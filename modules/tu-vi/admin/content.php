@@ -13,6 +13,7 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 }
 
 $page_title = "Manage Interpretations";
+$table_name = $db_config['prefix'] . '_' . $lang . '_' . str_replace('-', '_', $module_data) . '_interpretations';
 
 $error = '';
 $row = [];
@@ -27,7 +28,7 @@ if ($nv_Request->isset_request('save', 'post')) {
     if (empty($row['star_key'])) $error = "Star Key required";
     else {
         // Insert
-        $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_interpretations
+        $sql = "INSERT INTO " . $table_name . "
         (star_key, palace_key, topic, content, weight)
         VALUES (:star_key, :palace_key, :topic, :content, 0)";
 
@@ -58,13 +59,20 @@ $xtpl->assign('ERROR', $error);
 $xtpl->parse('main.import_export');
 
 // Render List
-$sql = "SELECT * FROM " . $db_config['prefix'] . "_" . $module_data . "_interpretations ORDER BY id DESC LIMIT 50";
-$result = $db->query($sql);
-while ($item = $result->fetch()) {
-    $xtpl->assign('ITEM', $item);
-    $xtpl->parse('main.list.row');
+$sql = "SELECT * FROM " . $table_name . " ORDER BY id DESC LIMIT 50";
+
+// Handle table existence safety (in case user hasn't reinstalled)
+try {
+    $result = $db->query($sql);
+    while ($item = $result->fetch()) {
+        $xtpl->assign('ITEM', $item);
+        $xtpl->parse('main.list.row');
+    }
+    $xtpl->parse('main.list');
+} catch (PDOException $e) {
+    $error = "Table not found. Please Deactivate and Reactivate the module to create tables.";
+    $xtpl->assign('ERROR', $error);
 }
-$xtpl->parse('main.list');
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');
