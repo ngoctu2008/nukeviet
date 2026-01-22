@@ -44,16 +44,11 @@
     </div>
 </div>
 
-<script>
-// JS to position the grid cells correctly if CSS Grid Template Areas are hard to manage dynamically
-// Or we use CSS classes.
-// Mapping:
-// 6(Ngo) 7(Mui) 8(Than) 9(Dau)
-// 5(Ti)                 10(Tuat)
-// 4(Thin)               11(Hoi)
-// 3(Mao) 2(Dan) 1(Suu)  0(Ty)
-
-// We need to inject style order or grid-area in the loop.
-// Let's handle this in PHP or simple CSS classes.
-</script>
+<!-- Interpretation Section -->
+<div class="container" style="margin-top: 20px;">
+    <h2 class="text-center">Luận Giải Chi Tiết</h2>
+    <div class="interpretation-content">
+        {INTERPRETATION}
+    </div>
+</div>
 <!-- END: main -->

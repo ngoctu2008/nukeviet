@@ -29,21 +29,33 @@ $hour = $nv_Request->get_int('hour', 'post', 12); // Solar hour (0-23)
 $gender = $nv_Request->get_int('gender', 'post', 1);
 
 // Convert Solar to Lunar
-// Note: Lunisolar::convertSolarToLunar returns [d, m, y, leap]
-// For this Demo, we assume simplified conversion
 $lunarData = Lunisolar::convertSolarToLunar($d, $m, $y);
 $lunarD = $lunarData[0];
 $lunarM = $lunarData[1];
 $lunarY = $lunarData[2];
 
 // Convert Hour (0-23) to Chi (0-11, Ty..Hoi)
-// Ty: 23-1, Suu: 1-3...
-// Formula: Floor((h+1)/2) % 12
 $chiHour = floor(($hour + 1) / 2) % 12;
 
 // Initialize Horoscope Engine
 $horoscope = new Horoscope($lunarD, $lunarM, $lunarY, $chiHour, $gender);
 $chartData = $horoscope->generateChart();
+
+// Prepare DB Query for Interpretations
+// Table Name construction (Standardized)
+$table_interpretations = $db_config['prefix'] . '_' . $lang . '_' . str_replace('-', '_', $module_data) . '_interpretations';
+
+// Fetch all interpretations (Optimization: Fetch all might be heavy if DB is huge, but for this demo/scope it's fine)
+// A better way: Collect keys.
+$sql = "SELECT * FROM " . $table_interpretations;
+$result = $db->query($sql);
+$interpretations_db = [];
+while ($row = $result->fetch()) {
+    // Key by star_key + palace_key (e.g. 'tu_vi|ngo')
+    // Or just group by star_key
+    $key = strtolower($row['star_key'] . '|' . $row['palace_key']);
+    $interpretations_db[$key] = $row['content'];
+}
 
 // Prepare View
 $xtpl = new XTemplate('view.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
@@ -58,16 +70,28 @@ $userInfo = [
     'birth_solar' => "$d/$m/$y $hour:00",
     'birth_lunar' => "$lunarD/$lunarM/$lunarY ($canChiYear)",
     'gender_txt' => ($gender == 1) ? 'Nam' : 'Nữ',
-    // ... Add more info like Ban Menh, Cuc ...
+    'year_view' => date('Y')
 ];
 $xtpl->assign('USER', $userInfo);
 
+// Interpretation Output Buffer
+$interpretation_html = '';
+
 // Assign Chart Data
-// The Grid logic in view.tpl will expect a loop or specific indices.
-// To make it easy for the Template to render the Grid cell by cell in 12 positions:
-// We pass the array.
 foreach ($chartData as $palace) {
     $xtpl->assign('PALACE', $palace);
+
+    // Check for Palace Interpretation (e.g. Menh at Ngo)
+    // Key format: 'menh|ngo' or similar? Depends on how data is entered.
+    // We normalize keys: lowercase, underscores.
+    $palaceKey = str_replace('-', '_', strtolower(change_alias($palace['name']))); // menh, phu_mau...
+    $zodiacKey = str_replace('-', '_', strtolower(change_alias($palace['zodiac']))); // ty, suu...
+
+    // Look up Palace Interpretation
+    $dbKey = $palaceKey . '|' . $zodiacKey;
+    if (isset($interpretations_db[$dbKey])) {
+        $interpretation_html .= "<div class='panel panel-default'><div class='panel-heading'>" . $palace['name'] . " tại " . $palace['zodiac'] . "</div><div class='panel-body'>" . $interpretations_db[$dbKey] . "</div></div>";
+    }
 
     // Parse Stars
     if (!empty($palace['stars'])) {
@@ -75,11 +99,23 @@ foreach ($chartData as $palace) {
             $star['css'] = 'star-' . $star['element']; // star-kim, star-moc
             $xtpl->assign('STAR', $star);
             $xtpl->parse('main.loop.stars');
+
+            // Look up Star Interpretation
+            // Key: 'tu_vi|ngo'
+            $starKey = str_replace('-', '_', strtolower(change_alias($star['name']))); // tu_vi
+            $dbKey = $starKey . '|' . $zodiacKey;
+
+            if (isset($interpretations_db[$dbKey])) {
+                 $interpretation_html .= "<div class='panel panel-info'><div class='panel-heading'>Sao " . $star['name'] . " tại " . $palace['zodiac'] . " (" . $palace['name'] . ")</div><div class='panel-body'>" . $interpretations_db[$dbKey] . "</div></div>";
+            }
         }
     }
 
     $xtpl->parse('main.loop');
 }
+
+// Assign Interpretation Block
+$xtpl->assign('INTERPRETATION', $interpretation_html);
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');
