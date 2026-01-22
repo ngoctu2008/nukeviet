@@ -43,7 +43,7 @@ $chartData = $horoscope->generateChart();
 
 // Prepare DB Query for Interpretations
 // Table Name construction (Standardized)
-$table_interpretations = $db_config['prefix'] . '_' . $lang . '_' . str_replace('-', '_', $module_data) . '_interpretations';
+$table_interpretations = $db_config['prefix'] . '_' . NV_LANG_DATA . '_' . str_replace('-', '_', $module_data) . '_interpretations';
 
 // Fetch all interpretations (Optimization: Fetch all might be heavy if DB is huge, but for this demo/scope it's fine)
 // A better way: Collect keys.

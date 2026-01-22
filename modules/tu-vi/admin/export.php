@@ -13,7 +13,7 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 }
 
 $page_title = "Export Interpretations (JSON)";
-$table_name = $db_config['prefix'] . '_' . $lang . '_' . str_replace('-', '_', $module_data) . '_interpretations';
+$table_name = $db_config['prefix'] . '_' . NV_LANG_DATA . '_' . str_replace('-', '_', $module_data) . '_interpretations';
 
 // Fetch all data
 $sql = "SELECT * FROM " . $table_name;
