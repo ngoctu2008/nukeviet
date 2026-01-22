@@ -48,6 +48,17 @@
         <div class="alert alert-success">{SUCCESS_MSG}</div>
         <!-- END: success -->
 
+        <!-- BEGIN: advice -->
+        <div class="alert alert-info">
+            <strong>Lời khuyên hóa giải:</strong>
+            <ul>
+                <!-- BEGIN: loop -->
+                <li>{ADVICE}</li>
+                <!-- END: loop -->
+            </ul>
+        </div>
+        <!-- END: advice -->
+
         <h4>Ngày tốt đề xuất</h4>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -57,6 +68,7 @@
                         <th>Ngày âm</th>
                         <th>Can Chi</th>
                         <th>Hoàng Đạo</th>
+                        <th>Giờ Tốt</th>
                         <th>Điểm</th>
                     </tr>
                 </thead>
@@ -67,6 +79,7 @@
                         <td>{ROW.lunar_date}</td>
                         <td>{ROW.day_can_chi}</td>
                         <td>{ROW.hoang_dao}</td>
+                        <td>{ROW.hours}</td>
                         <td>{ROW.score}</td>
                     </tr>
                     <!-- END: date_row -->

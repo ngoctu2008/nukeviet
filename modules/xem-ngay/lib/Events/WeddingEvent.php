@@ -49,12 +49,19 @@ class WeddingEvent implements EventInterface
         $isTamTaiGroom = $this->fengShui->checkTamTai($groomChi, $currentChi);
         $isTamTaiBride = $this->fengShui->checkTamTai($brideChi, $currentChi);
 
+        $advice = [];
+        if ($isKimLauBride) {
+            $advice[] = "Nên xin dâu hai lần để hóa giải.";
+            $advice[] = "Hoặc chờ qua ngày Đông Chí để tính sang tuổi mới.";
+        }
+
         return [
             'groom_age' => $groomAge,
             'bride_age' => $brideAge,
             'kim_lau_bride' => $isKimLauBride,
             'tam_tai_groom' => $isTamTaiGroom,
-            'tam_tai_bride' => $isTamTaiBride
+            'tam_tai_bride' => $isTamTaiBride,
+            'advice' => $advice
         ];
     }
 
@@ -126,12 +133,16 @@ class WeddingEvent implements EventInterface
             if (in_array('Tam Hợp', $clashBride) || in_array('Nhị Hợp', $clashBride)) $score += 1;
             if (in_array('Tam Hợp', $clashGroom) || in_array('Nhị Hợp', $clashGroom)) $score += 1;
 
+            // Get Good Hours
+            $goodHours = $this->fengShui->getGioHoangDaoList($dayChi);
+
             $results[] = [
                 'date' => $dateStr,
                 'lunar_date' => "$lunarDay/$month",
                 'day_can_chi' => $this->lunar->getCanName($dayCan) . ' ' . $this->lunar->getChiName($dayChi),
                 'is_hoang_dao' => $isHoangDao,
-                'score' => $score
+                'score' => $score,
+                'hours' => implode(', ', $goodHours)
             ];
 
             $current = strtotime('+1 day', $current);

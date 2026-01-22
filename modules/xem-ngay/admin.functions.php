@@ -12,6 +12,6 @@ if (!defined('NV_ADMIN') or !defined('NV_MAINFILE') or !defined('NV_IS_MODADMIN'
     die('Stop!!!');
 }
 
-$allow_func = array('main', 'config', 'bad_dates');
+$allow_func = array('main', 'config', 'bad_dates', 'events');
 
 define('NV_IS_FILE_ADMIN', true);

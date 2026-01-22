@@ -74,6 +74,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
         if ($ageCheck['kim_lau_bride']) {
             $xtpl->assign('WARNING_MSG', "Cảnh báo: Cô dâu phạm Kim Lâu (Tuổi " . $ageCheck['bride_age'] . ").");
             $xtpl->parse('main.result.warning');
+
+            if (!empty($ageCheck['advice'])) {
+                foreach ($ageCheck['advice'] as $adv) {
+                    $xtpl->assign('ADVICE', $adv);
+                    $xtpl->parse('main.result.advice.loop');
+                }
+                $xtpl->parse('main.result.advice');
+            }
         } else {
              $xtpl->assign('SUCCESS_MSG', "Tuổi cô dâu đẹp, không phạm Kim Lâu.");
              $xtpl->parse('main.result.success');

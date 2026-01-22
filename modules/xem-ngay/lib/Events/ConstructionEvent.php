@@ -38,12 +38,19 @@ class ConstructionEvent implements EventInterface
         $currentChi = ($currentYear + 8) % 12;
         $tamTai = $this->fengShui->checkTamTai($birthChi, $currentChi);
 
+        $advice = [];
+        if ($kimLau || $hoangOc || $tamTai) {
+            $advice[] = "Gia chủ phạm hạn, nên mượn tuổi người khác để động thổ.";
+            $advice[] = "Nên chọn người tuổi Tam Hợp hoặc Nhị Hợp, tránh người tuổi Lục Xung, Kim Lâu, Hoang Ốc.";
+        }
+
         return [
             'age' => $age,
             'kim_lau' => $kimLau,
             'hoang_oc' => $hoangOc,
             'tam_tai' => $tamTai,
-            'is_good' => (!$kimLau && !$hoangOc && !$tamTai)
+            'is_good' => (!$kimLau && !$hoangOc && !$tamTai),
+            'advice' => $advice
         ];
     }
 
@@ -104,13 +111,17 @@ class ConstructionEvent implements EventInterface
             // Thanh: Success.
             if (in_array($truc['id'], [0, 8, 10])) $score += 1;
 
+            // Get Good Hours
+            $goodHours = $this->fengShui->getGioHoangDaoList($dayChi);
+
             $results[] = [
                 'date' => $dateStr,
                 'lunar_date' => "$lunarDay/$month",
                 'day_can_chi' => $this->lunar->getCanName($dayCan) . ' ' . $this->lunar->getChiName($dayChi),
                 'truc' => $truc['name'],
                 'is_hoang_dao' => $isHoangDao,
-                'score' => $score
+                'score' => $score,
+                'hours' => implode(', ', $goodHours)
             ];
 
             $current = strtotime('+1 day', $current);

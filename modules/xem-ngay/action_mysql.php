@@ -40,6 +40,14 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
   UNIQUE KEY config_name (config_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
+// Table: Custom Events
+$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_events (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  title varchar(255) NOT NULL,
+  description mediumtext,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+
 // Include initial data insertion logic
 if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/language/data_' . $lang . '.php')) {
     include NV_ROOTDIR . '/modules/' . $module_file . '/language/data_' . $lang . '.php';

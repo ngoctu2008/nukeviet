@@ -14,4 +14,5 @@ if (!defined('NV_ADMIN')) {
 
 $submenu['main'] = $lang_module['main'];
 $submenu['bad_dates'] = $lang_module['bad_dates'];
+$submenu['events'] = "Quản lý sự kiện khác";
 $submenu['config'] = $lang_module['config'];

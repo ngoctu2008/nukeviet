@@ -76,6 +76,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
         if (!empty($warnings)) {
             $xtpl->assign('WARNING_MSG', "Tuổi " . $ageCheck['age'] . " không đẹp để làm nhà năm nay: " . implode(', ', $warnings) . ". Nên mượn tuổi.");
             $xtpl->parse('main.result.warning');
+
+            if (!empty($ageCheck['advice'])) {
+                foreach ($ageCheck['advice'] as $adv) {
+                    $xtpl->assign('ADVICE', $adv);
+                    $xtpl->parse('main.result.advice.loop');
+                }
+                $xtpl->parse('main.result.advice');
+            }
         } else {
             $xtpl->assign('SUCCESS_MSG', "Tuổi " . $ageCheck['age'] . " đẹp, có thể động thổ.");
             $xtpl->parse('main.result.success');

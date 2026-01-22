@@ -62,6 +62,42 @@ class FengShuiCore
     }
 
     /**
+     * Get List of Good Hours for a Day
+     * @param int $dayChi
+     * @return array List of hour names
+     */
+    public function getGioHoangDaoList($dayChi)
+    {
+        $groups = [
+            0 => 1, 6 => 1, // Ty, Ngo
+            1 => 2, 7 => 2, // Suu, Mui
+            2 => 3, 8 => 3, // Dan, Than
+            3 => 4, 9 => 4, // Mao, Dau
+            4 => 5, 10 => 5, // Thin, Tuat
+            5 => 6, 11 => 6 // Ty, Hoi
+        ];
+
+        $goodHours = [
+            1 => [0, 1, 3, 6, 8, 9], // Ty, Suu, Mao, Ngo, Than, Dau
+            2 => [2, 3, 5, 8, 10, 11], // Dan, Mao, Ty, Than, Tuat, Hoi
+            3 => [0, 1, 4, 6, 8, 10], // Ty, Suu, Thin, Ngo, Mui, Tuat
+            4 => [0, 2, 3, 6, 7, 9], // Ty, Dan, Mao, Ngo, Mui, Dau
+            5 => [2, 4, 5, 8, 9, 11], // Dan, Thin, Ty, Than, Dau, Hoi
+            6 => [1, 4, 6, 7, 10, 11] // Suu, Thin, Ngo, Mui, Tuat, Hoi
+        ];
+
+        $g = $groups[$dayChi];
+        $hours = [];
+        $chiNames = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
+
+        foreach ($goodHours[$g] as $hIndex) {
+            $hours[] = $chiNames[$hIndex];
+        }
+
+        return $hours;
+    }
+
+    /**
      * Check Chi Interaction (Tam Hop, Tu Hanh Xung, Luc Hai, Tuong Hinh)
      * @param int $chi1
      * @param int $chi2

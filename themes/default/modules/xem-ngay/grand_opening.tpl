@@ -52,6 +52,7 @@
                         <th>Can Chi</th>
                         <th>Trực</th>
                         <th>Hoàng Đạo</th>
+                        <th>Giờ Tốt</th>
                         <th>Điểm</th>
                     </tr>
                 </thead>
@@ -63,6 +64,7 @@
                         <td>{ROW.day_can_chi}</td>
                         <td>{ROW.truc}</td>
                         <td>{ROW.hoang_dao}</td>
+                        <td>{ROW.hours}</td>
                         <td>{ROW.score}</td>
                     </tr>
                     <!-- END: date_row -->

@@ -83,13 +83,17 @@ class GrandOpeningEvent implements EventInterface
             // Loc Ma (Simplified: Avoid bad stars)
             // Just basic score for now.
 
+            // Get Good Hours
+            $goodHours = $this->fengShui->getGioHoangDaoList($dayChi);
+
             $results[] = [
                 'date' => $dateStr,
                 'lunar_date' => (isset($lunar[0]) ? $lunar[0] : 1) . "/$month",
                 'day_can_chi' => $this->lunar->getCanName($dayCan) . ' ' . $this->lunar->getChiName($dayChi),
                 'truc' => $truc['name'],
                 'is_hoang_dao' => $isHoangDao,
-                'score' => $score
+                'score' => $score,
+                'hours' => implode(', ', $goodHours)
             ];
 
             $current = strtotime('+1 day', $current);
