@@ -17,7 +17,9 @@ $xtpl->assign('LANG', $lang_module);
 
 // Sanitize table name
 $module_table_name = str_replace('-', '_', $module_data);
-$sql = "SELECT * FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_bad_dates ORDER BY month ASC, type ASC";
+
+// Use NV_LANG_DATA instead of $lang to ensure we target the content language (vi), not admin lang
+$sql = "SELECT * FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_table_name . "_bad_dates ORDER BY month ASC, type ASC";
 $result = $db->query($sql);
 
 $chi_names = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
