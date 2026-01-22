@@ -35,7 +35,7 @@ class FuneralEvent implements EventInterface
         $y = (int)date('Y', $ts);
         $h = (int)date('H', $ts); // Need Lunar Hour (Chi)
 
-        $lunarDate = $this->lunar->convertSolarToLunar($d, $m, $y); // [d, m, y, leap, ...]
+        $lunarDate = $this->lunar->convertSolarToLunar($d, $m, $y); // [d, m, y, leap, dayCan, dayChi...]
 
         // Lunar Age = DeathYearLunar - BirthYear + 1
         $age = isset($lunarDate[2]) ? $lunarDate[2] - $birthYear + 1 : 1;
@@ -147,9 +147,10 @@ class FuneralEvent implements EventInterface
             $lunar = $this->lunar->convertSolarToLunar($d, $m, $y);
             // $lunar: [day, month, year, leap, dayCan, dayChi...]
 
-            $dayChi = isset($lunar[5]) ? $lunar[5] : 0;
+            // Fix: Use associative keys instead of numeric indices for Can/Chi
+            $dayChi = isset($lunar['dayChi']) ? $lunar['dayChi'] : 0;
             $month = isset($lunar[1]) ? $lunar[1] : 1;
-            $dayCan = isset($lunar[4]) ? $lunar[4] : 0;
+            $dayCan = isset($lunar['dayCan']) ? $lunar['dayCan'] : 0;
 
             $dateStr = date('Y-m-d', $current);
 

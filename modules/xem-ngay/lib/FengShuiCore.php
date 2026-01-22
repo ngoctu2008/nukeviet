@@ -204,4 +204,78 @@ class FengShuiCore
         $g = $groups[$dayChi];
         return in_array($hourChi, $goodHours[$g]);
     }
+
+    /**
+     * Check Kim Lau
+     * @param int $age
+     * @return boolean True if Kim Lau
+     */
+    public function checkKimLau($age)
+    {
+        $remainder = $age % 9;
+        // 1: Than, 3: The, 6: Tu, 8: Luc Suc
+        return in_array($remainder, [1, 3, 6, 8]);
+    }
+
+    /**
+     * Check Hoang Oc
+     * @param int $age
+     * @return boolean True if Hoang Oc
+     */
+    public function checkHoangOc($age)
+    {
+        // Cycles: 10->1, 20->2, 30->3, 40->4, 50->5, 60->6, 70->1
+        $tens = floor($age / 10);
+        $units = $age % 10;
+
+        if ($tens == 0) {
+             $start = 1; // Age < 10 starts at 1
+        } else {
+             $start = ($tens % 6);
+             if ($start == 0) $start = 6;
+        }
+
+        $current = $start + ($units - 1); // If units=0 (e.g. 20), start at 2. units=1 -> 3? No.
+        // Rule: 20 is at 2. 21 is at 3.
+        // So units=0 -> current = start.
+        // units=1 -> current = start + 1.
+        // Formula: start + units. Wait.
+        // 20 -> start=2. units=0. res=2. Correct.
+        // 21 -> start=2. units=1. res=3. Correct.
+        // 29 -> start=2. units=9. res=11 -> 5. Correct?
+        // Let's verify manually: 20(2), 21(3), 22(4), 23(5), 24(6), 25(1), 26(2), 27(3), 28(4), 29(5).
+        // Formula: ($start + $units - 1) % 6 + 1.
+
+        $current = $start + $units;
+        $res = ($current - 1) % 6 + 1;
+
+        // Bad: 3 (Dia Sat), 4 (Tan Tai), 5 (Tho Tu), 6 (Hoang Oc)
+        return in_array($res, [3, 4, 5, 6]);
+    }
+
+    /**
+     * Check Tam Tai
+     * @param int $birthChi
+     * @param int $currentYearChi
+     * @return boolean True if Tam Tai
+     */
+    public function checkTamTai($birthChi, $currentYearChi)
+    {
+        // Than(8)-Ty(0)-Thin(4) -> Dan(2), Mao(3), Thin(4)
+        // Hoi(11)-Mao(3)-Mui(7) -> Ty(5), Ngo(6), Mui(7)
+        // Dan(2)-Ngo(6)-Tuat(10) -> Than(8), Dau(9), Tuat(10)
+        // Ty(5)-Dau(9)-Suu(1) -> Hoi(11), Ty(0), Suu(1)
+
+        $groups = [
+            0 => [2, 3, 4], 4 => [2, 3, 4], 8 => [2, 3, 4], // Than Ty Thin -> Dan Mao Thin
+            3 => [5, 6, 7], 7 => [5, 6, 7], 11 => [5, 6, 7], // Hoi Mao Mui -> Ty Ngo Mui
+            2 => [8, 9, 10], 6 => [8, 9, 10], 10 => [8, 9, 10], // Dan Ngo Tuat -> Than Dau Tuat
+            1 => [11, 0, 1], 5 => [11, 0, 1], 9 => [11, 0, 1] // Ty Dau Suu -> Hoi Ty Suu
+        ];
+
+        if (isset($groups[$birthChi])) {
+            return in_array($currentYearChi, $groups[$birthChi]);
+        }
+        return false;
+    }
 }
