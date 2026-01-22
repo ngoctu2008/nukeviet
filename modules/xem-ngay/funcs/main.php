@@ -12,10 +12,18 @@ if (!defined('NV_IS_MOD_XEMNGAY')) {
     die('Stop!!!');
 }
 
-$page_title = $module_info['custom_title'];
+$page_title = $lang_module['main_title'];
 $key_words = $module_info['keywords'];
 
-$contents = "Under Construction";
+// Load CSS
+$my_head .= '<link rel="stylesheet" href="' . NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/css/xem-ngay.css">';
+
+$xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+$xtpl->assign('LANG', $lang_module);
+$xtpl->assign('URL_FUNERAL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=funeral');
+
+$xtpl->parse('main');
+$contents = $xtpl->text('main');
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);
