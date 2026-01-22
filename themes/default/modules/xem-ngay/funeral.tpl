@@ -3,18 +3,18 @@
     <h2 class="text-center mb-4">{LANG.funeral_title}</h2>
 
     <form action="{ACTION_URL}" method="post" class="mb-5">
-        <div class="card mb-3">
-            <div class="card-header bg-primary text-white">{LANG.deceased_info}</div>
-            <div class="card-body">
+        <div class="panel panel-primary">
+            <div class="panel-heading">{LANG.deceased_info}</div>
+            <div class="panel-body">
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">{LANG.birth_year} (*)</label>
-                    <div class="col-sm-9">
-                        <input type="number" name="deceased_year" class="form-control" value="{DATA.deceased_year}" required>
+                    <label class="col-sm-6 col-md-6 control-label">{LANG.birth_year} (*)</label>
+                    <div class="col-sm-18 col-md-18">
+                        <input type="number" name="deceased_year" class="form-control" value="{DATA.deceased_year}" required placeholder="VD: 1952">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">{LANG.gender} (*)</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-6 col-md-6 control-label">{LANG.gender} (*)</label>
+                    <div class="col-sm-18 col-md-18">
                         <select name="gender" class="form-control">
                             <option value="1" {SELECTED_MALE}>{LANG.male}</option>
                             <option value="0" {SELECTED_FEMALE}>{LANG.female}</option>
@@ -22,29 +22,29 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">{LANG.death_time} (*)</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-6 col-md-6 control-label">{LANG.death_time} (*)</label>
+                    <div class="col-sm-18 col-md-18">
                         <input type="datetime-local" name="death_time" class="form-control" value="{DATA.death_time}" required>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card mb-3">
-            <div class="card-header bg-success text-white">{LANG.chief_mourner}</div>
-            <div class="card-body">
+        <div class="panel panel-success">
+            <div class="panel-heading">{LANG.chief_mourner}</div>
+            <div class="panel-body">
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">{LANG.birth_year}</label>
-                    <div class="col-sm-9">
-                        <input type="number" name="chief_year" class="form-control" value="{DATA.chief_year}">
+                    <label class="col-sm-6 col-md-6 control-label">{LANG.birth_year}</label>
+                    <div class="col-sm-18 col-md-18">
+                        <input type="number" name="chief_year" class="form-control" value="{DATA.chief_year}" placeholder="VD: 1975">
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card mb-3">
-            <div class="card-header bg-info text-white">{LANG.relatives}</div>
-            <div class="card-body">
+        <div class="panel panel-info">
+            <div class="panel-heading">{LANG.relatives}</div>
+            <div class="panel-body">
                 <div class="form-group">
                     <label>{LANG.relatives} (Năm sinh, cách nhau bằng dấu phẩy)</label>
                     <input type="text" name="relatives" class="form-control" value="{DATA.relatives_str}" placeholder="1980, 1990, 2000...">
@@ -62,9 +62,9 @@
         <h3>{LANG.check_result}</h3>
 
         <!-- BEGIN: trung_tang -->
-        <div class="card mb-4 border-danger">
-            <div class="card-header bg-danger text-white">{LANG.trung_tang_status}</div>
-            <div class="card-body">
+        <div class="panel panel-danger" style="border-color: #d9534f;">
+            <div class="panel-heading" style="background-color: #d9534f; color: white;">{LANG.trung_tang_status}</div>
+            <div class="panel-body">
                 <ul>
                     <li><strong>Tuổi ({AGE_CHI}):</strong> <span class="{AGE_CLASS}">{AGE_STATUS}</span></li>
                     <li><strong>Tháng ({MONTH_CHI}):</strong> <span class="{MONTH_CLASS}">{MONTH_STATUS}</span></li>

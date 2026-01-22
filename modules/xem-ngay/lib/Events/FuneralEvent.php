@@ -38,7 +38,7 @@ class FuneralEvent implements EventInterface
         $lunarDate = $this->lunar->convertSolarToLunar($d, $m, $y); // [d, m, y, leap, ...]
 
         // Lunar Age = DeathYearLunar - BirthYear + 1
-        $age = $lunarDate[2] - $birthYear + 1;
+        $age = isset($lunarDate[2]) ? $lunarDate[2] - $birthYear + 1 : 1;
         if ($age < 1) $age = 1; // Fallback
 
         // Lunar Hour Index (0=Ty... 11=Hoi)
@@ -80,12 +80,14 @@ class FuneralEvent implements EventInterface
         // Step 2: Count Month
         // Standard: "Tháng 1 ngay tại cung tuổi".
         // So offset = (month - 1).
-        $pMonth = $this->move($pAge, ($lunarDate[1] - 1) * $dir);
+        $monthVal = isset($lunarDate[1]) ? $lunarDate[1] : 1;
+        $pMonth = $this->move($pAge, ($monthVal - 1) * $dir);
 
         // Step 3: Count Day
         // "Từ cung tháng, đếm ngày 1...".
         // Day 1 at P_Month.
-        $pDay = $this->move($pMonth, ($lunarDate[0] - 1) * $dir);
+        $dayVal = isset($lunarDate[0]) ? $lunarDate[0] : 1;
+        $pDay = $this->move($pMonth, ($dayVal - 1) * $dir);
 
         // Step 4: Count Hour
         // "Từ cung ngày, đếm giờ Tý...".
@@ -145,8 +147,9 @@ class FuneralEvent implements EventInterface
             $lunar = $this->lunar->convertSolarToLunar($d, $m, $y);
             // $lunar: [day, month, year, leap, dayCan, dayChi...]
 
-            $dayChi = $lunar[5];
-            $month = $lunar[1];
+            $dayChi = isset($lunar[5]) ? $lunar[5] : 0;
+            $month = isset($lunar[1]) ? $lunar[1] : 1;
+            $dayCan = isset($lunar[4]) ? $lunar[4] : 0;
 
             $dateStr = date('Y-m-d', $current);
 
@@ -198,8 +201,8 @@ class FuneralEvent implements EventInterface
             if ($chiefStatus !== 'Bad') {
                 $results[] = [
                     'date' => $dateStr,
-                    'lunar_date' => "$lunar[0]/$lunar[1]",
-                    'day_can_chi' => $this->lunar->getCanName($lunar[4]) . ' ' . $this->lunar->getChiName($lunar[5]),
+                    'lunar_date' => (isset($lunar[0]) ? $lunar[0] : '-') . '/' . (isset($lunar[1]) ? $lunar[1] : '-'),
+                    'day_can_chi' => $this->lunar->getCanName($dayCan) . ' ' . $this->lunar->getChiName($dayChi),
                     'is_hoang_dao' => $isHoangDao,
                     'truc' => $truc['name'],
                     'sao' => $sao['name'],

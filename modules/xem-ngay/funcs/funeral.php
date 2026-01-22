@@ -24,7 +24,9 @@ $key_words = $module_info['keywords'];
 
 $xtpl = new XTemplate('funeral.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
-$xtpl->assign('ACTION_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
+// Fix undefined $lang variable
+$lang_current = NV_LANG_DATA;
+$xtpl->assign('ACTION_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang_current . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
 
 // Default Data
 $data = [
@@ -63,12 +65,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
         ];
 
         foreach (['age', 'month', 'day', 'hour'] as $key) {
-            $st = $status[$key . '_status'];
+            $st = isset($status[$key . '_status']) ? $status[$key . '_status'] : '';
             $info = isset($statusMap[$st]) ? $statusMap[$st] : ['class' => '', 'text' => $st];
 
             $xtpl->assign(strtoupper($key) . '_STATUS', $info['text']);
             $xtpl->assign(strtoupper($key) . '_CLASS', $info['class']);
-            $xtpl->assign(strtoupper($key) . '_CHI', $status['details'][$key . '_chi']);
+            // details key existence check is done in library, but good to be safe
+            $detail_val = isset($status['details'][$key . '_chi']) ? $status['details'][$key . '_chi'] : '';
+            $xtpl->assign(strtoupper($key) . '_CHI', $detail_val);
         }
         $xtpl->parse('main.result.trung_tang');
 

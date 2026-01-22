@@ -148,7 +148,7 @@ class LunarDate
             $lunarYear++;
         }
 
-        return [$lunarDay, $lunarMonth, $lunarYear, $isLeap ? 1 : 0];
+        return [(int)$lunarDay, (int)$lunarMonth, (int)$lunarYear, $isLeap ? 1 : 0];
     }
 
     private function jdnToDate($jdn)
@@ -309,6 +309,9 @@ class LunarDate
      */
     public function calculateCanChi($d, $m, $y, $jdn)
     {
+        // Cast JDN to integer for modulo operations
+        $jdn = (int)$jdn;
+
         // Can/Chi Year
         $canY = ($y + 6) % 10;
         $chiY = ($y + 8) % 12;
@@ -335,8 +338,8 @@ class LunarDate
     }
 
     // Helpers to get text
-    public function getCanName($idx) { return $this->can[$idx % 10]; }
-    public function getChiName($idx) { return $this->chi[$idx % 12]; }
+    public function getCanName($idx) { return isset($this->can[$idx % 10]) ? $this->can[$idx % 10] : ''; }
+    public function getChiName($idx) { return isset($this->chi[$idx % 12]) ? $this->chi[$idx % 12] : ''; }
 
     /**
      * Get Solar Term (Tiet Khi)
@@ -346,6 +349,6 @@ class LunarDate
          $sl = $this->getSunLongitude($jdn, $timeZone);
          // Each term is 15 degrees.
          $idx = floor($sl / 15);
-         return $this->tietKhi[$idx % 24];
+         return isset($this->tietKhi[$idx % 24]) ? $this->tietKhi[$idx % 24] : '';
     }
 }
