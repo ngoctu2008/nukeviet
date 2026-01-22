@@ -35,3 +35,4 @@ $lang_module['type_tho_tu'] = 'Thọ Tử';
 $lang_module['type_duong_cong'] = 'Dương Công Kỵ Nhật';
 $lang_module['error_required'] = 'Vui lòng nhập đủ thông tin';
 $lang_module['save_success'] = 'Lưu thành công';
+$lang_module['groups_view'] = 'Nhóm thành viên được phép xem';

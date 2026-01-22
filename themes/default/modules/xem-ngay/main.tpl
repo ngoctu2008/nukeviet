@@ -29,7 +29,15 @@
                 </div>
             </div>
         </div>
-        <!-- Add other cards similarly -->
+        <div class="col-xs-24 col-sm-12 col-md-12 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title text-warning">{LANG.grand_opening_title}</h3>
+                    <p class="card-text text-muted">Xem ngày khai trương, cầu tài lộc.</p>
+                    <a href="{URL_GRAND_OPENING}" class="btn btn-warning btn-lg mt-3">{LANG.submit}</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- END: main -->

@@ -12,6 +12,24 @@ if (!defined('NV_IS_MOD_XEMNGAY')) {
     die('Stop!!!');
 }
 
+// Check Permissions
+$module_table_name = str_replace('-', '_', $module_data);
+$table_config = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_table_name . "_config";
+$sql = "SELECT config_value FROM " . $table_config . " WHERE config_name = 'groups_view'";
+$result = $db->query($sql);
+$row = $result->fetch();
+
+if (!empty($row)) {
+    $allowed_groups = explode(',', $row['config_value']);
+    if (!empty($allowed_groups) && !nv_user_in_groups($allowed_groups)) {
+        $contents = "Bạn không có quyền xem nội dung này. Vui lòng đăng nhập hoặc liên hệ quản trị viên.";
+        include NV_ROOTDIR . '/includes/header.php';
+        echo nv_site_theme($contents);
+        include NV_ROOTDIR . '/includes/footer.php';
+        exit;
+    }
+}
+
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/LunarDate.php';
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/FengShuiCore.php';
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/EventInterface.php';
@@ -21,6 +39,9 @@ use NukeViet\Module\XemNgay\Lib\Events\WeddingEvent;
 
 $page_title = $lang_module['wedding_title'];
 $key_words = $module_info['keywords'];
+
+// Load CSS
+$my_head .= '<link rel="stylesheet" href="' . NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/css/xem-ngay.css">';
 
 $xtpl = new XTemplate('wedding.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);

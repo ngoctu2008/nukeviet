@@ -33,17 +33,17 @@ if (!empty($row)) {
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/LunarDate.php';
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/FengShuiCore.php';
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/EventInterface.php';
-require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/Events/ConstructionEvent.php';
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/Events/GrandOpeningEvent.php';
 
-use NukeViet\Module\XemNgay\Lib\Events\ConstructionEvent;
+use NukeViet\Module\XemNgay\Lib\Events\GrandOpeningEvent;
 
-$page_title = $lang_module['construction_title'];
+$page_title = $lang_module['grand_opening_title'];
 $key_words = $module_info['keywords'];
 
 // Load CSS
 $my_head .= '<link rel="stylesheet" href="' . NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/css/xem-ngay.css">';
 
-$xtpl = new XTemplate('construction.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+$xtpl = new XTemplate('grand_opening.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $lang_current = NV_LANG_DATA;
 $xtpl->assign('ACTION_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang_current . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
@@ -62,27 +62,20 @@ if ($nv_Request->isset_request('submit', 'post')) {
     $xtpl->assign('DATA', $data);
 
     if ($data['birth_year'] > 0) {
-        $construction = new ConstructionEvent();
+        $event = new GrandOpeningEvent();
         $year = (int)date('Y');
 
-        // Check Age
-        $ageCheck = $construction->checkAge($data['birth_year'], $year);
+        $ageCheck = $event->checkAge($data['birth_year'], $year);
 
-        $warnings = [];
-        if ($ageCheck['kim_lau']) $warnings[] = "Phạm Kim Lâu";
-        if ($ageCheck['hoang_oc']) $warnings[] = "Phạm Hoang Ốc";
-        if ($ageCheck['tam_tai']) $warnings[] = "Phạm Tam Tai";
-
-        if (!empty($warnings)) {
-            $xtpl->assign('WARNING_MSG', "Tuổi " . $ageCheck['age'] . " không đẹp để làm nhà năm nay: " . implode(', ', $warnings) . ". Nên mượn tuổi.");
+        if ($ageCheck['tam_tai']) {
+            $xtpl->assign('WARNING_MSG', "Năm nay tuổi " . $ageCheck['age'] . " phạm Tam Tai, cần cẩn trọng.");
             $xtpl->parse('main.result.warning');
         } else {
-            $xtpl->assign('SUCCESS_MSG', "Tuổi " . $ageCheck['age'] . " đẹp, có thể động thổ.");
+            $xtpl->assign('SUCCESS_MSG', "Tuổi " . $ageCheck['age'] . " tốt để khai trương.");
             $xtpl->parse('main.result.success');
         }
 
-        // Find Dates
-        $dates = $construction->findDates($data['birth_year'], $data['start_date'], $data['end_date']);
+        $dates = $event->findDates($data['birth_year'], $data['start_date'], $data['end_date']);
 
         foreach ($dates as $date) {
             $date['hoang_dao'] = $date['is_hoang_dao'] ? 'Có' : 'Không';

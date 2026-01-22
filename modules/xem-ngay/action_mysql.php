@@ -40,48 +40,10 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
   UNIQUE KEY config_name (config_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
-// Insert Data: Sat Chu
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_bad_dates (month, day_chi, type, description) VALUES
-(1, 5, 'sat_chu', 'Sát Chủ - Tỵ'),
-(2, 0, 'sat_chu', 'Sát Chủ - Tý'),
-(3, 7, 'sat_chu', 'Sát Chủ - Mùi'),
-(4, 3, 'sat_chu', 'Sát Chủ - Mão'),
-(5, 8, 'sat_chu', 'Sát Chủ - Thân'),
-(6, 10, 'sat_chu', 'Sát Chủ - Tuất'),
-(7, 11, 'sat_chu', 'Sát Chủ - Hợi'),
-(8, 1, 'sat_chu', 'Sát Chủ - Sửu'),
-(9, 6, 'sat_chu', 'Sát Chủ - Ngọ'),
-(10, 1, 'sat_chu', 'Sát Chủ - Sửu'),
-(11, 0, 'sat_chu', 'Sát Chủ - Tý'),
-(12, 4, 'sat_chu', 'Sát Chủ - Thìn')";
-
-// Insert Data: Tho Tu
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_bad_dates (month, day_chi, type, description) VALUES
-(1, 10, 'tho_tu', 'Thọ Tử - Tuất'),
-(2, 4, 'tho_tu', 'Thọ Tử - Thìn'),
-(3, 11, 'tho_tu', 'Thọ Tử - Hợi'),
-(4, 5, 'tho_tu', 'Thọ Tử - Tỵ'),
-(5, 0, 'tho_tu', 'Thọ Tử - Tý'),
-(6, 6, 'tho_tu', 'Thọ Tử - Ngọ'),
-(7, 1, 'tho_tu', 'Thọ Tử - Sửu'),
-(8, 7, 'tho_tu', 'Thọ Tử - Mùi'),
-(9, 2, 'tho_tu', 'Thọ Tử - Dần'),
-(10, 8, 'tho_tu', 'Thọ Tử - Thân'),
-(11, 3, 'tho_tu', 'Thọ Tử - Mão'),
-(12, 9, 'tho_tu', 'Thọ Tử - Dậu')";
-
-// Insert Data: Duong Cong Ky Nhat
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_bad_dates (month, day_lunar, type, description) VALUES
-(1, 13, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(2, 11, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(3, 9, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(4, 7, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(5, 5, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(6, 3, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(7, 8, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(7, 29, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(8, 27, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(9, 25, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(10, 23, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(11, 21, 'duong_cong', 'Dương Công Kỵ Nhật'),
-(12, 19, 'duong_cong', 'Dương Công Kỵ Nhật')";
+// Include initial data insertion logic
+if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/language/data_' . $lang . '.php')) {
+    include NV_ROOTDIR . '/modules/' . $module_file . '/language/data_' . $lang . '.php';
+    if (isset($sql_insert_bad_dates)) {
+        $sql_create_module[] = $sql_insert_bad_dates;
+    }
+}
