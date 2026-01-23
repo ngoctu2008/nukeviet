@@ -29,7 +29,7 @@
             <div class="palace-body">
                 <ul class="star-list">
                     <!-- BEGIN: stars -->
-                    <li class="star-item {STAR.css}">
+                    <li class="star-item {STAR.css}" data-toggle="tooltip" data-html="true" title="{STAR.tooltip}">
                         {STAR.name} <span class="brightness">({STAR.brightness})</span>
                     </li>
                     <!-- END: stars -->
@@ -46,9 +46,24 @@
 
 <!-- Interpretation Section -->
 <div class="container" style="margin-top: 20px;">
-    <h2 class="text-center">Luận Giải Chi Tiết</h2>
-    <div class="interpretation-content">
-        {INTERPRETATION}
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#lifetime" aria-controls="lifetime" role="tab" data-toggle="tab">Lá Số Trọn Đời</a></li>
+        <li role="presentation"><a href="#yearly" aria-controls="yearly" role="tab" data-toggle="tab">Luận Giải Năm Xem ({USER.year_view})</a></li>
+    </ul>
+
+    <div class="tab-content" style="margin-top: 15px;">
+        <div role="tabpanel" class="tab-pane active" id="lifetime">
+             {INTERPRETATION}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="yearly">
+             {INTERPRETATION_YEAR}
+        </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 <!-- END: main -->

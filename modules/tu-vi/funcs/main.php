@@ -45,6 +45,8 @@ for ($i = 1950; $i <= $curYear + 1; $i++) {
     $xtpl->parse('main.year');
 }
 
+$xtpl->assign('CURRENT_YEAR', date('Y'));
+
 $xtpl->parse('main');
 $contents = $xtpl->text('main');
 

@@ -38,6 +38,13 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">Năm xem (Lưu niên)</label>
+                        <div class="col-sm-3">
+                             <input type="number" name="view_year" class="form-control" value="{CURRENT_YEAR}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="col-sm-3 control-label">Giờ sinh</label>
                         <div class="col-sm-4">
                             <select name="hour" class="form-control">
