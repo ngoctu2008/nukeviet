@@ -11,4 +11,6 @@ if (!defined('NV_ADMIN') or !defined('NV_MAINFILE') or !defined('NV_IS_MODADMIN'
     die('Stop!!!');
 }
 
+$allow_func = array('main', 'config', 'tu_vi', 'xem_tuoi', 'xem_ngay', 'lo_ban', 'dat_ten', 'sim_so', 'gieo_que');
+
 define('NV_IS_FILE_ADMIN', true);
