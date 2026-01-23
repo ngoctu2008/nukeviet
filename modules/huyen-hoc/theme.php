@@ -23,6 +23,31 @@ function nv_theme_huyen_hoc_main($module_name)
     return $xtpl->text('main');
 }
 
+function nv_theme_huyen_hoc_lo_ban($result, $length)
+{
+    global $module_info, $lang_module, $module_file, $op, $module_name;
+
+    $xtpl = new XTemplate('lo_ban.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+    $xtpl->assign('LANG', $lang_module);
+    $xtpl->assign('MODULE_NAME', $module_name);
+    $xtpl->assign('OP', $op);
+    $xtpl->assign('LENGTH', $length > 0 ? $length : '');
+
+    if (!empty($result)) {
+        foreach ($result as $type => $info) {
+            $info['id'] = $type;
+            $info['color'] = $info['good'] ? 'red' : 'black';
+            $info['result_text'] = $info['good'] ? 'Tốt' : 'Xấu';
+            $xtpl->assign('RULER', $info);
+            $xtpl->parse('main.result.ruler');
+        }
+        $xtpl->parse('main.result');
+    }
+
+    $xtpl->parse('main');
+    return $xtpl->text('main');
+}
+
 function nv_theme_huyen_hoc_tu_vi($data, $input)
 {
     global $module_info, $lang_module, $module_file, $op, $module_name;

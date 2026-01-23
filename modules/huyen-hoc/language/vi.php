@@ -27,3 +27,4 @@ $lang_module['sim_so'] = 'Sim Phong Thủy';
 $lang_module['gieo_que'] = 'Gieo quẻ';
 $lang_module['submit'] = 'Thực hiện';
 $lang_module['result'] = 'Kết quả';
+$lang_module['lo_ban_input'] = 'Nhập kích thước (cm)';
