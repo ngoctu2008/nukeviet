@@ -1,0 +1,2 @@
+-- SQL for Huyen Hoc Module
+-- Tables are created via action.php
