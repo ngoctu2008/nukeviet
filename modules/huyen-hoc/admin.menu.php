@@ -12,6 +12,7 @@ if (!defined('NV_ADMIN')) {
 }
 
 $submenu['main'] = $lang_module['main'];
+$submenu['config'] = $lang_module['config']; // Added config
 $submenu['tu_vi'] = $lang_module['tu_vi'];
 $submenu['xem_tuoi'] = $lang_module['xem_tuoi'];
 $submenu['xem_ngay'] = $lang_module['xem_ngay'];

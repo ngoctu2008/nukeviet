@@ -17,27 +17,47 @@ function nv_theme_huyen_hoc_main($module_name)
 
     $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
+    $xtpl->assign('MODULE_NAME', $module_name);
 
     $xtpl->parse('main');
     return $xtpl->text('main');
 }
 
-function nv_theme_huyen_hoc_tu_vi($data)
+function nv_theme_huyen_hoc_tu_vi($data, $input)
 {
     global $module_info, $lang_module, $module_file, $op;
 
     $xtpl = new XTemplate('tu_vi.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
+    $xtpl->assign('MODULE_NAME', $module_info['module_name']);
+    $xtpl->assign('OP', $op);
+    $xtpl->assign('INPUT', $input);
 
-    // Assign input data if exists
-    if (!empty($data['input'])) {
-        $xtpl->assign('INPUT', $data['input']);
-    }
+    // Assign selected hour
+    $xtpl->assign('SELECTED_' . $input['h'], 'selected="selected"');
 
-    // Assign Chart Data
     if (!empty($data['chart'])) {
-        // Debug output for Phase 1
+        $xtpl->assign('INFO', $data['chart']['info']);
         $xtpl->assign('DEBUG_DATA', print_r($data, true));
+
+        // Output Palaces
+        // We need to sort or map them to the grid?
+        // For now, simple loop in index order (0..11)
+        foreach ($data['chart'] as $key => $palace) {
+            if (is_numeric($key)) {
+                $xtpl->assign('PALACE', $palace);
+
+                foreach ($palace['stars'] as $star) {
+                    // Assign color based on type or element if available
+                    $star['color'] = ($star['type'] == 1) ? 'red' : 'black';
+                    $xtpl->assign('STAR', $star);
+                    $xtpl->parse('main.result.palace.star');
+                }
+
+                $xtpl->parse('main.result.palace');
+            }
+        }
+
         $xtpl->parse('main.result');
     }
 

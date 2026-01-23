@@ -18,6 +18,7 @@ $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['main'] = 'Trang chính';
+$lang_module['config'] = 'Cấu hình module';
 $lang_module['tu_vi'] = 'Quản lý Tử Vi';
 $lang_module['xem_tuoi'] = 'Quản lý Xem tuổi';
 $lang_module['xem_ngay'] = 'Quản lý Xem ngày';

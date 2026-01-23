@@ -18,34 +18,39 @@ $page_title = $lang_module['tu_vi'];
 
 $result = array();
 
-if ($nv_Request->isset_request('submit', 'post')) {
-    $day = $nv_Request->get_int('day', 'post', 1);
-    $month = $nv_Request->get_int('month', 'post', 1);
-    $year = $nv_Request->get_int('year', 'post', 1990);
-    $hour = $nv_Request->get_int('hour', 'post', 0); // 0-11
-    $gender = $nv_Request->get_int('gender', 'post', 1);
+$data_input = array(
+    'd' => $nv_Request->get_int('day', 'post', date('d')),
+    'm' => $nv_Request->get_int('month', 'post', date('m')),
+    'y' => $nv_Request->get_int('year', 'post', date('Y')),
+    'h' => $nv_Request->get_int('hour', 'post', 0),
+    'g' => $nv_Request->get_int('gender', 'post', 1)
+);
 
-    // Convert Solar to Lunar (if input is Solar - assumed for now it's Solar input)
-    // But Tu Vi usually asks for Solar or Lunar. Let's assume user inputs Solar.
+if ($nv_Request->isset_request('submit', 'post')) {
+    $day = $data_input['d'];
+    $month = $data_input['m'];
+    $year = $data_input['y'];
+    $hour = $data_input['h'];
+    $gender = $data_input['g'];
+
+    // Convert Solar to Lunar
     $lunar = LunarCalendar::convertSolar2Lunar($day, $month, $year);
 
     // Get Can Chi
     $canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], $hour);
 
     // Lap La So
-    // Note: TuViLapSo expects Lunar Year, Month, Day, Hour (0-11).
-    // Our LunarCalendar::convertSolar2Lunar returns simple mapping for now.
     $laSo = TuViLapSo::lapLaSo($lunar['day'], $lunar['month'], $lunar['year'], $hour, $gender, $canChi['canYear']);
 
     $result = array(
-        'input' => array('d' => $day, 'm' => $month, 'y' => $year, 'h' => $hour, 'g' => $gender),
+        'input' => $data_input,
         'lunar' => $lunar,
         'canchi' => $canChi,
         'chart' => $laSo
     );
 }
 
-$contents = nv_theme_huyen_hoc_tu_vi($result);
+$contents = nv_theme_huyen_hoc_tu_vi($result, $data_input);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);
