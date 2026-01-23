@@ -18,11 +18,13 @@ $module_table_name = str_replace('-', '_', $module_data);
 
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_bad_dates";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_config";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_events";
 
 $sql_create_module = $sql_drop_module;
 
 // Table: Bad Dates
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_bad_dates (
+$table_bad_dates = $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_bad_dates";
+$sql_create_module[] = "CREATE TABLE " . $table_bad_dates . " (
   id int(11) NOT NULL AUTO_INCREMENT,
   month int(2) NOT NULL COMMENT 'Lunar Month',
   day_chi int(2) DEFAULT NULL COMMENT 'Index of Chi (0-11) for cyclic bad days',
@@ -53,6 +55,7 @@ $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_
 if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/language/data_' . $lang . '.php')) {
     include NV_ROOTDIR . '/modules/' . $module_file . '/language/data_' . $lang . '.php';
     if (isset($sql_insert_bad_dates)) {
-        $sql_create_module[] = $sql_insert_bad_dates;
+        // Replace placeholder with actual table name
+        $sql_create_module[] = str_replace('{TABLE}', $table_bad_dates, $sql_insert_bad_dates);
     }
 }
