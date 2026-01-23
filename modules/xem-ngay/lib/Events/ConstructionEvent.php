@@ -42,6 +42,14 @@ class ConstructionEvent implements EventInterface
         if ($kimLau || $hoangOc || $tamTai) {
             $advice[] = "Gia chủ phạm hạn, nên mượn tuổi người khác để động thổ.";
             $advice[] = "Nên chọn người tuổi Tam Hợp hoặc Nhị Hợp, tránh người tuổi Lục Xung, Kim Lâu, Hoang Ốc.";
+
+            // Find borrowable ages
+            $borrowable = $this->findBorrowableAges($birthYear, $currentYear);
+            if (!empty($borrowable)) {
+                $advice[] = "Các tuổi đẹp có thể mượn: " . implode(', ', $borrowable) . ".";
+            } else {
+                $advice[] = "Không tìm thấy tuổi phù hợp trong danh sách người thân/bạn bè (20-75 tuổi) để mượn.";
+            }
         }
 
         return [
@@ -139,5 +147,58 @@ class ConstructionEvent implements EventInterface
         $can = ($year + 6) % 10;
         $chi = ($year + 8) % 12;
         return ['can' => $can, 'chi' => $chi];
+    }
+
+    /**
+     * Find list of birth years suitable for borrowing age
+     * Criteria:
+     * 1. Age between 20 and 75 (working age, mature).
+     * 2. No Kim Lau, Hoang Oc, Tam Tai in current year.
+     * 3. Preferably Tam Hop/Nhi Hop with Owner (Bonus).
+     * 4. Avoid Luc Xung/Luc Hai with Owner.
+     */
+    private function findBorrowableAges($ownerYear, $currentYear)
+    {
+        $candidates = [];
+        $ownerChi = ($ownerYear + 8) % 12;
+        $currentChi = ($currentYear + 8) % 12;
+
+        // Iterate birth years. Assume borrower is between 20 and 75 years old.
+        // BirthYear = CurrentYear - Age + 1.
+
+        for ($age = 20; $age <= 75; $age++) {
+            $bYear = $currentYear - $age + 1;
+
+            // 1. Check Bad Luck
+            $kl = $this->fengShui->checkKimLau($age);
+            $ho = $this->fengShui->checkHoangOc($age);
+            $bChi = ($bYear + 8) % 12;
+            $tt = $this->fengShui->checkTamTai($bChi, $currentChi);
+
+            if (!$kl && !$ho && !$tt) {
+                // 2. Check Compatibility with Owner
+                $clash = $this->fengShui->checkXungKhacChi($ownerChi, $bChi);
+
+                // Exclude if Luc Xung or Luc Hai or Tuong Hinh
+                $isBadWithOwner = false;
+                foreach ($clash as $c) {
+                    if (in_array($c, ['Lục Xung', 'Lục Hại', 'Tương Hình (Vô Lễ)', 'Tương Hình (Vô Ân/Trì Thế)', 'Tự Hình'])) {
+                        $isBadWithOwner = true;
+                        break;
+                    }
+                }
+
+                if (!$isBadWithOwner) {
+                    // Get Can Chi Name
+                    $can = ($bYear + 6) % 10;
+                    $canName = $this->lunar->getCanName($can);
+                    $chiName = $this->lunar->getChiName($bChi);
+
+                    $candidates[] = "$canName $chiName ($bYear)";
+                }
+            }
+        }
+
+        return $candidates;
     }
 }
