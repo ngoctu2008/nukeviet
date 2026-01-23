@@ -1,0 +1,82 @@
+[
+  {
+    "id": "tu_phu_vu_tuong",
+    "stars_array": ["tu_vi", "thien_phu", "vu_khuc", "thien_tuong"],
+    "position": ["dan", "than", "ty", "ngu", "thin", "tuat", "suu", "mui", "ty_hoi", "mao_dau"],
+    "modifier": "none",
+    "priority": 100,
+    "content": "Cách 'Tử Phủ Vũ Tướng' (Tử Vi, Thiên Phủ, Vũ Khúc, Thiên Tướng hội họp): Đây là cách cục quyền quý bậc nhất trong Tử Vi. Chủ về người có tài năng lãnh đạo xuất chúng, phúc lộc song toàn, cuộc đời ít sóng gió, công danh sự nghiệp hiển hách. Nếu làm chính trị thì quyền cao chức trọng, làm kinh doanh thì đại phú đại quý."
+  },
+  {
+    "id": "sat_pha_tham",
+    "stars_array": ["that_sat", "pha_quan", "tham_lang"],
+    "position": ["dan", "than", "ty", "ngu", "thin", "tuat", "suu", "mui", "ty_hoi", "mao_dau"],
+    "modifier": "none",
+    "priority": 90,
+    "content": "Cách 'Sát Phá Tham' (Thất Sát, Phá Quân, Tham Lang hội họp): Đây là cách cục của người anh hùng, tướng soái, doanh nhân lớn. Chủ về sự năng động, dám nghĩ dám làm, thích khai phá và đối mặt thử thách. Cuộc đời nhiều biến động thăng trầm nhưng nếu thành công thì vang dội. Thích hợp với thời loạn hoặc thương trường khốc liệt."
+  },
+  {
+    "id": "co_nguyet_dong_luong",
+    "stars_array": ["thien_co", "thai_am", "thien_dong", "thien_luong"],
+    "position": ["dan", "than", "ty", "ngu", "thin", "tuat", "suu", "mui", "ty_hoi", "mao_dau"],
+    "modifier": "none",
+    "priority": 85,
+    "content": "Cách 'Cơ Nguyệt Đồng Lương' (Thiên Cơ, Thái Âm, Thiên Đồng, Thiên Lương hội họp): Đây là cách cục của người làm công chức, văn phòng, giáo dục hoặc y dược. Chủ về cuộc sống êm đềm, ổn định, ít sóng gió. Tính tình hiền lành, nhân hậu, thích giúp đỡ người khác. Làm việc thiên về trí óc, tham mưu hơn là hành động quyết liệt."
+  },
+  {
+    "id": "nhat_nguyet_dong_tranh",
+    "stars_array": ["thai_duong", "thai_am"],
+    "position": ["suu", "mui"],
+    "modifier": "none",
+    "priority": 80,
+    "content": "Cách 'Nhật Nguyệt Đồng Tranh' (Thái Dương, Thái Âm đồng cung tại Sửu/Mùi): Chủ về người có tính cách mâu thuẫn, lúc nhu lúc cương, hay thay đổi. Cuộc đời cũng nhiều thăng trầm, lúc lên voi lúc xuống chó. Nhưng nếu gặp Tuần/Triệt hoặc Hóa Kỵ thì lại trở thành kỳ cách, rất thông minh và thành đạt."
+  },
+  {
+    "id": "cu_nhat",
+    "stars_array": ["cu_mon", "thai_duong"],
+    "position": ["dan"],
+    "modifier": "none",
+    "priority": 75,
+    "content": "Cách 'Cự Nhật' (Cự Môn, Thái Dương tại Dần): Chủ về người có tài ăn nói, hùng biện, ngoại giao xuất sắc. Rất nổi tiếng, được nhiều người biết đến. Thích hợp làm chính trị, truyền thông hoặc luật sư. Tiền bạc và danh vọng đều dồi dào."
+  },
+  {
+    "id": "vo_chinh_dieu",
+    "stars_array": [],
+    "position": [],
+    "modifier": "vo_chinh_dieu",
+    "priority": 70,
+    "content": "Mệnh 'Vô Chính Diệu' (Không có chính tinh): Chủ về người thông minh, khôn ngoan, biết tùy thời ứng biến, nhưng thiếu lập trường kiên định, dễ bị ngoại cảnh chi phối. Thuở nhỏ thường vất vả, sức khỏe kém, con đường công danh lận đận. Nếu có Tuần/Triệt án ngữ hoặc Tam Không hội họp thì lại trở nên phi thường, phát phú phát quý bất ngờ."
+  },
+  {
+    "id": "tu_phu_dong_cung",
+    "stars_array": ["tu_vi", "thien_phu"],
+    "position": ["dan", "than"],
+    "modifier": "none",
+    "priority": 95,
+    "content": "Cách 'Tử Phủ Đồng Cung' (Tử Vi, Thiên Phủ cùng ở Dần/Thân): Hai vua cùng ngự một tòa. Chủ về người phúc hậu, tài năng, quyền biến. Cuộc đời được hưởng phúc lộc dồi dào, gia đạo yên ấm, con cái thành đạt. Rất hợp với nghề quản lý, tài chính, ngân hàng."
+  },
+  {
+    "id": "tham_vu_dong_hanh",
+    "stars_array": ["tham_lang", "vu_khuc"],
+    "position": ["suu", "mui"],
+    "modifier": "none",
+    "priority": 88,
+    "content": "Cách 'Tham Vũ Đồng Hành' (Tham Lang, Vũ Khúc cùng ở Sửu/Mùi): Chủ về người tài năng, khéo léo, vừa biết kiếm tiền vừa biết hưởng thụ. Tiền vận thường vất vả, bôn ba nhưng hậu vận rất giàu có (Tiền bần hậu phú). Nếu gặp Hóa Kỵ thì càng phát mạnh nhưng cẩn thận sông nước."
+  },
+  {
+    "id": "dong_luong",
+    "stars_array": ["thien_dong", "thien_luong"],
+    "position": ["dan", "than"],
+    "modifier": "none",
+    "priority": 82,
+    "content": "Cách 'Đồng Lương' (Thiên Đồng, Thiên Lương ở Dần/Thân): Chủ về người hiền lành, đức độ, hay làm việc thiện. Có năng khiếu về y học, giáo dục, tôn giáo. Cuộc đời an nhàn, ít lo nghĩ, gặp hung hóa cát."
+  },
+  {
+    "id": "liem_tham",
+    "stars_array": ["liem_trinh", "tham_lang"],
+    "position": ["ty", "hoi"],
+    "modifier": "none",
+    "priority": 78,
+    "content": "Cách 'Liêm Tham' (Liêm Trinh, Tham Lang ở Tỵ/Hợi): Đây là cách đào hoa, lãng tử. Chủ về người đa tài nhưng cũng đa tình, dễ vướng vào rắc rối tình cảm. Cuộc đời hay phải đi xa, bôn ba (Liêm Tham Tỵ Hợi). Nếu gặp Hóa Kỵ thì dễ bị tù tội hoặc tai nạn hình thương, cần tu tâm dưỡng tính."
+  }
+]

@@ -1,0 +1,14 @@
+[
+    {"id": 0, "name": "Kiến", "meaning": "Tốt cho khởi đầu, xuất hành, giá thú. Kỵ động thổ, khai trương."},
+    {"id": 1, "name": "Trừ", "meaning": "Tốt cho cúng tế, giải trừ, chữa bệnh. Kỵ cưới hỏi, xuất hành."},
+    {"id": 2, "name": "Mãn", "meaning": "Tốt cho cúng tế, cầu phúc. Kỵ động thổ, nhậm chức."},
+    {"id": 3, "name": "Bình", "meaning": "Tốt cho mọi việc, đặc biệt là sửa chữa, trang trí."},
+    {"id": 4, "name": "Định", "meaning": "Tốt cho giao dịch, ký kết, cầu tài. Kỵ kiện tụng, tranh chấp."},
+    {"id": 5, "name": "Chấp", "meaning": "Tốt cho bắt trộm, trị an. Kỵ xuất hành, di chuyển."},
+    {"id": 6, "name": "Phá", "meaning": "Xấu cho mọi việc, đặc biệt là cưới hỏi, động thổ. Chỉ tốt cho phá dỡ nhà cũ."},
+    {"id": 7, "name": "Nguy", "meaning": "Xấu, chủ về nguy nan, trắc trở. Kỵ leo cao, đi thuyền."},
+    {"id": 8, "name": "Thành", "meaning": "Rất tốt, chủ về thành công, kết quả. Tốt cho khai trương, giá thú, động thổ."},
+    {"id": 9, "name": "Thu", "meaning": "Tốt cho thu hoạch, cất giữ, mua tài sản. Kỵ an táng."},
+    {"id": 10, "name": "Khai", "meaning": "Rất tốt, chủ về mở mang, khởi đầu. Tốt cho khai trương, xuất hành, động thổ."},
+    {"id": 11, "name": "Bế", "meaning": "Xấu cho mọi việc, chủ về bế tắc. Chỉ tốt cho an táng, lấp hố."}
+]
