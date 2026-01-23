@@ -25,11 +25,11 @@ function nv_theme_huyen_hoc_main($module_name)
 
 function nv_theme_huyen_hoc_tu_vi($data, $input)
 {
-    global $module_info, $lang_module, $module_file, $op;
+    global $module_info, $lang_module, $module_file, $op, $module_name;
 
     $xtpl = new XTemplate('tu_vi.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
-    $xtpl->assign('MODULE_NAME', $module_info['module_name']);
+    $xtpl->assign('MODULE_NAME', $module_name);
     $xtpl->assign('OP', $op);
     $xtpl->assign('INPUT', $input);
 
