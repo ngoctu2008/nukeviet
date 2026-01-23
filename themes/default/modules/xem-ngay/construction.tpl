@@ -13,6 +13,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-sm-6 col-md-6 control-label">Giới tính (*)</label>
+                    <div class="col-sm-18 col-md-18">
+                        <select name="gender" class="form-control">
+                            <option value="1" {SELECTED_MALE}>Nam</option>
+                            <option value="0" {SELECTED_FEMALE}>Nữ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-6 col-md-6 control-label">Từ ngày</label>
                     <div class="col-sm-18 col-md-18">
                         <input type="date" name="start_date" class="form-control" value="{DATA.start_date}" required>
@@ -35,13 +44,17 @@
     <div id="result-section">
         <h3>Kết quả</h3>
 
+        <div class="panel panel-default">
+            <div class="panel-heading">Thông tin mệnh chủ</div>
+            <div class="panel-body">
+                <p><strong>Cung Mệnh:</strong> {INFO.cung_menh} ({INFO.cung_element})</p>
+                <p><strong>Sao Hạn năm nay:</strong> {INFO.sao_han}</p>
+            </div>
+        </div>
+
         <!-- BEGIN: warning -->
         <div class="alert alert-warning">{WARNING_MSG}</div>
         <!-- END: warning -->
-        <!-- BEGIN: success -->
-        <div class="alert alert-success">{SUCCESS_MSG}</div>
-        <!-- END: success -->
-
         <!-- BEGIN: advice -->
         <div class="alert alert-info">
             <strong>Lời khuyên hóa giải:</strong>
@@ -52,6 +65,9 @@
             </ul>
         </div>
         <!-- END: advice -->
+        <!-- BEGIN: success -->
+        <div class="alert alert-success">{SUCCESS_MSG}</div>
+        <!-- END: success -->
 
         <h4>Ngày tốt đề xuất</h4>
         <div class="table-responsive">

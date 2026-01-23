@@ -53,6 +53,7 @@ require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/EventInterface.php'
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/lib/Events/CustomEvent.php';
 
 use NukeViet\Module\XemNgay\Lib\Events\CustomEvent;
+use NukeViet\Module\XemNgay\Lib\FengShuiCore;
 
 $page_title = $event_info['title'];
 $key_words = $module_info['keywords'];
@@ -73,6 +74,7 @@ if (in_array('input_partner', $event_config['inputs'])) {
 
 $data = [
     'birth_year' => '',
+    'gender' => 1,
     'partner_year' => '',
     'start_date' => date('Y-m-d'),
     'end_date' => date('Y-m-d', strtotime('+30 days'))
@@ -80,15 +82,31 @@ $data = [
 
 if ($nv_Request->isset_request('submit', 'post')) {
     $data['birth_year'] = $nv_Request->get_int('birth_year', 'post', 0);
+    $data['gender'] = $nv_Request->get_int('gender', 'post', 1);
     $data['partner_year'] = $nv_Request->get_int('partner_year', 'post', 0);
     $data['start_date'] = $nv_Request->get_string('start_date', 'post', date('Y-m-d'));
     $data['end_date'] = $nv_Request->get_string('end_date', 'post', date('Y-m-d', strtotime('+30 days')));
 
     $xtpl->assign('DATA', $data);
+    if ($data['gender'] == 1) $xtpl->assign('SELECTED_MALE', 'selected');
+    else $xtpl->assign('SELECTED_FEMALE', 'selected');
 
     if ($data['birth_year'] > 0) {
         $customEvent = new CustomEvent($event_config);
+        $fengShui = new FengShuiCore();
         $year = (int)date('Y');
+
+        // Info
+        $cung = $fengShui->getCungMenh($data['birth_year'], $data['gender']);
+        $elementNames = ['Kim', 'Mộc', 'Thủy', 'Hỏa', 'Thổ'];
+        $age = $year - $data['birth_year'] + 1;
+        $sao = $fengShui->getSaoHan($age, $data['gender']);
+
+        $xtpl->assign('INFO', [
+            'cung_menh' => $cung['name'],
+            'cung_element' => isset($elementNames[$cung['element']]) ? $elementNames[$cung['element']] : '',
+            'sao_han' => $sao
+        ]);
 
         $ageCheck = $customEvent->checkAge($data['birth_year'], $year, $data['partner_year']);
 
@@ -117,6 +135,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     }
 } else {
     $xtpl->assign('DATA', $data);
+    $xtpl->assign('SELECTED_MALE', 'selected');
 }
 
 $xtpl->parse('main');

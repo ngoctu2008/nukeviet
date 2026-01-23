@@ -314,4 +314,145 @@ class FengShuiCore
         }
         return false;
     }
+
+    /**
+     * Get Cung Menh (Cung Phi)
+     * @param int $year
+     * @param int $gender 1: Male, 0: Female
+     * @return array ['name' => string, 'element' => int]
+     */
+    public function getCungMenh($year, $gender)
+    {
+        $sum = 0;
+        $digits = str_split((string)$year);
+        foreach ($digits as $d) $sum += $d;
+
+        // Reduce to single digit (1-9)
+        while ($sum > 9) {
+            $s = 0;
+            $ds = str_split((string)$sum);
+            foreach ($ds as $d) $s += $d;
+            $sum = $s;
+        }
+
+        // Formula:
+        // Male: 11 - sum. If > 9, reduce. If 0 (impossible from 11-sum?), 5=Khon.
+        // Female: 4 + sum. If > 9, reduce. 5=Can.
+
+        if ($gender == 1) { // Male
+            $val = 11 - $sum;
+            if ($val > 9) $val -= 9; // e.g. 11-1=10 -> 1? No. 11-2=9.
+            // Wait, standard formula:
+            // Sum digits of year until < 10. Let it be S.
+            // Male: (11 - S) % 9. If 0 -> 9.
+            // Female: (4 + S) % 9. If 0 -> 9.
+            // Exception: 5 is center. Male->2(Khon), Female->8(Can).
+
+            // Let's use strict lookup table based on Remainder.
+            // Cung mapping (Post-2000 might differ? No, solar calendar rule shifts).
+            // Actually, simpler: (Year - 2000)?
+            // Standard rule:
+            // Sum all digits -> S.
+            // Male: 11 - S.
+            // Female: 4 + S.
+            // If result > 9, sum digits again? No, mod 9.
+        }
+
+        // Re-implement simplified reliable logic:
+        $y = $year;
+        $sum = array_sum(str_split($y));
+        while ($sum > 9) {
+             $sum = array_sum(str_split($sum));
+        }
+
+        if ($gender == 1) {
+            $res = 11 - $sum;
+            if ($res <= 0) $res += 9; // Should not happen if S<=9. Wait 11-9=2.
+        } else {
+            $res = 4 + $sum;
+        }
+
+        while ($res > 9) $res -= 9;
+
+        // Mapping 1-9 to Cung
+        // 1: Kham, 2: Khon, 3: Chan, 4: Ton, 5: (M:Khon, F:Can), 6: Can, 7: Doai, 8: Can, 9: Ly
+        // Note: 5 Male=Khon(2), Female=Can(8).
+
+        if ($res == 5) {
+            $res = ($gender == 1) ? 2 : 8;
+        }
+
+        $cungMap = [
+            1 => ['name' => 'Khảm', 'element' => self::THUY],
+            2 => ['name' => 'Khôn', 'element' => self::THO],
+            3 => ['name' => 'Chấn', 'element' => self::MOC],
+            4 => ['name' => 'Tốn', 'element' => self::MOC],
+            6 => ['name' => 'Càn', 'element' => self::KIM],
+            7 => ['name' => 'Đoài', 'element' => self::KIM],
+            8 => ['name' => 'Cấn', 'element' => self::THO],
+            9 => ['name' => 'Ly', 'element' => self::HOA]
+        ];
+
+        return isset($cungMap[$res]) ? $cungMap[$res] : ['name' => 'Unknown', 'element' => self::THO];
+    }
+
+    /**
+     * Get Sao Han (Year Star)
+     * @param int $age
+     * @param int $gender
+     * @return string
+     */
+    public function getSaoHan($age, $gender)
+    {
+        // 9 Stars cycle:
+        // La Hau, Tho Tu, Thuy Dieu, Thai Bach, Thai Duong, Van Hon, Ke Do, Thai Am, Moc Duc
+        // Male start 10: La Hau.
+        // Female start 10: Ke Do.
+
+        $stars = [
+            1 => 'La Hầu', 2 => 'Thổ Tú', 3 => 'Thủy Diệu', 4 => 'Thái Bạch', 5 => 'Thái Dương',
+            6 => 'Vân Hớn', 7 => 'Kế Đô', 8 => 'Thái Âm', 9 => 'Mộc Đức'
+        ];
+
+        // Mapping Remainder (Age % 9) or specialized lookup?
+        // Lookup is better.
+        // Male: 10 La Hau, 11 Tho Tu...
+        // Sequence M: La Hau(1) -> Tho Tu(2) -> Thuy Dieu(3) -> Thai Bach(4) -> Thai Duong(5) -> Van Hon(6) -> Ke Do(7) -> Thai Am(8) -> Moc Duc(9)
+        // Female: Ke Do(7) -> Van Hon(6) -> Thai Duong(5) -> Thai Bach(4) -> Thuy Dieu(3) -> Tho Tu(2) -> La Hau(1) -> Moc Duc(9) -> Thai Am(8)? No.
+
+        // Use lookup array for remainder of Age/9? No, starts at 10.
+        // Let's use strict remainder map.
+
+        // Male:
+        // 10: La Hau. (10-1)%9 = 0 -> 1?
+        // 19: La Hau.
+        // 28: La Hau.
+        // (Age - 10) % 9.
+
+        if ($gender == 1) {
+            $idx = ($age - 10) % 9;
+            if ($idx < 0) $idx += 9; // Handle age < 10
+            // 10 -> 0 -> La Hau (Key 1). So key = idx + 1.
+            $key = $idx + 1;
+        } else {
+            // Female
+            // 10: Ke Do (7).
+            // 11: Van Hon (6).
+            // 12: Thai Duong (5).
+            // 13: Thai Bach (4).
+            // 14: Thuy Dieu (3).
+            // 15: Tho Tu (2).
+            // 16: La Hau (1).
+            // 17: Moc Duc (9).
+            // 18: Thai Am (8).
+            // 19: Ke Do (7).
+
+            $fMap = [0 => 7, 1 => 6, 2 => 5, 3 => 4, 4 => 3, 5 => 2, 6 => 1, 7 => 9, 8 => 8];
+            $idx = ($age - 10) % 9;
+            if ($idx < 0) $idx += 9;
+            $key = $fMap[$idx];
+        }
+
+        return isset($stars[$key]) ? $stars[$key] : '';
+    }
 }
