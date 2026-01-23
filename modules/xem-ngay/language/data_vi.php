@@ -12,11 +12,11 @@ if (!defined('NV_ADMIN')) {
     die('Stop!!!');
 }
 
-// Sanitize module data for table name (replace - with _) to match action_mysql.php
-$module_table_name = str_replace('-', '_', $module_data);
-
 // Data for Bad Dates (Sat Chu, Tho Tu, Duong Cong Ky Nhat)
-$sql_insert_bad_dates = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_table_name . "_bad_dates (month, day_chi, day_lunar, type, description) VALUES
+// Note: We use variables from the scope where this file is included (usually action_mysql.php)
+// $db_config, $lang, $module_data should be available.
+
+$sql_insert_bad_dates = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . str_replace('-', '_', $module_data) . "_bad_dates (month, day_chi, day_lunar, type, description) VALUES
 (1, 5, NULL, 'sat_chu', 'Sát Chủ - Tỵ'),
 (2, 0, NULL, 'sat_chu', 'Sát Chủ - Tý'),
 (3, 7, NULL, 'sat_chu', 'Sát Chủ - Mùi'),
