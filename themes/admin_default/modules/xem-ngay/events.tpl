@@ -16,6 +16,30 @@
                     <textarea name="description" class="form-control" rows="3">{DATA.description}</textarea>
                 </div>
             </div>
+            <div class="form-group row">
+                <label class="col-sm-4 control-label">Tùy chọn Logic</label>
+                <div class="col-sm-20">
+                    <!-- BEGIN: logic_option -->
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="logic_config[]" value="{LOGIC.key}" {LOGIC.checked}> {LOGIC.label}
+                        </label>
+                    </div>
+                    <!-- END: logic_option -->
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 control-label">Tùy chọn Nhập liệu</label>
+                <div class="col-sm-20">
+                    <!-- BEGIN: input_option -->
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="input_config[]" value="{INPUT.key}" {INPUT.checked}> {INPUT.label}
+                        </label>
+                    </div>
+                    <!-- END: input_option -->
+                </div>
+            </div>
             <div class="text-center">
                 <button type="submit" name="save" value="1" class="btn btn-primary">{LANG.save}</button>
                 <a href="{ACTION_URL}" class="btn btn-default">Hủy</a>

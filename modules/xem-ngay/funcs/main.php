@@ -43,6 +43,21 @@ $xtpl->assign('URL_WEDDING', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE .
 $xtpl->assign('URL_CONSTRUCTION', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=construction');
 $xtpl->assign('URL_GRAND_OPENING', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=grand_opening');
 
+// Fetch Custom Events
+$module_table_name = str_replace('-', '_', $module_data);
+$table_events = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_table_name . "_events";
+try {
+    $sql = "SELECT id, title, description FROM " . $table_events . " ORDER BY id ASC";
+    $result = $db->query($sql);
+    while ($row = $result->fetch()) {
+        $row['url'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=custom&id=' . $row['id'];
+        $xtpl->assign('EVENT', $row);
+        $xtpl->parse('main.event_loop');
+    }
+} catch (PDOException $e) {
+    // Ignore if table missing
+}
+
 $xtpl->parse('main');
 $contents = $xtpl->text('main');
 

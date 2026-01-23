@@ -38,6 +38,17 @@
                 </div>
             </div>
         </div>
+        <!-- BEGIN: event_loop -->
+        <div class="col-xs-24 col-sm-12 col-md-12 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title text-info">{EVENT.title}</h3>
+                    <p class="card-text text-muted">{EVENT.description}</p>
+                    <a href="{EVENT.url}" class="btn btn-info btn-lg mt-3">{LANG.submit}</a>
+                </div>
+            </div>
+        </div>
+        <!-- END: event_loop -->
     </div>
 </div>
 <!-- END: main -->
