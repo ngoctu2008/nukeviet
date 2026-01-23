@@ -20,15 +20,16 @@ $xtpl = new XTemplate('events.tpl', NV_ROOTDIR . '/themes/' . $global_config['mo
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('ACTION_URL', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $op . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=events');
 
-// Lazy Table Creation / Update
+// Robust Table Check
+$table_exists = false;
 try {
     $db->query("SELECT 1 FROM " . $table_events . " LIMIT 1");
-    // Check if config column exists
-    $columns = $db->query("SHOW COLUMNS FROM " . $table_events . " LIKE 'config'")->fetch();
-    if (empty($columns)) {
-        $db->query("ALTER TABLE " . $table_events . " ADD COLUMN config MEDIUMTEXT");
-    }
+    $table_exists = true;
 } catch (PDOException $e) {
+    $table_exists = false;
+}
+
+if (!$table_exists) {
     $sql_create = "CREATE TABLE " . $table_events . " (
         id int(11) NOT NULL AUTO_INCREMENT,
         title varchar(255) NOT NULL,
@@ -37,6 +38,16 @@ try {
         PRIMARY KEY (id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
     $db->query($sql_create);
+} else {
+    // Check for config column
+    try {
+        $result = $db->query("SHOW COLUMNS FROM " . $table_events . " LIKE 'config'");
+        if ($result->rowCount() == 0) {
+            $db->query("ALTER TABLE " . $table_events . " ADD COLUMN config MEDIUMTEXT");
+        }
+    } catch (PDOException $e) {
+        // Column check failed, maybe syntax or perm?
+    }
 }
 
 // Handle Delete
