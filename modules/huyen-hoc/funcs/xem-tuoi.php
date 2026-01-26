@@ -7,15 +7,14 @@
  * @Createdate Mon, 21 Oct 2024 00:00:00 GMT
  */
 
-if (!defined('NV_IS_FILE_ADMIN')) {
+if (!defined('NV_IS_MOD_HUYEN_HOC')) {
     die('Stop!!!');
 }
 
-$xtpl = new XTemplate('tu_vi.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+$page_title = $lang_module['xem_tuoi'];
+
+$xtpl = new XTemplate('xem-tuoi.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
-$xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
-$xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
-$xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
 
@@ -23,5 +22,5 @@ $xtpl->parse('main');
 $contents = $xtpl->text('main');
 
 include NV_ROOTDIR . '/includes/header.php';
-echo nv_admin_theme($contents);
+echo nv_site_theme($contents);
 include NV_ROOTDIR . '/includes/footer.php';

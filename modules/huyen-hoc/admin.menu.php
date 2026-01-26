@@ -12,11 +12,11 @@ if (!defined('NV_ADMIN')) {
 }
 
 $submenu['main'] = $lang_module['main'];
-$submenu['config'] = $lang_module['config']; // Added config
-$submenu['tu_vi'] = $lang_module['tu_vi'];
-$submenu['xem_tuoi'] = $lang_module['xem_tuoi'];
-$submenu['xem_ngay'] = $lang_module['xem_ngay'];
-$submenu['lo_ban'] = $lang_module['lo_ban'];
-$submenu['dat_ten'] = $lang_module['dat_ten'];
-$submenu['sim_so'] = $lang_module['sim_so'];
-$submenu['gieo_que'] = $lang_module['gieo_que'];
+$submenu['config'] = $lang_module['config'];
+$submenu['tu-vi'] = $lang_module['tu_vi'];
+$submenu['xem-tuoi'] = $lang_module['xem_tuoi'];
+$submenu['xem-ngay'] = $lang_module['xem_ngay'];
+$submenu['lo-ban'] = $lang_module['lo_ban'];
+$submenu['dat-ten'] = $lang_module['dat_ten'];
+$submenu['sim-so'] = $lang_module['sim_so'];
+$submenu['gieo-que'] = $lang_module['gieo_que'];

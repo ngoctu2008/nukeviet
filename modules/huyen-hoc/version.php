@@ -13,9 +13,9 @@ if (!defined('NV_MAINFILE')) {
 
 $module_version = array(
     'name' => 'Huyen Hoc',
-    'modfuncs' => 'main,tu_vi,xem_tuoi,xem_ngay,lo_ban,dat_ten,sim_so,gieo_que',
-    'change_alias' => 'main,tu_vi,xem_tuoi,xem_ngay,lo_ban,dat_ten,sim_so,gieo_que',
-    'submenu' => 'main,tu_vi,xem_tuoi,xem_ngay,lo_ban,dat_ten,sim_so,gieo_que',
+    'modfuncs' => 'main,tu-vi,xem-tuoi,xem-ngay,lo-ban,dat-ten,sim-so,gieo-que',
+    'change_alias' => 'main,tu-vi,xem-tuoi,xem-ngay,lo-ban,dat-ten,sim-so,gieo-que',
+    'submenu' => 'main,tu-vi,xem-tuoi,xem-ngay,lo-ban,dat-ten,sim-so,gieo-que',
     'is_sysmod' => 0,
     'virtual' => 1,
     'version' => '4.3.00',
