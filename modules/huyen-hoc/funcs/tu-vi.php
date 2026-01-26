@@ -19,6 +19,7 @@ $page_title = $lang_module['tu_vi'];
 $result = array();
 
 $data_input = array(
+    'name' => $nv_Request->get_string('name', 'post', ''),
     'd' => $nv_Request->get_int('day', 'post', date('d')),
     'm' => $nv_Request->get_int('month', 'post', date('m')),
     'y' => $nv_Request->get_int('year', 'post', date('Y')),
@@ -32,6 +33,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     $year = $data_input['y'];
     $hour = $data_input['h'];
     $gender = $data_input['g'];
+    $name = $data_input['name'];
 
     // Convert Solar to Lunar
     $lunar = LunarCalendar::convertSolar2Lunar($day, $month, $year);
@@ -40,16 +42,35 @@ if ($nv_Request->isset_request('submit', 'post')) {
     $canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], $hour);
 
     // Lap La So
-    $laSo = TuViLapSo::lapLaSo($lunar['day'], $lunar['month'], $lunar['year'], $hour, $gender, $canChi['canYear']);
+    $laSoData = TuViLapSo::lapLaSo(
+        $lunar['day'],
+        $lunar['month'],
+        $lunar['year'],
+        $hour,
+        $gender,
+        $canChi['canYear'],
+        $canChi['chiYear'],
+        $name
+    );
+
+    // Re-key dia_ban for template access (ty, suu, dan...)
+    $diaBanKeyed = array();
+    foreach ($laSoData['dia_ban'] as $palace) {
+        $diaBanKeyed[$palace['key']] = $palace;
+    }
+    $laSoData['dia_ban'] = $diaBanKeyed;
 
     $result = array(
         'input' => $data_input,
         'lunar' => $lunar,
         'canchi' => $canChi,
-        'chart' => $laSo
+        'laso' => $laSoData
     );
 }
 
+// Pass data to theme function
+// Note: We need to define nv_theme_huyen_hoc_tu_vi in theme.php or generic
+// Assuming theme.php handles 'tu_vi' template.
 $contents = nv_theme_huyen_hoc_tu_vi($result, $data_input);
 
 include NV_ROOTDIR . '/includes/header.php';
