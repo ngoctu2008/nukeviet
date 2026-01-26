@@ -50,8 +50,9 @@ function nv_theme_huyen_hoc_lo_ban($result, $length)
     if (!empty($result)) {
         foreach ($result as $type => $info) {
             $info['id'] = $type;
-            $info['color'] = $info['good'] ? 'red' : 'black';
-            $info['result_text'] = $info['good'] ? 'Tốt' : 'Xấu';
+            $info['color'] = $info['good'] ? '#d9534f' : '#333'; // Red vs Black
+            $info['result_text'] = $info['good'] ? 'TỐT' : 'XẤU';
+            $info['result_class'] = $info['good'] ? 'red' : 'black';
             $xtpl->assign('RULER', $info);
             $xtpl->parse('main.result.ruler');
         }
