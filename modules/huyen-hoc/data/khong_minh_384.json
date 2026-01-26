@@ -1,0 +1,42 @@
+{
+    "1": {
+        "id": 1,
+        "name_han": "Thiên môn nhất quải bản",
+        "poem_han": "Thiên môn nhất quải bản\nNhĩ mục bị quan hạn\nNhãn khán quá giang nhân\nNan độ hành châu than",
+        "poem_viet": "Cửa trời một tấm chắn ngang\nTai nghe mắt thấy rõ ràng ngại chi\nTrông người vượt bến sông đi\nThuyền mình mắc cạn khó khi đi cùng",
+        "meaning": "Quẻ này chủ về sự trắc trở. Thời vận chưa thông, mọi việc nên án binh bất động...",
+        "image": "que_1.jpg"
+    },
+    "2": {
+        "id": 2,
+        "name_han": "Địa hộ lưỡng trùng khai",
+        "poem_han": "Địa hộ lưỡng trùng khai\nĐộc ảnh quải thanh đài\nThùy nhân trùng tảo địa\nHoa mộc phục trùng lai",
+        "poem_viet": "Cửa đất hai lần mở\nBóng lẻ treo rêu xanh\nAi người quét đất lại\nCây cỏ lại đâm cành",
+        "meaning": "Quẻ này tượng trưng cho sự tái sinh sau cơn bế tắc. Tuy cô đơn nhưng có cơ hội làm lại từ đầu.",
+        "image": "que_2.jpg"
+    },
+    "3": {
+        "id": 3,
+        "name_han": "Nhân sự đa phong ba",
+        "poem_han": "Nhân sự đa phong ba\nKim mộc vị tương hòa\nKỷ phùng đông bắc lợi\nTha hương vị định gia",
+        "poem_viet": "Việc người lắm gió mưa\nKim Mộc chưa thuận hòa\nĐợi gặp phương Đông Bắc\nĐất khách mới thành gia",
+        "meaning": "Mọi sự còn nhiều biến động, chưa thuận lợi. Nên hướng về Đông Bắc để tìm cơ hội.",
+        "image": "que_3.jpg"
+    },
+    "4": {
+        "id": 4,
+        "name_han": "Quỷ thần diệc tương sâm",
+        "poem_han": "Quỷ thần diệc tương sâm\nÂm dương vị định tâm\nHành nhân nan đắc ngộ\nThâm xứ hựu mai xâm",
+        "poem_viet": "Quỷ thần cũng xen vào\nÂm dương lòng chưa yên\nNgười đi khó gặp gỡ\nChốn thẳm lại chôn vùi",
+        "meaning": "Nội tâm bất an, ngoại cảnh rối ren. Việc tìm người hay cầu tài đều khó khăn.",
+        "image": "que_4.jpg"
+    },
+    "5": {
+        "id": 5,
+        "name_han": "Long hổ tranh hùng thế",
+        "poem_han": "Long hổ tranh hùng thế\nPhong vân hội ngộ thì\nĐắc nhân tương tế trợ\nCông nghiệp tại tư kỳ",
+        "poem_viet": "Rồng hổ tranh hùng thế\nGió mây hội ngộ thì\nĐược người cùng giúp sức\nSự nghiệp chính lúc này",
+        "meaning": "Thời cơ lớn đã đến, có quý nhân phù trợ. Nên mạnh dạn tiến hành đại sự.",
+        "image": "que_5.jpg"
+    }
+}

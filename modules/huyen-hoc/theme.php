@@ -111,3 +111,18 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
     $xtpl->parse('main');
     return $xtpl->text('main');
 }
+
+function nv_theme_huyen_hoc_gieo_que()
+{
+    global $module_info, $lang_module, $module_file, $op, $module_name;
+
+    $xtpl = new XTemplate('gieo-que.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+    $xtpl->assign('LANG', $lang_module);
+    $xtpl->assign('MODULE_NAME', $module_name);
+    $xtpl->assign('OP', $op);
+    $xtpl->assign('TEMPLATE', $module_info['template']);
+    $xtpl->assign('MODULE_FILE', $module_file);
+
+    $xtpl->parse('main');
+    return $xtpl->text('main');
+}

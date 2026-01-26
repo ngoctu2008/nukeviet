@@ -15,23 +15,19 @@ use NukeViet\Module\HuyenHoc\Divination;
 
 $page_title = $lang_module['gieo_que'];
 
-$result = array();
-if ($nv_Request->isset_request('submit', 'post')) {
-    $result = Divination::gieoQue();
+// Handle AJAX Request
+if ($nv_Request->isset_request('api_get_result', 'post')) {
+    $duration = $nv_Request->get_int('duration', 'post', 0);
+
+    $divination = new Divination();
+    $result = $divination->getKhongMinhHexagram($duration);
+
+    header('Content-Type: application/json');
+    echo json_encode($result);
+    die();
 }
 
-$xtpl = new XTemplate('gieo-que.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
-$xtpl->assign('LANG', $lang_module);
-$xtpl->assign('MODULE_NAME', $module_name);
-$xtpl->assign('OP', $op);
-
-if (!empty($result)) {
-    $xtpl->assign('RESULT', $result);
-    $xtpl->parse('main.result');
-}
-
-$xtpl->parse('main');
-$contents = $xtpl->text('main');
+$contents = nv_theme_huyen_hoc_gieo_que();
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

@@ -9,11 +9,11 @@
         <div class="card-body">
             <form action="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}" method="post">
                 <div class="row">
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-12 form-group">
                         <label>{LANG.full_name}</label>
                         <input type="text" name="name" value="{INPUT.name}" class="form-control" placeholder="Nguyễn Văn A">
                     </div>
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-6 form-group">
                         <label>{LANG.gender}</label>
                         <div>
                             <label class="radio-inline"><input type="radio" name="gender" value="1" {SELECTED_G_1}> Nam</label>
@@ -22,19 +22,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2 form-group">
+                    <div class="col-md-4 form-group">
                         <label>Ngày (DL)</label>
                         <input type="number" name="day" value="{INPUT.d}" class="form-control" required>
                     </div>
-                    <div class="col-md-2 form-group">
+                    <div class="col-md-4 form-group">
                         <label>Tháng (DL)</label>
                         <input type="number" name="month" value="{INPUT.m}" class="form-control" required>
                     </div>
-                    <div class="col-md-2 form-group">
+                    <div class="col-md-4 form-group">
                         <label>Năm (DL)</label>
                         <input type="number" name="year" value="{INPUT.y}" class="form-control" required>
                     </div>
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-6 form-group">
                         <label>Giờ sinh</label>
                         <select name="hour" class="form-control">
                             <option value="0" {SELECTED_0}>Tý (23h-1h)</option>
@@ -51,7 +51,7 @@
                             <option value="11" {SELECTED_11}>Hợi (21h-23h)</option>
                         </select>
                     </div>
-                    <div class="col-md-3 form-group text-center">
+                    <div class="col-md-6 form-group text-center">
                         <label>&nbsp;</label>
                         <input type="submit" name="submit" value="LẬP LÁ SỐ" class="btn btn-primary btn-block">
                     </div>
@@ -105,7 +105,7 @@
 
     <!-- Tabs Functionality -->
     <div class="row mt-4">
-        <div class="col-md-12">
+        <div class="col-md-24">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="tongquan-tab" data-toggle="tab" href="#tongquan" role="tab">
