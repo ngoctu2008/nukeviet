@@ -42,7 +42,7 @@ function renderResult(data) {
     $('#step-4').fadeIn().addClass('fade-in');
 
     if (data) {
-        $('#res-name').text(data.name_han);
+        $('#res-name').text('Quẻ số ' + data.id + ': ' + data.name_han);
         $('#res-poem-han').text(data.poem_han);
         $('#res-poem-viet').text(data.poem_viet);
         $('#res-meaning').text(data.meaning);
