@@ -27,7 +27,15 @@ function performDivination(duration) {
         success: function(response) {
             // Delay slightly for effect
             setTimeout(function() {
-                renderResult(response);
+                var data = response;
+                if (typeof response === 'string') {
+                    try {
+                        data = JSON.parse(response);
+                    } catch (e) {
+                        console.error('JSON Parse Error', e);
+                    }
+                }
+                renderResult(data);
             }, 1000);
         },
         error: function() {
@@ -41,7 +49,7 @@ function renderResult(data) {
     $('#step-3').hide();
     $('#step-4').fadeIn().addClass('fade-in');
 
-    if (data) {
+    if (data && data.id) {
         $('#res-name').text('Quẻ số ' + data.id + ': ' + data.name_han);
         $('#res-poem-han').text(data.poem_han);
         $('#res-poem-viet').text(data.poem_viet);

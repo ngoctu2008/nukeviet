@@ -22,6 +22,7 @@ if ($nv_Request->isset_request('api_get_result', 'post')) {
     $divination = new Divination();
     $result = $divination->getKhongMinhHexagram($duration);
 
+    if (ob_get_length()) ob_end_clean();
     header('Content-Type: application/json');
     echo json_encode($result);
     die();
