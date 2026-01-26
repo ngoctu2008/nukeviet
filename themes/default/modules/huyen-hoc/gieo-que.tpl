@@ -19,10 +19,7 @@
     <!-- Step 2: Interaction -->
     <div id="step-2" class="step-container" style="display: none;">
         <h2 class="step-title">GIEO QUẺ</h2>
-        <div id="ong-xam" class="ong-xam-container">
-            <!-- Image background via CSS -->
-            <div style="padding-top: 100px; color: #aaa; font-size: 0.8em;">(Hình ống xăm)</div>
-        </div>
+        <div id="ong-xam" class="ong-xam-container"></div>
         <div class="shake-prompt">
             <span class="d-block d-md-none">LẮC ĐIỆN THOẠI ĐỂ GIEO QUẺ</span>
             <span class="d-none d-md-block desktop-prompt">Bấm và Giữ chuột vào ống xăm để lắc</span>
@@ -39,36 +36,37 @@
     </div>
 
     <!-- Step 4: Result -->
-    <div id="step-4" class="step-container" style="display: none; max-width: 800px;">
+    <div id="step-4" class="step-container" style="display: none; max-width: 900px;">
         <h2 class="step-title">KẾT QUẢ</h2>
 
         <div class="result-card">
-            <div id="res-name" class="hex-name"></div>
+            <div class="result-card-inner">
+                <!-- Hexagram Name -->
+                <div id="res-name" class="hex-name"></div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="poem-box">
-                        <strong>Thơ chữ Hán:</strong><br>
-                        <span id="res-poem-han"></span>
+                <div class="row">
+                    <!-- Chinese Poem -->
+                    <div class="col-md-12 col-sm-24 mb-3">
+                        <div class="poem-label">Thơ chữ Hán:</div>
+                        <div class="poem-content" id="res-poem-han"></div>
+                    </div>
+
+                    <!-- Vietnamese Poem -->
+                    <div class="col-md-12 col-sm-24 mb-3">
+                        <div class="poem-label">Thơ dịch:</div>
+                        <div class="poem-content" id="res-poem-viet"></div>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="poem-box">
-                        <strong>Thơ dịch:</strong><br>
-                        <span id="res-poem-viet"></span>
-                    </div>
+
+                <!-- Meaning -->
+                <div class="meaning-box">
+                    <h4>Lời bàn:</h4>
+                    <p id="res-meaning"></p>
                 </div>
-            </div>
-
-            <hr>
-
-            <div class="meaning-box">
-                <h4>Lời bàn:</h4>
-                <p id="res-meaning"></p>
             </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 text-center">
             <button id="btn-retry" class="btn-mystic"><i class="fa fa-refresh"></i> Gieo quẻ khác</button>
         </div>
     </div>

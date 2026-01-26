@@ -2,7 +2,7 @@
 .gieo-que-container {
     background-color: #1a1a1a;
     color: #f5f5f5;
-    padding: 20px;
+    padding: 40px 20px;
     min-height: 600px;
     display: flex;
     flex-direction: column;
@@ -16,19 +16,21 @@
 
 .step-container {
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     text-align: center;
 }
 
 .step-title {
-    font-size: 2em;
+    font-size: 2.5em;
     color: #d4af37; /* Gold */
-    margin-bottom: 20px;
-    text-shadow: 1px 1px 2px #000;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px #000;
+    letter-spacing: 2px;
 }
 
 .step-desc {
-    font-size: 1.1em;
+    font-size: 1.2em;
     color: #ccc;
     margin-bottom: 30px;
     font-style: italic;
@@ -38,26 +40,30 @@
     background: #8b0000;
     color: #d4af37;
     border: 1px solid #d4af37;
-    padding: 10px 30px;
-    font-size: 1.2em;
+    padding: 12px 40px;
+    font-size: 1.3em;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
 }
 
 .btn-mystic:hover {
-    background: #500;
-    box-shadow: 0 0 10px #d4af37;
+    background: #a00000;
+    box-shadow: 0 0 15px #d4af37;
+    color: #fff;
+    text-decoration: none;
 }
 
 /* Ong Xam Animation */
 .ong-xam-container {
-    width: 150px;
-    height: 250px;
-    background: url('../images/ong_xam.png') no-repeat center center; /* Placeholder path */
+    width: 200px;
+    height: 300px;
+    background: url('../images/gieo-que.webp') no-repeat center bottom;
     background-size: contain;
-    margin: 0 auto 20px auto;
-    background-color: #333; /* Fallback */
-    border-radius: 10px;
+    margin: 0 auto 30px auto;
     position: relative;
 }
 
@@ -76,32 +82,62 @@
 .result-card {
     background-color: #fff;
     color: #333;
-    padding: 20px;
-    border: 5px double #8b0000;
-    border-radius: 5px;
+    padding: 10px; /* Outer spacing */
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
     margin-top: 20px;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    position: relative;
+}
+
+.result-card-inner {
+    border: 2px solid #8b0000;
+    padding: 30px;
+    height: 100%;
 }
 
 .hex-name {
     color: #8b0000;
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 1.8em;
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
+    text-align: center;
 }
 
-.poem-box {
+.poem-label {
+    font-weight: bold;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.poem-content {
     background: #f9f9f9;
-    padding: 15px;
-    border-left: 3px solid #d4af37;
-    margin: 15px 0;
+    padding: 20px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.1em;
     font-style: italic;
     white-space: pre-line;
+    border-left: 3px solid #d4af37; /* Optional decorative border */
 }
 
 .meaning-box {
-    text-align: justify;
+    margin-top: 20px;
+    text-align: left;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.meaning-box h4 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* Fade In Animation */
