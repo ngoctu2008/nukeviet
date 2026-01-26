@@ -18,53 +18,75 @@ class Divination {
      */
     public function getKhongMinhHexagram($duration) {
         // 1. Tạo độ ngẫu nhiên dựa trên "Tâm" (hành động lắc)
-        // Lấy microtime hiện tại làm nhiễu
         $time_seed = (float)microtime(true) * 10000;
-
-        // Kết hợp với thời gian lắc của người dùng
         $final_seed = $time_seed + $duration;
 
-        // Khởi tạo bộ sinh số ngẫu nhiên Mersenne Twister (tốt hơn rand)
+        // Khởi tạo bộ sinh số ngẫu nhiên
         mt_srand((int)$final_seed);
 
         // 2. Lấy quẻ (Từ 1 đến 384)
         $hex_id = mt_rand(1, 384);
 
-        // For testing phase with limited data, ensure we get a valid ID from the sample set (1-5)
-        // If data file is full 384, remove this mod logic.
-        // But the user only provided 5 sample records.
-        // Let's check if the file exists and how many keys.
-        // For now, let's just return the random ID, and getMeaning will handle "Not found".
-        // OR map to 1-5 for demo purposes if ID > 5.
-        // The Prompt asked for "Weighted Random" in original plan but "mt_rand" in detailed instruction.
-        // I will stick to the detailed instruction: return 1-384.
-
-        // 3. Lấy nội dung từ Data
+        // 3. Lấy nội dung
         return $this->getPoemContent($hex_id);
     }
 
     private function getPoemContent($id) {
-        // Đọc từ file JSON
+        $data = [];
         $json_path = NV_ROOTDIR . '/modules/huyen-hoc/data/khong_minh_384.json';
-        if (!file_exists($json_path)) {
-            return null;
-        }
 
-        $json = file_get_contents($json_path);
-        $data = json_decode($json, true);
-
-        // Fallback for demo if ID not in data (since we only have 5)
-        if (!isset($data[$id])) {
-            // For demo purposes, map large ID to 1-5
-            $demo_id = ($id % 5) + 1;
-            $result = isset($data[$demo_id]) ? $data[$demo_id] : null;
-            if ($result) {
-                $result['id'] = $id; // Keep the rolled ID but show demo content
-                $result['note'] = "Demo Content (Data for ID $id missing)";
+        // Try reading JSON
+        if (file_exists($json_path)) {
+            $json = file_get_contents($json_path);
+            if ($json !== false) {
+                $data = json_decode($json, true);
             }
-            return $result;
         }
 
-        return $data[$id];
+        // Fallback hardcoded data if JSON failed or is empty
+        if (empty($data)) {
+            $data = [
+                1 => [
+                    "id" => 1,
+                    "name_han" => "Thiên môn nhất quải bản",
+                    "poem_han" => "Thiên môn nhất quải bản\nNhĩ mục bị quan hạn\nNhãn khán quá giang nhân\nNan độ hành châu than",
+                    "poem_viet" => "Cửa trời một tấm chắn ngang\nTai nghe mắt thấy rõ ràng ngại chi\nTrông người vượt bến sông đi\nThuyền mình mắc cạn khó khi đi cùng",
+                    "meaning" => "Quẻ này chủ về sự trắc trở. Thời vận chưa thông, mọi việc nên án binh bất động...",
+                    "image" => "que_1.jpg",
+                    "note" => "Dữ liệu dự phòng (Không đọc được file JSON)"
+                ],
+                2 => [
+                     "id" => 2,
+                     "name_han" => "Địa hộ lưỡng trùng khai",
+                     "poem_han" => "Địa hộ lưỡng trùng khai\nĐộc ảnh quải thanh đài...",
+                     "poem_viet" => "Cửa đất hai lần mở\nBóng lẻ treo rêu xanh...",
+                     "meaning" => "Quẻ này tượng trưng cho sự tái sinh sau cơn bế tắc...",
+                     "image" => "que_2.jpg"
+                ]
+            ];
+        }
+
+        // Logic to return data
+        if (isset($data[$id])) {
+            return $data[$id];
+        } else {
+            // Map large ID to available keys (1-5 or fallback keys)
+            // Get available keys
+            $keys = array_keys($data);
+            $count = count($keys);
+            if ($count > 0) {
+                // Map $id to index 0..count-1
+                $index = ($id - 1) % $count;
+                $mappedKey = $keys[$index];
+
+                $result = $data[$mappedKey];
+                // Keep the original ID to show randomization working, but show content of mapped key
+                $result['id'] = $id;
+                $result['note'] = isset($result['note']) ? $result['note'] : "Demo Content (Quẻ mẫu cho ID $id)";
+                return $result;
+            }
+        }
+
+        return null;
     }
 }
