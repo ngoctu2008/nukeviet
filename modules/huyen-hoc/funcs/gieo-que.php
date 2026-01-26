@@ -11,12 +11,24 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
     die('Stop!!!');
 }
 
+use NukeViet\Module\HuyenHoc\Divination;
+
 $page_title = $lang_module['gieo_que'];
+
+$result = array();
+if ($nv_Request->isset_request('submit', 'post')) {
+    $result = Divination::gieoQue();
+}
 
 $xtpl = new XTemplate('gieo-que.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
+
+if (!empty($result)) {
+    $xtpl->assign('RESULT', $result);
+    $xtpl->parse('main.result');
+}
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');

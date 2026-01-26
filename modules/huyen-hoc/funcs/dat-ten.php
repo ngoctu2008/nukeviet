@@ -11,12 +11,30 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
     die('Stop!!!');
 }
 
+use NukeViet\Module\HuyenHoc\NameAnalysis;
+
 $page_title = $lang_module['dat_ten'];
+
+$ho = $nv_Request->get_string('ho', 'post,get', '');
+$ten = $nv_Request->get_string('ten', 'post,get', '');
+$year = $nv_Request->get_int('year', 'post,get', date('Y'));
+
+$result = array();
+if (!empty($ho) && !empty($ten)) {
+    $result = NameAnalysis::analyze($ho, $ten, $year);
+}
 
 $xtpl = new XTemplate('dat-ten.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
+$xtpl->assign('INPUT', array('ho' => $ho, 'ten' => $ten, 'year' => $year));
+
+if (!empty($result)) {
+    $xtpl->assign('RESULT', $result);
+    $xtpl->assign('CACH', $result['ngu_cach']);
+    $xtpl->parse('main.result');
+}
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');

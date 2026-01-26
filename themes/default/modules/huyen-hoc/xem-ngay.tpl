@@ -1,51 +1,28 @@
 <!-- BEGIN: main -->
-<div class="lo-ban-container">
-    <h2 class="text-center">{LANG.lo_ban}</h2>
-
+<div class="xem-ngay-container">
+    <h2 class="text-center">{LANG.xem_ngay}</h2>
     <form action="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}" method="post" class="form-inline text-center">
-        <div class="form-group">
-            <label>Nhập kích thước (cm): </label>
-            <input type="number" step="0.1" name="length" value="{LENGTH}" class="form-control" placeholder="Ví dụ: 250" required>
-        </div>
+        <input type="number" name="d" value="{INPUT.d}" class="form-control" placeholder="Ngày" style="width: 70px" required>
+        <input type="number" name="m" value="{INPUT.m}" class="form-control" placeholder="Tháng" style="width: 70px" required>
+        <input type="number" name="y" value="{INPUT.y}" class="form-control" placeholder="Năm" style="width: 100px" required>
         <button type="submit" class="btn btn-primary">{LANG.submit}</button>
     </form>
 
-    <!-- BEGIN: result -->
     <hr>
-    <h3>Kết quả tra cứu: {LENGTH} cm</h3>
+    <div class="text-center">
+        <h3>Dương lịch: {INPUT.d}/{INPUT.m}/{INPUT.y}</h3>
+        <h4>Âm lịch: {LUNAR.day}/{LUNAR.month}/{LUNAR.year}</h4>
+        <div class="alert alert-info">
+            <strong>{INFO.comment}</strong><br>
+            Trực: {INFO.truc} - Sao: {INFO.sao}
+        </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Loại thước</th>
-                    <th>Phạm vi</th>
-                    <th>Cung</th>
-                    <th>Ý nghĩa</th>
-                    <th>Kết luận</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- BEGIN: ruler -->
-                <tr style="color: {RULER.color}">
-                    <td><strong>{RULER.id}cm</strong></td>
-                    <td>{RULER.scope}</td>
-                    <td><strong>{RULER.name}</strong></td>
-                    <td>{RULER.desc}</td>
-                    <td><strong>{RULER.result_text}</strong></td>
-                </tr>
-                <!-- END: ruler -->
-            </tbody>
-        </table>
-    </div>
-
-    <div class="alert alert-info">
-        <p><strong>Chú thích:</strong></p>
-        <ul>
-            <li><strong style="color:red">Màu đỏ:</strong> Cung tốt.</li>
-            <li><strong style="color:black">Màu đen:</strong> Cung xấu.</li>
+        <h5>Giờ Hoàng Đạo:</h5>
+        <ul class="list-inline">
+            <!-- BEGIN: gio -->
+            <li>{GIO.name}h</li>
+            <!-- END: gio -->
         </ul>
     </div>
-    <!-- END: result -->
 </div>
 <!-- END: main -->

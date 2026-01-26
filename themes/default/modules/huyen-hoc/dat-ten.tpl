@@ -1,50 +1,31 @@
 <!-- BEGIN: main -->
-<div class="lo-ban-container">
-    <h2 class="text-center">{LANG.lo_ban}</h2>
-
-    <form action="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}" method="post" class="form-inline text-center">
-        <div class="form-group">
-            <label>Nhập kích thước (cm): </label>
-            <input type="number" step="0.1" name="length" value="{LENGTH}" class="form-control" placeholder="Ví dụ: 250" required>
+<div class="dat-ten-container">
+    <h2 class="text-center">{LANG.dat_ten}</h2>
+    <form action="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}" method="post" class="form-horizontal">
+        <div class="form-group text-center">
+            <input type="text" name="ho" value="{INPUT.ho}" class="form-control" placeholder="Họ (Ví dụ: Nguyễn)" style="display:inline-block; width: 150px" required>
+            <input type="text" name="ten" value="{INPUT.ten}" class="form-control" placeholder="Tên (Ví dụ: Văn A)" style="display:inline-block; width: 150px" required>
+            <input type="number" name="year" value="{INPUT.year}" class="form-control" placeholder="Năm sinh" style="display:inline-block; width: 100px" required>
+            <button type="submit" class="btn btn-primary">{LANG.submit}</button>
         </div>
-        <button type="submit" class="btn btn-primary">{LANG.submit}</button>
     </form>
 
     <!-- BEGIN: result -->
     <hr>
-    <h3>Kết quả tra cứu: {LENGTH} cm</h3>
-
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Loại thước</th>
-                    <th>Phạm vi</th>
-                    <th>Cung</th>
-                    <th>Ý nghĩa</th>
-                    <th>Kết luận</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- BEGIN: ruler -->
-                <tr style="color: {RULER.color}">
-                    <td><strong>{RULER.id}cm</strong></td>
-                    <td>{RULER.scope}</td>
-                    <td><strong>{RULER.name}</strong></td>
-                    <td>{RULER.desc}</td>
-                    <td><strong>{RULER.result_text}</strong></td>
-                </tr>
-                <!-- END: ruler -->
-            </tbody>
-        </table>
-    </div>
-
-    <div class="alert alert-info">
-        <p><strong>Chú thích:</strong></p>
-        <ul>
-            <li><strong style="color:red">Màu đỏ:</strong> Cung tốt.</li>
-            <li><strong style="color:black">Màu đen:</strong> Cung xấu.</li>
-        </ul>
+    <div class="text-center">
+        <h3>Kết quả phân tích: {RESULT.ho} {RESULT.ten}</h3>
+        <p><strong>{RESULT.comment}</strong></p>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <table class="table table-bordered">
+                    <tr><td>Thiên Cách</td><td>{CACH.thien}</td></tr>
+                    <tr><td>Địa Cách</td><td>{CACH.dia}</td></tr>
+                    <tr><td>Nhân Cách</td><td>{CACH.nhan}</td></tr>
+                    <tr><td>Ngoại Cách</td><td>{CACH.ngoai}</td></tr>
+                    <tr><td><strong>Tổng Cách</strong></td><td><strong>{CACH.tong}</strong></td></tr>
+                </table>
+            </div>
+        </div>
     </div>
     <!-- END: result -->
 </div>
