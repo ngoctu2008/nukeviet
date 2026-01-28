@@ -24,7 +24,12 @@ if ($nv_Request->isset_request('api_get_result', 'post')) {
 
     if (ob_get_length()) ob_end_clean();
     header('Content-Type: application/json');
-    echo json_encode($result);
+
+    if ($result) {
+        echo json_encode($result);
+    } else {
+        echo json_encode(['error' => 'No result found']);
+    }
     die();
 }
 

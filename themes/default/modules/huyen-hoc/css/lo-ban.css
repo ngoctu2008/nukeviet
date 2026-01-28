@@ -1,0 +1,17 @@
+.lo-ban-canvas-container {
+    width: 100%;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: grab;
+    overflow: hidden;
+}
+
+.lo-ban-canvas-container:active {
+    cursor: grabbing;
+}
+
+#lo-ban-canvas {
+    display: block;
+    width: 100%;
+}

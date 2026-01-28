@@ -40,6 +40,9 @@ class Divination {
             $json = file_get_contents($json_path);
             if ($json !== false) {
                 $data = json_decode($json, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $data = []; // Reset if decode fails
+                }
             }
         }
 
