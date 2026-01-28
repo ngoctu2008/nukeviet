@@ -58,8 +58,9 @@ function renderResult(data) {
              $('#res-meaning').append('<br><small class="text-muted">(' + data.note + ')</small>');
         }
     } else {
+        var msg = (data && data.error) ? data.error : 'Tâm chưa tịnh, ý chưa thông. Xin hãy thử lại sau.';
         $('#res-name').text('Vô Vi Chi Quẻ');
-        $('#res-meaning').text('Tâm chưa tịnh, ý chưa thông. Xin hãy thử lại sau.');
+        $('#res-meaning').text(msg);
     }
 }
 
