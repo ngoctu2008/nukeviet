@@ -35,6 +35,8 @@ function nv_theme_huyen_hoc_lo_ban($result, $length)
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('MODULE_NAME', $module_name);
     $xtpl->assign('OP', $op);
+    $xtpl->assign('TEMPLATE', $module_info['template']);
+    $xtpl->assign('MODULE_FILE', $module_file);
     $xtpl->assign('LENGTH', $length > 0 ? $length : '');
 
     if (!empty($result)) {
