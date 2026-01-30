@@ -19,8 +19,12 @@ $page_title = $lang_module['gieo_que'];
 if ($nv_Request->isset_request('api_get_result', 'post')) {
     $duration = $nv_Request->get_int('duration', 'post', 0);
 
-    $divination = new Divination();
-    $result = $divination->getKhongMinhHexagram($duration);
+    try {
+        $divination = new Divination();
+        $result = $divination->getKhongMinhHexagram($duration);
+    } catch (\Throwable $e) {
+        $result = ['error' => 'System error: ' . $e->getMessage()];
+    }
 
     if (ob_get_length()) ob_end_clean();
     header('Content-Type: application/json');

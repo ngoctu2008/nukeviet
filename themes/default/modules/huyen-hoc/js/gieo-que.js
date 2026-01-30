@@ -19,7 +19,7 @@ function performDivination(duration) {
     // API Call
     $.ajax({
         type: 'POST',
-        url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=gieo-que',
+        url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=gieo-que' + '&nv_ajax=1',
         data: {
             api_get_result: 1,
             duration: duration
