@@ -22,6 +22,7 @@ define('NV_IS_MOD_HUYEN_HOC', true);
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/FengShuiUtils.php';
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/LunarCalendar.php';
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViLapSo.php';
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViLuanGiai.php';
 
 // Require other classes
 require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/XemTuoi.php';
