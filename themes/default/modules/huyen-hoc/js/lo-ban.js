@@ -59,9 +59,8 @@ var LoBanRuler = (function() {
     };
 
     var pxPerCm = 40; // 1cm = 40px scale
-    var rulerHeight = 110; // Height of each ruler block
+    var rulerHeight = 140; // Height of each ruler block (Increased from 110)
     var rulerGap = 20;
-    var headerHeight = 30; // Height for the ticks area
 
     function init(canvasId, inputId) {
         canvas = document.getElementById(canvasId);
@@ -163,7 +162,7 @@ var LoBanRuler = (function() {
         ctx.beginPath();
         ctx.moveTo(cx, 0);
         ctx.lineTo(cx, h);
-        ctx.strokeStyle = '#ff9800'; // Orange line like image
+        ctx.strokeStyle = '#e65100'; // Darker Orange/Red
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -175,31 +174,33 @@ var LoBanRuler = (function() {
         var valMM = Math.round(currentCm * 10);
         var text = valMM + " mm";
 
-        ctx.font = 'bold 20px Arial';
+        ctx.font = 'bold 24px Arial';
         var textMetrics = ctx.measureText(text);
-        var boxW = textMetrics.width + 20;
-        var boxH = 34;
+        var boxW = textMetrics.width + 30;
+        var boxH = 40;
         var boxX = cx - boxW/2;
         var boxY = y + 10; // Top padding
 
         // Box Shadow
-        ctx.shadowColor = "rgba(0,0,0,0.2)";
-        ctx.shadowBlur = 5;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
+        ctx.shadowColor = "rgba(0,0,0,0.3)";
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
 
         // Box BG
-        ctx.fillStyle = '#f0f0f0'; // Light gray
+        ctx.fillStyle = '#fff';
         ctx.fillRect(boxX, boxY, boxW, boxH);
-        ctx.strokeStyle = '#ff9800';
-        ctx.lineWidth = 1;
+
+        // Border
+        ctx.strokeStyle = '#d9534f';
+        ctx.lineWidth = 2;
         ctx.strokeRect(boxX, boxY, boxW, boxH);
 
         // Reset Shadow
         ctx.shadowColor = "transparent";
 
         // Text
-        ctx.fillStyle = '#d9534f'; // Red text
+        ctx.fillStyle = '#d9534f';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(text, cx, boxY + boxH/2);
@@ -211,26 +212,21 @@ var LoBanRuler = (function() {
         var cx = w / 2;
 
         // Title
-        ctx.fillStyle = '#000';
-        ctx.font = 'bold 14px Arial';
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
         ctx.textAlign = 'left';
-        ctx.fillText(rulerDef.title, 5, y + 15);
+        ctx.fillText(rulerDef.title, 5, y + 20);
 
-        // Ruler baseline (start of ticks)
-        var topY = y + 25;
-        var bottomY = y + rulerHeight;
+        // Layout Constants
+        var topY = y + 30;
+        var ticksBaseY = topY + 25; // Height of ticks area = 25
+        var subY = ticksBaseY + 45; // Height of Major area = 45
+        var bottomY = y + rulerHeight; // Height of Sub area = rulerHeight - (30+25+45) = 140 - 100 = 40
 
-        // Background for ruler strip
-        // ctx.fillStyle = '#f9f9f9';
-        // ctx.fillRect(0, topY, w, rulerHeight - 25);
-
-        // Border
-        ctx.strokeStyle = '#ccc';
+        // Border for the whole ruler strip
+        ctx.strokeStyle = '#999';
         ctx.lineWidth = 1;
-        ctx.strokeRect(0, topY, w, rulerHeight - 25);
-
-        // Ticks Baseline
-        var ticksBaseY = topY + 25;
+        ctx.strokeRect(0, topY, w, rulerHeight - 30);
 
         var zeroX = cx - (currentCm * pxPerCm);
         var minCm = -zeroX / pxPerCm;
@@ -238,7 +234,7 @@ var LoBanRuler = (function() {
 
         if (minCm < 0) minCm = 0;
 
-        // 1. Draw Segments (Backgrounds & Text)
+        // 1. Draw Segments (Backgrounds first!)
         var segSize = rulerDef.len / rulerDef.segments.length;
         var startCycle = Math.floor(minCm / rulerDef.len);
         var endCycle = Math.ceil(maxCm / rulerDef.len);
@@ -259,9 +255,17 @@ var LoBanRuler = (function() {
                 var wSeg = x2 - x1;
 
                 var seg = rulerDef.segments[i];
-                var color = seg.g ? '#d9534f' : '#000'; // Red / Black
+                var isGood = seg.g;
 
-                // Draw Separator Line
+                // Background Colors
+                // Good: Light Red (#FFF5F5), Bad: Light Gray (#F5F5F5)
+                ctx.fillStyle = isGood ? '#FFF5F5' : '#F2F2F2';
+                ctx.fillRect(x1, ticksBaseY, wSeg, bottomY - ticksBaseY);
+
+                // Text Colors
+                var textColor = isGood ? '#D32F2F' : '#212121';
+
+                // Separator Line
                 ctx.beginPath();
                 ctx.moveTo(x1, ticksBaseY);
                 ctx.lineTo(x1, bottomY);
@@ -269,12 +273,12 @@ var LoBanRuler = (function() {
                 ctx.stroke();
 
                 // Major Name
-                ctx.fillStyle = color;
-                ctx.font = 'bold 16px Arial';
-                // Center of Major Segment (Top half)
+                ctx.fillStyle = textColor;
+                ctx.font = 'bold 20px "Times New Roman", serif';
                 var midX = x1 + wSeg/2;
-                var majorY = ticksBaseY + 25;
-                if (wSeg > 30) {
+                var majorY = ticksBaseY + 28; // Vertically centered in 45px height roughly
+
+                if (wSeg > 40) {
                      ctx.fillText(seg.n, midX, majorY);
                 }
 
@@ -282,18 +286,17 @@ var LoBanRuler = (function() {
                 var subs = seg.subs || [];
                 var numSubs = subs.length;
                 var subW = wSeg / numSubs;
-                var subY = ticksBaseY + 40; // Start of sub row
                 var subH = bottomY - subY;
 
+                // Horizontal line between Major and Sub
                 ctx.beginPath();
                 ctx.moveTo(x1, subY);
                 ctx.lineTo(x2, subY);
-                ctx.strokeStyle = '#ccc';
+                ctx.strokeStyle = '#e0e0e0';
                 ctx.stroke();
 
                 for (var j = 0; j < numSubs; j++) {
                     var subX1 = x1 + (j * subW);
-                    var subX2 = subX1 + subW;
                     var subMidX = subX1 + subW/2;
 
                     // Sub Separator
@@ -301,29 +304,30 @@ var LoBanRuler = (function() {
                         ctx.beginPath();
                         ctx.moveTo(subX1, subY);
                         ctx.lineTo(subX1, bottomY);
+                        ctx.strokeStyle = '#e0e0e0';
                         ctx.stroke();
                     }
 
                     // Sub Text
-                    ctx.font = '11px Arial';
-                    ctx.fillStyle = color; // Inherit color
+                    ctx.font = '12px Arial';
+                    ctx.fillStyle = textColor;
 
-                    if (subW > 15) {
+                    if (subW > 20) {
                         var textWidth = ctx.measureText(subs[j]).width;
                         var words = subs[j].split(' ');
 
-                        // If text is too wide and has spaces, split into 2 lines
-                        if (textWidth > subW - 2 && words.length > 1) {
-                             ctx.font = '10px Arial';
-                             // First word
-                             ctx.fillText(words[0], subMidX, subY + 14);
-                             // Remaining words
-                             ctx.fillText(words.slice(1).join(' '), subMidX, subY + 26);
+                        // Vertical positioning logic
+                        // Center is subY + subH/2 = subY + 20
+
+                        if (textWidth > subW - 4 && words.length > 1) {
+                             ctx.font = '11px Arial';
+                             // 2 lines
+                             ctx.fillText(words[0], subMidX, subY + 16);
+                             ctx.fillText(words.slice(1).join(' '), subMidX, subY + 30);
                         } else {
                              // Single line
-                             // Adjust font if still too wide?
-                             if (textWidth > subW) ctx.font = '10px Arial';
-                             ctx.fillText(subs[j], subMidX, subY + 20);
+                             if (textWidth > subW - 2) ctx.font = '11px Arial';
+                             ctx.fillText(subs[j], subMidX, subY + 24);
                         }
                     }
                 }
@@ -331,22 +335,24 @@ var LoBanRuler = (function() {
         }
 
         // 2. Draw Ticks (Overlays)
+        // Background for ticks area
+        // ctx.fillStyle = '#fff';
+        // ctx.fillRect(0, topY, w, 25);
+
         ctx.beginPath();
         ctx.strokeStyle = '#333';
         ctx.fillStyle = '#000';
         ctx.textAlign = 'center';
 
-        // Optimization: only loop visible range in mm
-        // Visible MM range
         var startMM = Math.floor(minCm * 10);
         var endMM = Math.ceil(maxCm * 10);
 
         for (var mm = startMM; mm <= endMM; mm++) {
             var x = zeroX + (mm / 10 * pxPerCm);
 
-            var tickH = 5; // 1mm
-            if (mm % 10 === 0) tickH = 15; // 1cm
-            else if (mm % 5 === 0) tickH = 10; // 5mm
+            var tickH = 6;
+            if (mm % 10 === 0) tickH = 15;
+            else if (mm % 5 === 0) tickH = 10;
 
             ctx.moveTo(x, ticksBaseY);
             ctx.lineTo(x, ticksBaseY - tickH);
@@ -354,19 +360,15 @@ var LoBanRuler = (function() {
             // Draw Number for CM
             if (mm % 10 === 0) {
                 var cmVal = mm / 10;
-                if (cmVal % 1 === 0) { // integer cm
-                    ctx.font = '10px Arial';
-                    // ctx.fillText(cmVal, x, ticksBaseY - 18); // Optional: Draw all CM? Too crowded.
-                    // Only draw every 5cm?
-                     if (cmVal % 5 === 0) {
-                         ctx.fillText(cmVal + "cm", x, ticksBaseY - 18);
-                     }
+                if (cmVal % 1 === 0 && cmVal % 5 === 0) {
+                     ctx.font = '10px Arial';
+                     ctx.fillText(cmVal, x, ticksBaseY - 18);
                 }
             }
         }
         ctx.stroke();
 
-        // Draw bottom border line for ticks
+        // Bottom border of ticks area
         ctx.beginPath();
         ctx.moveTo(0, ticksBaseY);
         ctx.lineTo(w, ticksBaseY);
