@@ -17,9 +17,12 @@ function performDivination(duration) {
     $('#step-3').fadeIn();
 
     // API Call
+    var currentUrl = window.location.href;
+    var ajaxUrl = currentUrl + (currentUrl.indexOf('?') !== -1 ? '&' : '?') + 'nv_ajax=1';
+
     $.ajax({
         type: 'POST',
-        url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=gieo-que' + '&nv_ajax=1',
+        url: ajaxUrl,
         data: {
             api_get_result: 1,
             duration: duration
