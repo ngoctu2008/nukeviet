@@ -107,17 +107,35 @@ class TuViLuanGiai {
     }
 
     /**
+     * Get Tuan/Triet Meaning
+     */
+    private function getTuanTrietMeaning($hasTuan, $hasTriet) {
+        if ($hasTuan && $hasTriet) {
+            return "Cung này gặp cả Tuần và Triệt án ngữ. Tác động của sao tốt và sao xấu đều bị giảm đi đáng kể. Sự nghiệp và tình cảm dễ gặp trắc trở buổi đầu nhưng về sau ổn định.";
+        } elseif ($hasTuan) {
+            return "Cung này gặp Tuần Không. Sự ảnh hưởng diễn ra từ từ, càng về sau càng rõ rệt. Thường làm chậm lại sự phát triển hoặc giảm bớt tính chất hung hãn của sát tinh.";
+        } elseif ($hasTriet) {
+            return "Cung này gặp Triệt Lộ. Tác động mạnh mẽ ở giai đoạn tiền vận (trước 30 tuổi), gây ngăn trở, gãy đổ, nhưng về sau tác động giảm dần.";
+        }
+        return "";
+    }
+
+    /**
      * Get Reading for a specific Palace
      */
     private function getPalaceReading($palaceData, $palaceKey) {
-        $readings = [];
+        $readings = [
+            'chinh_tinh' => [],
+            'phu_tinh' => [],
+            'general' => []
+        ];
 
         // 1. Chinh Tinh
         if (!empty($palaceData['chinh_tinh'])) {
             foreach ($palaceData['chinh_tinh'] as $star) {
                 $content = $this->fetchContent($star['code'], $palaceKey, 'main');
                 if ($content) {
-                    $readings[] = [
+                    $readings['chinh_tinh'][] = [
                         'star' => $star['name'],
                         'content' => $content
                     ];
@@ -131,7 +149,7 @@ class TuViLuanGiai {
             // Minor stars might not have specific palace readings, but general meanings
             $content = $this->fetchContent($star['code'], 'general', 'meaning');
             if ($content) {
-                 $readings[] = [
+                 $readings['phu_tinh'][] = [
                     'star' => $star['name'],
                     'content' => $content
                 ];
@@ -142,9 +160,18 @@ class TuViLuanGiai {
         // Use 'general' as star_key
         $generalContent = $this->fetchContent('general', $palaceKey, 'main');
         if ($generalContent) {
-             $readings[] = [
-                'star' => 'Tổng Quát',
+             $readings['general'][] = [
+                'star' => 'Lời bàn chung',
                 'content' => $generalContent
+            ];
+        }
+
+        // 4. Tuan / Triet
+        $ttMeaning = $this->getTuanTrietMeaning($palaceData['tuan'], $palaceData['triet']);
+        if ($ttMeaning) {
+            $readings['general'][] = [
+                'star' => 'Tuần / Triệt',
+                'content' => $ttMeaning
             ];
         }
 

@@ -73,6 +73,9 @@
                 <p>Mệnh: <span class="text-{THIEN_BAN.menh_color} font-weight-bold">{THIEN_BAN.menh_ngu_hanh}</span></p>
                 <p>Cục: <b>{THIEN_BAN.cuc}</b></p>
                 <p>{THIEN_BAN.am_duong}</p>
+                <!-- Hidden inputs for AJAX -->
+                <input type="hidden" id="meta_chiYear" value="{META.chiYear}">
+                <input type="hidden" id="meta_gender" value="{META.gender}">
             </div>
         </div>
 
@@ -138,8 +141,8 @@
                 <div class="tab-pane fade show active" id="tongquan" role="tabpanel">
                     <h4>Cân xương tính số</h4>
                     <p>Mệnh: <b class="text-{THIEN_BAN.menh_color}">{THIEN_BAN.menh_ngu_hanh}</b> - Cục: <b>{THIEN_BAN.cuc}</b></p>
-                    <p>Đánh giá: Âm Dương Thuận Lý (Giúp cuộc đời hanh thông, gặp hung hóa cát).</p>
-                    <p>Đánh giá: Cục Sinh Mệnh (Đắc thiên thời, dễ thành công).</p>
+                    <p>Đánh giá: <b>{THIEN_BAN.am_duong_ly}</b>.</p>
+                    <p>Đánh giá: <b>{THIEN_BAN.cuc_menh_ly}</b>.</p>
                     <hr>
                     <!-- BEGIN: overview -->
                     <div class="mt-3">
@@ -157,30 +160,41 @@
                             Luận Cung {PALACE.palace_name}
                         </div>
                         <div class="card-body">
-                            <!-- BEGIN: content -->
-                            <p class="card-text">
-                                <strong>{CONTENT.star}:</strong> {CONTENT.content}
-                            </p>
-                            <!-- END: content -->
+                            <!-- BEGIN: chinh_tinh -->
+                            <h6 class="text-danger font-weight-bold">--- {CONTENT.star} ---</h6>
+                            <p class="card-text text-justify mb-3">{CONTENT.content}</p>
+                            <!-- END: chinh_tinh -->
+
+                            <!-- BEGIN: phu_tinh -->
+                            <h6 class="text-dark font-weight-bold">--- {CONTENT.star} ---</h6>
+                            <p class="card-text text-justify mb-3">{CONTENT.content}</p>
+                            <!-- END: phu_tinh -->
+
+                            <!-- BEGIN: general -->
+                            <h6 class="text-info font-weight-bold">--- {CONTENT.star} ---</h6>
+                            <p class="card-text text-justify mb-3">{CONTENT.content}</p>
+                            <!-- END: general -->
+
                             <!-- BEGIN: empty -->
-                            <p class="card-text text-muted">Đang cập nhật lời giải chi tiết...</p>
+                            <p class="card-text text-muted">Chưa có dữ liệu luận giải chi tiết.</p>
                             <!-- END: empty -->
                         </div>
                     </div>
                     <!-- END: palace_luan -->
-                    <div class="alert alert-info">Chức năng luận giải chi tiết đang được xây dựng.</div>
                 </div>
 
                 <!-- Tab Van Han -->
                 <div class="tab-pane fade" id="vanhan" role="tabpanel">
                      <form id="form-xem-han" class="form-inline mb-3">
                         <label>Chọn năm xem hạn:</label>
-                        <select class="form-control mx-2">
-                            <option>2024</option>
-                            <option>2025</option>
-                            <option>2026</option>
+                        <select class="form-control mx-2" id="select-year-han">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
                         </select>
-                        <button type="button" class="btn btn-sm btn-success">Xem ngay</button>
+                        <button type="button" class="btn btn-sm btn-success" id="btn-view-han">Xem ngay</button>
                      </form>
                      <div id="ket-qua-han">
                          <!-- BEGIN: limit -->
@@ -200,6 +214,28 @@
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
+
+        // Handle Xem Han AJAX
+        $('#btn-view-han').on('click', function() {
+            var targetYear = $('#select-year-han').val();
+            var chiYear = $('#meta_chiYear').val();
+            var gender = $('#meta_gender').val();
+
+            $('#ket-qua-han').html('<p><i class="fa fa-spinner fa-spin"></i> Đang tính toán...</p>');
+
+            $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=ajax&action=xem_han&nv_ajax=1',
+            {
+                targetYear: targetYear,
+                chiYear: chiYear,
+                gender: gender
+            }, function(res) {
+                if(res.status == 'success') {
+                    $('#ket-qua-han').html(res.html);
+                } else {
+                    $('#ket-qua-han').html('<p class="text-danger">Có lỗi xảy ra.</p>');
+                }
+            }, 'json');
+        });
     });
 </script>
 <!-- END: main -->

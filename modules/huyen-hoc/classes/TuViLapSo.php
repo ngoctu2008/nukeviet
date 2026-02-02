@@ -123,6 +123,96 @@ class TuViLapSo {
         return '';
     }
 
+    // --- Helper Logic Calculations ---
+
+    public static function calculateYinYangBalance($canYear, $chiYear, $menhPalaceBranch, $gender) {
+        // canYear: 0=Giap (Yang), 1=At (Yin)...
+        $isYearYang = ($canYear % 2 == 0);
+
+        // menhPalaceBranch: 0=Ty (Yang), 1=Suu (Yin)...
+        // Tý (Yang), Sửu (Yin), Dần (Yang), Mão (Yin)...
+        // Logic: 0,2,4,6,8,10 are Yang. 1,3,5,7,9,11 are Yin.
+        $isPalaceYang = ($menhPalaceBranch % 2 == 0);
+
+        // Âm Dương Thuận Lý:
+        // Nam (Yang) sinh năm Dương (Yang Year) => Thuận.
+        // Nữ (Yin) sinh năm Âm (Yin Year) => Thuận.
+        // Or: Tuổi Dương cư cung Dương, Tuổi Âm cư cung Âm => Đắc địa?
+
+        // Standard Tu Vi text usually refers to:
+        // "Âm Dương Thuận Lý": Người Dương (Nam/Nữ) sinh năm Dương, hoặc Người Âm sinh năm Âm.
+        // Wait, "Dương Nam" means Male born in Yang Year. "Âm Nữ" means Female born in Yin Year.
+        // If Dương Nam or Âm Nữ => Thuận Lý?
+        // Let's implement the standard check:
+        // Year Yang/Yin matches Palace Yang/Yin? Or Person Gender matches Year?
+
+        // Interpretation 1: "Âm Dương Thuận Lý" = Year Yin/Yang matches Palace Yin/Yang?
+        // Interpretation 2: "Âm Dương Thuận Lý" = Gender matches Year Yin/Yang (Duong Nam / Am Nu).
+        // Most software uses Interpretation 2 for the "Am Duong" line, but compares Year vs Palace for "De Vuong/Suy" etc.
+        // BUT, the request asked for: "so sánh Can Chi năm sinh với Cung Mệnh (Âm Dương)".
+        // So: Compare Year (Can/Chi) vs Palace Branch.
+        // If Year is Yang and Palace is Yang => Thuận Lý.
+        // If Year is Yin and Palace is Yin => Thuận Lý.
+        // Else => Nghịch Lý.
+
+        if ($isYearYang == $isPalaceYang) {
+            return "Âm Dương Thuận Lý";
+        } else {
+            return "Âm Dương Nghịch Lý";
+        }
+    }
+
+    public static function calculateElementRelation($menhElement, $cucElement) {
+        // Elements: 1=Thuy, 2=Hoa, 3=Tho, 4=Kim, 5=Moc
+        // Cycles:
+        // Sinh: Kim(4)->Thuy(1)->Moc(5)->Hoa(2)->Tho(3)->Kim(4)
+        // Khac: Kim(4)->Moc(5)->Tho(3)->Thuy(1)->Hoa(2)->Kim(4)
+
+        if ($menhElement == $cucElement) return "Cục Mệnh Bình Hòa"; // Or Tương Hòa
+
+        $sinh = [4=>1, 1=>5, 5=>2, 2=>3, 3=>4];
+        $khac = [4=>5, 5=>3, 3=>1, 1=>2, 2=>4];
+
+        if (isset($sinh[$cucElement]) && $sinh[$cucElement] == $menhElement) return "Cục Sinh Mệnh (Tốt)";
+        if (isset($sinh[$menhElement]) && $sinh[$menhElement] == $cucElement) return "Mệnh Sinh Cục (Hao)"; // Sinh xuat
+
+        if (isset($khac[$cucElement]) && $khac[$cucElement] == $menhElement) return "Cục Khắc Mệnh (Xấu)";
+        if (isset($khac[$menhElement]) && $khac[$menhElement] == $cucElement) return "Mệnh Khắc Cục (Khắc chế được hoàn cảnh)";
+
+        return "Không xác định";
+    }
+
+    public static function calcTieuVan($chiYear, $targetYear) {
+        // Tieu Van calculation for a specific year
+        // Use the same logic as in lapLaSo but with $targetYear's Chi
+        // 1. Get Chi of Target Year
+        // Can/Chi calculation is complex without Solar->Lunar.
+        // Assuming user passes just the Year Number (e.g., 2025). We need to know its Chi.
+        // Simple formula for Chi: (Year - 4) % 12.
+        // 2024 (Giap Thin) -> (2024-4)%12 = 2020%12 = 4 (Thin). Correct.
+        $targetChi = ($targetYear - 4) % 12;
+
+        // 2. Logic khoi Tieu Van (based on Birth Chi - $chiYear)
+        // Dan Ngo Tuat (2, 6, 10) -> Khoi tai Thin (4)
+        // Than Ty Thin (8, 0, 4) -> Khoi tai Tuat (10)
+        // Hoi Mao Mui (11, 3, 7) -> Khoi tai Suu (1)
+        // Ty Dau Suu (5, 9, 1) -> Khoi tai Mui (7)
+
+        $startPalace = 0;
+        if (in_array($chiYear, [2, 6, 10])) $startPalace = 4;
+        elseif (in_array($chiYear, [8, 0, 4])) $startPalace = 10;
+        elseif (in_array($chiYear, [11, 3, 7])) $startPalace = 1;
+        elseif (in_array($chiYear, [5, 9, 1])) $startPalace = 7;
+
+        // Tieu Van moves depending on Gender?
+        // Standard: Nam Thuan, Nu Nghich. (Wait, standard Tieu Van is: "Trai thuan gai nghich"? Yes)
+        // But we need the gender here!
+        // Wait, calcTieuVan signature needs gender.
+        // Let's rely on lapLaSo logic which already did this for current year.
+        // But here we need generic method.
+        return [$startPalace, $targetChi]; // Incomplete without gender
+    }
+
     /**
      * Lap La So Tu Vi Full
      */
@@ -564,25 +654,65 @@ class TuViLapSo {
         }
 
         // --- STEP 6: Thien Ban Info ---
+        $banMenhEl = FengShuiUtils::getNguHanhNapAm($canYear, $chiYear);
+        $nhNames = [1=>'Thủy', 2=>'Hỏa', 3=>'Thổ', 4=>'Kim', 5=>'Mộc'];
+
         $thienBan = array(
             'ho_ten' => $name,
             'nam_sinh' => FengShuiUtils::$CAN[$canYear] . ' ' . FengShuiUtils::$CHI[$chiYear],
-            'menh_ngu_hanh' => '',
+            'menh_ngu_hanh' => isset($nhNames[$banMenhEl]) ? $nhNames[$banMenhEl] : 'Unknown',
             'cuc' => $cucNameMap[$cuc],
             'chu_menh' => 'Tham Lang', // Placeholder
             'chu_than' => 'Hỏa Tinh', // Placeholder
             'am_duong' => ($isDuong ? 'Dương' : 'Âm') . ' ' . ($gender==1 ? 'Nam' : 'Nữ'),
-            'menh_color' => 'hoa'
+            'menh_color' => isset([1=>'thuy', 2=>'hoa', 3=>'tho', 4=>'kim', 5=>'moc'][$banMenhEl]) ? [1=>'thuy', 2=>'hoa', 3=>'tho', 4=>'kim', 5=>'moc'][$banMenhEl] : 'default',
+            'am_duong_ly' => self::calculateYinYangBalance($canYear, $chiYear, $posMenh, $gender),
+            'cuc_menh_ly' => self::calculateElementRelation($banMenhEl, $cucMap[$cucElement])
         );
-
-        $banMenhEl = FengShuiUtils::getNguHanhNapAm($canYear, $chiYear);
-        $nhNames = [1=>'Thủy', 2=>'Hỏa', 3=>'Thổ', 4=>'Kim', 5=>'Mộc'];
-        $thienBan['menh_ngu_hanh'] = isset($nhNames[$banMenhEl]) ? $nhNames[$banMenhEl] : 'Unknown';
-        $thienBan['menh_color'] = isset([1=>'thuy', 2=>'hoa', 3=>'tho', 4=>'kim', 5=>'moc'][$banMenhEl]) ? [1=>'thuy', 2=>'hoa', 3=>'tho', 4=>'kim', 5=>'moc'][$banMenhEl] : 'default';
 
         return [
             'thien_ban' => $thienBan,
-            'dia_ban' => $chart
+            'dia_ban' => $chart,
+            'meta' => [
+                'chiYear' => $chiYear,
+                'gender' => $gender
+            ]
+        ];
+    }
+
+    public static function getLimitInfoForYear($chiYear, $gender, $targetYear) {
+        // 1. Tieu Van Position
+        // Logic copy from lapLaSo but for target year
+        $startTVPalace = 0; $startTVYear = 0;
+        if (in_array($chiYear, [2, 6, 10])) { $startTVPalace = 4; $startTVYear = 10; } // Dan Ngo Tuat -> Thin (start Tuat)
+        elseif (in_array($chiYear, [8, 0, 4])) { $startTVPalace = 10; $startTVYear = 4; } // Than Ty Thin -> Tuat (start Thin)
+        elseif (in_array($chiYear, [11, 3, 7])) { $startTVPalace = 1; $startTVYear = 7; } // Hoi Mao Mui -> Suu (start Mui)
+        elseif (in_array($chiYear, [5, 9, 1])) { $startTVPalace = 7; $startTVYear = 1; } // Ty Dau Suu -> Mui (start Suu)
+
+        $tvDirection = ($gender == 1) ? 1 : -1;
+
+        // Find which Palace corresponds to the Target Year's Chi
+        // Target Chi
+        $targetChi = ($targetYear - 4) % 12;
+        if ($targetChi < 0) $targetChi += 12; // PHP modulo fix
+
+        // We need to find k such that ($startTVYear + k) % 12 == $targetChi
+        $diff = $targetChi - $startTVYear;
+        if ($diff < 0) $diff += 12;
+        $k = $diff;
+
+        $tieuVanIdx = ($startTVPalace + ($k * $tvDirection)) % 12;
+        if ($tieuVanIdx < 0) $tieuVanIdx += 12;
+
+        // 2. Luu Thai Tue Position
+        // Luu Thai Tue is simply at the Palace corresponding to the Year's Chi
+        // e.g. Year Thin -> Palace Thin (4)
+        $luuThaiTueIdx = $targetChi; // Assuming Palace 0=Ty, 1=Suu...
+
+        return [
+            'tieu_van_idx' => $tieuVanIdx,
+            'luu_thai_tue_idx' => $luuThaiTueIdx,
+            'target_chi' => self::$DIA_CHI[$targetChi]
         ];
     }
 }
