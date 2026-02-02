@@ -115,6 +115,22 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     }
                 }
 
+                // Phu Tinh Tot
+                if (!empty($palace['phu_tinh_tot'])) {
+                    foreach ($palace['phu_tinh_tot'] as $star) {
+                        $xtpl->assign('STAR', $star);
+                        $xtpl->parse('main.result.palace.phu_tinh_tot');
+                    }
+                }
+
+                // Phu Tinh Xau
+                if (!empty($palace['phu_tinh_xau'])) {
+                    foreach ($palace['phu_tinh_xau'] as $star) {
+                        $xtpl->assign('STAR', $star);
+                        $xtpl->parse('main.result.palace.phu_tinh_xau');
+                    }
+                }
+
                 $xtpl->parse('main.result.palace');
             }
 
