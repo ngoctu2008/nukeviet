@@ -136,6 +136,7 @@ class TuViLuanGiai {
                 $content = $this->fetchContent($star['code'], $palaceKey, 'main');
                 if ($content) {
                     $readings['chinh_tinh'][] = [
+                        'star_code' => $star['code'],
                         'star' => $star['name'],
                         'content' => $content
                     ];
@@ -150,6 +151,7 @@ class TuViLuanGiai {
             $content = $this->fetchContent($star['code'], 'general', 'meaning');
             if ($content) {
                  $readings['phu_tinh'][] = [
+                    'star_code' => $star['code'],
                     'star' => $star['name'],
                     'content' => $content
                 ];

@@ -94,15 +94,15 @@
 
             <div class="stars-list pt-2">
                 <!-- BEGIN: chinh_tinh -->
-                <span class="sao-chinh color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b><br>Hành: {STAR.element}<br>Đắc địa: {STAR.dacs}">{STAR.name} <sup class="star-dacs">{STAR.dacs}</sup></span>
+                <span class="sao-chinh color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b> ({STAR.element})<br>{STAR.content}">{STAR.name} <sup class="star-dacs">{STAR.dacs}</sup></span>
                 <!-- END: chinh_tinh -->
 
                 <!-- BEGIN: phu_tinh_tot -->
-                <span class="sao-tot color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b><br>Hành: {STAR.element}">{STAR.name}</span>
+                <span class="sao-tot color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b> ({STAR.element})<br>{STAR.content}">{STAR.name}</span>
                 <!-- END: phu_tinh_tot -->
 
                 <!-- BEGIN: phu_tinh_xau -->
-                <span class="sao-xau color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b><br>Hành: {STAR.element}">{STAR.name}</span>
+                <span class="sao-xau color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b> ({STAR.element})<br>{STAR.content}">{STAR.name}</span>
                 <!-- END: phu_tinh_xau -->
             </div>
 

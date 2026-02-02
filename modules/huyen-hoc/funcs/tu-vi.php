@@ -63,6 +63,39 @@ if ($nv_Request->isset_request('submit', 'post')) {
         foreach ($laSoData['dia_ban'] as $i => &$palace) {
              if (isset($interpretation[$i])) {
                  $palace['luan_giai'] = $interpretation[$i];
+
+                 // Map readings to Chinh Tinh
+                 if (!empty($palace['chinh_tinh']) && !empty($interpretation[$i]['chinh_tinh'])) {
+                     foreach ($palace['chinh_tinh'] as &$star) {
+                         foreach ($interpretation[$i]['chinh_tinh'] as $reading) {
+                             if (isset($reading['star_code']) && $reading['star_code'] == $star['code']) {
+                                 $star['content'] = $reading['content'];
+                             }
+                         }
+                     }
+                 }
+
+                 // Map readings to Phu Tinh Tot
+                 if (!empty($palace['phu_tinh_tot']) && !empty($interpretation[$i]['phu_tinh'])) {
+                     foreach ($palace['phu_tinh_tot'] as &$star) {
+                         foreach ($interpretation[$i]['phu_tinh'] as $reading) {
+                             if (isset($reading['star_code']) && $reading['star_code'] == $star['code']) {
+                                 $star['content'] = $reading['content'];
+                             }
+                         }
+                     }
+                 }
+
+                 // Map readings to Phu Tinh Xau
+                 if (!empty($palace['phu_tinh_xau']) && !empty($interpretation[$i]['phu_tinh'])) {
+                     foreach ($palace['phu_tinh_xau'] as &$star) {
+                         foreach ($interpretation[$i]['phu_tinh'] as $reading) {
+                             if (isset($reading['star_code']) && $reading['star_code'] == $star['code']) {
+                                 $star['content'] = $reading['content'];
+                             }
+                         }
+                     }
+                 }
              }
         }
 

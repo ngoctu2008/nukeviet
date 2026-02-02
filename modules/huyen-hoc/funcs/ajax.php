@@ -11,6 +11,15 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
     die('Stop!!!');
 }
 
+// Include classes manually if autoload fails
+$classes = ['TuViLapSo', 'TuViLuanGiai', 'FengShuiUtils', 'LunarCalendar'];
+foreach ($classes as $cls) {
+    $file = NV_ROOTDIR . '/modules/' . $module_file . '/classes/' . $cls . '.php';
+    if (file_exists($file)) {
+        require_once $file;
+    }
+}
+
 use NukeViet\Module\HuyenHoc\TuViLapSo;
 use NukeViet\Module\HuyenHoc\TuViLuanGiai;
 
@@ -22,43 +31,37 @@ if ($nv_Request->isset_request('nv_ajax', 'get,post')) {
 $action = $nv_Request->get_string('action', 'get,post', '');
 
 if ($action == 'xem_han') {
-    // Inputs: chiYear (of Birth), gender, targetYear
-    $chiYear = $nv_Request->get_int('chiYear', 'post', 0);
-    $gender = $nv_Request->get_int('gender', 'post', 1);
-    $targetYear = $nv_Request->get_int('targetYear', 'post', date('Y'));
+    try {
+        // Inputs: chiYear (of Birth), gender, targetYear
+        $chiYear = $nv_Request->get_int('chiYear', 'post', 0);
+        $gender = $nv_Request->get_int('gender', 'post', 1);
+        $targetYear = $nv_Request->get_int('targetYear', 'post', date('Y'));
 
-    // 1. Calculate Limits
-    $limitInfo = TuViLapSo::getLimitInfoForYear($chiYear, $gender, $targetYear);
+        // 1. Calculate Limits
+        $limitInfo = TuViLapSo::getLimitInfoForYear($chiYear, $gender, $targetYear);
 
-    // 2. Interpretations
-    $readings = [];
-    $interpreter = new TuViLuanGiai();
+        $html = '<div class="alert alert-info">';
+        $html .= '<h4>Kết quả năm ' . $targetYear . ' (' . $limitInfo['target_chi'] . ')</h4>';
+        $html .= '<p><strong>Tiểu vận tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['tieu_van_idx']] . '</p>';
+        $html .= '<p><strong>Lưu Thái Tuế tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['luu_thai_tue_idx']] . '</p>';
+        $html .= '<hr>';
+        $html .= '<p><em>(Lời giải chi tiết đang được cập nhật từ dữ liệu mẫu...)</em></p>';
+        $html .= '<p>Năm nay hành hạn đi vào cung ' . TuViLapSo::$DIA_CHI[$limitInfo['tieu_van_idx']] . ', cần chú ý các sao tọa thủ tại đây.</p>';
+        $html .= '</div>';
 
-    // Tieu Van Reading (just star readings from that palace? Or special limit text?)
-    // Request asks for: "hiển thị lời luận giải (dựa trên dữ liệu mẫu)"
-    // We can try fetching 'limit' topic for stars in the Tieu Van palace?
-    // Or simpler: Fetch general limit advice based on the Target Chi.
-
-    // For now, let's return the locations and a sample text.
-    // In a full system, we would fetch readings for the stars at $limitInfo['tieu_van_idx'].
-    // But since we don't have the full chart in session here, we can't easily know which stars are there without re-casting the whole chart.
-    // OPTION: Re-cast chart? Heavy.
-    // OPTION: Pass specific star codes if frontend knows them? No security.
-    // OPTION: Just return generic text based on the Branch (Chi) of the limit.
-
-    $html = '<div class="alert alert-info">';
-    $html .= '<h4>Kết quả năm ' . $targetYear . ' (' . $limitInfo['target_chi'] . ')</h4>';
-    $html .= '<p><strong>Tiểu vận tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['tieu_van_idx']] . '</p>';
-    $html .= '<p><strong>Lưu Thái Tuế tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['luu_thai_tue_idx']] . '</p>';
-    $html .= '<hr>';
-    $html .= '<p><em>(Lời giải chi tiết đang được cập nhật từ dữ liệu mẫu...)</em></p>';
-    $html .= '<p>Năm nay hành hạn đi vào cung ' . TuViLapSo::$DIA_CHI[$limitInfo['tieu_van_idx']] . ', cần chú ý các sao tọa thủ tại đây.</p>';
-    $html .= '</div>';
-
-    // Clean buffer
-    if (ob_get_length()) ob_end_clean();
-    echo json_encode(['status' => 'success', 'html' => $html]);
-    die();
+        // Clean buffer
+        if (ob_get_length()) ob_end_clean();
+        echo json_encode(['status' => 'success', 'html' => $html]);
+        die();
+    } catch (\Exception $e) {
+        if (ob_get_length()) ob_end_clean();
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        die();
+    } catch (\Throwable $e) {
+        if (ob_get_length()) ob_end_clean();
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        die();
+    }
 }
 
 die('Unknown Action');
