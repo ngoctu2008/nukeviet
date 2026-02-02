@@ -40,7 +40,35 @@ class TuViLuanGiai {
             $result['tong_quan_than'] = $this->getPalaceReading($chart['dia_ban'][$thanIdx], 'than');
         }
 
-        // 2. Luan Giai 12 Cung
+        // 2. Luan Giai Tong Quan & Van Han (Based on Menh Stars)
+        $result['overview'] = [];
+        $result['limit'] = [];
+
+        if ($menhIdx !== false) {
+            $menhPalace = $chart['dia_ban'][$menhIdx];
+            if (!empty($menhPalace['chinh_tinh'])) {
+                foreach ($menhPalace['chinh_tinh'] as $star) {
+                    // Overview
+                    $ovContent = $this->fetchContent($star['code'], 'all', 'overview');
+                    if ($ovContent) {
+                        $result['overview'][] = [
+                            'star' => $star['name'],
+                            'content' => $ovContent
+                        ];
+                    }
+                    // Limit
+                    $limContent = $this->fetchContent($star['code'], 'all', 'limit');
+                    if ($limContent) {
+                        $result['limit'][] = [
+                            'star' => $star['name'],
+                            'content' => $limContent
+                        ];
+                    }
+                }
+            }
+        }
+
+        // 3. Luan Giai 12 Cung
         foreach ($chart['dia_ban'] as $i => $palace) {
             // Determine palace key (e.g., 'phu_mau', 'quan_loc'...) based on name
             $key = $this->normalizePalaceName($palace['palace_name']);
@@ -108,6 +136,16 @@ class TuViLuanGiai {
                     'content' => $content
                 ];
             }
+        }
+
+        // 3. General Palace Reading (e.g. for Empty Palace or specific configuration)
+        // Use 'general' as star_key
+        $generalContent = $this->fetchContent('general', $palaceKey, 'main');
+        if ($generalContent) {
+             $readings[] = [
+                'star' => 'Tổng Quát',
+                'content' => $generalContent
+            ];
         }
 
         return $readings;

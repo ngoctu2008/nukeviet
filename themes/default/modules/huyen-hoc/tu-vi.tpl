@@ -91,7 +91,7 @@
 
             <div class="stars-list pt-2">
                 <!-- BEGIN: chinh_tinh -->
-                <span class="sao-chinh color-{STAR.color}">{STAR.name} <sup class="star-dacs">{STAR.dacs}</sup></span>
+                <span class="sao-chinh color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b><br>Hành: {STAR.element}<br>Đắc địa: {STAR.dacs}">{STAR.name} <sup class="star-dacs">{STAR.dacs}</sup></span>
                 <!-- END: chinh_tinh -->
             </div>
 
@@ -132,6 +132,13 @@
                     <p>Mệnh: <b class="text-{THIEN_BAN.menh_color}">{THIEN_BAN.menh_ngu_hanh}</b> - Cục: <b>{THIEN_BAN.cuc}</b></p>
                     <p>Đánh giá: Âm Dương Thuận Lý (Giúp cuộc đời hanh thông, gặp hung hóa cát).</p>
                     <p>Đánh giá: Cục Sinh Mệnh (Đắc thiên thời, dễ thành công).</p>
+                    <hr>
+                    <!-- BEGIN: overview -->
+                    <div class="mt-3">
+                        <h5 class="text-primary"><i class="fa fa-star"></i> {OVERVIEW.star} - Tổng Quan</h5>
+                        <p class="text-justify">{OVERVIEW.content}</p>
+                    </div>
+                    <!-- END: overview -->
                 </div>
 
                 <!-- Tab Luan Giai -->
@@ -168,7 +175,12 @@
                         <button type="button" class="btn btn-sm btn-success">Xem ngay</button>
                      </form>
                      <div id="ket-qua-han">
-                         <p><b>Tiểu vận năm hiện tại:</b> Đang tính toán...</p>
+                         <!-- BEGIN: limit -->
+                         <div class="alert alert-warning mt-3">
+                             <h5><i class="fa fa-exclamation-triangle"></i> Hành Hạn ({LIMIT.star})</h5>
+                             <p class="text-justify">{LIMIT.content}</p>
+                         </div>
+                         <!-- END: limit -->
                      </div>
                 </div>
             </div>

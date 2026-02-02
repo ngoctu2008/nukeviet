@@ -247,3 +247,93 @@ $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_"
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_customers";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_logs";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations";
+
+// User provided content seeding
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'menh', 'main', 'Còn dài khuôn mặt đầy đặn thân, khí vũ hiên ngang, môi hồng răng trắng. Áo cơm không thiếu sót lộc khố ở. Thông minh cao ngạo, cá tính đơn thuần, làm người bảo thủ cẩn thận, thuở nhỏ sống an nhàn sung sướng. Tính cách gió chiều nào theo chiều nấy, đứng núi này trông núi nọ, không thể kiên định từ đầu đến cuối.
+Có cát trợ giúp một bước lên mây phú quý lâm, bảo thủ phát triển, đa năng có không tệ của biểu hiện. Sát tụ cô lập gian trá tính khó hiểu.
+Biệt tài vật tới truy đuổi muốn mạnh, giỏi giao thiệp. Nên xảo nghệ an thân.
+Thiên phủ là nam đẩu lệnh chủ, nắm lộc khố, tính ôn hòa, học nhiều đa năng, thích quyền hành, hòa hợp thấy người sang bắt quàng làm họ.
+Nhật nguyệt giáp mệnh là đắt cách, thích chỉ huy người khác, nhưng lại không động thủ.
+Thiên phủ độc tọa ở thế miếu, phú quý song toàn. Nhưng thiên tướng ở bằng cung, lực lượng không đủ, vô cát tinh đến giúp, ngoại trừ cô lập bên ngoài, cũng ngại bảo thủ. Tử tham ở phúc đức, hai hạn đi tới, cũng có đứng núi này trông núi nọ, không thể chung thủy.
+( sửu ) nhật nguyệt phản bối, học nhiều đa năng, hư danh nhẹ lợi nhuận. Dù có cát tinh tương trợ, vẫn bằng thêm phiền não.
+( vị ) nhật nguyệt tịnh minh, gặp gỡ tốt hơn, thành tựu khá lớn.
+Nữ mệnh giỏi giao thiệp, ứng đối tốt, thông minh tú lệ, có tử vi tam hợp chiếu, kim quan hà phối người quý phụ.
+Nữ mệnh lục sát uy hiếp, tính cách dung thường nhiều hối trệ, cả đời khó có thể bình an hưởng thụ.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'huynh_de', 'main', '( Tý ) tình cảm không được tốt, gặp kị sát tinh, nên sớm độc lập là tốt. Hình khắc thiếu nợ hòa. Gặp cát tỉnh hoà bình.
+( ngọ ) gặp cát tinh, huynh đệ đắc lực. Gặp sát, ý kiến không hợp.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'phu_the', 'main', 'Dễ hôn nhân không nghi thức. Tuổi tác nên tương đương.
+Phi lễ thành hôn.
+Vợ chồng bất hòa, sinh ly tử biệt, tái hôn.
+Gặp xương khúc, lộc tồn, Khôi Việt, hình khắc hơi trễ.
+Gặp Tả hữu, hỏa linh, đà la, không kiếp, khắc hai ba thê.
+Nữ mệnh vô kỵ sát, cả đời suôn sẻ. Tài gặp hao tổn tinh, phải càng gả càng tốt.
+Gặp kị sát tinh, nam nữ đều chủ 2 lần kết hôn. Tả hữu thêm cát, tái hôn tốt hơn.
+Hôn phối mệnh nên là nhật nguyệt, thiên đồng, thiên tướng, liêm trinh.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'phu_the', 'main', 'Dễ hôn nhân không nghi thức. Tuổi tác nên tương đương.
+Phi lễ thành hôn.
+Vợ chồng bất hòa, sinh ly tử biệt, tái hôn.
+Gặp xương khúc, lộc tồn, Khôi Việt, hình khắc hơi trễ.
+Gặp Tả hữu, hỏa linh, đà la, không kiếp, khắc hai ba thê.
+Nữ mệnh vô kỵ sát, cả đời suôn sẻ. Tài gặp hao tổn tinh, phải càng gả càng tốt.
+Gặp kị sát tinh, nam nữ đều chủ 2 lần kết hôn. Tả hữu thêm cát, tái hôn tốt hơn.
+Hôn phối mệnh nên là nhật nguyệt, thiên đồng, thiên tướng, liêm trinh.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'tu_tuc', 'main', 'Cá tính Hướng nội tốt hưởng thụ được.
+Gặp cát tinh, có quý, hiếu thuận.
+Sát tụ phòng tổn thương chiết.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'tai_bach', 'main', 'Trước kia tài không được tụ thủ, dễ bởi vì đào hoa tranh chấp rủi ro. Trung cuối đời tài vận tốt.
+Có cát tinh, tích tài làm giàu, cũng góc có thiên tài vận.
+Cung tài bạch vô chính diệu, gặp không kiếp: tiền đến tiền đi.
+Gặp hỏa linh, cũng chủ hoành phát hậu rách nát cơ hội.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'tat_ach', 'main', 'Thái âm sống dưới nước thiên cơ mộc, qua chín là mối họa.
+Hệ thần kinh nhanh, bệnh trĩ, bệnh bao tử, can đảm chứng bệnh.
+Phụ nữ ( quyền lộc ) tử cung ám tật, nội tiết.
+Nữ mệnh Cơ Âm + thiên diêu, hàm trì, loan thích, tử cung ám tật, trong tử cung màng dị vị trí.
+Gặp hỏa linh bệnh ngoài da.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'tat_ach', 'main', 'Thái âm sống dưới nước thiên cơ mộc, qua chín là mối họa.
+Hệ thần kinh nhanh, bệnh trĩ, bệnh bao tử, can đảm chứng bệnh.
+Phụ nữ ( quyền lộc ) tử cung ám tật, nội tiết.
+Nữ mệnh Cơ Âm + thiên diêu, hàm trì, loan thích, tử cung ám tật, trong tử cung màng dị vị trí.
+Gặp hỏa linh bệnh ngoài da.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'thien_di', 'main', 'Gặp cát nên sớm ly hương phát triển, có thể áo gấm vinh quy.
+Liêm Sát gặp kị sát tinh, không nên ly hương phát triển.
+Gặp dương, hóa kị, cả đời nhiều ngoài ý muốn. Càng kị đầu máy. Hoặc gặp lưu manh.
+Gặp không kiếp, chết bởi ngoại đạo.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'thien_di', 'main', 'Gặp cát nên sớm ly hương phát triển, có thể áo gấm vinh quy.
+Liêm Sát gặp kị sát tinh, không nên ly hương phát triển.
+Gặp dương, hóa kị, cả đời nhiều ngoài ý muốn. Càng kị đầu máy. Hoặc gặp lưu manh.
+Gặp không kiếp, chết bởi ngoại đạo.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'no_boc', 'main', 'Bạn bè thuộc hạ nhiều, trợ lực tốt.
+Gặp sát tinh, tuy nhiều thiếu nợ lực.
+Hợp với người có mệnh ở tý, tị, dậu. Không hợp với người có mệnh ở ngọ, mùi, thìn.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('general', 'quan_loc', 'main', 'Văn võ đều cát, cả đời ăn lộc. Nên nhà công nghiệp, dân đại, luật sư, y sư, học giả.
+Thiên tướng không được gặp kị sát tinh, đa số trên trung bình tới nhân viên công vụ.
+Không thấy lộc tồn, hóa lộc, nên công trình kỹ nghệ.
+Gặp lộc, Xương khúc, Tả hữu, có phúc cầm quyền.
+Sát tụ, phòng ngăn trở, có kinh thương, nhưng không thể hợp ý. Không nên võ chức.
+Gặp hỏa linh, lên chức dễ có lực cản.
+Gặp kị, dễ có không tốt văn kiện.
+Đối cung vũ khúc hóa kị, không nên hùn vốn sự nghiệp.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'dien_trach', 'main', 'Dễ bởi vì bất động sản phát sinh tranh chấp, chớ đảm bảo.
+Không được gặp kị sát, kinh tế bình ổn. Cả đời không có trọng đại phá mất.
+Gặp kị sát tinh, nhiều biến động. Lưu không được điền sản ruộng đất. Mua bán phòng văn thư khuyết điểm mà hồi tổn thất.
+Nhà ở nên cao lầu, rẫy.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'phuc_duc', 'main', 'Bận rộn, cuối đời hưởng phúc.
+Gặp Tả hữu chủ dật.
+Gặp hình sát chủ làm. Cả đời phúc bạc.
+Gặp xương khúc, trống rỗng thiếu thực tế.
+Kình Đà uy hiếp, nên kinh thương hoặc hiến thân tông giáo .')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'phuc_duc', 'main', 'Bận rộn, cuối đời hưởng phúc.
+Gặp Tả hữu chủ dật.
+Gặp hình sát chủ làm. Cả đời phúc bạc.
+Gặp xương khúc, trống rỗng thiếu thực tế.
+Kình Đà uy hiếp, nên kinh thương hoặc hiến thân tông giáo .')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('general', 'phu_mau', 'main', 'Cùng cha mẹ dễ có ngăn cách, hoặc dễ là rời tông.
+Cát tinh trợ giúp, có thể được phụ mẫu chi ân huệ.
+Gặp kị sát không kiếp, trước kia dễ cùng cha mẹ tách rời, duyên mỏng ( mẫu thân là nhất ).')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'all', 'overview', 'Nhật nguyệt giáp mệnh là đắt cách. Thêm cát không quý thì phú.
+Gặp cát thì cát, gặp hung thì hung.
+Kình dương, hóa kị ở thiên di, phát sinh chuyện ngoài ý muốn.
+Người sinh năm Mậu, Tham lang hóa lộc nhập phúc đức, lộc tồn nhập phu Quan, song nguyệt người mặc dù lao tâm lao lực, vẫn có trên trung bình thành tựu.')";
+$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'all', 'limit', 'Nữ mệnh hạn đi phụ mẫu, Phu thê đại hạn vị trí thái dương gặp sát tinh, gặp mặt không nhận người, có ly dị.
+Hạn đi điền trạch, hóa kị nhập bản mệnh tứ chính vị trí, có trọng ngoài ý muốn.
+Bản mệnh tam hợp gặp sát tinh, hạn gởi công văn đi sách vị trí, hóa kị nhập Huynh người hầu, dễ lầm đường lạc lối.')";

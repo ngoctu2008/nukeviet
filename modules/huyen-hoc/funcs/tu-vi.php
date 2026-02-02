@@ -69,7 +69,9 @@ if ($nv_Request->isset_request('submit', 'post')) {
         // Add Tong Quan to laSoData
         $laSoData['luan_giai_tong_quan'] = array(
             'menh' => isset($interpretation['tong_quan_menh']) ? $interpretation['tong_quan_menh'] : [],
-            'than' => isset($interpretation['tong_quan_than']) ? $interpretation['tong_quan_than'] : []
+            'than' => isset($interpretation['tong_quan_than']) ? $interpretation['tong_quan_than'] : [],
+            'overview' => isset($interpretation['overview']) ? $interpretation['overview'] : [],
+            'limit' => isset($interpretation['limit']) ? $interpretation['limit'] : []
         );
 
     } catch (\Exception $e) {

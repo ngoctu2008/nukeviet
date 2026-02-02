@@ -79,6 +79,24 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
             $xtpl->assign('THIEN_BAN', $laso['thien_ban']);
         }
 
+        // Overview & Limit (from luan_giai_tong_quan)
+        if (isset($laso['luan_giai_tong_quan'])) {
+            // Overview
+            if (!empty($laso['luan_giai_tong_quan']['overview'])) {
+                foreach ($laso['luan_giai_tong_quan']['overview'] as $ov) {
+                    $xtpl->assign('OVERVIEW', $ov);
+                    $xtpl->parse('main.result.overview');
+                }
+            }
+            // Limit
+            if (!empty($laso['luan_giai_tong_quan']['limit'])) {
+                foreach ($laso['luan_giai_tong_quan']['limit'] as $lim) {
+                    $xtpl->assign('LIMIT', $lim);
+                    $xtpl->parse('main.result.limit');
+                }
+            }
+        }
+
         // Dia Ban (Palaces)
         if (isset($laso['dia_ban'])) {
             foreach ($laso['dia_ban'] as $key => $palace) {

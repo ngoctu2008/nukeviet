@@ -108,6 +108,11 @@ class TuViLapSo {
         ];
     }
 
+    public static function getElementName($id) {
+        $names = [1 => 'Thủy', 2 => 'Hỏa', 3 => 'Thổ', 4 => 'Kim', 5 => 'Mộc'];
+        return isset($names[$id]) ? $names[$id] : '';
+    }
+
     /**
      * Get Brightness
      */
@@ -154,6 +159,7 @@ class TuViLapSo {
                 'code' => $code,
                 'name' => $info['name'],
                 'color' => $info['color'],
+                'element' => self::getElementName($info['element_id']),
                 'dacs' => $bright
             );
 
