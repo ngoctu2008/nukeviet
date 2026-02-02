@@ -17,7 +17,9 @@ class TuViLuanGiai {
     public function __construct() {
         global $db, $db_config, $module_data;
         $this->db = $db;
-        $this->table = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $module_data . "_interpretations";
+        // Sanitize module_data to match action_mysql.php (replace - with _)
+        $mod_data_sanitized = str_replace('-', '_', $module_data);
+        $this->table = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $mod_data_sanitized . "_interpretations";
     }
 
     /**
@@ -39,12 +41,19 @@ class TuViLuanGiai {
         }
 
         // 2. Luan Giai 12 Cung
-        foreach ($chart['dia_ban'] as $palace) {
+        foreach ($chart['dia_ban'] as $i => $palace) {
             // Determine palace key (e.g., 'phu_mau', 'quan_loc'...) based on name
             $key = $this->normalizePalaceName($palace['palace_name']);
+            $reading = $key ? $this->getPalaceReading($palace, $key) : [];
+
+            // Store by Key (for legacy/alias access)
             if ($key) {
-                $result[$key] = $this->getPalaceReading($palace, $key);
+                $result[$key] = $reading;
             }
+
+            // Store by Index (0-11) for easier iteration in template/controller
+            // Assuming $chart['dia_ban'] is indexed 0-11
+            $result[$i] = $reading;
         }
 
         return $result;
@@ -108,21 +117,19 @@ class TuViLuanGiai {
      * Fetch from Database
      */
     private function fetchContent($starKey, $palaceKey, $topic = '') {
-        $sql = "SELECT content FROM " . $this->table . " WHERE star_key = :star AND (palace_key = :palace OR palace_key = 'all')";
+        // Prioritize Specific Palace > All
+        // Order by: (palace_key = :palace) DESC to ensure specific match comes first
+
+        $sql = "SELECT content FROM " . $this->table . "
+                WHERE star_key = :star
+                AND (palace_key = :palace OR palace_key = 'all' OR palace_key = 'general')";
+
         if ($topic) {
             $sql .= " AND topic = :topic";
         }
-        // Use prepared statements logic if available, or manual escaping
-        // NukeViet $db->query doesn't always support named params in raw SQL easily depending on driver,
-        // usually uses standard PDO or specific NV wrapper.
-        // For safety, assuming standard PDO access via $this->db->pdo or similar?
-        // NV4 uses logic: $db->query($sql);
 
-        // Clean inputs manually if quote not reliable, or use prepare (preferred)
-        // But for compatibility let's assume standard PDO or NV wrapper
-
-        $sql = "SELECT content FROM " . $this->table . " WHERE star_key = :star AND (palace_key = :palace OR palace_key = 'all')";
-        if ($topic) $sql .= " AND topic = :topic";
+        // Sort specific first
+        $sql .= " ORDER BY CASE WHEN palace_key = :palace THEN 1 ELSE 2 END ASC LIMIT 1";
 
         try {
             $stmt = $this->db->prepare($sql);
@@ -136,20 +143,6 @@ class TuViLuanGiai {
         } catch (\Exception $e) {
             return '';
         }
-
-        // NOTE: In real implementation, check DB Driver.
-        // Fallback: Return dummy if table doesn't exist? (Handled by try/catch in controller usually)
-
-        try {
-            $result = $this->db->query($sql);
-            if ($result) {
-                $row = $result->fetch();
-                return $row ? $row['content'] : '';
-            }
-        } catch (\Exception $e) {
-            return '';
-        }
-        return '';
     }
 
     /**

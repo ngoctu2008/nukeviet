@@ -142,7 +142,14 @@
                             Luận Cung {PALACE.palace_name}
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Đang cập nhật lời giải chi tiết cho cung {PALACE.palace_name}...</p>
+                            <!-- BEGIN: content -->
+                            <p class="card-text">
+                                <strong>{CONTENT.star}:</strong> {CONTENT.content}
+                            </p>
+                            <!-- END: content -->
+                            <!-- BEGIN: empty -->
+                            <p class="card-text text-muted">Đang cập nhật lời giải chi tiết...</p>
+                            <!-- END: empty -->
                         </div>
                     </div>
                     <!-- END: palace_luan -->

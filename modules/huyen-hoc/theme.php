@@ -103,6 +103,16 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
             // Loop again for Luan Giai tab (palace_luan)
             foreach ($laso['dia_ban'] as $key => $palace) {
                 $xtpl->assign('PALACE', $palace);
+
+                if (!empty($palace['luan_giai'])) {
+                    foreach ($palace['luan_giai'] as $reading) {
+                        $xtpl->assign('CONTENT', $reading);
+                        $xtpl->parse('main.result.palace_luan.content');
+                    }
+                } else {
+                    $xtpl->parse('main.result.palace_luan.empty');
+                }
+
                 $xtpl->parse('main.result.palace_luan');
             }
         }

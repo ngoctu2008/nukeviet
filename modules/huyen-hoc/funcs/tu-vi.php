@@ -13,6 +13,7 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
 
 use NukeViet\Module\HuyenHoc\LunarCalendar;
 use NukeViet\Module\HuyenHoc\TuViLapSo;
+use NukeViet\Module\HuyenHoc\TuViLuanGiai;
 
 $page_title = $lang_module['tu_vi'];
 
@@ -52,6 +53,28 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $canChi['chiYear'],
         $name
     );
+
+    // Luan Giai
+    try {
+        $interpreter = new TuViLuanGiai();
+        $interpretation = $interpreter->luanGiai($laSoData);
+
+        // Merge into dia_ban
+        foreach ($laSoData['dia_ban'] as $i => &$palace) {
+             if (isset($interpretation[$i])) {
+                 $palace['luan_giai'] = $interpretation[$i];
+             }
+        }
+
+        // Add Tong Quan to laSoData
+        $laSoData['luan_giai_tong_quan'] = array(
+            'menh' => isset($interpretation['tong_quan_menh']) ? $interpretation['tong_quan_menh'] : [],
+            'than' => isset($interpretation['tong_quan_than']) ? $interpretation['tong_quan_than'] : []
+        );
+
+    } catch (\Exception $e) {
+        // Ignore error if DB not ready
+    }
 
     // Re-key dia_ban for template access (ty, suu, dan...)
     $diaBanKeyed = array();
