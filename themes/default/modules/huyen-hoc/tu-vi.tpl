@@ -154,33 +154,57 @@
 
                 <!-- Tab Luan Giai -->
                 <div class="tab-pane fade" id="luangiai" role="tabpanel">
-                    <!-- BEGIN: palace_luan -->
+                    <!-- BEGIN: report -->
+                    <!-- BEGIN: sec1 -->
                     <div class="card mb-3">
-                        <div class="card-header bg-primary text-white">
-                            Luận Cung {PALACE.palace_name}
-                        </div>
+                         <div class="card-header bg-primary text-white text-uppercase">I. Tổng quan Càn Khôn</div>
+                         <div class="card-body">
+                             <p>{SEC1_INFO}</p>
+                             <ul>
+                                <!-- BEGIN: am_duong --><li>{SEC1_AD}</li><!-- END: am_duong -->
+                             </ul>
+                             <p><b>Mệnh:</b> {SEC1_MENH}</p>
+                             <p><b>Thân:</b> {SEC1_THAN}</p>
+                         </div>
+                    </div>
+                    <!-- END: sec1 -->
+
+                    <!-- BEGIN: sec2 -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-primary text-white text-uppercase">II. Luận Giải Chi Tiết Các Cung</div>
                         <div class="card-body">
-                            <!-- BEGIN: chinh_tinh -->
-                            <h6 class="text-danger font-weight-bold">--- {CONTENT.star} ---</h6>
-                            <p class="card-text text-justify mb-3">{CONTENT.content}</p>
-                            <!-- END: chinh_tinh -->
+                            <!-- BEGIN: reading -->
+                            <div class="mb-4">
+                                 <h5 class="text-info border-bottom pb-1">{SEC2_PNAME}</h5>
 
-                            <!-- BEGIN: phu_tinh -->
-                            <h6 class="text-dark font-weight-bold">--- {CONTENT.star} ---</h6>
-                            <p class="card-text text-justify mb-3">{CONTENT.content}</p>
-                            <!-- END: phu_tinh -->
+                                 <!-- BEGIN: chinh_tinh -->
+                                 <p><b><i class="fa fa-star text-warning"></i> {READING.star}:</b> {READING.content}</p>
+                                 <!-- END: chinh_tinh -->
 
-                            <!-- BEGIN: general -->
-                            <h6 class="text-info font-weight-bold">--- {CONTENT.star} ---</h6>
-                            <p class="card-text text-justify mb-3">{CONTENT.content}</p>
-                            <!-- END: general -->
+                                 <!-- BEGIN: phu_tinh -->
+                                 <p><b><i class="fa fa-star-half-o text-secondary"></i> {READING.star}:</b> {READING.content}</p>
+                                 <!-- END: phu_tinh -->
 
-                            <!-- BEGIN: empty -->
-                            <p class="card-text text-muted">Chưa có dữ liệu luận giải chi tiết.</p>
-                            <!-- END: empty -->
+                                 <!-- BEGIN: general -->
+                                 <p><b><i class="fa fa-comment text-muted"></i> {READING.star}:</b> {READING.content}</p>
+                                 <!-- END: general -->
+                            </div>
+                            <!-- END: reading -->
                         </div>
                     </div>
-                    <!-- END: palace_luan -->
+                    <!-- END: sec2 -->
+
+                    <!-- BEGIN: sec3 -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-primary text-white text-uppercase">III. Vận Hạn Hiện Tại</div>
+                        <div class="card-body">
+                            <ul>
+                                <!-- BEGIN: line --><li>{SEC3_LINE}</li><!-- END: line -->
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- END: sec3 -->
+                    <!-- END: report -->
                 </div>
 
                 <!-- Tab Van Han -->

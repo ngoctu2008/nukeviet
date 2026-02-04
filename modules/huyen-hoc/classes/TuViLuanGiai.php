@@ -87,6 +87,194 @@ class TuViLuanGiai {
         return $result;
     }
 
+    /**
+     * Generate Structured Report (Section I, II, III)
+     */
+    public function generateStructuredReport($laSo) {
+        $report = [
+            'section_1' => $this->genSection1($laSo),
+            'section_2' => $this->genSection2($laSo),
+            'section_3' => $this->genSection3($laSo)
+        ];
+        return $report;
+    }
+
+    private function genSection1($laSo) {
+        $tb = $laSo['thien_ban'];
+        $db = $laSo['dia_ban'];
+
+        // 1. User Info
+        $info = "Thông tin đương số: " . $tb['ho_ten'] . ", sinh năm " . $tb['nam_sinh'] . ".";
+
+        // 2. Am Duong Ngu Hanh
+        $adnh = [
+            'Tuổi: ' . $tb['am_duong'],
+            'Mệnh: ' . $tb['menh_ngu_hanh'],
+            'Cục: ' . $tb['cuc'],
+            'Tương quan Mệnh - Cục: ' . $tb['cuc_menh_ly']
+        ];
+
+        // 3. Menh - Than
+        $menhIdx = $this->findPalaceIndex($db, 'Mệnh');
+        $thanIdx = $this->findPalaceIndex($db, 'Thân');
+
+        $menhContent = "Mệnh đóng tại cung " . $db[$menhIdx]['name'] . ".";
+        // Check relation Mệnh Element vs Palace Element? (Kim Sinh Thuy example)
+        // Need Palace Element.
+        // Ty/Hoi=Thuy, Dan/Mao=Moc, Ty/Ngo=Hoa, Thin/Tuat/Suu/Mui=Tho, Than/Dau=Kim.
+        $pElNames = [0=>'Thủy',1=>'Thổ',2=>'Mộc',3=>'Mộc',4=>'Thổ',5=>'Hỏa',6=>'Hỏa',7=>'Thổ',8=>'Kim',9=>'Kim',10=>'Thổ',11=>'Thủy'];
+        $pElName = $pElNames[$menhIdx];
+        $menhContent .= " Cung hành " . $pElName . ".";
+
+        $thanInfo = TuViLapSo::getThanInfo($laSo['meta']['chiYear']); // Wait, getThanInfo needs Hour index? No, LapSo passes hh.
+        // Actually, we can just look at $thanIdx.
+        // But getThanInfo returns the meaning text.
+        // We don't have hh here easily unless in meta.
+        // Let's deduce Hour from Than pos relative to Menh?
+        // PosThan = (2 + mm - 1 + hh) % 12. PosMenh = (2 + mm - 1 - hh) % 12.
+        // Too complex. Let's just use the Palace Name of Than to fetch meaning from `getThanInfo` logic map (or duplicate it).
+        // Actually `TuViLapSo::getThanInfo` expects Hour.
+        // Let's implement helper here or just map based on the Than Palace Name (Quan Loc, Tai Bach...).
+        $thanName = preg_replace('/\s*\(.*?\)/', '', $db[$thanIdx]['palace_name']);
+        $thanMap = [
+            'Mệnh' => 'Người tin vào chính mình, tự lập.',
+            'Phúc Đức' => 'Coi trọng dòng họ, hưởng phúc tổ tiên.',
+            'Quan Lộc' => 'Mẫu người của công việc, danh vọng.',
+            'Thiên Di' => 'Thích hoạt động xã hội, hay di chuyển.',
+            'Tài Bạch' => 'Coi trọng tiền bạc, có khiếu kinh doanh.',
+            'Phu Thê' => 'Coi trọng gia đình, sự nghiệp ảnh hưởng bởi phối ngẫu.'
+        ];
+        $thanContent = "Thân cư " . $thanName . ". " . (isset($thanMap[$thanName]) ? $thanMap[$thanName] : '');
+
+        return [
+            'info' => $info,
+            'am_duong' => $adnh,
+            'menh_than' => [
+                'menh' => $menhContent,
+                'than' => $thanContent
+            ]
+        ];
+    }
+
+    private function genSection2($laSo) {
+        $db = $laSo['dia_ban'];
+        $palaces = ['Mệnh', 'Quan Lộc', 'Tài Bạch', 'Thiên Di', 'Phu Thê', 'Tử Tức', 'Phúc Đức', 'Điền Trạch'];
+
+        $details = [];
+        foreach ($palaces as $pName) {
+            $idx = $this->findPalaceIndex($db, $pName);
+            if ($idx === false) continue;
+
+            $pData = $db[$idx];
+            $key = $this->normalizePalaceName($pName);
+            $reading = $this->getPalaceReading($pData, $key);
+
+            // Check Patterns
+            $patterns = $this->checkPatterns($pData, $pName);
+            if ($patterns) {
+                // Add patterns to general reading or separate?
+                // Let's append to general
+                foreach ($patterns as $pat) {
+                    $reading['general'][] = ['star' => 'Cách Cục', 'content' => $pat];
+                }
+            }
+
+            $details[] = [
+                'name' => $pName . " (Tại " . $pData['name'] . ")",
+                'reading' => $reading
+            ];
+        }
+        return $details;
+    }
+
+    private function genSection3($laSo) {
+        // Requires limit_info in meta
+        if (!isset($laSo['meta']['limit_info'])) return [];
+        $lim = $laSo['meta']['limit_info'];
+
+        $content = [];
+        $content[] = "Tuổi Âm: " . $lim['age_am'] . " tuổi.";
+
+        // Dai Van
+        // Need to find which Dai Van palace we are in.
+        // Iterate dia_ban to find matching dai_van range.
+        // Format: 36 - 45.
+        // Logic: Palace has 'dai_van' start age. Next palace has start+10.
+        // Current age $lim['age_am'].
+        $daiVanIdx = -1;
+        $daiVanStart = 0;
+        foreach ($laSo['dia_ban'] as $idx => $p) {
+             if ($lim['age_am'] >= $p['dai_van'] && $lim['age_am'] < $p['dai_van'] + 10) {
+                 $daiVanIdx = $idx;
+                 $daiVanStart = $p['dai_van'];
+                 break;
+             }
+        }
+
+        if ($daiVanIdx !== -1) {
+            $dvName = $laSo['dia_ban'][$daiVanIdx]['palace_name'];
+            $dvChi = $laSo['dia_ban'][$daiVanIdx]['name'];
+            $content[] = "Đại vận (" . $daiVanStart . " - " . ($daiVanStart + 9) . " tuổi): Đang nằm tại cung " . $dvName . " (" . $dvChi . ").";
+
+            // Add stars in Dai Van
+            $stars = [];
+            foreach ($laSo['dia_ban'][$daiVanIdx]['chinh_tinh'] as $s) $stars[] = $s['name'];
+            if ($stars) $content[] = "Chính tinh đại vận: " . implode(", ", $stars) . ".";
+        }
+
+        // Luu Nien
+        // Target Chi is in $lim.
+        $content[] = "Lưu niên: Năm " . $lim['target_chi'] . ".";
+
+        // Han & Sao
+        $content[] = "Sao chiếu mệnh: " . $lim['sao_han']['name'] . " (" . ($lim['sao_han']['type']=='tot'?'Tốt':($lim['sao_han']['type']=='xau'?'Xấu':'Trung bình')) . ").";
+        $content[] = "Hạn: " . $lim['han'] . ".";
+        if ($lim['tam_tai']) $content[] = "Phạm Tam Tai: Có.";
+        else $content[] = "Phạm Tam Tai: Không.";
+
+        return $content;
+    }
+
+    private function checkPatterns($pData, $pName) {
+        $patterns = [];
+        // Helper to check star presence
+        $hasStar = function($code) use ($pData) {
+            foreach ($pData['chinh_tinh'] as $s) if ($s['code'] == $code) return true;
+            foreach ($pData['phu_tinh_tot'] as $s) if ($s['code'] == $code) return true;
+            foreach ($pData['phu_tinh_xau'] as $s) if ($s['code'] == $code) return true;
+            return false;
+        };
+
+        // 1. Song Hao Mao Dau (Chung Thuy Trieu Dong)
+        // Palace Chi: Mao(3) or Dau(9).
+        // Star: Tieu Hao or Dai Hao.
+        if (in_array($pData['key'], ['mao', 'dau'])) {
+            if ($hasStar('tieu_hao') || $hasStar('dai_hao')) {
+                $patterns[] = "Cách 'Chúng thủy triều đông' (Song Hao Mão Dậu): Chủ về người hào phóng, tiền bạc luân chuyển mạnh, thích hợp kinh doanh.";
+            }
+        }
+
+        // 2. Dong Luong Ty Hoi
+        // Palace Chi: Ty_Nho(5) or Hoi(11).
+        // Star: Thien Dong or Thien Luong.
+        if (in_array($pData['key'], ['ty_nho', 'hoi'])) {
+            if ($hasStar('thien_dong') || $hasStar('thien_luong')) {
+                 $patterns[] = "Cách 'Đồng Lương Tỵ Hợi' (Khách phiêu bồng): Chủ về sự thay đổi, di chuyển nhiều, thích tự do.";
+            }
+        }
+
+        // 3. Nhat Nguyet Tranh Huy (Thai Am / Thai Duong at Suu/Mui)
+        if (in_array($pData['key'], ['suu', 'mui'])) {
+            if ($hasStar('thai_am') && $hasStar('thai_duong')) {
+                 $patterns[] = "Cách 'Nhật Nguyệt Tranh Huy': Chủ về sự thăng trầm, mâu thuẫn nhưng cũng dễ thành đạt nếu có Tuần/Triệt hoặc Hóa Kỵ.";
+            }
+            // Or if one is here and other opposite?
+            // In Suu/Mui, Thai Am and Thai Duong are always together (Dong Cung).
+        }
+
+        return $patterns;
+    }
+
     private function findPalaceIndex($diaBan, $namePart) {
         foreach ($diaBan as $idx => $p) {
             if (mb_strpos($p['palace_name'], $namePart) !== false) return $idx;

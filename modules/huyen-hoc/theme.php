@@ -151,6 +151,60 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
             }
         }
 
+        // Structured Report (Binh Giai Chi Tiet)
+        if (isset($laso['structured_report'])) {
+            $rep = $laso['structured_report'];
+
+            // Section 1
+            $xtpl->assign('SEC1_INFO', $rep['section_1']['info']);
+            foreach ($rep['section_1']['am_duong'] as $line) {
+                $xtpl->assign('SEC1_AD', $line);
+                $xtpl->parse('main.result.report.sec1.am_duong');
+            }
+            $xtpl->assign('SEC1_MENH', $rep['section_1']['menh_than']['menh']);
+            $xtpl->assign('SEC1_THAN', $rep['section_1']['menh_than']['than']);
+            $xtpl->parse('main.result.report.sec1');
+
+            // Section 2
+            foreach ($rep['section_2'] as $p) {
+                $xtpl->assign('SEC2_PNAME', $p['name']);
+
+                // Chinh Tinh
+                if (!empty($p['reading']['chinh_tinh'])) {
+                    foreach ($p['reading']['chinh_tinh'] as $r) {
+                        $xtpl->assign('READING', $r);
+                        $xtpl->parse('main.result.report.sec2.reading.chinh_tinh');
+                    }
+                }
+                // Phu Tinh
+                if (!empty($p['reading']['phu_tinh'])) {
+                    foreach ($p['reading']['phu_tinh'] as $r) {
+                        $xtpl->assign('READING', $r);
+                        $xtpl->parse('main.result.report.sec2.reading.phu_tinh');
+                    }
+                }
+                // General
+                if (!empty($p['reading']['general'])) {
+                    foreach ($p['reading']['general'] as $r) {
+                        $xtpl->assign('READING', $r);
+                        $xtpl->parse('main.result.report.sec2.reading.general');
+                    }
+                }
+
+                $xtpl->parse('main.result.report.sec2.reading'); // ensure block exists if empty?
+                $xtpl->parse('main.result.report.sec2');
+            }
+
+            // Section 3
+            foreach ($rep['section_3'] as $line) {
+                $xtpl->assign('SEC3_LINE', $line);
+                $xtpl->parse('main.result.report.sec3.line');
+            }
+            $xtpl->parse('main.result.report.sec3');
+
+            $xtpl->parse('main.result.report');
+        }
+
         $xtpl->parse('main.result');
     }
 

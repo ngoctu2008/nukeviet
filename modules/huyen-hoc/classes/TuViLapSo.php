@@ -680,9 +680,11 @@ class TuViLapSo {
         ];
     }
 
-    public static function getLimitInfoForYear($chiYear, $gender, $targetYear) {
+    public static function getLimitInfoForYear($chiYear, $gender, $targetYear, $birthYear) {
+        // Age (Am Lich)
+        $age = $targetYear - $birthYear + 1;
+
         // 1. Tieu Van Position
-        // Logic copy from lapLaSo but for target year
         $startTVPalace = 0; $startTVYear = 0;
         if (in_array($chiYear, [2, 6, 10])) { $startTVPalace = 4; $startTVYear = 10; } // Dan Ngo Tuat -> Thin (start Tuat)
         elseif (in_array($chiYear, [8, 0, 4])) { $startTVPalace = 10; $startTVYear = 4; } // Than Ty Thin -> Tuat (start Thin)
@@ -691,12 +693,11 @@ class TuViLapSo {
 
         $tvDirection = ($gender == 1) ? 1 : -1;
 
-        // Find which Palace corresponds to the Target Year's Chi
         // Target Chi
         $targetChi = ($targetYear - 4) % 12;
-        if ($targetChi < 0) $targetChi += 12; // PHP modulo fix
+        if ($targetChi < 0) $targetChi += 12;
 
-        // We need to find k such that ($startTVYear + k) % 12 == $targetChi
+        // Find k such that ($startTVYear + k) % 12 == $targetChi
         $diff = $targetChi - $startTVYear;
         if ($diff < 0) $diff += 12;
         $k = $diff;
@@ -704,15 +705,121 @@ class TuViLapSo {
         $tieuVanIdx = ($startTVPalace + ($k * $tvDirection)) % 12;
         if ($tieuVanIdx < 0) $tieuVanIdx += 12;
 
-        // 2. Luu Thai Tue Position
-        // Luu Thai Tue is simply at the Palace corresponding to the Year's Chi
-        // e.g. Year Thin -> Palace Thin (4)
-        $luuThaiTueIdx = $targetChi; // Assuming Palace 0=Ty, 1=Suu...
+        // 2. Luu Thai Tue Position (Palace of the Year's Chi)
+        $luuThaiTueIdx = $targetChi;
+
+        // 3. Sao Cuu Dieu (9 Stars)
+        // Nam: La Hau(10) -> Tho Tu(11) -> Thuy Dieu(12) -> Thai Bach(13) -> Thai Duong(14) -> Van Hon(15) -> Ke Do(16) -> Thai Am(17) -> Moc Duc(18)
+        // Nu: Ke Do(10) -> Van Hon(11) -> Moc Duc(12) -> Thai Am(13) -> Tho Tu(14) -> La Hau(15) -> Thai Duong(16) -> Thai Bach(17) -> Thuy Dieu(18)
+        $stars9 = [
+            1 => ['name' => 'La Hầu', 'type' => 'xau'],
+            2 => ['name' => 'Thổ Tú', 'type' => 'trung'],
+            3 => ['name' => 'Thủy Diệu', 'type' => 'trung'],
+            4 => ['name' => 'Thái Bạch', 'type' => 'xau'],
+            5 => ['name' => 'Thái Dương', 'type' => 'tot'],
+            6 => ['name' => 'Vân Hớn', 'type' => 'trung'],
+            7 => ['name' => 'Kế Đô', 'type' => 'xau'],
+            8 => ['name' => 'Thái Âm', 'type' => 'tot'],
+            0 => ['name' => 'Mộc Đức', 'type' => 'tot']
+        ];
+
+        // Remainder logic: (Age - 10) % 9. But need to align with array keys.
+        // Nam: 10->1, 11->2... => (Age - 10) % 9 + 1. (0->1, 8->9? No, 8->0).
+        // Let's use (Age - 1) % 9.
+        // Nam: 10-1=9%9=0 (Moc Duc). Wait, 10 is La Hau (1).
+        // Let's just use array map for Age % 9.
+        // Nam: 10%9=1 (La Hau), 11%9=2 (Tho Tu)... Matches logic. 18%9=0 (Moc Duc).
+
+        // Nu: 10%9=1 (Ke Do). 11%9=2 (Van Hon).
+        $stars9Nu = [
+            1 => ['name' => 'Kế Đô', 'type' => 'xau'],
+            2 => ['name' => 'Vân Hớn', 'type' => 'trung'],
+            3 => ['name' => 'Mộc Đức', 'type' => 'tot'],
+            4 => ['name' => 'Thái Âm', 'type' => 'tot'],
+            5 => ['name' => 'Thổ Tú', 'type' => 'trung'],
+            6 => ['name' => 'La Hầu', 'type' => 'xau'],
+            7 => ['name' => 'Thái Dương', 'type' => 'tot'],
+            8 => ['name' => 'Thái Bạch', 'type' => 'xau'],
+            0 => ['name' => 'Thủy Diệu', 'type' => 'trung']
+        ];
+
+        $star9Info = ($gender == 1) ? $stars9[$age % 9] : $stars9Nu[$age % 9];
+
+        // 4. Han (8 Limits)
+        // Nam: 10-Huynh Tuyen, 11-Tam Kheo, 12-Ngu Mo, 13-Thien Tinh, 14-Toan Tan, 15-Thien La, 16-Dia Vong, 17-Diem Vuong. (Cycle 8)
+        // Nu: 10-Toan Tan, 11-Thien La, 12-Dia Vong, 13-Diem Vuong, 14-Huynh Tuyen, 15-Tam Kheo, 16-Ngu Mo, 17-Thien Tinh. (Cycle 8)
+        $hans = [
+            2 => 'Huỳnh Tuyền', 3 => 'Tam Kheo', 4 => 'Ngũ Mộ', 5 => 'Thiên Tinh',
+            6 => 'Toán Tận', 7 => 'Thiên La', 0 => 'Địa Võng', 1 => 'Diêm Vương'
+        ];
+        // Nam: 10%8=2 (Huynh Tuyen). Correct.
+        // Nu: 10%8=2 (Toan Tan). Map 2 -> Toan Tan.
+        $hansNu = [
+            2 => 'Toán Tận', 3 => 'Thiên La', 4 => 'Địa Võng', 5 => 'Diêm Vương',
+            6 => 'Huỳnh Tuyền', 7 => 'Tam Kheo', 0 => 'Ngũ Mộ', 1 => 'Thiên Tinh'
+        ];
+        $hanName = ($gender == 1) ? $hans[$age % 8] : $hansNu[$age % 8];
+
+        // 5. Tam Tai
+        // Than Ty Thin -> Dan Mao Thin
+        // Ty Dau Suu -> Hoi Ty Suu
+        // Dan Ngo Tuat -> Than Dau Tuat
+        // Hoi Mao Mui -> Ty Ngo Mui
+        $tamTai = false;
+        $tamTaiGroup = [];
+        if (in_array($chiYear, [8, 0, 4])) $tamTaiGroup = [2, 3, 4];
+        elseif (in_array($chiYear, [5, 9, 1])) $tamTaiGroup = [11, 0, 1];
+        elseif (in_array($chiYear, [2, 6, 10])) $tamTaiGroup = [8, 9, 10];
+        elseif (in_array($chiYear, [11, 3, 7])) $tamTaiGroup = [5, 6, 7];
+
+        if (in_array($targetChi, $tamTaiGroup)) {
+            $tamTai = true;
+        }
 
         return [
+            'age_am' => $age,
             'tieu_van_idx' => $tieuVanIdx,
             'luu_thai_tue_idx' => $luuThaiTueIdx,
-            'target_chi' => self::$DIA_CHI[$targetChi]
+            'target_chi' => self::$DIA_CHI[$targetChi],
+            'sao_han' => $star9Info,
+            'han' => $hanName,
+            'tam_tai' => $tamTai
+        ];
+    }
+
+    /**
+     * Helper to get Than Info from Hour
+     */
+    public static function getThanInfo($hh) {
+        // Ty/Ngo(0,6) -> Menh
+        // Suu/Mui(1,7) -> Phuc
+        // Dan/Than(2,8) -> Quan
+        // Mao/Dau(3,9) -> Di
+        // Thin/Tuat(4,10) -> Tai
+        // Ty/Hoi(5,11) -> Phu
+
+        $map = [
+            0=>'Mệnh', 6=>'Mệnh',
+            1=>'Phúc Đức', 7=>'Phúc Đức',
+            2=>'Quan Lộc', 8=>'Quan Lộc',
+            3=>'Thiên Di', 9=>'Thiên Di',
+            4=>'Tài Bạch', 10=>'Tài Bạch',
+            5=>'Phu Thê', 11=>'Phu Thê'
+        ];
+
+        $meaning = [
+            'Mệnh' => 'Thân cư Mệnh: Người tin vào chính mình, tự lập, vận mệnh gắn liền với sự nỗ lực bản thân.',
+            'Phúc Đức' => 'Thân cư Phúc Đức: Coi trọng dòng họ, hưởng phúc tổ tiên, hậu vận phụ thuộc vào phúc phần.',
+            'Quan Lộc' => 'Thân cư Quan Lộc: Người coi trọng sự nghiệp, danh vọng, làm việc hết mình.',
+            'Thiên Di' => 'Thân cư Thiên Di: Thích hoạt động xã hội, hay di chuyển, thành bại thường ở phương xa.',
+            'Tài Bạch' => 'Thân cư Tài Bạch: Coi trọng tiền bạc, có khiếu kinh doanh, sướng khổ do tiền.',
+            'Phu Thê' => 'Thân cư Phu Thê: Coi trọng gia đình, sự nghiệp ảnh hưởng lớn bởi người phối ngẫu.'
+        ];
+
+        $palace = isset($map[$hh]) ? $map[$hh] : 'Mệnh';
+        return [
+            'palace' => $palace,
+            'meaning' => $meaning[$palace]
         ];
     }
 }

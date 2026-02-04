@@ -58,6 +58,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     try {
         $interpreter = new TuViLuanGiai();
         $interpretation = $interpreter->luanGiai($laSoData);
+        $structuredReport = $interpreter->generateStructuredReport($laSoData);
 
         // Merge into dia_ban
         foreach ($laSoData['dia_ban'] as $i => &$palace) {
@@ -106,6 +107,8 @@ if ($nv_Request->isset_request('submit', 'post')) {
             'overview' => isset($interpretation['overview']) ? $interpretation['overview'] : [],
             'limit' => isset($interpretation['limit']) ? $interpretation['limit'] : []
         );
+
+        $laSoData['structured_report'] = $structuredReport;
 
     } catch (\Exception $e) {
         // Ignore error if DB not ready
