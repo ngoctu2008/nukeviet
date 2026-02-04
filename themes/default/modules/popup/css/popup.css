@@ -1,0 +1,73 @@
+/* Custom Popup Styles */
+
+/* Banner Base */
+.nv-popup-banner {
+    position: fixed;
+    z-index: 9999;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    max-width: 100%;
+}
+
+.nv-banner-wrapper {
+    position: relative;
+    padding: 10px;
+}
+
+.nv-banner-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #000;
+    opacity: 0.5;
+    cursor: pointer;
+    z-index: 10;
+}
+.nv-banner-close:hover {
+    opacity: 1;
+}
+
+/* Positions */
+.popup-bar_top {
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+}
+
+.popup-bar_bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-top: 1px solid #ddd;
+}
+
+.popup-corner_left {
+    bottom: 20px;
+    left: 20px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.popup-corner_right {
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .popup-corner_left, .popup-corner_right {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        width: auto;
+    }
+}
