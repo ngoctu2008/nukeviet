@@ -28,7 +28,7 @@ if (!nv_function_exists('nv_block_popup')) {
         // Better to fetch candidates and filter in PHP.
         // We filter by Time and Status and Device (simple string check) in SQL to reduce load.
 
-        $sql = "SELECT * FROM " . $db_config['prefix'] . "_" . NV_LANG_DATA . "_popup_rows
+        $sql = "SELECT * FROM " . NV_PREFIXLANG . "_popup_rows
                 WHERE status=1
                 AND (begin_time = 0 OR begin_time <= " . $current_time . ")
                 AND (end_time = 0 OR end_time >= " . $current_time . ")

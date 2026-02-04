@@ -13,8 +13,8 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $page_title = $lang_module['report'];
 
 $sql = "SELECT s.popup_id, r.title, SUM(s.views) as total_views, SUM(s.clicks) as total_clicks, SUM(s.closes) as total_closes
-        FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_stats s
-        LEFT JOIN " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows r ON s.popup_id = r.id
+        FROM " . NV_PREFIXLANG . "_" . $module_data . "_stats s
+        LEFT JOIN " . NV_PREFIXLANG . "_" . $module_data . "_rows r ON s.popup_id = r.id
         GROUP BY s.popup_id
         ORDER BY total_views DESC";
 

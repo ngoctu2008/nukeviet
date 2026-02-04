@@ -30,7 +30,7 @@ $row = [
 ];
 
 if ($id > 0) {
-    $row = $db->query("SELECT * FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows WHERE id=" . $id)->fetch();
+    $row = $db->query("SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id=" . $id)->fetch();
     if (empty($row)) {
         nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name);
     }
@@ -77,12 +77,12 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $stm_vals = ":title, :content, :type, :display_pages, :user_groups, :device_type, :trigger_config, :begin_time, :end_time, :frequency, :priority, :status";
 
         if ($id > 0) {
-            $sql = "UPDATE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows SET
+            $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_rows SET
                 title=:title, content=:content, type=:type, display_pages=:display_pages, user_groups=:user_groups,
                 device_type=:device_type, trigger_config=:trigger_config, begin_time=:begin_time, end_time=:end_time,
                 frequency=:frequency, priority=:priority, status=:status WHERE id=" . $id;
         } else {
-            $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows ($stm_cols) VALUES ($stm_vals)";
+            $sql = "INSERT INTO " . NV_PREFIXLANG . "_" . $module_data . "_rows ($stm_cols) VALUES ($stm_vals)";
         }
 
         $stmt = $db->prepare($sql);

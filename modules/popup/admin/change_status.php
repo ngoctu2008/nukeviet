@@ -14,7 +14,7 @@ $id = $nv_Request->get_int('id', 'get', 0);
 $status = $nv_Request->get_int('status', 'get', 0);
 
 if ($id > 0) {
-    $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows SET status=" . $status . " WHERE id=" . $id);
+    $db->query("UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_rows SET status=" . $status . " WHERE id=" . $id);
     $nv_Cache->delMod($module_name);
 }
 

@@ -17,13 +17,13 @@ if ($nv_Request->isset_request('save_priority', 'post')) {
     $list_priority = $nv_Request->get_array('priority', 'post', []);
     foreach ($list_priority as $id => $prio) {
         $prio = intval($prio);
-        $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows SET priority = " . $prio . " WHERE id = " . intval($id));
+        $db->query("UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_rows SET priority = " . $prio . " WHERE id = " . intval($id));
     }
     nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
 }
 
 // Fetch List
-$sql = "SELECT * FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_rows ORDER BY priority DESC, id DESC";
+$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows ORDER BY priority DESC, id DESC";
 $result = $db->query($sql);
 
 $array_data = [];

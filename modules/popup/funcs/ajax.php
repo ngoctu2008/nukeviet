@@ -26,7 +26,7 @@ if ($action == 'log') {
         // Use standard NV4 db->query for ON DUPLICATE KEY UPDATE as it's cleaner than PDO bind for dynamic updates often
         // But let's try to be safe.
 
-        $table = $db_config['prefix'] . "_" . NV_LANG_DATA . "_popup_stats";
+        $table = NV_PREFIXLANG . "_popup_stats";
 
         $sql = "INSERT INTO " . $table . " (popup_id, add_time, views, clicks, closes)
                 VALUES (" . $id . ", " . $today . ", " . $views . ", " . $clicks . ", " . $closes . ")
