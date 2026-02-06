@@ -218,3 +218,25 @@ $sql_create_module[] = generate_tuvi_sql($table, 'SAO_THAT_SAT_CU_DAN', 'general
 
 // 5. Tuan/Triet
 $sql_create_module[] = generate_tuvi_sql($table, 'SAO_TU_VI_GAP_TUAN_TRIET', 'general', 'Tử Vi gặp Tuần/Triệt: Vua bị vây hãm, tài năng không được trọng dụng, chí lớn khó thành, thường đi tu hoặc ẩn dật.', 'pattern');
+
+// === NEW: VAN HAN (9 Stars & 8 Limits) ===
+// 9 Stars
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_LA_HAU', 'general', 'Sao La Hầu (Khẩu thiệt tinh): Chủ về ăn nói thị phi, hay liên quan đến công quyền, nhiều chuyện phiền muộn, bệnh tật về tai mắt, máu huyết. Nam rất kỵ, Nữ cũng bi ai.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_KE_DO', 'general', 'Sao Kế Đô (Hung tinh): Chủ về ám muội, thị phi, đau khổ, hao tài tốn của, họa vô đơn chí. Nữ giới cực kỵ, nhưng nếu có thai thì lại hên.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_THAI_BACH', 'general', 'Sao Thái Bạch (Kim tinh): Hung tinh mạnh nhất, "Thái Bạch sạch cửa nhà", hao tài tốn của, tiểu nhân quấy phá, đề phòng quan sự, bệnh nội tạng. Kỵ màu trắng.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_THAI_DUONG', 'general', 'Sao Thái Dương (Mặt trời): Tốt cho Nam, công danh hiển đạt, thăng quan tiến chức. Nữ thì vất vả, hay đau ốm.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_THAI_AM', 'general', 'Sao Thái Âm (Mặt trăng): Tốt cho cả Nam và Nữ, chủ về danh lợi, hỷ sự, tài lộc, tốt nhất vào tháng 9.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_MOC_DUC', 'general', 'Sao Mộc Đức (Mộc tinh): Triều nguyên, tốt lành, may mắn, hỷ sự. Nhưng đề phòng bệnh về mắt.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_VAN_HON', 'general', 'Sao Vân Hớn (Hỏa tinh): Chủ về bảo thủ, phòng thương tật, kiện tụng, nóng nảy mồm miệng. Kỵ tháng 2, 8.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_THO_TU', 'general', 'Sao Thổ Tú (Thổ tinh): Tiểu nhân hãm hại, xuất hành không thuận, gia đạo bất hòa, chăn nuôi thua lỗ.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_HAN_THUY_DIEU', 'general', 'Sao Thủy Diệu (Thủy tinh): Phước lộc tinh, tốt nhưng kỵ tháng 4, 8. Tránh đi sông biển.', 'pattern');
+
+// 8 Limits
+$sql_create_module[] = generate_tuvi_sql($table, 'HAN_HUYNH_TUYEN', 'general', 'Hạn Huỳnh Tuyền: Bệnh nặng, nguy vong. Chớ bảo lãnh cho người, tránh đi đường sông nước.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'HAN_TAM_KHEO', 'general', 'Hạn Tam Kheo: Đau mắt, đề phòng chân tay thương tích. Tránh tụ tập đông người.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'HAN_NGU_MO', 'general', 'Hạn Ngũ Mộ: Hao tài, mất của. Chớ mua đồ lậu, không cho người ngủ nhờ kẻo tai bay vạ gió.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'HAN_THIEN_TINH', 'general', 'Hạn Thiên Tinh: Rối rắm, tranh chấp, thị phi, kiện tụng. Đề phòng ngộ độc thực phẩm, đau bụng.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'HAN_TOAN_TAN', 'general', 'Hạn Toán Tận: Hao tài, ngộ nạn, tai nạn bất ngờ. Nam giới kỵ nhất, chớ mang tiền to đi đường.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'HAN_THIEN_LA', 'general', 'Hạn Thiên La: Lưới trời lồng lộng, tâm trí không yên, hay lo âu, gia đạo bất hòa, vợ chồng ly cách.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'HAN_DIA_VONG', 'general', 'Hạn Địa Võng: Rắc rối, thị phi, bị hiểu lầm, kỵ đi xa vào giờ Tuất/Hợi. Nên làm việc thiện.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'HAN_DIEM_VUONG', 'general', 'Hạn Diêm Vương: Tin buồn từ xa, kỵ người đau ốm, người già nhưng tốt cho mưu cầu danh lợi, tài lộc.', 'pattern');
