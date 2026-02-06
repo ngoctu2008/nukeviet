@@ -250,6 +250,20 @@ class TuViLuanGiai {
             }
          }
 
+        // 4. LINH XUONG DA VU (Bad) - Self-harm / Major failure
+        // Requires Linh Tinh, Van Xuong, Da La, Vu Khuc in Tam Phuong Tu Chinh.
+        if ($palaceKey == 'menh' || $palaceKey == 'tat_ach' || $palaceKey == 'han') {
+            if ($hasStarInSet('linh_tinh') && $hasStarInSet('van_xuong') && $hasStarInSet('da_la') && $hasStarInSet('vu_khuc')) {
+                $patterns[] = ['code' => 'LINH_XUONG_DA_VU', 'content' => $this->fetchContent('CACH_LINH_XUONG_DA_VU', 'general', 'pattern')];
+            }
+        }
+
+        // 5. MA DAU DOI KIEM (Bad) - Kinh Duong at Ngo
+        // Specifically Kinh Duong at Ngo Palace (Horse).
+        if ($palace['key'] == 'ngo' && $this->hasStar($palace, 'kinh_duong')) {
+             $patterns[] = ['code' => 'MA_DAU_DOI_KIEM', 'content' => $this->fetchContent('CACH_MA_DAU_DOI_KIEM', 'general', 'pattern')];
+        }
+
         return $patterns;
     }
 

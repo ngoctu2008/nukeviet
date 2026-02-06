@@ -206,9 +206,13 @@ $sql_create_module[] = generate_tuvi_sql($table, 'MENH_CUC_BINH_HOA', 'general',
 $sql_create_module[] = generate_tuvi_sql($table, 'CACH_TU_PHU_VU_TUONG', 'general', 'Tử Phủ Vũ Tướng: Văn võ song toàn, tài năng lãnh đạo, hưởng lộc dồi dào, công danh hiển hách.', 'pattern');
 $sql_create_module[] = generate_tuvi_sql($table, 'CACH_SAT_PHA_THAM', 'general', 'Sát Phá Tham: Mẫu người hành động, cuộc đời nhiều biến động, ly hương lập nghiệp, thích hợp quân sự hoặc kinh doanh mạo hiểm.', 'pattern');
 $sql_create_module[] = generate_tuvi_sql($table, 'CACH_CO_NGUYET_DONG_LUONG', 'general', 'Cơ Nguyệt Đồng Lương: Mẫu người tham mưu, văn phòng, thích hợp làm công chức, giáo dục, y tế, đời sống êm đềm.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'CACH_LINH_XUONG_DA_VU', 'general', 'Linh Xương Đà Vũ (Cách xấu): "Linh Xương Đà Vũ hạn chí đầu hà". Chủ về bế tắc cùng cực, dễ nghĩ quẩn, tự vẫn hoặc gặp tai nạn sông nước nghiêm trọng. Cần tu dưỡng tâm tính để hóa giải.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'CACH_MA_DAU_DOI_KIEM', 'general', 'Mã Đầu Đới Kiếm (Cách xấu): Kình Dương cư Ngọ. Như ngựa chiến mang gươm báu, rất hung hiểm nhưng nếu là quân nhân, võ tướng thời loạn thì lại lập công lớn. Người thường thì dễ gặp tai nạn dao kéo, hình thương.', 'pattern');
 
 // 3. VCD
-$sql_create_module[] = generate_tuvi_sql($table, 'VO_CHINH_DIEU_GENERAL', 'general', 'Mệnh Vô Chính Diệu: Thông minh, khôn ngoan, nhưng thiếu lập trường kiên định, lúc nhỏ thường khó nuôi hoặc sức khỏe kém. Cần Tuần Triệt án ngữ mới tốt.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'VO_CHINH_DIEU_GENERAL', 'general', 'Mệnh Vô Chính Diệu: Thông minh, khôn ngoan, nhưng thiếu lập trường kiên định.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'VO_CHINH_DIEU_DAC_TAM_KHONG', 'general', 'Mệnh Vô Chính Diệu đắc Tuần/Triệt (Đắc Tam Không): Rất tốt ("Phú quý khả kỳ"), như nhà trống được che chắn, lại nhìn thấy bầu trời quang đãng. Chủ về người thông minh xuất chúng, tay trắng làm nên sự nghiệp lớn, bất ngờ phát đạt.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'VO_CHINH_DIEU_BAD', 'general', 'Mệnh Vô Chính Diệu không có Tuần/Triệt: Như nhà không cửa, dễ bị ngoại cảnh tác động, ý chí không bền, tuổi trẻ thường vất vả, phiêu bạt, khó tụ tài.', 'pattern');
 
 // 4. Specific Star Positions (Examples)
 $sql_create_module[] = generate_tuvi_sql($table, 'SAO_TU_VI_CU_NGO', 'general', 'Tử Vi cư Ngọ: Cách "Cực hướng ly minh", vua ở ngôi rồng. Chủ về đại phú đại quý, uy quyền tột bậc, lãnh đạo tài ba.', 'pattern');
