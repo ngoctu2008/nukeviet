@@ -107,10 +107,18 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                 if ($palace['triet']) $xtpl->parse('main.result.palace.triet');
                 if ($palace['tieu_van']) $xtpl->parse('main.result.palace.tieu_van');
 
+                // Sanitize function
+                $sanitizeStar = function($s) {
+                    $s['name'] = htmlspecialchars($s['name'], ENT_QUOTES);
+                    if (isset($s['content'])) $s['content'] = htmlspecialchars($s['content'], ENT_QUOTES);
+                    if (isset($s['element'])) $s['element'] = htmlspecialchars($s['element'], ENT_QUOTES);
+                    return $s;
+                };
+
                 // Chinh Tinh
                 if (!empty($palace['chinh_tinh'])) {
                     foreach ($palace['chinh_tinh'] as $star) {
-                        $xtpl->assign('STAR', $star);
+                        $xtpl->assign('STAR', $sanitizeStar($star));
                         $xtpl->parse('main.result.palace.chinh_tinh');
                     }
                 }
@@ -118,7 +126,7 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                 // Phu Tinh Tot
                 if (!empty($palace['phu_tinh_tot'])) {
                     foreach ($palace['phu_tinh_tot'] as $star) {
-                        $xtpl->assign('STAR', $star);
+                        $xtpl->assign('STAR', $sanitizeStar($star));
                         $xtpl->parse('main.result.palace.phu_tinh_tot');
                     }
                 }
@@ -126,7 +134,7 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                 // Phu Tinh Xau
                 if (!empty($palace['phu_tinh_xau'])) {
                     foreach ($palace['phu_tinh_xau'] as $star) {
-                        $xtpl->assign('STAR', $star);
+                        $xtpl->assign('STAR', $sanitizeStar($star));
                         $xtpl->parse('main.result.palace.phu_tinh_xau');
                     }
                 }
