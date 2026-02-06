@@ -521,10 +521,18 @@ class TuViLapSo {
             'thien_ban' => $thienBan,
             'dia_ban' => $chart,
             'meta' => [
-                'chiYear' => $chiYear,
-                'gender' => $gender,
+                'canYear' => $canYear, // 0..9
+                'chiYear' => $chiYear, // 0..11
+                'gender' => $gender, // 1/0
                 'menh_idx' => $posMenh,
-                'than_idx' => $posThan
+                'than_idx' => $posThan,
+                'menh_element_id' => $banMenhEl, // 1..5
+                'cuc_element_id' => $cucMap[$cucElement], // 2..6 (Wait, cucMap values are 2,6,5,4,3. These are Cuc ID, not element ID?)
+                // cucMap was: array(1 => 2, 2 => 6, 3 => 5, 4 => 4, 5 => 3);
+                // 1=Thuy -> 2 (Thuy Nhi Cuc). Element 1 map to Cuc 2.
+                // 2=Hoa -> 6 (Hoa Luc Cuc). Element 2 map to Cuc 6.
+                // So $cucMap[$cucElement] IS the Cuc ID (2..6).
+                'cuc_id' => $cuc // 2..6
             ]
         ];
     }

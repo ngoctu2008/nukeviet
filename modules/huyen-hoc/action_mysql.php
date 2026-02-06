@@ -57,14 +57,11 @@ $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_
 ) ENGINE=MyISAM;";
 
 // --- Massive Data Injection ---
-// To avoid massive file size in one string, we'll build arrays.
-// 14 Chinh Tinh x 12 Palaces = 168 entries. Plus general meanings.
-
 $table = $db_config['prefix'] . "_" . $lang . "_" . $module_data_safe . "_interpretations";
 
 // Helper for generating SQL
-function generate_tuvi_sql($table, $star, $palace, $content) {
-    return "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('" . $star . "', '" . $palace . "', 'main', '" . str_replace("'", "\'", $content) . "')";
+function generate_tuvi_sql($table, $star, $palace, $content, $topic = 'main') {
+    return "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('" . $star . "', '" . $palace . "', '" . $topic . "', '" . str_replace("'", "\'", $content) . "')";
 }
 
 // 1. TU VI
@@ -183,12 +180,41 @@ $sql_create_module[] = generate_tuvi_sql($table, 'that_sat', 'menh', 'Thất Sá
 $sql_create_module[] = generate_tuvi_sql($table, 'pha_quan', 'menh', 'Phá Quân thủ Mệnh: Ngang tàng, phá cũ đổi mới, dũng mãnh, hao tán, phu thê bất hòa.');
 // ...
 
-// Add General Aux Meanings
-$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('kinh_duong', 'general', 'meaning', 'Kình Dương: Sát tinh, gây trở ngại, tai nạn, thương tích, nhưng đắc địa thì uy quyền.')";
-$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('da_la', 'general', 'meaning', 'Đà La: Ám tinh, gây chậm trễ, thị phi, bệnh tật dai dẳng.')";
-$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('dia_khong', 'general', 'meaning', 'Địa Không: Sát tinh hạng nặng, gây phá tán, thất bại bất ngờ, nhưng phát dã như lôi.')";
-$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('dia_kiep', 'general', 'meaning', 'Địa Kiếp: Sát tinh hạng nặng, gây tai họa, mất mát, đau khổ.')";
-$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('hoa_tinh', 'general', 'meaning', 'Hỏa Tinh: Nóng nảy, tai nạn lửa điện, phát nhanh tàn nhanh.')";
-$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('linh_tinh', 'general', 'meaning', 'Linh Tinh: Thâm trầm, nóng nảy ngầm, gây tai họa bất ngờ.')";
-$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('van_xuong', 'general', 'meaning', 'Văn Xương: Văn chương, học hành, thi cử đỗ đạt, mỹ thuật.')";
-$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('van_khuc', 'general', 'meaning', 'Văn Khúc: Tài hoa, nghệ thuật, hùng biện, đa cảm.')";
+// General Aux Meanings
+$sql_create_module[] = generate_tuvi_sql($table, 'kinh_duong', 'general', 'Kình Dương: Sát tinh, gây trở ngại, tai nạn, thương tích, nhưng đắc địa thì uy quyền.', 'meaning');
+$sql_create_module[] = generate_tuvi_sql($table, 'da_la', 'general', 'Đà La: Ám tinh, gây chậm trễ, thị phi, bệnh tật dai dẳng.', 'meaning');
+$sql_create_module[] = generate_tuvi_sql($table, 'dia_khong', 'general', 'Địa Không: Sát tinh hạng nặng, gây phá tán, thất bại bất ngờ, nhưng phát dã như lôi.', 'meaning');
+$sql_create_module[] = generate_tuvi_sql($table, 'dia_kiep', 'general', 'Địa Kiếp: Sát tinh hạng nặng, gây tai họa, mất mát, đau khổ.', 'meaning');
+$sql_create_module[] = generate_tuvi_sql($table, 'hoa_tinh', 'general', 'Hỏa Tinh: Nóng nảy, tai nạn lửa điện, phát nhanh tàn nhanh.', 'meaning');
+$sql_create_module[] = generate_tuvi_sql($table, 'linh_tinh', 'general', 'Linh Tinh: Thâm trầm, nóng nảy ngầm, gây tai họa bất ngờ.', 'meaning');
+$sql_create_module[] = generate_tuvi_sql($table, 'van_xuong', 'general', 'Văn Xương: Văn chương, học hành, thi cử đỗ đạt, mỹ thuật.', 'meaning');
+$sql_create_module[] = generate_tuvi_sql($table, 'van_khuc', 'general', 'Văn Khúc: Tài hoa, nghệ thuật, hùng biện, đa cảm.', 'meaning');
+
+// === ADVANCED INTERPRETATION DATA (New Logic) ===
+
+// 1. Am Duong / Ngu Hanh
+$sql_create_module[] = generate_tuvi_sql($table, 'MENH_AM_DUONG_NGHICH_LY', 'general', 'Âm Dương Nghịch Lý: Độ số giảm đi, cuộc đời thường gặp trắc trở bước đầu, phải nỗ lực mới thành công.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'MENH_AM_DUONG_THUAN_LY', 'general', 'Âm Dương Thuận Lý: Được thời vận ưu đãi, dễ dàng đạt được thành công hơn người khác.', 'pattern');
+
+$sql_create_module[] = generate_tuvi_sql($table, 'MENH_SINH_CUC', 'general', 'Mệnh sinh Cục: Bản mệnh sinh xuất cho môi trường, là người hay cống hiến, vất vả vì người khác.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'CUC_SINH_MENH', 'general', 'Cục sinh Mệnh: Được hoàn cảnh ưu đãi, may mắn, có quý nhân phù trợ.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'CUC_KHAC_MENH', 'general', 'Cục khắc Mệnh: Hoàn cảnh khắc nghiệt, hay gặp trở ngại, phải đấu tranh sinh tồn.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'MENH_KHAC_CUC', 'general', 'Mệnh khắc Cục: Có khả năng chinh phục hoàn cảnh, vượt qua khó khăn để thành công.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'MENH_CUC_BINH_HOA', 'general', 'Mệnh Cục Bình Hòa: Cuộc đời êm ả, ít sóng gió lớn, nhưng cũng ít sự đột phá bất ngờ.', 'pattern');
+
+// 2. Patterns (Cach Cuc)
+$sql_create_module[] = generate_tuvi_sql($table, 'CACH_TU_PHU_VU_TUONG', 'general', 'Tử Phủ Vũ Tướng: Văn võ song toàn, tài năng lãnh đạo, hưởng lộc dồi dào, công danh hiển hách.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'CACH_SAT_PHA_THAM', 'general', 'Sát Phá Tham: Mẫu người hành động, cuộc đời nhiều biến động, ly hương lập nghiệp, thích hợp quân sự hoặc kinh doanh mạo hiểm.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'CACH_CO_NGUYET_DONG_LUONG', 'general', 'Cơ Nguyệt Đồng Lương: Mẫu người tham mưu, văn phòng, thích hợp làm công chức, giáo dục, y tế, đời sống êm đềm.', 'pattern');
+
+// 3. VCD
+$sql_create_module[] = generate_tuvi_sql($table, 'VO_CHINH_DIEU_GENERAL', 'general', 'Mệnh Vô Chính Diệu: Thông minh, khôn ngoan, nhưng thiếu lập trường kiên định, lúc nhỏ thường khó nuôi hoặc sức khỏe kém. Cần Tuần Triệt án ngữ mới tốt.', 'pattern');
+
+// 4. Specific Star Positions (Examples)
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_TU_VI_CU_NGO', 'general', 'Tử Vi cư Ngọ: Cách "Cực hướng ly minh", vua ở ngôi rồng. Chủ về đại phú đại quý, uy quyền tột bậc, lãnh đạo tài ba.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_THIEN_PHU_CU_TUAT', 'general', 'Thiên Phủ cư Tuất: Tài lộc dồi dào, giỏi quản lý tài chính, cuộc sống sung túc.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_THAM_LANG_CU_TY', 'general', 'Tham Lang cư Tý: Cách "Phiếm thủy đào hoa", tài hoa nhưng dễ sa đà vào tửu sắc, tình cảm phức tạp.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_THAT_SAT_CU_DAN', 'general', 'Thất Sát cư Dần: Cách "Thất Sát triều đẩu", uy quyền hiển hách, làm nên sự nghiệp lớn từ gian khó.', 'pattern');
+
+// 5. Tuan/Triet
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_TU_VI_GAP_TUAN_TRIET', 'general', 'Tử Vi gặp Tuần/Triệt: Vua bị vây hãm, tài năng không được trọng dụng, chí lớn khó thành, thường đi tu hoặc ẩn dật.', 'pattern');
