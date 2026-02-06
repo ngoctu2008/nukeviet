@@ -32,6 +32,11 @@ class TuViLuanGiai {
         // 2. Score
         $result['score'] = $this->calculateScore($chart);
 
+        // 2b. Luan Giai Van Han (Luu Stars) - if limit info exists
+        // Note: Chart doesn't usually contain limit info by default unless calculated.
+        // We'll expose a method for Controller to call separately or inject if needed.
+        // For now, structure remains.
+
         // 3. Luan Giai 12 Cung & Patterns
         foreach ($chart['dia_ban'] as $i => $palace) {
             $key = $this->normalizePalaceName($palace['palace_name']);
@@ -180,7 +185,46 @@ class TuViLuanGiai {
             }
         }
 
+        // Minor Star Combinations (Step 6)
+        $minorCombs = $this->analyzeMinorStarCombinations($palaceData, $palaceKey);
+        if ($minorCombs) {
+            foreach ($minorCombs as $comb) {
+                $readings['general'][] = ['star' => 'Bộ Sao Phụ', 'content' => $comb['content']];
+            }
+        }
+
         return $readings;
+    }
+
+    /**
+     * Analyze Minor Star Combinations
+     */
+    private function analyzeMinorStarCombinations($palace, $palaceKey) {
+        $combinations = [];
+
+        $hasStarLocal = function($code) use ($palace) {
+            foreach (array_merge($palace['phu_tinh_tot'], $palace['phu_tinh_xau']) as $s) {
+                if ($s['code'] == $code) return true;
+            }
+            return false;
+        };
+
+        // 1. Dao Hoa + Hong Loan
+        if ($hasStarLocal('dao_hoa') && $hasStarLocal('hong_loan')) {
+            $combinations[] = ['code' => 'DAO_HONG', 'content' => $this->fetchContent('SAO_DAO_HONG_COMBINATION', 'general', 'pattern')];
+        }
+
+        // 2. Xuong + Khuc
+        if ($hasStarLocal('van_xuong') && $hasStarLocal('van_khuc')) {
+            $combinations[] = ['code' => 'XUONG_KHUC', 'content' => $this->fetchContent('SAO_XUONG_KHUC_COMBINATION', 'general', 'pattern')];
+        }
+
+        // 3. Khong + Kiep (Local)
+        if ($hasStarLocal('dia_khong') && $hasStarLocal('dia_kiep')) {
+            $combinations[] = ['code' => 'KHONG_KIEP', 'content' => $this->fetchContent('SAO_KHONG_KIEP_COMBINATION', 'general', 'pattern')];
+        }
+
+        return $combinations;
     }
 
     /**
@@ -332,6 +376,36 @@ class TuViLuanGiai {
              ];
         }
         return $report;
+    }
+
+    /**
+     * Analyze Luu Stars (New Method for Controller/AJAX)
+     */
+    public function analyzeLuuStars($limitInfo) {
+        $comments = [];
+        if (empty($limitInfo['luu_stars'])) return $comments;
+
+        $luu = $limitInfo['luu_stars'];
+
+        // Luu Thai Tue
+        $comments[] = "Lưu Thái Tuế tại cung " . TuViLapSo::$DIA_CHI[$luu['luu_thai_tue']] . ": " . $this->fetchContent('SAO_LUU_THAI_TUE_GENERAL', 'general', 'pattern');
+
+        // Luu Loc Ton
+        $comments[] = "Lưu Lộc Tồn tại cung " . TuViLapSo::$DIA_CHI[$luu['luu_loc_ton']] . ": " . $this->fetchContent('SAO_LUU_LOC_TON_GENERAL', 'general', 'pattern');
+
+        // Luu Thien Ma
+        $comments[] = "Lưu Thiên Mã tại cung " . TuViLapSo::$DIA_CHI[$luu['luu_thien_ma']] . ": " . $this->fetchContent('SAO_LUU_THIEN_MA_GENERAL', 'general', 'pattern');
+
+        // Luu Bach Ho / Tang Mon
+        $comments[] = "Lưu Tang Môn tại " . TuViLapSo::$DIA_CHI[$luu['luu_tang_mon']] . ", Lưu Bạch Hổ tại " . TuViLapSo::$DIA_CHI[$luu['luu_bach_ho']] . ": " . $this->fetchContent('SAO_LUU_BACH_HO_TANG_MON_GENERAL', 'general', 'pattern');
+
+        // Luu Khoc / Hu
+        $comments[] = "Lưu Thiên Khốc tại " . TuViLapSo::$DIA_CHI[$luu['luu_thien_khoc']] . ", Lưu Thiên Hư tại " . TuViLapSo::$DIA_CHI[$luu['luu_thien_hu']] . ": " . $this->fetchContent('SAO_LUU_KHOC_HU_GENERAL', 'general', 'pattern');
+
+        // Luu Kinh / Da
+        $comments[] = "Lưu Kình Dương tại " . TuViLapSo::$DIA_CHI[$luu['luu_kinh_duong']] . ", Lưu Đà La tại " . TuViLapSo::$DIA_CHI[$luu['luu_da_la']] . ": " . $this->fetchContent('SAO_LUU_KINH_DA_GENERAL', 'general', 'pattern');
+
+        return $comments;
     }
 
     private function normalizePalaceName($name) {

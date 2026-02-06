@@ -603,6 +603,70 @@ class TuViLapSo {
 
         $star9Info = ($gender == 1) ? $stars9[$age % 9] : $stars9Nu[$age % 9];
 
+        // --- 3b. Cac Sao Luu (Dynamic Stars) ---
+        $luuStars = [];
+
+        // Luu Thai Tue (Already calculated as $targetChi)
+        $luuStars['luu_thai_tue'] = $targetChi;
+
+        // Luu Tang Mon (Thai Tue + 2)
+        $luuStars['luu_tang_mon'] = ($targetChi + 2) % 12;
+
+        // Luu Bach Ho (Opposite Tang Mon)
+        $luuStars['luu_bach_ho'] = ($targetChi + 8) % 12; // (Target + 2 + 6)
+
+        // Luu Thien Khoc / Luu Thien Hu
+        // Khoc: Ngo (6) - YearChi. Hu: Ngo (6) + YearChi.
+        $luuKhoc = (6 - $targetChi + 12) % 12;
+        $luuHu = (6 + $targetChi) % 12;
+        $luuStars['luu_thien_khoc'] = $luuKhoc;
+        $luuStars['luu_thien_hu'] = $luuHu;
+
+        // Luu Thien Ma
+        // Dan/Ngo/Tuat (2,6,10) -> Than (8)
+        // Than/Ty/Thin (8,0,4) -> Dan (2)
+        // Ty/Dau/Suu (5,9,1) -> Hoi (11)
+        // Hoi/Mao/Mui (11,3,7) -> Ty (5)
+        $luuMa = 0;
+        if (in_array($targetChi, [2, 6, 10])) $luuMa = 8;
+        elseif (in_array($targetChi, [8, 0, 4])) $luuMa = 2;
+        elseif (in_array($targetChi, [5, 9, 1])) $luuMa = 11;
+        elseif (in_array($targetChi, [11, 3, 7])) $luuMa = 5;
+        $luuStars['luu_thien_ma'] = $luuMa;
+
+        // Luu Loc Ton (Based on Year Can)
+        // Can of Viewing Year.
+        // Need Can of Viewing Year. $targetYear.
+        // CanYear = ($targetYear - 4) % 10.
+        $targetCan = ($targetYear - 4) % 10;
+        if ($targetCan < 0) $targetCan += 10;
+
+        $locTonMap = [0=>2, 1=>3, 2=>5, 3=>6, 4=>5, 5=>6, 6=>8, 7=>9, 8=>11, 9=>0];
+        $luuLoc = isset($locTonMap[$targetCan]) ? $locTonMap[$targetCan] : 0;
+        $luuStars['luu_loc_ton'] = $luuLoc;
+
+        // Luu Kinh Duong / Da La
+        $luuStars['luu_kinh_duong'] = ($luuLoc + 1) % 12;
+        $luuStars['luu_da_la'] = ($luuLoc - 1 + 12) % 12;
+
+        // Luu Dao Hoa / Hong Loan
+        // Dao Hoa: Same as Thien Ma groups logic but different positions
+        // Dan/Ngo/Tuat -> Mao (3)
+        // Than/Ty/Thin -> Dau (9)
+        // Ty/Dau/Suu -> Ngo (6)
+        // Hoi/Mao/Mui -> Ty (0)
+        $luuDao = 0;
+        if (in_array($targetChi, [2, 6, 10])) $luuDao = 3;
+        elseif (in_array($targetChi, [8, 0, 4])) $luuDao = 9;
+        elseif (in_array($targetChi, [5, 9, 1])) $luuDao = 6;
+        elseif (in_array($targetChi, [11, 3, 7])) $luuDao = 0;
+        $luuStars['luu_dao_hoa'] = $luuDao;
+
+        // Hong Loan: Opposite Dao Hoa? No. Hong Loan is fixed rule: Mao (3) count backwards to Year Chi.
+        // Position = (3 - YearChi + 12) % 12.
+        $luuHong = (3 - $targetChi + 12) % 12;
+        $luuStars['luu_hong_loan'] = $luuHong;
+
         // --- 4. Bat Han (8 Limits) ---
         // Nam: 1=Huynh Tuyen, 2=Tam Kheo, 3=Ngu Mo, 4=Thien Tinh, 5=Toan Tan, 6=Thien La, 7=Dia Vong, 0(8)=Diem Vuong
         // Nu: 1=Toan Tan, 2=Thien La, 3=Dia Vong, 4=Diem Vuong, 5=Huynh Tuyen, 6=Tam Kheo, 7=Ngu Mo, 0(8)=Thien Tinh
@@ -694,7 +758,8 @@ class TuViLapSo {
             'sao_han' => $star9Info,
             'han' => $hanInfo,
             'tam_tai' => $tamTai,
-            'pham_thai_tue' => $phamThaiTue
+            'pham_thai_tue' => $phamThaiTue,
+            'luu_stars' => $luuStars
         ];
     }
 

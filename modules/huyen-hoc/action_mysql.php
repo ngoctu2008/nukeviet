@@ -209,6 +209,11 @@ $sql_create_module[] = generate_tuvi_sql($table, 'CACH_CO_NGUYET_DONG_LUONG', 'g
 $sql_create_module[] = generate_tuvi_sql($table, 'CACH_LINH_XUONG_DA_VU', 'general', 'Linh Xương Đà Vũ (Cách xấu): "Linh Xương Đà Vũ hạn chí đầu hà". Chủ về bế tắc cùng cực, dễ nghĩ quẩn, tự vẫn hoặc gặp tai nạn sông nước nghiêm trọng. Cần tu dưỡng tâm tính để hóa giải.', 'pattern');
 $sql_create_module[] = generate_tuvi_sql($table, 'CACH_MA_DAU_DOI_KIEM', 'general', 'Mã Đầu Đới Kiếm (Cách xấu): Kình Dương cư Ngọ. Như ngựa chiến mang gươm báu, rất hung hiểm nhưng nếu là quân nhân, võ tướng thời loạn thì lại lập công lớn. Người thường thì dễ gặp tai nạn dao kéo, hình thương.', 'pattern');
 
+// Minor Star Combinations
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_DAO_HONG_COMBINATION', 'general', 'Đào Hoa gặp Hồng Loan: Người duyên dáng, thu hút người khác phái, có khiếu nghệ thuật, tình cảm phong phú.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_XUONG_KHUC_COMBINATION', 'general', 'Văn Xương gặp Văn Khúc: Văn chương lỗi lạc, học hành thông minh, thi cử đỗ đạt, có khiếu thẩm mỹ cao.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_KHONG_KIEP_COMBINATION', 'general', 'Địa Không gặp Địa Kiếp: "Kiếp Không hội thủ". Chủ về sự phá tán, thất bại bất ngờ, hoặc phát dã như lôi (phát nhanh tàn nhanh). Tính cách táo bạo, liều lĩnh.', 'pattern');
+
 // 3. VCD
 $sql_create_module[] = generate_tuvi_sql($table, 'VO_CHINH_DIEU_GENERAL', 'general', 'Mệnh Vô Chính Diệu: Thông minh, khôn ngoan, nhưng thiếu lập trường kiên định.', 'pattern');
 $sql_create_module[] = generate_tuvi_sql($table, 'VO_CHINH_DIEU_DAC_TAM_KHONG', 'general', 'Mệnh Vô Chính Diệu đắc Tuần/Triệt (Đắc Tam Không): Rất tốt ("Phú quý khả kỳ"), như nhà trống được che chắn, lại nhìn thấy bầu trời quang đãng. Chủ về người thông minh xuất chúng, tay trắng làm nên sự nghiệp lớn, bất ngờ phát đạt.', 'pattern');
@@ -244,3 +249,11 @@ $sql_create_module[] = generate_tuvi_sql($table, 'HAN_TOAN_TAN', 'general', 'H�
 $sql_create_module[] = generate_tuvi_sql($table, 'HAN_THIEN_LA', 'general', 'Hạn Thiên La: Lưới trời lồng lộng, tâm trí không yên, hay lo âu, gia đạo bất hòa, vợ chồng ly cách.', 'pattern');
 $sql_create_module[] = generate_tuvi_sql($table, 'HAN_DIA_VONG', 'general', 'Hạn Địa Võng: Rắc rối, thị phi, bị hiểu lầm, kỵ đi xa vào giờ Tuất/Hợi. Nên làm việc thiện.', 'pattern');
 $sql_create_module[] = generate_tuvi_sql($table, 'HAN_DIEM_VUONG', 'general', 'Hạn Diêm Vương: Tin buồn từ xa, kỵ người đau ốm, người già nhưng tốt cho mưu cầu danh lợi, tài lộc.', 'pattern');
+
+// === SAO LUU (Luu Stars) ===
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_LUU_THAI_TUE_GENERAL', 'general', 'Lưu Thái Tuế: Kích hoạt cung này, sự kiện trong năm thường liên quan đến lĩnh vực của cung này (Ví dụ Điền Trạch thì liên quan nhà cửa). Tâm tư hay để ý vào vấn đề cung này.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_LUU_LOC_TON_GENERAL', 'general', 'Lưu Lộc Tồn: Có lộc nhỏ, may mắn về tiền bạc, hoặc có tin vui.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_LUU_THIEN_MA_GENERAL', 'general', 'Lưu Thiên Mã: Có sự di chuyển, thay đổi, đi xa, hoặc công việc biến động.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_LUU_BACH_HO_TANG_MON_GENERAL', 'general', 'Lưu Tang/Hổ: Đề phòng chuyện buồn phiền, lo âu, sức khỏe người thân, hoặc tai nạn nhỏ.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_LUU_KHOC_HU_GENERAL', 'general', 'Lưu Khốc/Hư: Có chuyện bực mình, lo lắng, hoặc hao tài nhỏ, khóc lóc bi ai.', 'pattern');
+$sql_create_module[] = generate_tuvi_sql($table, 'SAO_LUU_KINH_DA_GENERAL', 'general', 'Lưu Kình/Đà: Đề phòng va chạm, thị phi, cản trở, trì trệ trong công việc.', 'pattern');
