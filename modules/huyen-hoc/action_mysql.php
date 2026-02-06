@@ -14,8 +14,8 @@ if (!defined('NV_IS_FILE_MODULES')) {
 $sql_drop_module = array();
 $sql_create_module = $sql_drop_module;
 
-// Sanitize module_data for table names (replace hyphen with underscore)
-$_module_data = str_replace('-', '_', $module_data);
+// Sanitize module_data for table names (remove hyphen to avoid tablespace conflict)
+$_module_data = str_replace('-', '', $module_data);
 
 // Define tables
 $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $_module_data . "_customers (

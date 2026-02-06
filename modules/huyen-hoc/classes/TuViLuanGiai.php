@@ -17,8 +17,8 @@ class TuViLuanGiai {
     public function __construct() {
         global $db, $db_config, $module_data;
         $this->db = $db;
-        // Sanitize module_data to match action_mysql.php (replace - with _)
-        $mod_data_sanitized = str_replace('-', '_', $module_data);
+        // Sanitize module_data to match action_mysql.php (remove hyphen)
+        $mod_data_sanitized = str_replace('-', '', $module_data);
         $this->table = $db_config['prefix'] . "_" . NV_LANG_DATA . "_" . $mod_data_sanitized . "_interpretations";
     }
 
