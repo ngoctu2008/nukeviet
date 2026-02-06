@@ -10,15 +10,18 @@
 if (!defined('NV_MAINFILE'))
     die('Stop!!!');
 
+// Sanitize module_data for table names (underscore instead of hyphen)
+$module_data_safe = str_replace('-', '_', $module_data);
+
 $sql_drop_module = [];
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_customers";
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_logs";
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_safe . "_customers";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_safe . "_logs";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_safe . "_interpretations";
 
 $sql_create_module = $sql_drop_module;
 
 // Customers
-$sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_customers (
+$sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_safe . "_customers (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   fullname varchar(255) NOT NULL,
   birth_date int(11) NOT NULL,
@@ -30,7 +33,7 @@ $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_
 ) ENGINE=MyISAM;";
 
 // Logs
-$sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_logs (
+$sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_safe . "_logs (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   customer_id int(11) unsigned NOT NULL,
   action_type varchar(50) NOT NULL,
@@ -40,7 +43,7 @@ $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_
 ) ENGINE=MyISAM;";
 
 // Interpretations (Updated Schema)
-$sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (
+$sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data_safe . "_interpretations (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   star_key varchar(50) NOT NULL,
   palace_key varchar(50) NOT NULL,
@@ -57,7 +60,7 @@ $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_
 // To avoid massive file size in one string, we'll build arrays.
 // 14 Chinh Tinh x 12 Palaces = 168 entries. Plus general meanings.
 
-$table = $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations";
+$table = $db_config['prefix'] . "_" . $lang . "_" . $module_data_safe . "_interpretations";
 
 // Helper for generating SQL
 function generate_tuvi_sql($table, $star, $palace, $content) {
