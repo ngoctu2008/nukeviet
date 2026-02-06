@@ -32,21 +32,29 @@ $action = $nv_Request->get_string('action', 'get,post', '');
 
 if ($action == 'xem_han') {
     try {
-        // Inputs: chiYear (of Birth), gender, targetYear
+        // Inputs: chiYear (of Birth), gender, targetYear, birthYear
         $chiYear = $nv_Request->get_int('chiYear', 'post', 0);
         $gender = $nv_Request->get_int('gender', 'post', 1);
         $targetYear = $nv_Request->get_int('targetYear', 'post', date('Y'));
+        $birthYear = $nv_Request->get_int('birthYear', 'post', date('Y')); // Added birthYear
 
         // 1. Calculate Limits
-        $limitInfo = TuViLapSo::getLimitInfoForYear($chiYear, $gender, $targetYear);
+        $limitInfo = TuViLapSo::getLimitInfoForYear($chiYear, $gender, $targetYear, $birthYear);
 
         $html = '<div class="alert alert-info">';
         $html .= '<h4>Kết quả năm ' . $targetYear . ' (' . $limitInfo['target_chi'] . ')</h4>';
+        $html .= '<p><strong>Tuổi Âm:</strong> ' . $limitInfo['age_am'] . ' tuổi</p>'; // Added Age
         $html .= '<p><strong>Tiểu vận tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['tieu_van_idx']] . '</p>';
         $html .= '<p><strong>Lưu Thái Tuế tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['luu_thai_tue_idx']] . '</p>';
+
+        // Add 9 Stars & Han
+        $saoInfo = $limitInfo['sao_han'];
+        $html .= '<p><strong>Sao chiếu mệnh:</strong> ' . $saoInfo['name'] . ' (' . ($saoInfo['type']=='tot'?'Tốt':($saoInfo['type']=='xau'?'Xấu':'Trung')) . ')</p>';
+        $html .= '<p><strong>Hạn:</strong> ' . $limitInfo['han'] . '</p>';
+        $html .= '<p><strong>Tam Tai:</strong> ' . ($limitInfo['tam_tai'] ? '<span class="text-danger">Có</span>' : 'Không') . '</p>';
+
         $html .= '<hr>';
         $html .= '<p><em>(Lời giải chi tiết đang được cập nhật từ dữ liệu mẫu...)</em></p>';
-        $html .= '<p>Năm nay hành hạn đi vào cung ' . TuViLapSo::$DIA_CHI[$limitInfo['tieu_van_idx']] . ', cần chú ý các sao tọa thủ tại đây.</p>';
         $html .= '</div>';
 
         // Clean buffer

@@ -76,6 +76,7 @@
                 <!-- Hidden inputs for AJAX -->
                 <input type="hidden" id="meta_chiYear" value="{META.chiYear}">
                 <input type="hidden" id="meta_gender" value="{META.gender}">
+                <input type="hidden" id="meta_birthYear" value="{INPUT.y}">
             </div>
         </div>
 
@@ -244,6 +245,7 @@
             var targetYear = $('#select-year-han').val();
             var chiYear = $('#meta_chiYear').val();
             var gender = $('#meta_gender').val();
+            var birthYear = $('#meta_birthYear').val();
 
             $('#ket-qua-han').html('<p><i class="fa fa-spinner fa-spin"></i> Đang tính toán...</p>');
 
@@ -251,7 +253,8 @@
             {
                 targetYear: targetYear,
                 chiYear: chiYear,
-                gender: gender
+                gender: gender,
+                birthYear: birthYear
             }, function(res) {
                 if(res.status == 'success') {
                     $('#ket-qua-han').html(res.html);
