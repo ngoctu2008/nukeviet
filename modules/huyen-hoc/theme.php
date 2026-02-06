@@ -81,6 +81,12 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
 
         // Overview & Limit (from luan_giai_tong_quan)
         if (isset($laso['luan_giai_tong_quan'])) {
+            // Score
+            if (isset($laso['structured_report']['score'])) {
+                $xtpl->assign('SCORE', $laso['structured_report']['score']);
+                $xtpl->parse('main.result.score_box');
+            }
+
             // Overview
             if (!empty($laso['luan_giai_tong_quan']['overview'])) {
                 foreach ($laso['luan_giai_tong_quan']['overview'] as $ov) {

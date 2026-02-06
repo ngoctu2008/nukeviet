@@ -25,49 +25,50 @@ class TuViLapSo {
         8 => 'than', 9 => 'dau', 10 => 'tuat', 11 => 'hoi'
     );
 
-    // Full List of Stars (~110)
-    // Format: 'code' => ['Name', ElementID]
+    // Full List of Stars (Updated 110+)
+    // Format: 'code' => ['Name', ElementID, Type]
     // Elements: 1=Thuy, 2=Hoa, 3=Tho, 4=Kim, 5=Moc
+    // Type: 1=ChinhTinh, 2=PhuTinhTot, 3=PhuTinhXau (Sat/Bai), 4=VongThaiTue, 5=VongLocTon, 6=VongTrangSinh
     public static $STARS = array(
         // 14 Chinh Tinh
-        'tu_vi' => ['Tử Vi', 3], 'thien_co' => ['Thiên Cơ', 5], 'thai_duong' => ['Thái Dương', 2], 'vu_khuc' => ['Vũ Khúc', 4], 'thien_dong' => ['Thiên Đồng', 1], 'liem_trinh' => ['Liêm Trinh', 2],
-        'thien_phu' => ['Thiên Phủ', 3], 'thai_am' => ['Thái Âm', 1], 'tham_lang' => ['Tham Lang', 1], 'cu_mon' => ['Cự Môn', 1], 'thien_tuong' => ['Thiên Tướng', 1], 'thien_luong' => ['Thiên Lương', 5], 'that_sat' => ['Thất Sát', 4], 'pha_quan' => ['Phá Quân', 1],
+        'tu_vi' => ['Tử Vi', 3, 1], 'thien_co' => ['Thiên Cơ', 5, 1], 'thai_duong' => ['Thái Dương', 2, 1], 'vu_khuc' => ['Vũ Khúc', 4, 1], 'thien_dong' => ['Thiên Đồng', 1, 1], 'liem_trinh' => ['Liêm Trinh', 2, 1],
+        'thien_phu' => ['Thiên Phủ', 3, 1], 'thai_am' => ['Thái Âm', 1, 1], 'tham_lang' => ['Tham Lang', 1, 1], 'cu_mon' => ['Cự Môn', 1, 1], 'thien_tuong' => ['Thiên Tướng', 1, 1], 'thien_luong' => ['Thiên Lương', 5, 1], 'that_sat' => ['Thất Sát', 4, 1], 'pha_quan' => ['Phá Quân', 1, 1],
 
         // Vong Thai Tue
-        'thai_tue' => ['Thái Tuế', 2], 'thieu_duong' => ['Thiếu Dương', 2], 'tang_mon' => ['Tang Môn', 5], 'thieu_am' => ['Thiếu Âm', 1], 'quan_phu_3' => ['Quan Phù', 2], 'tu_phu' => ['Tử Phù', 4], 'tue_pha' => ['Tuế Phá', 2], 'long_duc' => ['Long Đức', 1], 'bach_ho' => ['Bạch Hổ', 4], 'phuc_duc' => ['Phúc Đức', 3], 'dieu_khach' => ['Điếu Khách', 2], 'truc_phu' => ['Trực Phù', 4],
+        'thai_tue' => ['Thái Tuế', 2, 4], 'thieu_duong' => ['Thiếu Dương', 2, 4], 'tang_mon' => ['Tang Môn', 5, 4], 'thieu_am' => ['Thiếu Âm', 1, 4], 'quan_phu_3' => ['Quan Phù', 2, 4], 'tu_phu' => ['Tử Phù', 4, 4], 'tue_pha' => ['Tuế Phá', 2, 4], 'long_duc' => ['Long Đức', 1, 4], 'bach_ho' => ['Bạch Hổ', 4, 4], 'phuc_duc' => ['Phúc Đức', 3, 4], 'dieu_khach' => ['Điếu Khách', 2, 4], 'truc_phu' => ['Trực Phù', 4, 4],
 
         // Vong Loc Ton
-        'loc_ton' => ['Lộc Tồn', 3], 'luc_si' => ['Lực Sĩ', 2], 'thanh_long' => ['Thanh Long', 1], 'tieu_hao' => ['Tiểu Hao', 2], 'tuong_quan' => ['Tướng Quân', 5], 'tau_thu' => ['Tấu Thư', 4], 'phi_liem' => ['Phi Liêm', 2], 'hy_than' => ['Hỷ Thần', 2], 'benh_phu' => ['Bệnh Phù', 3], 'dai_hao' => ['Đại Hao', 2], 'phuc_binh' => ['Phục Binh', 2], 'quan_phu_2' => ['Quan Phủ', 2],
+        'loc_ton' => ['Lộc Tồn', 3, 5], 'luc_si' => ['Lực Sĩ', 2, 5], 'thanh_long' => ['Thanh Long', 1, 5], 'tieu_hao' => ['Tiểu Hao', 2, 5], 'tuong_quan' => ['Tướng Quân', 5, 5], 'tau_thu' => ['Tấu Thư', 4, 5], 'phi_liem' => ['Phi Liêm', 2, 5], 'hy_than' => ['Hỷ Thần', 2, 5], 'benh_phu' => ['Bệnh Phù', 3, 5], 'dai_hao' => ['Đại Hao', 2, 5], 'phuc_binh' => ['Phục Binh', 2, 5], 'quan_phu_2' => ['Quan Phủ', 2, 5],
 
         // Vong Trang Sinh
-        'trang_sinh' => ['Tràng Sinh', 1], 'moc_duc' => ['Mộc Dục', 1], 'quan_doi' => ['Quan Đới', 4], 'lam_quan' => ['Lâm Quan', 4], 'de_vuong' => ['Đế Vượng', 4], 'suy' => ['Suy', 1], 'benh' => ['Bệnh', 2], 'tu' => ['Tử', 3], 'mo' => ['Mộ', 3], 'tuyet' => ['Tuyệt', 3], 'thai' => ['Thai', 3], 'duong' => ['Dưỡng', 5],
+        'trang_sinh' => ['Tràng Sinh', 1, 6], 'moc_duc' => ['Mộc Dục', 1, 6], 'quan_doi' => ['Quan Đới', 4, 6], 'lam_quan' => ['Lâm Quan', 4, 6], 'de_vuong' => ['Đế Vượng', 4, 6], 'suy' => ['Suy', 1, 6], 'benh' => ['Bệnh', 2, 6], 'tu' => ['Tử', 3, 6], 'mo' => ['Mộ', 3, 6], 'tuyet' => ['Tuyệt', 3, 6], 'thai' => ['Thai', 3, 6], 'duong' => ['Dưỡng', 5, 6],
 
         // Luc Sat (Kinh Da Khong Kiep Hoa Linh)
-        'kinh_duong' => ['Kình Dương', 4], 'da_la' => ['Đà La', 4], 'dia_khong' => ['Địa Không', 2], 'dia_kiep' => ['Địa Kiếp', 2], 'hoa_tinh' => ['Hỏa Tinh', 2], 'linh_tinh' => ['Linh Tinh', 2],
+        'kinh_duong' => ['Kình Dương', 4, 3], 'da_la' => ['Đà La', 4, 3], 'dia_khong' => ['Địa Không', 2, 3], 'dia_kiep' => ['Địa Kiếp', 2, 3], 'hoa_tinh' => ['Hỏa Tinh', 2, 3], 'linh_tinh' => ['Linh Tinh', 2, 3],
 
         // Tu Hoa
-        'hoa_loc' => ['Hóa Lộc', 5], 'hoa_quyen' => ['Hóa Quyền', 5], 'hoa_khoa' => ['Hóa Khoa', 1], 'hoa_ky' => ['Hóa Kỵ', 1],
+        'hoa_loc' => ['Hóa Lộc', 5, 2], 'hoa_quyen' => ['Hóa Quyền', 5, 2], 'hoa_khoa' => ['Hóa Khoa', 1, 2], 'hoa_ky' => ['Hóa Kỵ', 1, 3],
 
-        // Other Important Stars
-        'van_xuong' => ['Văn Xương', 4], 'van_khuc' => ['Văn Khúc', 1],
-        'ta_phu' => ['Tả Phù', 3], 'huu_bat' => ['Hữu Bật', 1],
-        'thien_khoi' => ['Thiên Khôi', 2], 'thien_viet' => ['Thiên Việt', 2],
-        'thien_khong' => ['Thiên Không', 2],
-        'dao_hoa' => ['Đào Hoa', 5], 'hong_loan' => ['Hồng Loan', 1], 'thien_hy' => ['Thiên Hỷ', 1],
-        'thien_hinh' => ['Thiên Hình', 4], 'thien_rieu' => ['Thiên Riêu', 1],
-        'co_than' => ['Cô Thần', 3], 'qua_tu' => ['Quả Tú', 3],
-        'an_quang' => ['Ân Quang', 5], 'thien_quy' => ['Thiên Quý', 3],
-        'tam_thai' => ['Tam Thai', 1], 'bat_toa' => ['Bát Tọa', 3],
-        'long_tri' => ['Long Trì', 1], 'phuong_cac' => ['Phượng Các', 4],
-        'thien_duc' => ['Thiên Đức', 2], 'nguyet_duc' => ['Nguyệt Đức', 2],
-        'thien_giai' => ['Thiên Giải', 2], 'dia_giai' => ['Địa Giải', 3], 'giai_than' => ['Giải Thần', 5],
-        'thien_y' => ['Thiên Y', 1], 'thien_quan' => ['Thiên Quan', 2], 'thien_phuc' => ['Thiên Phúc', 2],
-        'luu_ha' => ['Lưu Hà', 1], 'kiet_sat' => ['Kiếp Sát', 2],
-        'pha_toai' => ['Phá Toái', 2], 'thien_hu' => ['Thiên Hư', 1], 'thien_khoc' => ['Thiên Khốc', 1],
-        'thien_tai' => ['Thiên Tài', 3], 'thien_tho' => ['Thiên Thọ', 3],
-        'thien_thuong' => ['Thiên Thương', 3], 'thien_su' => ['Thiên Sứ', 1],
-        'hoa_cai' => ['Hoa Cái', 4], 'thien_ma' => ['Thiên Mã', 2], 'thien_la' => ['Thiên La', 3], 'dia_vong' => ['Địa Võng', 3],
-        'dau_quan' => ['Đẩu Quân', 2]
+        // Other Important Stars (Bo Tinh)
+        'van_xuong' => ['Văn Xương', 4, 2], 'van_khuc' => ['Văn Khúc', 1, 2],
+        'ta_phu' => ['Tả Phù', 3, 2], 'huu_bat' => ['Hữu Bật', 1, 2],
+        'thien_khoi' => ['Thiên Khôi', 2, 2], 'thien_viet' => ['Thiên Việt', 2, 2],
+        'thien_khong' => ['Thiên Không', 2, 3],
+        'dao_hoa' => ['Đào Hoa', 5, 2], 'hong_loan' => ['Hồng Loan', 1, 2], 'thien_hy' => ['Thiên Hỷ', 1, 2],
+        'thien_hinh' => ['Thiên Hình', 4, 3], 'thien_rieu' => ['Thiên Riêu', 1, 3],
+        'co_than' => ['Cô Thần', 3, 3], 'qua_tu' => ['Quả Tú', 3, 3],
+        'an_quang' => ['Ân Quang', 5, 2], 'thien_quy' => ['Thiên Quý', 3, 2],
+        'tam_thai' => ['Tam Thai', 1, 2], 'bat_toa' => ['Bát Tọa', 3, 2],
+        'long_tri' => ['Long Trì', 1, 2], 'phuong_cac' => ['Phượng Các', 4, 2],
+        'thien_duc' => ['Thiên Đức', 2, 2], 'nguyet_duc' => ['Nguyệt Đức', 2, 2],
+        'thien_giai' => ['Thiên Giải', 2, 2], 'dia_giai' => ['Địa Giải', 3, 2], 'giai_than' => ['Giải Thần', 5, 2],
+        'thien_y' => ['Thiên Y', 1, 2], 'thien_quan' => ['Thiên Quan', 2, 2], 'thien_phuc' => ['Thiên Phúc', 2, 2],
+        'luu_ha' => ['Lưu Hà', 1, 3], 'kiet_sat' => ['Kiếp Sát', 2, 3],
+        'pha_toai' => ['Phá Toái', 2, 3], 'thien_hu' => ['Thiên Hư', 1, 3], 'thien_khoc' => ['Thiên Khốc', 1, 3],
+        'thien_tai' => ['Thiên Tài', 3, 2], 'thien_tho' => ['Thiên Thọ', 3, 2],
+        'thien_thuong' => ['Thiên Thương', 3, 3], 'thien_su' => ['Thiên Sứ', 1, 3],
+        'hoa_cai' => ['Hoa Cái', 4, 2], 'thien_ma' => ['Thiên Mã', 2, 2], 'thien_la' => ['Thiên La', 3, 3], 'dia_vong' => ['Địa Võng', 3, 3],
+        'dau_quan' => ['Đẩu Quân', 2, 2]
     );
 
     // Do sang (Brightness) Matrix: 14 rows x 12 cols (Ty..Hoi)
@@ -86,7 +87,17 @@ class TuViLapSo {
         'thien_tuong'=> ['V','M','M','H','M','D','V','M','M','H','M','B'],
         'thien_luong'=> ['M','M','M','V','M','H','M','M','B','H','M','H'],
         'that_sat'   => ['M','D','M','H','M','M','M','D','M','H','M','M'],
-        'pha_quan'   => ['M','V','H','H','M','H','M','V','H','H','M','H']
+        'pha_quan'   => ['M','V','H','H','M','H','M','V','H','H','M','H'],
+        // Aux
+        'van_xuong'  => ['D','D','H','H','M','M','H','D','D','H','H','M'],
+        'van_khuc'   => ['D','D','H','H','M','M','H','D','D','H','H','M'],
+        'kinh_duong' => ['H','D','H','H','D','H','H','D','H','H','D','H'], // Dac tai Thin Tuat Suu Mui
+        'da_la'      => ['H','D','H','H','D','H','H','D','H','H','D','H'],
+        'hoa_tinh'   => ['H','H','M','H','D','H','H','H','M','H','D','H'],
+        'linh_tinh'  => ['H','H','M','H','D','H','H','H','M','H','D','H'],
+        'dia_khong'  => ['H','H','D','H','H','D','H','H','D','H','H','D'], // Dac tai Dan Than Ty Hoi
+        'dia_kiep'   => ['H','H','D','H','H','D','H','H','D','H','H','D'],
+        'thien_ma'   => ['','','D','','','H','','','D','','','H'], // Dac tai Dan Than, Ham tai Ty Hoi
     );
 
     /**
@@ -104,7 +115,8 @@ class TuViLapSo {
         return [
             'name' => $info[0],
             'element_id' => $elId,
-            'color' => isset($colors[$elId]) ? $colors[$elId] : 'default'
+            'color' => isset($colors[$elId]) ? $colors[$elId] : 'default',
+            'type_id' => isset($info[2]) ? $info[2] : 2
         ];
     }
 
@@ -128,32 +140,7 @@ class TuViLapSo {
     public static function calculateYinYangBalance($canYear, $chiYear, $menhPalaceBranch, $gender) {
         // canYear: 0=Giap (Yang), 1=At (Yin)...
         $isYearYang = ($canYear % 2 == 0);
-
-        // menhPalaceBranch: 0=Ty (Yang), 1=Suu (Yin)...
-        // Tý (Yang), Sửu (Yin), Dần (Yang), Mão (Yin)...
-        // Logic: 0,2,4,6,8,10 are Yang. 1,3,5,7,9,11 are Yin.
         $isPalaceYang = ($menhPalaceBranch % 2 == 0);
-
-        // Âm Dương Thuận Lý:
-        // Nam (Yang) sinh năm Dương (Yang Year) => Thuận.
-        // Nữ (Yin) sinh năm Âm (Yin Year) => Thuận.
-        // Or: Tuổi Dương cư cung Dương, Tuổi Âm cư cung Âm => Đắc địa?
-
-        // Standard Tu Vi text usually refers to:
-        // "Âm Dương Thuận Lý": Người Dương (Nam/Nữ) sinh năm Dương, hoặc Người Âm sinh năm Âm.
-        // Wait, "Dương Nam" means Male born in Yang Year. "Âm Nữ" means Female born in Yin Year.
-        // If Dương Nam or Âm Nữ => Thuận Lý?
-        // Let's implement the standard check:
-        // Year Yang/Yin matches Palace Yang/Yin? Or Person Gender matches Year?
-
-        // Interpretation 1: "Âm Dương Thuận Lý" = Year Yin/Yang matches Palace Yin/Yang?
-        // Interpretation 2: "Âm Dương Thuận Lý" = Gender matches Year Yin/Yang (Duong Nam / Am Nu).
-        // Most software uses Interpretation 2 for the "Am Duong" line, but compares Year vs Palace for "De Vuong/Suy" etc.
-        // BUT, the request asked for: "so sánh Can Chi năm sinh với Cung Mệnh (Âm Dương)".
-        // So: Compare Year (Can/Chi) vs Palace Branch.
-        // If Year is Yang and Palace is Yang => Thuận Lý.
-        // If Year is Yin and Palace is Yin => Thuận Lý.
-        // Else => Nghịch Lý.
 
         if ($isYearYang == $isPalaceYang) {
             return "Âm Dương Thuận Lý";
@@ -164,11 +151,7 @@ class TuViLapSo {
 
     public static function calculateElementRelation($menhElement, $cucElement) {
         // Elements: 1=Thuy, 2=Hoa, 3=Tho, 4=Kim, 5=Moc
-        // Cycles:
-        // Sinh: Kim(4)->Thuy(1)->Moc(5)->Hoa(2)->Tho(3)->Kim(4)
-        // Khac: Kim(4)->Moc(5)->Tho(3)->Thuy(1)->Hoa(2)->Kim(4)
-
-        if ($menhElement == $cucElement) return "Cục Mệnh Bình Hòa"; // Or Tương Hòa
+        if ($menhElement == $cucElement) return "Cục Mệnh Bình Hòa";
 
         $sinh = [4=>1, 1=>5, 5=>2, 2=>3, 3=>4];
         $khac = [4=>5, 5=>3, 3=>1, 1=>2, 2=>4];
@@ -182,35 +165,46 @@ class TuViLapSo {
         return "Không xác định";
     }
 
-    public static function calcTieuVan($chiYear, $targetYear) {
-        // Tieu Van calculation for a specific year
-        // Use the same logic as in lapLaSo but with $targetYear's Chi
-        // 1. Get Chi of Target Year
-        // Can/Chi calculation is complex without Solar->Lunar.
-        // Assuming user passes just the Year Number (e.g., 2025). We need to know its Chi.
-        // Simple formula for Chi: (Year - 4) % 12.
-        // 2024 (Giap Thin) -> (2024-4)%12 = 2020%12 = 4 (Thin). Correct.
-        $targetChi = ($targetYear - 4) % 12;
+    /**
+     * Finds Tu Vi Position based on Cuc and Lunar Day
+     * Implements specific user algorithm
+     */
+    public static function getTuViPosition($cuc, $lunarDay) {
+        // $cuc: 2 (Thuy), 3 (Moc), 4 (Kim), 5 (Tho), 6 (Hoa)
+        // $lunarDay: 1-30
 
-        // 2. Logic khoi Tieu Van (based on Birth Chi - $chiYear)
-        // Dan Ngo Tuat (2, 6, 10) -> Khoi tai Thin (4)
-        // Than Ty Thin (8, 0, 4) -> Khoi tai Tuat (10)
-        // Hoi Mao Mui (11, 3, 7) -> Khoi tai Suu (1)
-        // Ty Dau Suu (5, 9, 1) -> Khoi tai Mui (7)
+        $remainder = $lunarDay % $cuc;
+        $adjustment = 0;
 
-        $startPalace = 0;
-        if (in_array($chiYear, [2, 6, 10])) $startPalace = 4;
-        elseif (in_array($chiYear, [8, 0, 4])) $startPalace = 10;
-        elseif (in_array($chiYear, [11, 3, 7])) $startPalace = 1;
-        elseif (in_array($chiYear, [5, 9, 1])) $startPalace = 7;
+        if ($remainder == 0) {
+            $quotient = $lunarDay / $cuc;
+            $adjustment = 0;
+        } else {
+            // Find complement to divide evenly
+            $add = $cuc - $remainder;
+            $quotient = ($lunarDay + $add) / $cuc;
 
-        // Tieu Van moves depending on Gender?
-        // Standard: Nam Thuan, Nu Nghich. (Wait, standard Tieu Van is: "Trai thuan gai nghich"? Yes)
-        // But we need the gender here!
-        // Wait, calcTieuVan signature needs gender.
-        // Let's rely on lapLaSo logic which already did this for current year.
-        // But here we need generic method.
-        return [$startPalace, $targetChi]; // Incomplete without gender
+            // Rule: Odd add -> subtract, Even add -> add
+            if ($add % 2 != 0) {
+                $adjustment = -$add;
+            } else {
+                $adjustment = $add;
+            }
+        }
+
+        // Start from Dan (index 2 in 0-11 system, but usually called Palace 3 in 1-12 system)
+        // User pseudo: Base = 3 + Quotient - 1. (3 is Dan)
+        // Our 0-11 system: Dan is 2.
+        // Base = 2 + Quotient - 1 = 1 + Quotient.
+
+        $basePos = 2 + $quotient - 1;
+        $finalPos = $basePos + $adjustment;
+
+        // Normalize to 0-11
+        while ($finalPos > 11) $finalPos -= 12;
+        while ($finalPos < 0) $finalPos += 12;
+
+        return $finalPos; // Returns 0=Ty, 1=Suu...
     }
 
     /**
@@ -236,7 +230,7 @@ class TuViLapSo {
         }
 
         // Helpers
-        $addStar = function($pIdx, $code, $type = 'tot') use (&$chart) {
+        $addStar = function($pIdx, $code, $typeOverride = null) use (&$chart) {
             $pIdx = $pIdx % 12;
             if ($pIdx < 0) $pIdx += 12;
 
@@ -253,24 +247,22 @@ class TuViLapSo {
                 'dacs' => $bright
             );
 
-            // Determine type automatically if not major
-            // Simple logic: Major stars always go to chinh_tinh
-            if (isset(self::$BRIGHTNESS[$code])) {
+            $type = $typeOverride ? $typeOverride : $info['type_id'];
+
+            if ($type == 1) { // Chinh Tinh
                 $chart[$pIdx]['chinh_tinh'][] = $starData;
-            } else {
-                // Heuristic: "Xau" includes Luc Sat, Bai Tinh. "Tot" includes others.
-                // For simplicity, use the passed type or default to 'tot'
-                if ($type == 'xau') {
-                    $chart[$pIdx]['phu_tinh_xau'][] = $starData;
-                } else {
-                    $chart[$pIdx]['phu_tinh_tot'][] = $starData;
-                }
+            } elseif ($type == 3) { // Sat Tinh / Xau
+                $chart[$pIdx]['phu_tinh_xau'][] = $starData;
+            } else { // Tot / Trung
+                 $chart[$pIdx]['phu_tinh_tot'][] = $starData;
             }
         };
 
         // --- STEP 1: An 12 Cung (Dia Ban) ---
+        // Menh: From Dan(2) + Month - 1 - Hour
         $posMenh = (2 + ($mm - 1) - $hh) % 12;
         if ($posMenh < 0) $posMenh += 12;
+        // Than: From Dan(2) + Month - 1 + Hour
         $posThan = (2 + ($mm - 1) + $hh) % 12;
 
         $palaceNames = array(
@@ -313,14 +305,13 @@ class TuViLapSo {
         }
 
         // --- STEP 3: Tieu Van & Tuan/Triet ---
-        // Tieu Van
         $startTVPalace = 0; $startTVYear = 0;
         if (in_array($chiYear, [2, 6, 10])) { $startTVPalace = 4; $startTVYear = 10; } // Dan Ngo Tuat -> Thin
         elseif (in_array($chiYear, [8, 0, 4])) { $startTVPalace = 10; $startTVYear = 4; } // Than Ty Thin -> Tuat
         elseif (in_array($chiYear, [11, 3, 7])) { $startTVPalace = 1; $startTVYear = 7; } // Hoi Mao Mui -> Suu
         elseif (in_array($chiYear, [5, 9, 1])) { $startTVPalace = 7; $startTVYear = 1; } // Ty Dau Suu -> Mui
 
-        $tvDirection = ($gender == 1) ? 1 : -1; // Nam Thuan, Nu Nghich
+        $tvDirection = ($gender == 1) ? 1 : -1;
         for ($k = 0; $k < 12; $k++) {
             $labelChi = ($startTVYear + $k) % 12;
             $palaceIdx = ($startTVPalace + ($k * $tvDirection)) % 12;
@@ -342,22 +333,16 @@ class TuViLapSo {
         $tuan1 = ($diff + 10) % 12; $tuan2 = ($diff + 11) % 12;
         $chart[$tuan1]['tuan'] = true; $chart[$tuan2]['tuan'] = true;
 
-        // --- STEP 4: An Sao Chinh Tinh ---
-        $posTuVi = 0;
-        if ($dd % $cuc == 0) {
-            $q = $dd / $cuc;
-            $posTuVi = (2 + ($q - 1)) % 12;
-        } else {
-            $r = $dd % $cuc;
-            $x = $cuc - $r;
-            $q = ($dd + $x) / $cuc;
-            $basePos = (2 + ($q - 1)) % 12;
-            $posTuVi = ($x % 2 != 0) ? ($basePos - $x) : ($basePos + $x);
-        }
-        if ($posTuVi < 0) $posTuVi += 12;
-        $posTuVi = $posTuVi % 12; // Safety
-
+        // --- STEP 4: An Sao Chinh Tinh (Algorithm Update) ---
+        $posTuVi = self::getTuViPosition($cuc, $dd);
         $addStar($posTuVi, 'tu_vi');
+
+        // An Thien Phu: Opposite Tu Vi across Dan-Than axis
+        // Formula: PosThienPhu = (2 + 8 - PosTuVi) % 12 ? No.
+        // Dan=2, Than=8. Axis sum = 10? No.
+        // Rule: Dan(2) <-> Dan(2). Mao(3) <-> Suu(1).
+        // Sum of indices = 4 (or 16). Ex: 2+2=4. 3+1=4. 0+4=4.
+        // So PosTP = (4 - PosTV) % 12.
         $posThienPhu = (4 - $posTuVi + 12) % 12;
         $addStar($posThienPhu, 'thien_phu');
 
@@ -367,198 +352,99 @@ class TuViLapSo {
         $offsetsThienPhu = ['thai_am' => 1, 'tham_lang' => 2, 'cu_mon' => 3, 'thien_tuong' => 4, 'thien_luong' => 5, 'that_sat' => 6, 'pha_quan' => 10];
         foreach ($offsetsThienPhu as $code => $offset) $addStar($posThienPhu + $offset, $code);
 
-        // --- STEP 5: An Cac Sao Khac (Major Groups) ---
+        // --- STEP 5: An Cac Sao Khac ---
 
-        // 1. Vong Thai Tue (Theo Chi Nam Sinh)
+        // 1. Vong Thai Tue (Chi Nam)
         $starsThaiTue = ['thai_tue', 'thieu_duong', 'tang_mon', 'thieu_am', 'quan_phu_3', 'tu_phu', 'tue_pha', 'long_duc', 'bach_ho', 'phuc_duc', 'dieu_khach', 'truc_phu'];
         foreach ($starsThaiTue as $idx => $code) {
             $p = ($chiYear + $idx) % 12;
-            $type = in_array($code, ['tang_mon', 'tue_pha', 'bach_ho', 'dieu_khach', 'truc_phu']) ? 'xau' : 'tot';
-            $addStar($p, $code, $type);
+            $addStar($p, $code);
         }
 
-        // 2. Vong Loc Ton (Theo Can Nam Sinh)
-        // Giap(0)->Dan(2), At(1)->Mao(3), Binh(2)->Ty(5), Dinh(3)->Ngo(6), Mau(4)->Ty(5), Ky(5)->Ngo(6), Canh(6)->Than(8), Tan(7)->Dau(9), Nham(8)->Hoi(11), Quy(9)->Ty(0)
+        // 2. Vong Loc Ton (Can Nam)
         $locTonMap = [0=>2, 1=>3, 2=>5, 3=>6, 4=>5, 5=>6, 6=>8, 7=>9, 8=>11, 9=>0];
         $posLocTon = $locTonMap[$canYear % 10];
 
         $starsLocTon = ['loc_ton', 'luc_si', 'thanh_long', 'tieu_hao', 'tuong_quan', 'tau_thu', 'phi_liem', 'hy_than', 'benh_phu', 'dai_hao', 'phuc_binh', 'quan_phu_2'];
-        // Duong Nam/Am Nu -> Thuan (+), Am Nam/Duong Nu -> Nghich (-)
-        // Same direction logic as Dai Van?
-        // Rule: "Duong Nam Am Nu thuan hanh, Am Nam Duong Nu nghich hanh"
         $ltDir = (($isDuong && $gender == 1) || (!$isDuong && $gender == 0)) ? 1 : -1;
 
         foreach ($starsLocTon as $idx => $code) {
             $p = ($posLocTon + ($idx * $ltDir)) % 12;
             if ($p < 0) $p += 12;
-            $type = in_array($code, ['tieu_hao', 'benh_phu', 'dai_hao', 'quan_phu_2']) ? 'xau' : 'tot';
-            $addStar($p, $code, $type);
+            $addStar($p, $code);
         }
 
-        // Luc Sat: Kinh Duong (Truoc Loc Ton), Da La (Sau Loc Ton)
         $posKinhDuong = ($posLocTon + 1) % 12;
         $posDaLa = ($posLocTon - 1 + 12) % 12;
-        $addStar($posKinhDuong, 'kinh_duong', 'xau');
-        $addStar($posDaLa, 'da_la', 'xau');
+        $addStar($posKinhDuong, 'kinh_duong');
+        $addStar($posDaLa, 'da_la');
 
-        // 3. Vong Trang Sinh (Theo Cuc)
-        // Thuy(2) Nhi Cuc -> Than(8)
-        // Moc(3) Tam Cuc -> Hoi(11)
-        // Kim(4) Tu Cuc -> Ty(5)
-        // Tho(5) Ngu Cuc -> Than(8)
-        // Hoa(6) Luc Cuc -> Dan(2)
+        // 3. Vong Trang Sinh (Cuc)
         $tsMap = [2 => 8, 3 => 11, 4 => 5, 5 => 8, 6 => 2];
         $posTrangSinh = $tsMap[$cuc];
-        // Direction same as Loc Ton? No. Gender Only?
-        // Rule: Nam Thuan, Nu Nghich (Like Tieu Van? Or Dai Van?)
-        // Rule Vong Trang Sinh: "Nam thuan nu nghich" (Most sources) OR "Duong Nam Am Nu thuan, Am Nam Duong Nu nghich" (Like Dai Van)
-        // Standard Tu Vi usually follows Dai Van direction (based on Am/Duong Year + Gender).
-        $tsDir = $direction; // Use Dai Van direction
+        $tsDir = $direction;
 
         $starsTrangSinh = ['trang_sinh', 'moc_duc', 'quan_doi', 'lam_quan', 'de_vuong', 'suy', 'benh', 'tu', 'mo', 'tuyet', 'thai', 'duong'];
         foreach ($starsTrangSinh as $idx => $code) {
             $p = ($posTrangSinh + ($idx * $tsDir)) % 12;
             if ($p < 0) $p += 12;
-            // Vong Trang Sinh usually displayed separately, but let's add as small stars?
-            // Better: Add to specific field 'vong_trang_sinh' for the palace
             $chart[$p]['vong_trang_sinh'] = self::getStarInfo($code)['name'];
-            // Also add as a star? Users like to see them as stars.
-            $addStar($p, $code, 'tot'); // Treat as stars for visual
+            $addStar($p, $code);
         }
 
-        // 4. Luc Sat (Remaining: Khong, Kiep, Hoa, Linh)
-        // Dia Khong / Dia Kiep: Gio Sinh
-        // Hoi -> Ty(11) ? No.
-        // Khoi tu Hoi (11). Dia Kiep Thuan, Dia Khong Nghich. Den gio Sinh.
-        // Gio Ty(0) -> Hoi(11).
-        // Cong thuc:
-        // Dia Kiep: 11 + (hh)
-        // Dia Khong: 11 - (hh)
+        // 4. Luc Sat & Other
         $posDiaKiep = (11 + $hh) % 12;
         $posDiaKhong = (11 - $hh + 12) % 12;
-        $addStar($posDiaKiep, 'dia_kiep', 'xau');
-        $addStar($posDiaKhong, 'dia_khong', 'xau');
+        $addStar($posDiaKiep, 'dia_kiep');
+        $addStar($posDiaKhong, 'dia_khong');
 
-        // Hoa Tinh / Linh Tinh: Year Chi + Gio Sinh
-        // Phuc tap. Simplified version for common cases:
-        // Dan Ngo Tuat (2,6,10): Hoa(Suu 1), Linh(Mao 3)
-        // Than Ty Thin (8,0,4): Hoa(Dan 2), Linh(Tuat 10)
-        // Ty Dau Suu (5,9,1): Hoa(Dau 9), Linh(Tuat 10)
-        // Hoi Mao Mui (11,3,7): Hoa(Dau 9), Linh(Tuat 10) -- Wait, different sources.
-        // Let's use generic lookup or formula.
-        // Dan Ngo Tuat: Hoa khoi Suu, Linh khoi Mao.
-        // Than Ty Thin: Hoa khoi Dan, Linh khoi Tuat.
-        // Ty Dau Suu: Hoa khoi Dau, Linh khoi Tuat.
-        // Hoi Mao Mui: Hoa khoi Dau, Linh khoi Tuat.
-
-        $khoiHoa = 0; $khoiLinh = 0; $dirHoa = 1; $dirLinh = -1; // Duong Nam/Am Nu thuan?
-        // Direction:
-        // Duong Nam, Am Nu: Hoa thuan, Linh nghich.
-        // Am Nam, Duong Nu: Hoa nghich, Linh thuan.
-        $fireDir = (($isDuong && $gender == 1) || (!$isDuong && $gender == 0)) ? 1 : -1;
-
+        $khoiHoa = 0; $khoiLinh = 0; $fireDir = (($isDuong && $gender == 1) || (!$isDuong && $gender == 0)) ? 1 : -1;
         if (in_array($chiYear, [2, 6, 10])) { $khoiHoa=1; $khoiLinh=3; }
         elseif (in_array($chiYear, [8, 0, 4])) { $khoiHoa=2; $khoiLinh=10; }
-        elseif (in_array($chiYear, [5, 9, 1])) { $khoiHoa=9; $khoiLinh=10; } // Check source? Some say 9, 11.
-        else { $khoiHoa=9; $khoiLinh=10; } // Hoi Mao Mui
+        elseif (in_array($chiYear, [5, 9, 1])) { $khoiHoa=9; $khoiLinh=10; }
+        else { $khoiHoa=9; $khoiLinh=10; }
 
-        // Start from Khoi + Hour.
-        // Formular: Start + (Hour) * Dir
-        // Note: Hour 0 (Ty) is start? Or start is Ty?
-        // Usually: "Khoi tu cung X, dem thuan den gio sinh". So if Ty (0), it is at X.
         $posHoaTinh = ($khoiHoa + ($hh * $fireDir)) % 12;
         $posLinhTinh = ($khoiLinh + ($hh * -$fireDir)) % 12;
         if ($posHoaTinh < 0) $posHoaTinh += 12;
         if ($posLinhTinh < 0) $posLinhTinh += 12;
 
-        $addStar($posHoaTinh, 'hoa_tinh', 'xau');
-        $addStar($posLinhTinh, 'linh_tinh', 'xau');
+        $addStar($posHoaTinh, 'hoa_tinh');
+        $addStar($posLinhTinh, 'linh_tinh');
 
-
-        // 5. Tu Hoa (Hoa Loc, Hoa Quyen, Hoa Khoa, Hoa Ky) - Can Year
-        // Can: 0=Giap, 1=At...
+        // 5. Tu Hoa
         $tuHoaTable = [
-            0 => ['liem_trinh', 'pha_quan', 'vu_khuc', 'thai_duong'], // Giap: Liem Pha Vu Duong
-            1 => ['thien_co', 'thien_luong', 'tu_vi', 'thai_am'], // At: Co Luong Vi Nguyet
-            2 => ['thien_dong', 'thien_co', 'van_xuong', 'liem_trinh'], // Binh: Dong Co Xuong Liem
-            3 => ['thai_am', 'thien_dong', 'thien_co', 'cu_mon'], // Dinh: Nguyet Dong Co Cu
-            4 => ['tham_lang', 'thai_am', 'huu_bat', 'thien_co'], // Mau: Tham Nguyet Bat Co
-            5 => ['vu_khuc', 'tham_lang', 'thien_luong', 'van_khuc'], // Ky: Vu Tham Luong Khuc
-            6 => ['thai_duong', 'vu_khuc', 'thien_dong', 'thai_am'], // Canh: Nhat Vu Dong Nguyet (Wait? Nhat Vu Dong Am?) -> Thai Duong, Vu Khuc, Thien Dong, Thai Am ?
-            // Canh: Nhat Vu Am Dong (Thai Duong, Vu Khuc, Thai Am, Thien Dong) - Standard is Nhat Vu Am Dong.
-            // Let's use: Thai Duong, Vu Khuc, Thai Am, Thien Dong.
-
-            7 => ['cu_mon', 'thai_duong', 'van_khuc', 'van_xuong'], // Tan: Cu Nhat Khuc Xuong
-            8 => ['thien_luong', 'tu_vi', 'ta_phu', 'vu_khuc'], // Nham: Luong Vi Phu Vu
-            9 => ['pha_quan', 'cu_mon', 'thai_am', 'tham_lang'] // Quy: Pha Cu Am Tham
+            0 => ['liem_trinh', 'pha_quan', 'vu_khuc', 'thai_duong'],
+            1 => ['thien_co', 'thien_luong', 'tu_vi', 'thai_am'],
+            2 => ['thien_dong', 'thien_co', 'van_xuong', 'liem_trinh'],
+            3 => ['thai_am', 'thien_dong', 'thien_co', 'cu_mon'],
+            4 => ['tham_lang', 'thai_am', 'huu_bat', 'thien_co'],
+            5 => ['vu_khuc', 'tham_lang', 'thien_luong', 'van_khuc'],
+            6 => ['thai_duong', 'vu_khuc', 'thai_am', 'thien_dong'],
+            7 => ['cu_mon', 'thai_duong', 'van_khuc', 'van_xuong'],
+            8 => ['thien_luong', 'tu_vi', 'ta_phu', 'vu_khuc'],
+            9 => ['pha_quan', 'cu_mon', 'thai_am', 'tham_lang']
         ];
-
-        // Correct Canh: Nhat Vu Dong Am? Or Nhat Vu Am Dong?
-        // Most sources: Canh Nhat Vu Am Dong. (Thai Duong, Vu Khuc, Thai Am, Thien Dong).
-        // Update table for 6 (Canh)
-        $tuHoaTable[6] = ['thai_duong', 'vu_khuc', 'thai_am', 'thien_dong'];
 
         $thCodes = ['hoa_loc', 'hoa_quyen', 'hoa_khoa', 'hoa_ky'];
         $thStars = $tuHoaTable[$canYear % 10];
 
-        // Loop all palaces to find the star and attach Tu Hoa
-        // This is tricky. Tu Hoa attaches TO the star.
-        // We need to find where the star is, then add the Tu Hoa star there.
-        foreach ($thStars as $idx => $starCode) {
-            // Find palace of $starCode
-            for ($p = 0; $p < 12; $p++) {
-                // Check chinh tinh
-                foreach ($chart[$p]['chinh_tinh'] as $s) {
-                    if ($s['code'] == $starCode) {
-                        $addStar($p, $thCodes[$idx], 'tot'); // Add the Hoa star
-                        break 2;
-                    }
-                }
-                // Check phu tinh? (Van Xuong, Van Khuc, Ta Phu, Huu Bat)
-                // Need to have them placed first!
-                // So Tu Hoa must be placed AFTER all other stars.
-            }
-        }
-
-        // 6. Other Stars (Selection)
-        // Van Xuong / Van Khuc (Gio Sinh)
-        // Xuong: Tu Tuat(10) nghich den gio sinh.
-        // Khuc: Tu Thin(4) thuan den gio sinh.
+        // 6. Bo Tinh (Aux)
         $posVanXuong = (10 - $hh + 12) % 12;
         $posVanKhuc = (4 + $hh) % 12;
         $addStar($posVanXuong, 'van_xuong');
         $addStar($posVanKhuc, 'van_khuc');
 
-        // Ta Phu / Huu Bat (Thang Sinh)
-        // Ta: Tu Thin(4) thuan den Thang.
-        // Huu: Tu Tuat(10) nghich den Thang.
         $posTaPhu = (4 + ($mm - 1)) % 12;
         $posHuuBat = (10 - ($mm - 1) + 12) % 12;
         $addStar($posTaPhu, 'ta_phu');
         $addStar($posHuuBat, 'huu_bat');
 
-        // Thien Khoi / Thien Viet (Can Nam)
-        // Giap Mau Canh -> Suu(1) Mui(7)
-        // At Ky -> Ty(0) Than(8)
-        // Binh Dinh -> Hoi(11) Dau(9)
-        // Nham Quy -> Mao(3) Ty(5)
-        // Tan -> Ngo(6) Dan(2)
-        $khoiVietMap = [
-            0 => [1,7], 4 => [1,7], 6 => [1,7],
-            1 => [0,8], 5 => [0,8],
-            2 => [11,9], 3 => [11,9],
-            8 => [3,5], 9 => [3,5],
-            7 => [6,2]
-        ];
+        $khoiVietMap = [0 => [1,7], 4 => [1,7], 6 => [1,7], 1 => [0,8], 5 => [0,8], 2 => [11,9], 3 => [11,9], 8 => [3,5], 9 => [3,5], 7 => [6,2]];
         $kv = $khoiVietMap[$canYear % 10];
         $addStar($kv[0], 'thien_khoi');
         $addStar($kv[1], 'thien_viet');
 
-        // Thien Ma (Chi Nam)
-        // Dan Ngo Tuat -> Than(8)
-        // Than Ty Thin -> Dan(2)
-        // Ty Dau Suu -> Hoi(11)
-        // Hoi Mao Mui -> Ty(5)
         $maPos = 0;
         if (in_array($chiYear, [2,6,10])) $maPos = 8;
         elseif (in_array($chiYear, [8,0,4])) $maPos = 2;
@@ -566,19 +452,11 @@ class TuViLapSo {
         else $maPos = 5;
         $addStar($maPos, 'thien_ma');
 
-        // Thien Khoc / Thien Hu (Chi Nam)
-        // Khoc: Ngo(6) nghich den nam.
-        // Hu: Ngo(6) thuan den nam.
         $posKhoc = (6 - $chiYear + 12) % 12;
         $posHu = (6 + $chiYear) % 12;
-        $addStar($posKhoc, 'thien_khoc', 'xau');
-        $addStar($posHu, 'thien_hu', 'xau');
+        $addStar($posKhoc, 'thien_khoc');
+        $addStar($posHu, 'thien_hu');
 
-        // Dao Hoa (Chi Nam)
-        // Dan Ngo Tuat -> Mao(3)
-        // Than Ty Thin -> Dau(9)
-        // Ty Dau Suu -> Ngo(6)
-        // Hoi Mao Mui -> Ty(0)
         $daoPos = 0;
         if (in_array($chiYear, [2,6,10])) $daoPos = 3;
         elseif (in_array($chiYear, [8,0,4])) $daoPos = 9;
@@ -586,67 +464,38 @@ class TuViLapSo {
         else $daoPos = 0;
         $addStar($daoPos, 'dao_hoa');
 
-        // Hong Loan / Thien Hy (Chi Nam)
-        // Hong Loan: Mao(3) nghich den nam.
-        // Thien Hy: Doi xung Hong Loan.
         $posHongLoan = (3 - $chiYear + 12) % 12;
         $posThienHy = ($posHongLoan + 6) % 12;
         $addStar($posHongLoan, 'hong_loan');
         $addStar($posThienHy, 'thien_hy');
 
-        // Thien Hinh / Thien Rieu / Thien Y (Thang Sinh)
-        // Hinh: Dau(9) thuan den Thang.
-        // Rieu: Suu(1) thuan den Thang.
-        // Y: Doi xung Rieu (always? Rieu Y usually together or opposite? Rieu Y dong cung. Check?)
-        // Correction: Thien Y luon dong cung Thien Rieu.
         $posHinh = (9 + ($mm - 1)) % 12;
         $posRieu = (1 + ($mm - 1)) % 12;
-        $addStar($posHinh, 'thien_hinh', 'xau');
-        $addStar($posRieu, 'thien_rieu', 'xau');
-        $addStar($posRieu, 'thien_y', 'tot'); // Dong cung Rieu
+        $addStar($posHinh, 'thien_hinh');
+        $addStar($posRieu, 'thien_rieu');
+        $addStar($posRieu, 'thien_y');
 
-        // Co Than / Qua Tu (Chi Nam)
-        // Hoi Ty Suu -> Dan(2) / Tuat(10)
-        // Dan Mao Thin -> Ty(5) / Suu(1)
-        // Ty Ngo Mui -> Than(8) / Thin(4)
-        // Than Dau Tuat -> Hoi(11) / Mui(7)
         $coQuaMap = [];
         if (in_array($chiYear, [11,0,1])) { $co=2; $qua=10; }
         elseif (in_array($chiYear, [2,3,4])) { $co=5; $qua=1; }
         elseif (in_array($chiYear, [5,6,7])) { $co=8; $qua=4; }
         else { $co=11; $qua=7; }
-        $addStar($co, 'co_than', 'xau');
-        $addStar($qua, 'qua_tu', 'xau');
+        $addStar($co, 'co_than');
+        $addStar($qua, 'qua_tu');
 
-        // An Quang / Thien Quy (Van Xuong / Van Khuc + Ngay Sinh)
-        // Quang: Cung Xuong + (Ngay - 2). Wait.
-        // Rule: Quang = Xuong + (Ngay - 1). Quy = Khuc - (Ngay - 1). (Complex)
-        // Simple Rule:
-        // Quang: Tu cung Van Xuong dem thuan den ngay sinh, lui lai 1 cung. -> (Xuong + dd - 1 - 1)?
-        // Quy: Tu cung Van Khuc dem nghich den ngay sinh, lui lai 1 cung.
-        // Let's use: Quang = (PosXuong + dd - 2); Quy = (PosKhuc - dd + 2? No).
-        // Standard:
-        // Quang: start at Xuong, go CW (day-1).
-        // Quy: start at Khuc, go CCW (day-1).
         $posQuang = ($posVanXuong + ($dd - 1)) % 12;
         $posQuy = ($posVanKhuc - ($dd - 1));
         while($posQuy < 0) $posQuy += 12; $posQuy %= 12;
         $addStar($posQuang, 'an_quang');
         $addStar($posQuy, 'thien_quy');
 
-        // --- RELOOP FOR TU HOA (Now that Phus are placed) ---
-        // Need to run Tu Hoa check again for stars like Van Xuong, Van Khuc, Ta Phu, Huu Bat
-        $thStars = $tuHoaTable[$canYear % 10];
+        // Re-loop for Tu Hoa on Aux stars
         foreach ($thStars as $idx => $starCode) {
-            // Check if already placed (Chinh tinh covered). Now check phu tinh lists.
             for ($p = 0; $p < 12; $p++) {
-                // Check all star lists
-                $allStars = array_merge($chart[$p]['phu_tinh_tot'], $chart[$p]['phu_tinh_xau']);
+                $allStars = array_merge($chart[$p]['chinh_tinh'], $chart[$p]['phu_tinh_tot'], $chart[$p]['phu_tinh_xau']);
                 foreach ($allStars as $s) {
                     if ($s['code'] == $starCode) {
-                         // Check if Tu Hoa already added? (to avoid double add if Chinh Tinh and Phu Tinh same name? No, names unique)
-                         // Just add.
-                         $addStar($p, $thCodes[$idx], 'tot');
+                         $addStar($p, $thCodes[$idx]);
                          break 2;
                     }
                 }
@@ -662,8 +511,6 @@ class TuViLapSo {
             'nam_sinh' => FengShuiUtils::$CAN[$canYear] . ' ' . FengShuiUtils::$CHI[$chiYear],
             'menh_ngu_hanh' => isset($nhNames[$banMenhEl]) ? $nhNames[$banMenhEl] : 'Unknown',
             'cuc' => $cucNameMap[$cuc],
-            'chu_menh' => 'Tham Lang', // Placeholder
-            'chu_than' => 'Hỏa Tinh', // Placeholder
             'am_duong' => ($isDuong ? 'Dương' : 'Âm') . ' ' . ($gender==1 ? 'Nam' : 'Nữ'),
             'menh_color' => isset([1=>'thuy', 2=>'hoa', 3=>'tho', 4=>'kim', 5=>'moc'][$banMenhEl]) ? [1=>'thuy', 2=>'hoa', 3=>'tho', 4=>'kim', 5=>'moc'][$banMenhEl] : 'default',
             'am_duong_ly' => self::calculateYinYangBalance($canYear, $chiYear, $posMenh, $gender),
@@ -675,29 +522,26 @@ class TuViLapSo {
             'dia_ban' => $chart,
             'meta' => [
                 'chiYear' => $chiYear,
-                'gender' => $gender
+                'gender' => $gender,
+                'menh_idx' => $posMenh,
+                'than_idx' => $posThan
             ]
         ];
     }
 
     public static function getLimitInfoForYear($chiYear, $gender, $targetYear, $birthYear) {
-        // Age (Am Lich)
         $age = $targetYear - $birthYear + 1;
 
-        // 1. Tieu Van Position
         $startTVPalace = 0; $startTVYear = 0;
-        if (in_array($chiYear, [2, 6, 10])) { $startTVPalace = 4; $startTVYear = 10; } // Dan Ngo Tuat -> Thin (start Tuat)
-        elseif (in_array($chiYear, [8, 0, 4])) { $startTVPalace = 10; $startTVYear = 4; } // Than Ty Thin -> Tuat (start Thin)
-        elseif (in_array($chiYear, [11, 3, 7])) { $startTVPalace = 1; $startTVYear = 7; } // Hoi Mao Mui -> Suu (start Mui)
-        elseif (in_array($chiYear, [5, 9, 1])) { $startTVPalace = 7; $startTVYear = 1; } // Ty Dau Suu -> Mui (start Suu)
+        if (in_array($chiYear, [2, 6, 10])) { $startTVPalace = 4; $startTVYear = 10; }
+        elseif (in_array($chiYear, [8, 0, 4])) { $startTVPalace = 10; $startTVYear = 4; }
+        elseif (in_array($chiYear, [11, 3, 7])) { $startTVPalace = 1; $startTVYear = 7; }
+        elseif (in_array($chiYear, [5, 9, 1])) { $startTVPalace = 7; $startTVYear = 1; }
 
         $tvDirection = ($gender == 1) ? 1 : -1;
-
-        // Target Chi
         $targetChi = ($targetYear - 4) % 12;
         if ($targetChi < 0) $targetChi += 12;
 
-        // Find k such that ($startTVYear + k) % 12 == $targetChi
         $diff = $targetChi - $startTVYear;
         if ($diff < 0) $diff += 12;
         $k = $diff;
@@ -705,12 +549,8 @@ class TuViLapSo {
         $tieuVanIdx = ($startTVPalace + ($k * $tvDirection)) % 12;
         if ($tieuVanIdx < 0) $tieuVanIdx += 12;
 
-        // 2. Luu Thai Tue Position (Palace of the Year's Chi)
         $luuThaiTueIdx = $targetChi;
 
-        // 3. Sao Cuu Dieu (9 Stars)
-        // Nam: La Hau(10) -> Tho Tu(11) -> Thuy Dieu(12) -> Thai Bach(13) -> Thai Duong(14) -> Van Hon(15) -> Ke Do(16) -> Thai Am(17) -> Moc Duc(18)
-        // Nu: Ke Do(10) -> Van Hon(11) -> Moc Duc(12) -> Thai Am(13) -> Tho Tu(14) -> La Hau(15) -> Thai Duong(16) -> Thai Bach(17) -> Thuy Dieu(18)
         $stars9 = [
             1 => ['name' => 'La Hầu', 'type' => 'xau'],
             2 => ['name' => 'Thổ Tú', 'type' => 'trung'],
@@ -723,14 +563,6 @@ class TuViLapSo {
             0 => ['name' => 'Mộc Đức', 'type' => 'tot']
         ];
 
-        // Remainder logic: (Age - 10) % 9. But need to align with array keys.
-        // Nam: 10->1, 11->2... => (Age - 10) % 9 + 1. (0->1, 8->9? No, 8->0).
-        // Let's use (Age - 1) % 9.
-        // Nam: 10-1=9%9=0 (Moc Duc). Wait, 10 is La Hau (1).
-        // Let's just use array map for Age % 9.
-        // Nam: 10%9=1 (La Hau), 11%9=2 (Tho Tu)... Matches logic. 18%9=0 (Moc Duc).
-
-        // Nu: 10%9=1 (Ke Do). 11%9=2 (Van Hon).
         $stars9Nu = [
             1 => ['name' => 'Kế Đô', 'type' => 'xau'],
             2 => ['name' => 'Vân Hớn', 'type' => 'trung'],
@@ -745,26 +577,10 @@ class TuViLapSo {
 
         $star9Info = ($gender == 1) ? $stars9[$age % 9] : $stars9Nu[$age % 9];
 
-        // 4. Han (8 Limits)
-        // Nam: 10-Huynh Tuyen, 11-Tam Kheo, 12-Ngu Mo, 13-Thien Tinh, 14-Toan Tan, 15-Thien La, 16-Dia Vong, 17-Diem Vuong. (Cycle 8)
-        // Nu: 10-Toan Tan, 11-Thien La, 12-Dia Vong, 13-Diem Vuong, 14-Huynh Tuyen, 15-Tam Kheo, 16-Ngu Mo, 17-Thien Tinh. (Cycle 8)
-        $hans = [
-            2 => 'Huỳnh Tuyền', 3 => 'Tam Kheo', 4 => 'Ngũ Mộ', 5 => 'Thiên Tinh',
-            6 => 'Toán Tận', 7 => 'Thiên La', 0 => 'Địa Võng', 1 => 'Diêm Vương'
-        ];
-        // Nam: 10%8=2 (Huynh Tuyen). Correct.
-        // Nu: 10%8=2 (Toan Tan). Map 2 -> Toan Tan.
-        $hansNu = [
-            2 => 'Toán Tận', 3 => 'Thiên La', 4 => 'Địa Võng', 5 => 'Diêm Vương',
-            6 => 'Huỳnh Tuyền', 7 => 'Tam Kheo', 0 => 'Ngũ Mộ', 1 => 'Thiên Tinh'
-        ];
+        $hans = [2 => 'Huỳnh Tuyền', 3 => 'Tam Kheo', 4 => 'Ngũ Mộ', 5 => 'Thiên Tinh', 6 => 'Toán Tận', 7 => 'Thiên La', 0 => 'Địa Võng', 1 => 'Diêm Vương'];
+        $hansNu = [2 => 'Toán Tận', 3 => 'Thiên La', 4 => 'Địa Võng', 5 => 'Diêm Vương', 6 => 'Huỳnh Tuyền', 7 => 'Tam Kheo', 0 => 'Ngũ Mộ', 1 => 'Thiên Tinh'];
         $hanName = ($gender == 1) ? $hans[$age % 8] : $hansNu[$age % 8];
 
-        // 5. Tam Tai
-        // Than Ty Thin -> Dan Mao Thin
-        // Ty Dau Suu -> Hoi Ty Suu
-        // Dan Ngo Tuat -> Than Dau Tuat
-        // Hoi Mao Mui -> Ty Ngo Mui
         $tamTai = false;
         $tamTaiGroup = [];
         if (in_array($chiYear, [8, 0, 4])) $tamTaiGroup = [2, 3, 4];
@@ -787,39 +603,9 @@ class TuViLapSo {
         ];
     }
 
-    /**
-     * Helper to get Than Info from Hour
-     */
     public static function getThanInfo($hh) {
-        // Ty/Ngo(0,6) -> Menh
-        // Suu/Mui(1,7) -> Phuc
-        // Dan/Than(2,8) -> Quan
-        // Mao/Dau(3,9) -> Di
-        // Thin/Tuat(4,10) -> Tai
-        // Ty/Hoi(5,11) -> Phu
-
-        $map = [
-            0=>'Mệnh', 6=>'Mệnh',
-            1=>'Phúc Đức', 7=>'Phúc Đức',
-            2=>'Quan Lộc', 8=>'Quan Lộc',
-            3=>'Thiên Di', 9=>'Thiên Di',
-            4=>'Tài Bạch', 10=>'Tài Bạch',
-            5=>'Phu Thê', 11=>'Phu Thê'
-        ];
-
-        $meaning = [
-            'Mệnh' => 'Thân cư Mệnh: Người tin vào chính mình, tự lập, vận mệnh gắn liền với sự nỗ lực bản thân.',
-            'Phúc Đức' => 'Thân cư Phúc Đức: Coi trọng dòng họ, hưởng phúc tổ tiên, hậu vận phụ thuộc vào phúc phần.',
-            'Quan Lộc' => 'Thân cư Quan Lộc: Người coi trọng sự nghiệp, danh vọng, làm việc hết mình.',
-            'Thiên Di' => 'Thân cư Thiên Di: Thích hoạt động xã hội, hay di chuyển, thành bại thường ở phương xa.',
-            'Tài Bạch' => 'Thân cư Tài Bạch: Coi trọng tiền bạc, có khiếu kinh doanh, sướng khổ do tiền.',
-            'Phu Thê' => 'Thân cư Phu Thê: Coi trọng gia đình, sự nghiệp ảnh hưởng lớn bởi người phối ngẫu.'
-        ];
-
+        $map = [0=>'Mệnh', 6=>'Mệnh', 1=>'Phúc Đức', 7=>'Phúc Đức', 2=>'Quan Lộc', 8=>'Quan Lộc', 3=>'Thiên Di', 9=>'Thiên Di', 4=>'Tài Bạch', 10=>'Tài Bạch', 5=>'Phu Thê', 11=>'Phu Thê'];
         $palace = isset($map[$hh]) ? $map[$hh] : 'Mệnh';
-        return [
-            'palace' => $palace,
-            'meaning' => $meaning[$palace]
-        ];
+        return ['palace' => $palace];
     }
 }

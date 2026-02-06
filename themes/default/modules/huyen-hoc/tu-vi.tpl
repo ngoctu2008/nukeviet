@@ -140,10 +140,23 @@
 
                 <!-- Tab Tong Quan -->
                 <div class="tab-pane fade show active" id="tongquan" role="tabpanel">
-                    <h4>Cân xương tính số</h4>
-                    <p>Mệnh: <b class="text-{THIEN_BAN.menh_color}">{THIEN_BAN.menh_ngu_hanh}</b> - Cục: <b>{THIEN_BAN.cuc}</b></p>
-                    <p>Đánh giá: <b>{THIEN_BAN.am_duong_ly}</b>.</p>
-                    <p>Đánh giá: <b>{THIEN_BAN.cuc_menh_ly}</b>.</p>
+                    <h4>Tổng Quan Lá Số</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Mệnh: <b class="text-{THIEN_BAN.menh_color}">{THIEN_BAN.menh_ngu_hanh}</b> - Cục: <b>{THIEN_BAN.cuc}</b></p>
+                            <p>Âm Dương: <b>{THIEN_BAN.am_duong_ly}</b>.</p>
+                            <p>Ngũ Hành: <b>{THIEN_BAN.cuc_menh_ly}</b>.</p>
+                        </div>
+                        <!-- BEGIN: score_box -->
+                        <div class="col-md-12 text-center">
+                            <div class="alert alert-info">
+                                <h3>ĐIỂM SỐ</h3>
+                                <h1 class="display-4 text-primary">{SCORE}</h1>
+                                <p>/ 100</p>
+                            </div>
+                        </div>
+                        <!-- END: score_box -->
+                    </div>
                     <hr>
                     <!-- BEGIN: overview -->
                     <div class="mt-3">

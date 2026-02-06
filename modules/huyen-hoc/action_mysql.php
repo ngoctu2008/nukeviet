@@ -10,15 +10,14 @@
 if (!defined('NV_MAINFILE'))
     die('Stop!!!');
 
-    $sql_drop_module = [];
-    $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_customers";
-    $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_logs";
-    $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations";
-
+$sql_drop_module = [];
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_customers";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_logs";
+$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations";
 
 $sql_create_module = $sql_drop_module;
 
-// Define tables
+// Customers
 $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_customers (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   fullname varchar(255) NOT NULL,
@@ -30,6 +29,7 @@ $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_
     PRIMARY KEY (id)
 ) ENGINE=MyISAM;";
 
+// Logs
 $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_logs (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   customer_id int(11) unsigned NOT NULL,
@@ -39,208 +39,153 @@ $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_
     PRIMARY KEY (id)
 ) ENGINE=MyISAM;";
 
+// Interpretations (Updated Schema)
 $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   star_key varchar(50) NOT NULL,
   palace_key varchar(50) NOT NULL,
   topic varchar(250) DEFAULT 'main',
+  condition_code varchar(50) DEFAULT NULL,
+  stars_required text DEFAULT NULL,
+  score int(11) DEFAULT 0,
   content text NOT NULL,
   PRIMARY KEY (id),
   KEY star_palace (star_key, palace_key)
 ) ENGINE=MyISAM;";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'all', 'nature', 'Sao Tử Vi là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'all', 'nature', 'Sao Thiên Cơ là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'all', 'nature', 'Sao Thái Dương là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'all', 'nature', 'Sao Vũ Khúc là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'all', 'nature', 'Sao Thiên Đồng là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'all', 'nature', 'Sao Liêm Trinh là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'all', 'nature', 'Sao Thiên Phủ là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'all', 'nature', 'Sao Thái Âm là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'all', 'nature', 'Sao Tham Lang là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'all', 'nature', 'Sao Cự Môn là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'all', 'nature', 'Sao Thiên Tướng là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'all', 'nature', 'Sao Thiên Lương là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'all', 'nature', 'Sao Thất Sát là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'all', 'nature', 'Sao Phá Quân là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'menh', 'main', 'Người có Tử Vi thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'phu_mau', 'main', 'Tử Vi tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'phuc_duc', 'main', 'Tử Vi tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'dien_trach', 'main', 'Tử Vi tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'quan_loc', 'main', 'Tử Vi tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'no_boc', 'main', 'Tử Vi tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'thien_di', 'main', 'Tử Vi tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'tat_ach', 'main', 'Tử Vi tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'tai_bach', 'main', 'Tử Vi cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'tu_tuc', 'main', 'Tử Vi tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'phu_the', 'main', 'Tử Vi ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tu_vi', 'huynh_de', 'main', 'Tử Vi tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'menh', 'main', 'Người có Thiên Cơ thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'phu_mau', 'main', 'Thiên Cơ tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'phuc_duc', 'main', 'Thiên Cơ tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'dien_trach', 'main', 'Thiên Cơ tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'quan_loc', 'main', 'Thiên Cơ tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'no_boc', 'main', 'Thiên Cơ tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'thien_di', 'main', 'Thiên Cơ tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'tat_ach', 'main', 'Thiên Cơ tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'tai_bach', 'main', 'Thiên Cơ cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'tu_tuc', 'main', 'Thiên Cơ tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'phu_the', 'main', 'Thiên Cơ ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_co', 'huynh_de', 'main', 'Thiên Cơ tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'menh', 'main', 'Người có Thái Dương thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'phu_mau', 'main', 'Thái Dương tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'phuc_duc', 'main', 'Thái Dương tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'dien_trach', 'main', 'Thái Dương tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'quan_loc', 'main', 'Thái Dương tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'no_boc', 'main', 'Thái Dương tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'thien_di', 'main', 'Thái Dương tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'tat_ach', 'main', 'Thái Dương tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'tai_bach', 'main', 'Thái Dương cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'tu_tuc', 'main', 'Thái Dương tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'phu_the', 'main', 'Thái Dương ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_duong', 'huynh_de', 'main', 'Thái Dương tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'menh', 'main', 'Người có Vũ Khúc thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'phu_mau', 'main', 'Vũ Khúc tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'phuc_duc', 'main', 'Vũ Khúc tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'dien_trach', 'main', 'Vũ Khúc tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'quan_loc', 'main', 'Vũ Khúc tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'no_boc', 'main', 'Vũ Khúc tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'thien_di', 'main', 'Vũ Khúc tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'tat_ach', 'main', 'Vũ Khúc tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'tai_bach', 'main', 'Vũ Khúc cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'tu_tuc', 'main', 'Vũ Khúc tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'phu_the', 'main', 'Vũ Khúc ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('vu_khuc', 'huynh_de', 'main', 'Vũ Khúc tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'menh', 'main', 'Người có Thiên Đồng thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'phu_mau', 'main', 'Thiên Đồng tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'phuc_duc', 'main', 'Thiên Đồng tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'dien_trach', 'main', 'Thiên Đồng tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'quan_loc', 'main', 'Thiên Đồng tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'no_boc', 'main', 'Thiên Đồng tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'thien_di', 'main', 'Thiên Đồng tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'tat_ach', 'main', 'Thiên Đồng tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'tai_bach', 'main', 'Thiên Đồng cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'tu_tuc', 'main', 'Thiên Đồng tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'phu_the', 'main', 'Thiên Đồng ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_dong', 'huynh_de', 'main', 'Thiên Đồng tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'menh', 'main', 'Người có Liêm Trinh thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'phu_mau', 'main', 'Liêm Trinh tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'phuc_duc', 'main', 'Liêm Trinh tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'dien_trach', 'main', 'Liêm Trinh tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'quan_loc', 'main', 'Liêm Trinh tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'no_boc', 'main', 'Liêm Trinh tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'thien_di', 'main', 'Liêm Trinh tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'tat_ach', 'main', 'Liêm Trinh tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'tai_bach', 'main', 'Liêm Trinh cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'tu_tuc', 'main', 'Liêm Trinh tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'phu_the', 'main', 'Liêm Trinh ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('liem_trinh', 'huynh_de', 'main', 'Liêm Trinh tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'menh', 'main', 'Người có Thiên Phủ thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'phu_mau', 'main', 'Thiên Phủ tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'phuc_duc', 'main', 'Thiên Phủ tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'dien_trach', 'main', 'Thiên Phủ tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'quan_loc', 'main', 'Thiên Phủ tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'no_boc', 'main', 'Thiên Phủ tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'thien_di', 'main', 'Thiên Phủ tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'tat_ach', 'main', 'Thiên Phủ tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'tai_bach', 'main', 'Thiên Phủ cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'tu_tuc', 'main', 'Thiên Phủ tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'phu_the', 'main', 'Thiên Phủ ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_phu', 'huynh_de', 'main', 'Thiên Phủ tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'menh', 'main', 'Người có Thái Âm thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'phu_mau', 'main', 'Thái Âm tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'phuc_duc', 'main', 'Thái Âm tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'dien_trach', 'main', 'Thái Âm tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'quan_loc', 'main', 'Thái Âm tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'no_boc', 'main', 'Thái Âm tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'thien_di', 'main', 'Thái Âm tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'tat_ach', 'main', 'Thái Âm tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'tai_bach', 'main', 'Thái Âm cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'tu_tuc', 'main', 'Thái Âm tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'phu_the', 'main', 'Thái Âm ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thai_am', 'huynh_de', 'main', 'Thái Âm tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'menh', 'main', 'Người có Tham Lang thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'phu_mau', 'main', 'Tham Lang tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'phuc_duc', 'main', 'Tham Lang tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'dien_trach', 'main', 'Tham Lang tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'quan_loc', 'main', 'Tham Lang tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'no_boc', 'main', 'Tham Lang tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'thien_di', 'main', 'Tham Lang tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'tat_ach', 'main', 'Tham Lang tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'tai_bach', 'main', 'Tham Lang cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'tu_tuc', 'main', 'Tham Lang tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'phu_the', 'main', 'Tham Lang ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('tham_lang', 'huynh_de', 'main', 'Tham Lang tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'menh', 'main', 'Người có Cự Môn thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'phu_mau', 'main', 'Cự Môn tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'phuc_duc', 'main', 'Cự Môn tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'dien_trach', 'main', 'Cự Môn tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'quan_loc', 'main', 'Cự Môn tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'no_boc', 'main', 'Cự Môn tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'thien_di', 'main', 'Cự Môn tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'tat_ach', 'main', 'Cự Môn tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'tai_bach', 'main', 'Cự Môn cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'tu_tuc', 'main', 'Cự Môn tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'phu_the', 'main', 'Cự Môn ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('cu_mon', 'huynh_de', 'main', 'Cự Môn tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'menh', 'main', 'Người có Thiên Tướng thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'phu_mau', 'main', 'Thiên Tướng tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'phuc_duc', 'main', 'Thiên Tướng tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'dien_trach', 'main', 'Thiên Tướng tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'quan_loc', 'main', 'Thiên Tướng tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'no_boc', 'main', 'Thiên Tướng tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'thien_di', 'main', 'Thiên Tướng tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'tat_ach', 'main', 'Thiên Tướng tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'tai_bach', 'main', 'Thiên Tướng cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'tu_tuc', 'main', 'Thiên Tướng tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'phu_the', 'main', 'Thiên Tướng ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_tuong', 'huynh_de', 'main', 'Thiên Tướng tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'menh', 'main', 'Người có Thiên Lương thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'phu_mau', 'main', 'Thiên Lương tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'phuc_duc', 'main', 'Thiên Lương tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'dien_trach', 'main', 'Thiên Lương tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'quan_loc', 'main', 'Thiên Lương tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'no_boc', 'main', 'Thiên Lương tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'thien_di', 'main', 'Thiên Lương tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'tat_ach', 'main', 'Thiên Lương tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'tai_bach', 'main', 'Thiên Lương cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'tu_tuc', 'main', 'Thiên Lương tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'phu_the', 'main', 'Thiên Lương ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('thien_luong', 'huynh_de', 'main', 'Thiên Lương tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'menh', 'main', 'Người có Thất Sát thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'phu_mau', 'main', 'Thất Sát tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'phuc_duc', 'main', 'Thất Sát tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'dien_trach', 'main', 'Thất Sát tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'quan_loc', 'main', 'Thất Sát tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'no_boc', 'main', 'Thất Sát tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'thien_di', 'main', 'Thất Sát tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'tat_ach', 'main', 'Thất Sát tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'tai_bach', 'main', 'Thất Sát cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'tu_tuc', 'main', 'Thất Sát tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'phu_the', 'main', 'Thất Sát ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('that_sat', 'huynh_de', 'main', 'Thất Sát tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'menh', 'main', 'Người có Phá Quân thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'phu_mau', 'main', 'Phá Quân tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'phuc_duc', 'main', 'Phá Quân tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'dien_trach', 'main', 'Phá Quân tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'quan_loc', 'main', 'Phá Quân tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'no_boc', 'main', 'Phá Quân tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'thien_di', 'main', 'Phá Quân tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'tat_ach', 'main', 'Phá Quân tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'tai_bach', 'main', 'Phá Quân cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'tu_tuc', 'main', 'Phá Quân tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'phu_the', 'main', 'Phá Quân ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('pha_quan', 'huynh_de', 'main', 'Phá Quân tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('kinh_duong', 'general', 'meaning', 'Sao Kình Dương có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('da_la', 'general', 'meaning', 'Sao Đà La có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('dia_khong', 'general', 'meaning', 'Sao Địa Không có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('dia_kiep', 'general', 'meaning', 'Sao Địa Kiếp có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('hoa_tinh', 'general', 'meaning', 'Sao Hỏa Tinh có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('linh_tinh', 'general', 'meaning', 'Sao Linh Tinh có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('hoa_loc', 'general', 'meaning', 'Sao Hóa Lộc có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('hoa_quyen', 'general', 'meaning', 'Sao Hóa Quyền có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('hoa_khoa', 'general', 'meaning', 'Sao Hóa Khoa có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('hoa_ky', 'general', 'meaning', 'Sao Hóa Kỵ có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('van_xuong', 'general', 'meaning', 'Sao Văn Xương có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('van_khuc', 'general', 'meaning', 'Sao Văn Khúc có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('ta_phu', 'general', 'meaning', 'Sao Tả Phù có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations (star_key, palace_key, topic, content) VALUES ('huu_bat', 'general', 'meaning', 'Sao Hữu Bật có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng.')";
+
+// --- Massive Data Injection ---
+// To avoid massive file size in one string, we'll build arrays.
+// 14 Chinh Tinh x 12 Palaces = 168 entries. Plus general meanings.
+
+$table = $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_interpretations";
+
+// Helper for generating SQL
+function generate_tuvi_sql($table, $star, $palace, $content) {
+    return "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('" . $star . "', '" . $palace . "', 'main', '" . str_replace("'", "\'", $content) . "')";
+}
+
+// 1. TU VI
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'menh', 'Tử Vi thủ Mệnh: Tướng mạo đôn hậu, tính tình trung thực, có uy quyền, tài lãnh đạo.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'phu_mau', 'Cha mẹ khá giả, có danh chức, sống lâu. Con cái được cha mẹ yêu thương.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'phuc_duc', 'Được hưởng phúc đức tổ tiên, dòng họ danh giá, mồ mả yên đẹp.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'dien_trach', 'Có nhà cửa đất đai rộng lớn, thừa hưởng gia sản hoặc tự tay gây dựng thành công.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'quan_loc', 'Công danh hiển hách, dễ thăng tiến, làm quan chức hoặc quản lý cấp cao.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'no_boc', 'Có người giúp việc đắc lực, bạn bè quyền quý giúp đỡ.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'thien_di', 'Ra ngoài gặp quý nhân, được kính trọng, giao thiệp với người quyền thế.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'tat_ach', 'Giải trừ được nhiều tai ách, bệnh tật nhẹ, gặp thầy gặp thuốc.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'tai_bach', 'Tài lộc dồi dào, nguồn thu ổn định, có khả năng quản lý tài chính tốt.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'tu_tuc', 'Con cái thông minh, thành đạt, hiếu thảo, về sau được nhờ con.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'phu_the', 'Vợ chồng đẹp đôi, hòa thuận, người phối ngẫu có danh giá hoặc giúp ích cho công danh.');
+$sql_create_module[] = generate_tuvi_sql($table, 'tu_vi', 'huynh_de', 'Anh em khá giả, thành đạt, hòa thuận, giúp đỡ lẫn nhau.');
+
+// 2. THIEN CO
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'menh', 'Thiên Cơ thủ Mệnh: Thông minh, cơ biến, khéo léo, thích nghiên cứu, có tài mưu lược.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'phu_mau', 'Cha mẹ nhân từ, hiền lành, có tay nghề khéo.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'phuc_duc', 'Dòng họ nhiều người đỗ đạt, khéo léo, đi xa lập nghiệp.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'dien_trach', 'Nhà cửa thường thay đổi, hoặc ở nơi ồn ào, gần chợ búa, cây cối.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'quan_loc', 'Làm các nghề cần sự khéo léo, tính toán, tham mưu, kỹ thuật.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'no_boc', 'Bạn bè, người giúp việc thay đổi luôn, không bền.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'thien_di', 'Hay phải đi xa, ra ngoài nhanh nhẹn, ứng biến tốt.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'tat_ach', 'Hay lo nghĩ, bệnh thần kinh, gan mật, tay chân.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'tai_bach', 'Kiếm tiền bằng trí óc, sự khéo léo, tiền bạc vào ra thất thường.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'tu_tuc', 'Con cái thông minh nhưng hiếm muộn hoặc xa cách cha mẹ.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'phu_the', 'Vợ chồng thông minh, có thể là người quen biết từ trước hoặc họ hàng xa.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_co', 'huynh_de', 'Anh em có người khéo léo, đi xa.');
+
+// 3. THAI DUONG
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'menh', 'Thái Dương thủ Mệnh: Thông minh, thẳng thắn, nóng nảy, thích danh vọng, quang minh chính đại.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'phu_mau', 'Cha danh giá, sống lâu (nếu sáng), khắc cha (nếu hãm).');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'phuc_duc', 'Hưởng phúc (nếu sáng), dòng họ danh giá.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'dien_trach', 'Nhà cửa rộng rãi, ở nơi cao ráo, sáng sủa.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'quan_loc', 'Công danh hiển đạt, làm quan chức lớn, nổi tiếng (nếu đắc địa).');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'no_boc', 'Bạn bè quyền quý, giúp đỡ nhiều (nếu sáng).');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'thien_di', 'Ra ngoài được nể trọng, quý nhân giúp đỡ, danh tiếng vang xa.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'tat_ach', 'Bệnh về mắt, tim mạch, huyết áp cao.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'tai_bach', 'Tài lộc dồi dào, tiêu pha rộng rãi, kiếm tiền dễ dàng (nếu sáng).');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'tu_tuc', 'Con cái thông minh, thành đạt, có danh tiếng.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'phu_the', 'Vợ chồng danh giá, giúp đỡ nhau, nhưng dễ có sự lấn lướt.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_duong', 'huynh_de', 'Anh em thành đạt, giúp đỡ nhau.');
+
+// 4. VU KHUC
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'menh', 'Vũ Khúc thủ Mệnh: Quả quyết, cương nghị, tài năng kinh doanh, hơi cô độc.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'phu_mau', 'Cha mẹ khá giả nhưng có thể khắc khẩu.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'phuc_duc', 'Hưởng phúc muộn, phải tự lập.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'dien_trach', 'Nhiều nhà đất, buôn bán bất động sản tốt.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'quan_loc', 'Làm tài chính, ngân hàng, kinh doanh, quân sự.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'no_boc', 'Bạn bè ít nhưng chất lượng, hoặc bạn bè giúp về tiền bạc.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'thien_di', 'Ra ngoài kiếm tiền giỏi, buôn bán phát đạt.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'tat_ach', 'Bệnh hô hấp, xương khớp, bệnh ngoài da.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'tai_bach', 'Tài tinh cư Tài vị: Giàu có, giữ tiền tốt, giỏi kinh doanh.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'tu_tuc', 'Ít con, con cái muộn màng nhưng khá giả.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'phu_the', 'Vợ chồng tài giỏi nhưng dễ lạnh nhạt, hình khắc nhẹ.');
+$sql_create_module[] = generate_tuvi_sql($table, 'vu_khuc', 'huynh_de', 'Anh em ít nhưng khá giả.');
+
+// 5. THIEN DONG
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'menh', 'Thiên Đồng thủ Mệnh: Ôn hòa, nhân hậu, hay thay đổi, thích hưởng thụ, bạch thủ thành gia.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'phu_mau', 'Cha mẹ nhân đức, sống lâu.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'phuc_duc', 'Hưởng phúc, dòng họ đông đúc, đi xa làm ăn.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'dien_trach', 'Tự tay gây dựng nhà cửa, về sau mới có.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'quan_loc', 'Công việc hay thay đổi, làm các ngành dịch vụ, giải trí, du lịch.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'no_boc', 'Bạn bè đông nhưng không bền, hay thay đổi.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'thien_di', 'Ra ngoài thuận lợi, được nhiều người yêu mến.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'tat_ach', 'Bệnh tiêu hóa, dạ dày, ít bệnh nặng.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'tai_bach', 'Bạch thủ thành gia, tiền bạc vào ra thất thường, hậu vận khá.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'tu_tuc', 'Đông con, con cái ngoan ngoãn.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'phu_the', 'Vợ chồng đẹp đôi, hiền lành, nhưng hay thay đổi nơi chốn.');
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_dong', 'huynh_de', 'Anh em đông, hòa thuận.');
+
+// 6. LIEM TRINH
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'menh', 'Liêm Trinh thủ Mệnh: Liêm khiết, nóng tính, thẳng thắn, đào hoa, thích kiểm soát.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'phu_mau', 'Cha mẹ nghiêm khắc, có thể bất hòa.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'phuc_duc', 'Phúc đức trung bình, cần tu dưỡng.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'dien_trach', 'Nhà cửa không bền, hay thay đổi hoặc có tranh chấp.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'quan_loc', 'Có uy quyền, hợp ngành luật, quân sự, giám sát.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'no_boc', 'Bạn bè nhiều nhưng ít tri kỷ, dễ bị phản trắc.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'thien_di', 'Ra ngoài hay gặp rắc rối thị phi, nhưng cũng có danh.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'tat_ach', 'Bệnh máu huyết, tai nạn xe cộ.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'tai_bach', 'Kiếm tiền khó khăn lúc đầu, cạnh tranh, sau mới khá.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'tu_tuc', 'Con cái ít, khó dạy bảo.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'phu_the', 'Vợ chồng hay khắc khẩu, ghen tuông.');
+$sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'huynh_de', 'Anh em bất hòa.');
+
+// 7. THIEN PHU
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_phu', 'menh', 'Thiên Phủ thủ Mệnh: Ôn hòa, cẩn trọng, tài lộc, thích ổn định, bảo thủ.');
+// (Add more for Thien Phu...)
+
+// 8. THAI AM
+$sql_create_module[] = generate_tuvi_sql($table, 'thai_am', 'menh', 'Thái Âm thủ Mệnh: Dịu dàng, thông minh, lãng mạn, thích văn chương nghệ thuật, tài lộc.');
+// ...
+
+// 9. THAM LANG
+$sql_create_module[] = generate_tuvi_sql($table, 'tham_lang', 'menh', 'Tham Lang thủ Mệnh: Đa tài, đào hoa, khéo léo, thích hưởng thụ, tham vọng lớn.');
+// ...
+
+// 10. CU MON
+$sql_create_module[] = generate_tuvi_sql($table, 'cu_mon', 'menh', 'Cự Môn thủ Mệnh: Ăn nói giỏi, hay nghi ngờ, thích tranh luận, nghiên cứu.');
+// ...
+
+// 11. THIEN TUONG
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_tuong', 'menh', 'Thiên Tướng thủ Mệnh: Trung thành, đôn hậu, thích giúp đỡ người khác, có uy quyền.');
+// ...
+
+// 12. THIEN LUONG
+$sql_create_module[] = generate_tuvi_sql($table, 'thien_luong', 'menh', 'Thiên Lương thủ Mệnh: Hiền lành, nhân hậu, thọ trường, có khả năng che chở, thầy thuốc/giáo viên.');
+// ...
+
+// 13. THAT SAT
+$sql_create_module[] = generate_tuvi_sql($table, 'that_sat', 'menh', 'Thất Sát thủ Mệnh: Cương quyết, dũng cảm, nóng nảy, sát phạt, thích quyền lực.');
+// ...
+
+// 14. PHA QUAN
+$sql_create_module[] = generate_tuvi_sql($table, 'pha_quan', 'menh', 'Phá Quân thủ Mệnh: Ngang tàng, phá cũ đổi mới, dũng mãnh, hao tán, phu thê bất hòa.');
+// ...
+
+// Add General Aux Meanings
+$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('kinh_duong', 'general', 'meaning', 'Kình Dương: Sát tinh, gây trở ngại, tai nạn, thương tích, nhưng đắc địa thì uy quyền.')";
+$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('da_la', 'general', 'meaning', 'Đà La: Ám tinh, gây chậm trễ, thị phi, bệnh tật dai dẳng.')";
+$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('dia_khong', 'general', 'meaning', 'Địa Không: Sát tinh hạng nặng, gây phá tán, thất bại bất ngờ, nhưng phát dã như lôi.')";
+$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('dia_kiep', 'general', 'meaning', 'Địa Kiếp: Sát tinh hạng nặng, gây tai họa, mất mát, đau khổ.')";
+$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('hoa_tinh', 'general', 'meaning', 'Hỏa Tinh: Nóng nảy, tai nạn lửa điện, phát nhanh tàn nhanh.')";
+$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('linh_tinh', 'general', 'meaning', 'Linh Tinh: Thâm trầm, nóng nảy ngầm, gây tai họa bất ngờ.')";
+$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('van_xuong', 'general', 'meaning', 'Văn Xương: Văn chương, học hành, thi cử đỗ đạt, mỹ thuật.')";
+$sql_create_module[] = "INSERT INTO " . $table . " (star_key, palace_key, topic, content) VALUES ('van_khuc', 'general', 'meaning', 'Văn Khúc: Tài hoa, nghệ thuật, hùng biện, đa cảm.')";
