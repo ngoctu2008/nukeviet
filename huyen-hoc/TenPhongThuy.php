@@ -13,6 +13,7 @@ class TenPhongThuy {
 
     // 1. Thiên Can (Dùng tính Nạp Âm)
     // Giá trị 'val' theo công thức cổ: Giáp/Ất=1, Bính/Đinh=2, Mậu/Kỷ=3, Canh/Tân=4, Nhâm/Quý=5
+    // Index 0-9 tương ứng với Can của năm (Year % 10)
     const THIEN_CAN = [
         0 => ['name' => 'Canh', 'val' => 4],
         1 => ['name' => 'Tân',  'val' => 4],
@@ -28,6 +29,7 @@ class TenPhongThuy {
 
     // 2. Địa Chi
     // Giá trị 'val': Tý/Sửu/Ngọ/Mùi=0, Dần/Mão/Thân/Dậu=1, Thìn/Tỵ/Tuất/Hợi=2
+    // Index 0-11 tương ứng với Chi của năm (Year % 12)
     const DIA_CHI = [
         0 =>  ['name' => 'Thân', 'val' => 1],
         1 =>  ['name' => 'Dậu',  'val' => 1],
@@ -46,15 +48,15 @@ class TenPhongThuy {
     // 3. Hệ thống Ngũ Hành (ID chuẩn dùng cho cả class)
     // 1=Kim, 2=Thủy, 3=Hỏa, 4=Thổ, 5=Mộc
     const NGU_HANH = [
-        1 => ['name' => 'Kim',  'color' => '#f1c40f'],
-        2 => ['name' => 'Thủy', 'color' => '#3498db'],
-        3 => ['name' => 'Hỏa',  'color' => '#e74c3c'],
-        4 => ['name' => 'Thổ',  'color' => '#8e44ad'],
-        5 => ['name' => 'Mộc',  'color' => '#2ecc71']
+        1 => ['name' => 'Kim',  'color' => '#f1c40f'], // Vàng
+        2 => ['name' => 'Thủy', 'color' => '#3498db'], // Xanh dương
+        3 => ['name' => 'Hỏa',  'color' => '#e74c3c'], // Đỏ
+        4 => ['name' => 'Thổ',  'color' => '#8e44ad'], // Tím
+        5 => ['name' => 'Mộc',  'color' => '#2ecc71']  // Xanh lá
     ];
 
     public function __construct() {
-        // Class này tính toán trực tiếp, không cần khởi tạo dữ liệu lớn
+        // Class tính toán trực tiếp, không cần khởi tạo dữ liệu lớn
     }
 
     // --- PHẦN 1: TÍNH MỆNH NGƯỜI (NẠP ÂM) ---
@@ -62,21 +64,24 @@ class TenPhongThuy {
     /**
      * Tính ngũ hành bản mệnh dựa trên năm sinh dương lịch.
      * Sử dụng thuật toán Lục Thập Hoa Giáp: (Can + Chi) > 5 ? -5 : Giữ nguyên.
+     * Kết quả trả về ID hành: 1=Kim, 2=Thủy, 3=Hỏa, 4=Thổ, 5=Mộc.
      */
     public function getMenhNguoi($year) {
+        // 1. Tìm Can (0-9)
         $canIdx = $year % 10;
+        // 2. Tìm Chi (0-11) - Lưu ý mảng DIA_CHI bắt đầu từ Thân=0 để khớp với %12 của năm dương lịch
         $chiIdx = $year % 12;
 
-        $canVal = self::THIEN_CAN[$canIdx]['val'];
-        $chiVal = self::DIA_CHI[$chiIdx]['val'];
+        $canData = self::THIEN_CAN[$canIdx];
+        $chiData = self::DIA_CHI[$chiIdx];
 
-        $sum = $canVal + $chiVal;
+        // 3. Tính Nạp Âm
+        $sum = $canData['val'] + $chiData['val'];
         if ($sum > 5) $sum -= 5;
-        // Kết quả $sum chính là ID hành (1=Kim, 2=Thủy, 3=Hỏa, 4=Thổ, 5=Mộc)
-
+        
         return [
             'year' => $year,
-            'can_chi' => self::THIEN_CAN[$canIdx]['name'] . ' ' . self::DIA_CHI[$chiIdx]['name'],
+            'can_chi' => $canData['name'] . ' ' . $chiData['name'],
             'hanh_id' => $sum,
             'hanh_text' => self::NGU_HANH[$sum]['name'],
             'color' => self::NGU_HANH[$sum]['color']
@@ -87,7 +92,8 @@ class TenPhongThuy {
 
     /**
      * Tính ngũ hành của tên dựa trên tổng số nét (Hán tự).
-     * Quy tắc Số Lý (phổ biến nhất trong đặt tên):
+     * Quy tắc Số Lý (phổ biến nhất trong Danh Tánh Học):
+     * Dựa vào số cuối cùng của tổng số nét.
      * 1-2: Mộc, 3-4: Hỏa, 5-6: Thổ, 7-8: Kim, 9-0: Thủy.
      */
     public function getHanhTen($soNet) {
@@ -118,6 +124,7 @@ class TenPhongThuy {
 
     /**
      * So sánh Tên (Chủ thể) và Mệnh (Khách thể)
+     * Quy tắc: Tên tác động vào Mệnh.
      * Ưu tiên: Tên sinh Mệnh (Tốt nhất) hoặc Tương Hòa.
      */
     public function phanTichTen($year, $soNetTen) {
@@ -131,7 +138,7 @@ class TenPhongThuy {
             'ten' => $ten,
             'ket_luan' => $relation['msg'],
             'diem' => $relation['score'],
-            'chi_tiet' => "Hành của Tên là {$ten['hanh_text']} tác động vào Bản mệnh {$menh['hanh_text']} => {$relation['msg']}."
+            'chi_tiet' => "Hành Tên ({$ten['hanh_text']}) {$relation['action']} Hành Mệnh ({$menh['hanh_text']})."
         ];
     }
 
@@ -147,50 +154,59 @@ class TenPhongThuy {
         $khac = [1=>5, 5=>4, 4=>2, 2=>3, 3=>1];
 
         if ($idTen == $idMenh) {
-            return ['msg' => 'Tương Hòa (Bình - Tốt)', 'score' => 1];
+            return ['msg' => 'Tương Hòa (Cát)', 'score' => 1, 'action' => 'trợ giúp'];
         }
         
         // Tên sinh Mệnh (Sinh Nhập - Tốt nhất)
         // Ví dụ: Tên Kim (1), Mệnh Thủy (2). Kim sinh Thủy.
         if ($sinh[$idTen] == $idMenh) {
-            return ['msg' => 'Tương Sinh (Đại Cát)', 'score' => 2];
+            return ['msg' => 'Tương Sinh (Đại Cát)', 'score' => 2, 'action' => 'sinh dưỡng cho'];
         }
 
         // Mệnh sinh Tên (Sinh Xuất - Hao tổn)
         // Ví dụ: Tên Thủy (2), Mệnh Kim (1). Kim sinh Thủy -> Mệnh bị tiết khí.
         if ($sinh[$idMenh] == $idTen) {
-            return ['msg' => 'Sinh Xuất (Hao tổn)', 'score' => -0.5];
+            return ['msg' => 'Sinh Xuất (Hao)', 'score' => -0.5, 'action' => 'làm hao tổn'];
         }
 
         // Tên khắc Mệnh (Khắc Nhập - Đại Hung)
         // Ví dụ: Tên Hỏa (3), Mệnh Kim (1). Hỏa khắc Kim -> Tên làm hại Mệnh.
         if ($khac[$idTen] == $idMenh) {
-            return ['msg' => 'Tương Khắc (Đại Hung)', 'score' => -2];
+            return ['msg' => 'Tương Khắc (Đại Hung)', 'score' => -2, 'action' => 'khắc chế'];
         }
 
         // Mệnh khắc Tên (Khắc Xuất - Trung bình)
         // Ví dụ: Tên Kim (1), Mệnh Hỏa (3). Hỏa khắc Kim -> Mệnh chế ngự được Tên.
         if ($khac[$idMenh] == $idTen) {
-            return ['msg' => 'Khắc Xuất (Bình thường)', 'score' => 0];
+            return ['msg' => 'Khắc Xuất (Bình)', 'score' => 0, 'action' => 'bị chế ngự bởi'];
         }
 
-        return ['msg' => 'Không xác định', 'score' => 0];
+        return ['msg' => 'Không xác định', 'score' => 0, 'action' => 'liên quan'];
     }
 }
 
-// --- VÍ DỤ SỬ DỤNG ---
+// --- HƯỚNG DẪN SỬ DỤNG NHANH ---
 /*
 $app = new TenPhongThuy();
 
-// Ví dụ: Người sinh năm 1991 (Tân Mùi - Lộ Bàng Thổ)
-// Tên "Hùng" (雄) - 12 nét. 
-// Theo quy tắc số lý: Số cuối là 2 -> Hành Mộc.
-// Mộc khắc Thổ -> Tên khắc Mệnh (Xấu).
+// 1. Nhập liệu:
+// - Năm sinh: 1990 (Canh Ngọ)
+// - Tổng số nét tên: 24 (Ví dụ tên "Đức" chữ Hán là 15 nét + Họ đệm... giả sử tổng là 24)
+// Lưu ý: Cần tra từ điển Hán Nôm để có số nét chính xác, không đếm chữ cái tiếng Việt.
+$year = 1990;
+$strokes = 24;
 
-$ketQua = $app->phanTichTen(1991, 12);
+$result = $app->phanTichTen($year, $strokes);
 
-echo "Năm sinh: " . $ketQua['nguoi']['year'] . " (" . $ketQua['nguoi']['can_chi'] . ") - Mệnh " . $ketQua['nguoi']['hanh_text'] . "<br>";
-echo "Tên có " . $ketQua['ten']['strokes'] . " nét - Thuộc hành " . $ketQua['ten']['hanh_text'] . "<br>";
-echo "Kết luận: " . $ketQua['ket_luan'] . " (" . $ketQua['chi_tiet'] . ")";
+// 2. Xuất kết quả
+echo "<h3>Phân Tích Tên Phong Thủy</h3>";
+echo "Người sinh năm: <b>{$result['nguoi']['year']} ({$result['nguoi']['can_chi']})</b><br>";
+echo "Bản Mệnh: <span style='color:{$result['nguoi']['color']}'>{$result['nguoi']['hanh_text']}</span><br>";
+echo "<hr>";
+echo "Tổng số nét tên: <b>{$result['ten']['strokes']}</b><br>";
+echo "Ngũ Hành Tên: <span style='color:{$result['ten']['color']}'>{$result['ten']['hanh_text']}</span><br>";
+echo "<hr>";
+echo "Đánh giá: <b>{$result['ket_luan']}</b><br>";
+echo "Chi tiết: {$result['chi_tiet']}";
 */
 ?>
