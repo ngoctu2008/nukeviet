@@ -71,6 +71,14 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
     $xtpl->assign('SELECTED_' . $input['h'], 'selected="selected"');
     $xtpl->assign('SELECTED_G_' . $input['g'], 'checked="checked"');
 
+    // Sanitize function (Defined outside loop)
+    $sanitizeStar = function($s) {
+        $s['name'] = htmlspecialchars($s['name'] ?? '', ENT_QUOTES);
+        if (isset($s['content'])) $s['content'] = htmlspecialchars($s['content'], ENT_QUOTES);
+        if (isset($s['element'])) $s['element'] = htmlspecialchars($s['element'], ENT_QUOTES);
+        return $s;
+    };
+
     if (!empty($data['laso'])) {
         $laso = $data['laso'];
 
@@ -104,22 +112,14 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
         }
 
         // Dia Ban (Palaces)
-        if (isset($laso['dia_ban'])) {
+        if (isset($laso['dia_ban']) && is_array($laso['dia_ban'])) {
             foreach ($laso['dia_ban'] as $key => $palace) {
                 $xtpl->assign('PALACE', $palace);
 
                 // Tuan/Triet
-                if ($palace['tuan']) $xtpl->parse('main.result.palace.tuan');
-                if ($palace['triet']) $xtpl->parse('main.result.palace.triet');
-                if ($palace['tieu_van']) $xtpl->parse('main.result.palace.tieu_van');
-
-                // Sanitize function
-                $sanitizeStar = function($s) {
-                    $s['name'] = htmlspecialchars($s['name'], ENT_QUOTES);
-                    if (isset($s['content'])) $s['content'] = htmlspecialchars($s['content'], ENT_QUOTES);
-                    if (isset($s['element'])) $s['element'] = htmlspecialchars($s['element'], ENT_QUOTES);
-                    return $s;
-                };
+                if (!empty($palace['tuan'])) $xtpl->parse('main.result.palace.tuan');
+                if (!empty($palace['triet'])) $xtpl->parse('main.result.palace.triet');
+                if (!empty($palace['tieu_van'])) $xtpl->parse('main.result.palace.tieu_van');
 
                 // Chinh Tinh
                 if (!empty($palace['chinh_tinh'])) {
