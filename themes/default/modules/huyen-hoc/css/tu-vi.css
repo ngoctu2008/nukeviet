@@ -9,12 +9,17 @@
     max-width: 800px;
     margin: 0 auto;
     font-size: 12px;
-    /* Define Areas: Snake(5) Horse(6) Goat(7) Monkey(8) */
+    /* Define Areas:
+       Row 1: Hoi, Ty, Suu, Dan (Top)
+       Row 2: Tuat, [Center], [Center], Mao
+       Row 3: Dau, [Center], [Center], Thin
+       Row 4: Than, Mui, Ngo, Ti (Bottom)
+    */
     grid-template-areas:
-        "ti ngo mui than"
-        "thin thien_ban thien_ban dau"
-        "mao thien_ban thien_ban tuat"
-        "dan suu ty hoi";
+        "hoi ty suu dan"
+        "tuat thien_ban thien_ban mao"
+        "dau thien_ban thien_ban thin"
+        "than mui ngo ti";
 }
 
 .cung {

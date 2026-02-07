@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tu Vi Layout Test</title>
+    <style>
+        .laso-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 2px;
+            background-color: #eee;
+            border: 2px solid #8b0000;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 12px;
+            grid-template-areas:
+                "hoi ty suu dan"
+                "tuat thien_ban thien_ban mao"
+                "dau thien_ban thien_ban thin"
+                "than mui ngo ti";
+        }
+        .cung {
+            background-color: #fff;
+            padding: 5px;
+            position: relative;
+            border: 1px solid #ddd;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .cung-ty { grid-area: ty; background: #ffebee; }
+        .cung-suu { grid-area: suu; background: #e3f2fd; }
+        .cung-dan { grid-area: dan; background: #e8f5e9; }
+        .cung-mao { grid-area: mao; background: #fff3e0; }
+        .cung-thin { grid-area: thin; background: #f3e5f5; }
+        .cung-ti { grid-area: ti; background: #ffccbc; }
+        .cung-ngo { grid-area: ngo; background: #fff9c4; }
+        .cung-mui { grid-area: mui; background: #cfd8dc; }
+        .cung-than { grid-area: than; background: #b2dfdb; }
+        .cung-dau { grid-area: dau; background: #d7ccc8; }
+        .cung-tuat { grid-area: tuat; background: #f0f4c3; }
+        .cung-hoi { grid-area: hoi; background: #c5cae9; }
+        .thien-ban {
+            grid-area: thien_ban;
+            background-color: #fff8e1;
+            border: 1px double #d4af37;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="laso-container">
+        <div class="thien-ban">THIEN BAN</div>
+        <div class="cung cung-ty">TY (Rat)</div>
+        <div class="cung cung-suu">SUU (Ox)</div>
+        <div class="cung cung-dan">DAN (Tiger)</div>
+        <div class="cung cung-mao">MAO (Cat)</div>
+        <div class="cung cung-thin">THIN (Dragon)</div>
+        <div class="cung cung-ti">TI (Snake)</div>
+        <div class="cung cung-ngo">NGO (Horse)</div>
+        <div class="cung cung-mui">MUI (Goat)</div>
+        <div class="cung cung-than">THAN (Monkey)</div>
+        <div class="cung cung-dau">DAU (Rooster)</div>
+        <div class="cung cung-tuat">TUAT (Dog)</div>
+        <div class="cung cung-hoi">HOI (Pig)</div>
+    </div>
+</body>
+</html>
