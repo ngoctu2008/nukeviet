@@ -11,6 +11,10 @@ if (!defined('NV_IS_FILE_ADMIN')) {
     die('Stop!!!');
 }
 
+if (defined('NV_EDITOR')) {
+    require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+}
+
 $page_title = $lang_module['add_popup'];
 
 $id = $nv_Request->get_int('id', 'get', 0);
@@ -164,7 +168,7 @@ foreach ($site_mods as $mod_name => $mod_info) {
     $xtpl->assign('MOD', [
         'value' => $mod_name,
         'title' => $mod_info['custom_title'],
-        'checked' => in_array($mod_name, $row['display_pages']) ? 'checked' : ''
+        'selected' => in_array($mod_name, $row['display_pages']) ? 'selected' : ''
     ]);
     $xtpl->parse('main.module');
 }
@@ -175,7 +179,7 @@ foreach ($groups as $gid => $title) {
     $xtpl->assign('GROUP', [
         'value' => $gid,
         'title' => $title,
-        'checked' => in_array($gid, $row['user_groups']) ? 'checked' : ''
+        'selected' => in_array($gid, $row['user_groups']) ? 'selected' : ''
     ]);
     $xtpl->parse('main.group');
 }

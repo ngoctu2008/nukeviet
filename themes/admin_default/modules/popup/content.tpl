@@ -2,6 +2,8 @@
 <link rel="stylesheet" href="{NV_BASE_SITEURL}assets/js/jquery-ui/jquery-ui.min.css">
 <script type="text/javascript" src="{NV_BASE_SITEURL}assets/js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}assets/js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
+<script type="text/javascript" data-show="after" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
+<link href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css" type="text/css" rel="stylesheet" />
 
 <!-- BEGIN: error -->
 <div class="alert alert-danger">{ERROR}</div>
@@ -54,24 +56,22 @@
             <div class="form-group">
                 <label class="col-sm-4 control-label">{LANG.display_pages}</label>
                 <div class="col-sm-20">
-                    <div style="height: 150px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px;">
+                    <select class="form-control select2" name="display_pages[]" multiple="multiple">
                         <!-- BEGIN: module -->
-                        <label class="checkbox-inline" style="margin-left:0; margin-right: 10px; display: block;">
-                            <input type="checkbox" name="display_pages[]" value="{MOD.value}" {MOD.checked}> {MOD.title}
-                        </label>
+                        <option value="{MOD.value}" {MOD.selected}>{MOD.title}</option>
                         <!-- END: module -->
-                    </div>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-sm-4 control-label">{LANG.user_groups}</label>
                 <div class="col-sm-20">
-                    <!-- BEGIN: group -->
-                    <label class="checkbox-inline">
-                        <input type="checkbox" name="user_groups[]" value="{GROUP.value}" {GROUP.checked}> {GROUP.title}
-                    </label>
-                    <!-- END: group -->
+                    <select class="form-control select2" name="user_groups[]" multiple="multiple">
+                        <!-- BEGIN: group -->
+                        <option value="{GROUP.value}" {GROUP.selected}>{GROUP.title}</option>
+                        <!-- END: group -->
+                    </select>
                 </div>
             </div>
 
@@ -131,6 +131,10 @@
         dateFormat: "dd/mm/yy",
         changeMonth: true,
         changeYear: true
+    });
+
+    $(document).ready(function() {
+        $('.select2').select2();
     });
 </script>
 <!-- END: main -->
