@@ -9,17 +9,16 @@
     max-width: 800px;
     margin: 0 auto;
     font-size: 12px;
-    /* Define Areas:
-       Row 1: Hoi, Ty, Suu, Dan (Top)
-       Row 2: Tuat, [Center], [Center], Mao
-       Row 3: Dau, [Center], [Center], Thin
-       Row 4: Than, Mui, Ngo, Ti (Bottom)
-    */
+    /* Define Areas: South Up (Standard Tu Vi) */
+    /* Row 1: Ti, Ngo, Mui, Than */
+    /* Row 2: Thin, [Center], [Center], Dau */
+    /* Row 3: Mao, [Center], [Center], Tuat */
+    /* Row 4: Dan, Suu, Ty, Hoi */
     grid-template-areas:
-        "hoi ty suu dan"
-        "tuat thien_ban thien_ban mao"
-        "dau thien_ban thien_ban thin"
-        "than mui ngo ti";
+        "ti ngo mui than"
+        "thin thien_ban thien_ban dau"
+        "mao thien_ban thien_ban tuat"
+        "dan suu ty hoi";
 }
 
 .cung {
@@ -33,18 +32,18 @@
 }
 
 /* Grid Area Assignments */
-.cung-ty { grid-area: ty; } /* Rat */
-.cung-suu { grid-area: suu; }
-.cung-dan { grid-area: dan; }
-.cung-mao { grid-area: mao; }
-.cung-thin { grid-area: thin; }
-.cung-ti { grid-area: ti; } /* Snake */
-.cung-ngo { grid-area: ngo; }
-.cung-mui { grid-area: mui; }
-.cung-than { grid-area: than; }
-.cung-dau { grid-area: dau; }
-.cung-tuat { grid-area: tuat; }
-.cung-hoi { grid-area: hoi; }
+.cung-ty { grid-area: ty; } /* Rat (0) */
+.cung-suu { grid-area: suu; } /* Ox (1) */
+.cung-dan { grid-area: dan; } /* Tiger (2) */
+.cung-mao { grid-area: mao; } /* Cat (3) */
+.cung-thin { grid-area: thin; } /* Dragon (4) */
+.cung-ti { grid-area: ti; } /* Snake (5) */
+.cung-ngo { grid-area: ngo; } /* Horse (6) */
+.cung-mui { grid-area: mui; } /* Goat (7) */
+.cung-than { grid-area: than; } /* Monkey (8) */
+.cung-dau { grid-area: dau; } /* Rooster (9) */
+.cung-tuat { grid-area: tuat; } /* Dog (10) */
+.cung-hoi { grid-area: hoi; } /* Pig (11) */
 
 .thien-ban {
     grid-area: thien_ban;
@@ -116,8 +115,8 @@
     font-weight: bold;
     font-size: 10px;
 }
-.label-tuan { background: #333; color: #fff; padding: 1px 3px; border-radius: 3px; }
-.label-triet { background: #ccc; color: #000; padding: 1px 3px; border-radius: 3px; }
+.label-tuan { background: #333; color: #fff; padding: 1px 3px; border-radius: 3px; margin-left: 2px; }
+.label-triet { background: #ccc; color: #000; padding: 1px 3px; border-radius: 3px; margin-left: 2px; }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
