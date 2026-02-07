@@ -21,7 +21,14 @@ $year = $nv_Request->get_int('year', 'post,get', date('Y'));
 
 $result = array();
 if (!empty($ho) && !empty($ten)) {
-    $result = NameAnalysis::analyze($ho, $ten, $year);
+    // Split 'ten' into 'tenDem' and 'tenChinh'
+    // E.g. "Ngoc Linh" -> Dem="Ngoc", Ten="Linh"
+    // E.g. "Linh" -> Dem="", Ten="Linh"
+    $parts = explode(' ', trim($ten));
+    $tenChinh = array_pop($parts);
+    $tenDem = implode(' ', $parts);
+
+    $result = NameAnalysis::analyze($ho, $tenDem, $tenChinh, $year);
 }
 
 $xtpl = new XTemplate('dat-ten.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);

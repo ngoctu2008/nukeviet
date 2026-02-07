@@ -22,10 +22,14 @@ $y = $nv_Request->get_int('y', 'post,get', date('Y'));
 
 // Convert to Lunar
 $lunar = LunarCalendar::convertSolar2Lunar($d, $m, $y);
-$info = XemNgay::checkNgayTot($lunar['day'], $lunar['month'], $lunar['year']);
 
-// Get Gio Hoang Dao (based on Day Chi - need calculation, simplified here)
+// Calculate Can Chi for Day first
 $canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], 0);
+
+// Check Good Day (Now requires Day Chi)
+$info = XemNgay::checkNgayTot($lunar['day'], $lunar['month'], $lunar['year'], $canChi['chiDay']);
+
+// Get Gio Hoang Dao
 $gioHoangDao = XemNgay::getGioHoangDao($canChi['chiDay']);
 
 $xtpl = new XTemplate('xem-ngay.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
