@@ -6,8 +6,14 @@
  * @Createdate 2023
  */
 
+define('NV_EDITOR', true);
+
 if (!defined('NV_IS_FILE_ADMIN')) {
     die('Stop!!!');
+}
+
+if (defined('NV_EDITOR')) {
+    require_once NV_ROOTDIR . '/includes/core/editor.php';
 }
 
 $page_title = $lang_module['add_popup'];
