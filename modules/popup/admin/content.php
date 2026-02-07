@@ -13,7 +13,7 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 }
 
 if (defined('NV_EDITOR')) {
-    require_once NV_ROOTDIR . '/includes/core/editor.php';
+    require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 }
 
 $page_title = $lang_module['add_popup'];
@@ -48,7 +48,10 @@ if ($id > 0) {
 
 if ($nv_Request->isset_request('submit', 'post')) {
     $row['title'] = $nv_Request->get_string('title', 'post', '');
-    $row['content'] = $nv_Request->get_string('content', 'post', '', false);
+    $row['content'] = $nv_Request->get_editor('content', '', NV_ALLOWED_HTML_TAGS);
+    if (defined('NV_EDITOR')) {
+        $row['content'] = nv_editor_nl2br($row['content']);
+    }
     $row['type'] = $nv_Request->get_string('type', 'post', 'modal');
     $row['display_pages'] = $nv_Request->get_array('display_pages', 'post', []);
     $row['user_groups'] = $nv_Request->get_array('user_groups', 'post', []);
@@ -129,6 +132,7 @@ if (!empty($error)) {
 
 // Editor
 if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
+    $row['content'] = nv_htmlspecialchars($row['content']);
     $row['content'] = nv_aleditor('content', '100%', '300px', $row['content']);
 } else {
     $row['content'] = '<textarea style="width:100%;height:300px" name="content">' . $row['content'] . '</textarea>';
