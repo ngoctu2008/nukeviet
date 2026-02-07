@@ -11,7 +11,7 @@
     font-size: 12px;
     /* Define Areas: Snake(5) Horse(6) Goat(7) Monkey(8) */
     grid-template-areas:
-        "ty_nho ngo mui than"
+        "ti ngo mui than"
         "thin thien_ban thien_ban dau"
         "mao thien_ban thien_ban tuat"
         "dan suu ty hoi";
@@ -33,7 +33,7 @@
 .cung-dan { grid-area: dan; }
 .cung-mao { grid-area: mao; }
 .cung-thin { grid-area: thin; }
-.cung-ty_nho { grid-area: ty_nho; } /* Snake */
+.cung-ti { grid-area: ti; } /* Snake */
 .cung-ngo { grid-area: ngo; }
 .cung-mui { grid-area: mui; }
 .cung-than { grid-area: than; }

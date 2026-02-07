@@ -21,7 +21,7 @@ class TuViLapSo {
     // Key map for Frontend (ty, suu...)
     public static $DIA_CHI_KEYS = array(
         0 => 'ty', 1 => 'suu', 2 => 'dan', 3 => 'mao',
-        4 => 'thin', 5 => 'ty_nho', 6 => 'ngo', 7 => 'mui',
+        4 => 'thin', 5 => 'ti', 6 => 'ngo', 7 => 'mui',
         8 => 'than', 9 => 'dau', 10 => 'tuat', 11 => 'hoi'
     );
 
