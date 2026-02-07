@@ -6,7 +6,7 @@
  * @Createdate 2023
  */
 
-if (!defined('NV_SYSTEM')) {
+if (!defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
 

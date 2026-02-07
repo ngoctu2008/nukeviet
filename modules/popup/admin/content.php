@@ -153,7 +153,7 @@ foreach ($trigger_types as $key => $title) {
 $xtpl->assign('TRIGGER_VALUE', $row['trigger_config']['value']);
 
 // Modules
-$sql = "SELECT title, custom_title FROM " . $db_config['prefix'] . "_setup_modules WHERE status=1 ORDER BY title ASC";
+$sql = "SELECT title, custom_title FROM " . NV_PREFIXLANG . "_setup_modules WHERE status=1 ORDER BY title ASC";
 $result = $db->query($sql);
 while ($mod = $result->fetch()) {
     $xtpl->assign('MOD', [
