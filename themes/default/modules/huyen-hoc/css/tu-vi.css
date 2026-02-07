@@ -15,10 +15,10 @@
     /* Row 3: Mao, [Center], [Center], Tuat */
     /* Row 4: Dan, Suu, Ty, Hoi */
     grid-template-areas:
-        "ti ngo mui than"
+        "ty_snake ngo mui than"
         "thin thien_ban thien_ban dau"
         "mao thien_ban thien_ban tuat"
-        "dan suu ty hoi";
+        "dan suu ty_rat hoi";
 }
 
 .cung {
@@ -32,12 +32,12 @@
 }
 
 /* Grid Area Assignments */
-.cung-ty { grid-area: ty; } /* Rat (0) */
+.cung-ty_rat { grid-area: ty_rat; } /* Rat (0) */
 .cung-suu { grid-area: suu; } /* Ox (1) */
 .cung-dan { grid-area: dan; } /* Tiger (2) */
 .cung-mao { grid-area: mao; } /* Cat (3) */
 .cung-thin { grid-area: thin; } /* Dragon (4) */
-.cung-ti { grid-area: ti; } /* Snake (5) */
+.cung-ty_snake { grid-area: ty_snake; } /* Snake (5) */
 .cung-ngo { grid-area: ngo; } /* Horse (6) */
 .cung-mui { grid-area: mui; } /* Goat (7) */
 .cung-than { grid-area: than; } /* Monkey (8) */

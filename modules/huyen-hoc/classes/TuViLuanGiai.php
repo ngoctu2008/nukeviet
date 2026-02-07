@@ -150,6 +150,11 @@ class TuViLuanGiai {
             // Or SAO_{CODE}_CU_{CHI} e.g. SAO_TU_VI_CU_NGO
 
             $chiKey = TuViLapSo::$DIA_CHI_KEYS[$palaceData['index']]; // ngo, ty, etc.
+
+            // Map frontend keys back to DB keys
+            if ($chiKey == 'ty_rat') $chiKey = 'ty';
+            if ($chiKey == 'ty_snake') $chiKey = 'ti';
+
             $posKey = 'SAO_' . strtoupper($star['code']) . '_CU_' . strtoupper($chiKey);
             $content = $this->fetchContent($posKey, 'general', 'pattern'); // High priority
 
