@@ -6,8 +6,6 @@
  * @Createdate 2023
  */
 
-define('NV_EDITOR', true);
-
 if (!defined('NV_IS_FILE_ADMIN')) {
     die('Stop!!!');
 }
