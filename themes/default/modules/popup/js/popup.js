@@ -45,7 +45,12 @@ var NV_POPUP = {
                 NV_POPUP.close(id);
             });
         } else {
-            $el.fadeIn();
+            // Check position for slide effect
+            if ($el.hasClass('popup-bar_top') || $el.hasClass('popup-bar_bottom')) {
+                $el.slideDown(500); // 500ms slide effect
+            } else {
+                $el.fadeIn();
+            }
         }
 
         // Log View
@@ -68,7 +73,11 @@ var NV_POPUP = {
         var isModal = $el.hasClass('nv-popup-modal');
 
         if (!isModal) {
-            $el.fadeOut();
+            if ($el.hasClass('popup-bar_top') || $el.hasClass('popup-bar_bottom')) {
+                $el.slideUp(500);
+            } else {
+                $el.fadeOut();
+            }
         }
         this.log(id, 'close');
     }

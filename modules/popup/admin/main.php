@@ -31,7 +31,8 @@ $popup_types = nv_get_popup_types();
 
 while ($row = $result->fetch()) {
     $row['type_text'] = isset($popup_types[$row['type']]) ? $popup_types[$row['type']] : $row['type'];
-    $row['status_text'] = $row['status'] ? $lang_global['active'] : $lang_global['inactive'];
+    $row['status_text'] = $row['status'] ? $lang_global['active'] : (isset($lang_global['inactive']) ? $lang_global['inactive'] : $lang_module['status_0']);
+    if (!$row['status'] && !isset($lang_global['inactive']) && !isset($lang_module['status_0'])) $row['status_text'] = 'Inactive';
     $row['status_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=change_status&id=' . $row['id'] . '&status=' . ($row['status'] ? 0 : 1);
     $row['edit_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content&id=' . $row['id'];
     $row['del_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=del&id=' . $row['id'];

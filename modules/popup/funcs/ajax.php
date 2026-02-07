@@ -35,7 +35,11 @@ if ($action == 'log') {
                 clicks = clicks + " . $clicks . ",
                 closes = closes + " . $closes;
 
-        $db->query($sql);
+        try {
+            $db->query($sql);
+        } catch (PDOException $e) {
+            // Log error or ignore
+        }
     }
     die('OK');
 }

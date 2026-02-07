@@ -51,6 +51,8 @@ $lang_module['frequency'] = 'Tần suất hiện lại (Phút)';
 $lang_module['frequency_note'] = '0 = Hiện 1 lần mỗi phiên. >0 = Hiện lại sau X phút.';
 $lang_module['priority'] = 'Độ ưu tiên (Lớn hiện trước)';
 $lang_module['status'] = 'Trạng thái';
+$lang_module['status_1'] = 'Hoạt động';
+$lang_module['status_0'] = 'Ngưng hoạt động';
 
 $lang_module['report'] = 'Thống kê hiệu quả';
 $lang_module['report_views'] = 'Lượt xem';
