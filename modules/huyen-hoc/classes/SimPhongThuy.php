@@ -13,7 +13,7 @@ class SimPhongThuy {
 
     // 80 Linh So Meanings (Simplified)
     private static $MEANINGS_80 = array(
-        0 => 'Viên mãn, như ý, vạn sự tốt lành (Đại Cát)', // Usually 0 maps to 80 or 81 logic, but 80%80=0
+        0 => 'Viên mãn, như ý, vạn sự tốt lành (Đại Cát)',
         1 => 'Phát triển, thịnh vượng, mọi việc như ý (Đại Cát)',
         2 => 'Biến động, trôi nổi, sự nghiệp không thành (Hung)',
         3 => 'Danh lợi song thu, thành công rực rỡ (Đại Cát)',
@@ -80,93 +80,45 @@ class SimPhongThuy {
         64 => 'Cốt nhục chia lìa, tai nạn dồn dập (Hung)',
         65 => 'Phú quý trường thọ, gia đạo hưng vượng (Đại Cát)',
         66 => 'Trong ngoài bất hòa, tiến thoái lưỡng nan (Hung)',
-        67 => 'Đường lợi thông suốt, sự nghiệp vững vàng (Cát)',
-        68 => 'Lập nghiệp hưng gia, vạn sự như ý (Đại Cát)',
-        69 => 'Đứng núi này trông núi nọ, khó thành công (Hung)',
-        70 => 'U buồn, tẻ nhạt, cuộc đời cô quạnh (Hung)',
-        71 => 'Hưởng phúc đức, nhưng tinh thần bất an (Bán Hung)',
-        72 => 'Bề ngoài vui vẻ, bên trong sầu khổ (Hung)',
-        73 => 'Chí cao nhưng tài hèn, khó thành đại nghiệp (Bán Hung)',
-        74 => 'Trí tuệ kém cỏi, cuộc đời vất vả (Hung)',
-        75 => 'Thủ giữ bình an, không nên mạo hiểm (Bán Cát)',
-        76 => 'Gia sản khánh kiệt, đời sống bần hàn (Hung)',
-        77 => 'Vui sướng nửa chừng, hậu vận kém (Bán Hung)',
-        78 => 'Gia nghiệp sa sút, tuổi già cô đơn (Bán Hung)',
-        79 => 'Hồi phục sức lực, chờ thời cơ (Bán Cát)',
-        80 => 'Gặp nhiều trở ngại, khó đạt mục đích (Hung)'
+        67 => 'Đường lợi thông suốt, vạn sự như ý (Cát)',
+        68 => 'Lập nghiệp hưng gia, phú quý vinh hoa (Đại Cát)',
+        69 => 'Đứng núi này trông núi nọ, khó thành đại nghiệp (Hung)',
+        70 => 'Phế vật, không còn gì, cuộc đời u ám (Hung)',
+        71 => 'Nhẫn nhịn chịu đựng, chờ thời cơ (Bán Cát)',
+        72 => 'Suối vàng chờ đón, tai họa bất ngờ (Hung)',
+        73 => 'Chí cao nhưng sức yếu, khó thành công (Bán Hung)',
+        74 => 'Hoàn cảnh không tốt, gặp nhiều trở ngại (Hung)',
+        75 => 'Thủ được bình an, tránh xa thị phi (Bán Cát)',
+        76 => 'Vấp ngã lại đứng lên, kiên trì sẽ thắng (Hung)',
+        77 => 'Vui sướng cực độ, nhưng dễ sinh kiêu căng (Bán Cát)',
+        78 => 'Già vẫn còn làm, vất vả nhưng có hậu (Bán Cát)',
+        79 => 'Hồi quang phản chiếu, vinh hoa ngắn ngủi (Hung)',
+        80 => 'Số phận đã định, quy về một mối (Cát)'
     );
 
     public static function analyze($phone) {
-        $result = [];
-        $phone = preg_replace('/[^0-9]/', '', $phone);
-        $result['phone'] = $phone;
+        // Get last 4 digits
+        if (strlen($phone) < 4) return ['valid' => false];
 
-        if (strlen($phone) < 6) return ['error' => 'Số điện thoại quá ngắn'];
-
-        // 1. Am Duong Balance
-        $odd = 0; $even = 0;
-        $len = strlen($phone);
-        for ($i = 0; $i < $len; $i++) {
-            if ($phone[$i] % 2 == 0) $even++; else $odd++;
-        }
-        $result['am_duong'] = [
-            'odd' => $odd,
-            'even' => $even,
-            'balance' => ($odd == $even) ? 'Cân bằng Âm Dương (Tốt)' : (($odd > $even) ? 'Dương thịnh Âm suy' : 'Âm thịnh Dương suy')
-        ];
-
-        // 2. Ngu Hanh (Based on Last Digit)
-        // 1,6=Thuy; 2,7=Hoa; 3,8=Moc; 4,9=Kim; 0,5=Tho
-        $lastDigit = intval(substr($phone, -1));
-        $nguHanhMap = [
-            1=>'Thủy', 6=>'Thủy',
-            2=>'Hỏa', 7=>'Hỏa',
-            3=>'Mộc', 8=>'Mộc',
-            4=>'Kim', 9=>'Kim',
-            0=>'Thổ', 5=>'Thổ'
-        ];
-        $result['ngu_hanh'] = isset($nguHanhMap[$lastDigit]) ? $nguHanhMap[$lastDigit] : 'Không xác định';
-
-        // 3. 4-Digit Feng Shui (80 Linh So)
         $last4 = substr($phone, -4);
         $val = intval($last4);
+
+        // Algorithm: Val / 80. Take decimal part * 80.
         $div = $val / 80;
-        $decimal = $div - floor($div);
-        $idx80 = round($decimal * 80);
-        if ($idx80 == 0) $idx80 = 80; // Handle 0 result
+        $rem = $div - floor($div);
+        $res = round($rem * 80);
 
-        $result['sim_4_so'] = [
-            'so' => $last4,
-            'index' => $idx80,
-            'meaning' => isset(self::$MEANINGS_80[$idx80]) ? self::$MEANINGS_80[$idx80] : 'Chưa có dữ liệu'
+        if ($res == 0) $res = 80; // Or 0 based on map
+
+        // Determine meaning
+        $meaning = isset(self::$MEANINGS_80[$res]) ? self::$MEANINGS_80[$res] : 'Không xác định';
+
+        return [
+            'valid' => true,
+            'phone' => $phone,
+            'last4' => $last4,
+            'score' => $res,
+            'meaning' => $meaning
         ];
-
-        // 4. Kinh Dich (Hexagram)
-        // Split: First 5 (or half) vs Last 5 (or half).
-        // Standard: Use first 5 digits sum for Upper, Last 5 for Lower. (If 10 digits)
-        // If 11 digits? Split 6/5? Or 5/6? Usually 5/6.
-        // Let's take first half / second half.
-        $mid = floor($len / 2);
-        $strUpper = substr($phone, 0, $mid);
-        $strLower = substr($phone, $mid);
-
-        $sumUpper = 0; for($i=0; $i<strlen($strUpper); $i++) $sumUpper += intval($strUpper[$i]);
-        $sumLower = 0; for($i=0; $i<strlen($strLower); $i++) $sumLower += intval($strLower[$i]);
-
-        $remUpper = $sumUpper % 8; if($remUpper==0) $remUpper=8;
-        $remLower = $sumLower % 8; if($remLower==0) $remLower=8;
-
-        $trigrams = [
-            1 => 'Càn (Thiên)', 2 => 'Đoài (Trạch)', 3 => 'Ly (Hỏa)', 4 => 'Chấn (Lôi)',
-            5 => 'Tốn (Phong)', 6 => 'Khảm (Thủy)', 7 => 'Cấn (Sơn)', 8 => 'Khôn (Địa)'
-        ];
-
-        $result['kinh_dich'] = [
-            'thuong_quai' => $trigrams[$remUpper],
-            'ha_quai' => $trigrams[$remLower],
-            'que_name' => 'Quẻ ' . $trigrams[$remUpper] . ' trên ' . $trigrams[$remLower]
-        ];
-
-        return $result;
     }
 }

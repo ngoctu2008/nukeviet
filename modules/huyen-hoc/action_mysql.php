@@ -148,38 +148,6 @@ $sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'tu_tuc', 'Con c�
 $sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'phu_the', 'Vợ chồng hay khắc khẩu, ghen tuông.');
 $sql_create_module[] = generate_tuvi_sql($table, 'liem_trinh', 'huynh_de', 'Anh em bất hòa.');
 
-// 7. THIEN PHU
-$sql_create_module[] = generate_tuvi_sql($table, 'thien_phu', 'menh', 'Thiên Phủ thủ Mệnh: Ôn hòa, cẩn trọng, tài lộc, thích ổn định, bảo thủ.');
-// (Add more for Thien Phu...)
-
-// 8. THAI AM
-$sql_create_module[] = generate_tuvi_sql($table, 'thai_am', 'menh', 'Thái Âm thủ Mệnh: Dịu dàng, thông minh, lãng mạn, thích văn chương nghệ thuật, tài lộc.');
-// ...
-
-// 9. THAM LANG
-$sql_create_module[] = generate_tuvi_sql($table, 'tham_lang', 'menh', 'Tham Lang thủ Mệnh: Đa tài, đào hoa, khéo léo, thích hưởng thụ, tham vọng lớn.');
-// ...
-
-// 10. CU MON
-$sql_create_module[] = generate_tuvi_sql($table, 'cu_mon', 'menh', 'Cự Môn thủ Mệnh: Ăn nói giỏi, hay nghi ngờ, thích tranh luận, nghiên cứu.');
-// ...
-
-// 11. THIEN TUONG
-$sql_create_module[] = generate_tuvi_sql($table, 'thien_tuong', 'menh', 'Thiên Tướng thủ Mệnh: Trung thành, đôn hậu, thích giúp đỡ người khác, có uy quyền.');
-// ...
-
-// 12. THIEN LUONG
-$sql_create_module[] = generate_tuvi_sql($table, 'thien_luong', 'menh', 'Thiên Lương thủ Mệnh: Hiền lành, nhân hậu, thọ trường, có khả năng che chở, thầy thuốc/giáo viên.');
-// ...
-
-// 13. THAT SAT
-$sql_create_module[] = generate_tuvi_sql($table, 'that_sat', 'menh', 'Thất Sát thủ Mệnh: Cương quyết, dũng cảm, nóng nảy, sát phạt, thích quyền lực.');
-// ...
-
-// 14. PHA QUAN
-$sql_create_module[] = generate_tuvi_sql($table, 'pha_quan', 'menh', 'Phá Quân thủ Mệnh: Ngang tàng, phá cũ đổi mới, dũng mãnh, hao tán, phu thê bất hòa.');
-// ...
-
 // General Aux Meanings
 $sql_create_module[] = generate_tuvi_sql($table, 'kinh_duong', 'general', 'Kình Dương: Sát tinh, gây trở ngại, tai nạn, thương tích, nhưng đắc địa thì uy quyền.', 'meaning');
 $sql_create_module[] = generate_tuvi_sql($table, 'da_la', 'general', 'Đà La: Ám tinh, gây chậm trễ, thị phi, bệnh tật dai dẳng.', 'meaning');
