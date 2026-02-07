@@ -76,6 +76,8 @@ if ($nv_Request->isset_request('submit', 'post')) {
 
     if (empty($row['title'])) {
         $error = $lang_module['error_title'];
+    } elseif ($row['end_time'] > 0 && $row['begin_time'] > 0 && $row['begin_time'] >= $row['end_time']) {
+        $error = $lang_module['error_time_invalid'];
     } else {
         $stm_cols = "title, content, type, display_pages, user_groups, device_type, trigger_config, begin_time, end_time, frequency, priority, status";
         $stm_vals = ":title, :content, :type, :display_pages, :user_groups, :device_type, :trigger_config, :begin_time, :end_time, :frequency, :priority, :status";

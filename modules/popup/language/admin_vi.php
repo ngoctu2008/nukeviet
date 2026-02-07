@@ -63,5 +63,6 @@ $lang_module['report_ctr'] = 'Tỉ lệ Click (CTR)';
 $lang_module['report_date'] = 'Ngày';
 
 $lang_module['error_title'] = 'Vui lòng nhập tiêu đề';
+$lang_module['error_time_invalid'] = 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc';
 $lang_module['error_save'] = 'Lỗi khi lưu dữ liệu';
 $lang_module['save_success'] = 'Lưu thành công';
