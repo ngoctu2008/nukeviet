@@ -32,7 +32,7 @@ $row = [
 if ($id > 0) {
     $row = $db->query("SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id=" . $id)->fetch();
     if (empty($row)) {
-        nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+        nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
     }
     $page_title = $lang_module['edit_popup'];
     $row['display_pages'] = !empty($row['display_pages']) ? json_decode($row['display_pages'], true) : [];
@@ -100,7 +100,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $stmt->bindValue(':status', $row['status'], PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
         } else {
             $error = $lang_module['error_save'];
         }

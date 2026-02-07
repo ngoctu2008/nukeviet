@@ -19,7 +19,7 @@ if ($nv_Request->isset_request('save_priority', 'post')) {
         $prio = intval($prio);
         $db->query("UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_rows SET priority = " . $prio . " WHERE id = " . intval($id));
     }
-    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
+    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
 }
 
 // Fetch List
@@ -32,9 +32,9 @@ $popup_types = nv_get_popup_types();
 while ($row = $result->fetch()) {
     $row['type_text'] = isset($popup_types[$row['type']]) ? $popup_types[$row['type']] : $row['type'];
     $row['status_text'] = $row['status'] ? $lang_global['active'] : $lang_global['inactive'];
-    $row['status_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=change_status&id=' . $row['id'] . '&status=' . ($row['status'] ? 0 : 1);
-    $row['edit_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content&id=' . $row['id'];
-    $row['del_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . $lang . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=del&id=' . $row['id'];
+    $row['status_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=change_status&id=' . $row['id'] . '&status=' . ($row['status'] ? 0 : 1);
+    $row['edit_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content&id=' . $row['id'];
+    $row['del_url'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=del&id=' . $row['id'];
     $array_data[] = $row;
 }
 

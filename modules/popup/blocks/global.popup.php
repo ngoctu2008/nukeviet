@@ -13,7 +13,7 @@ if (!defined('NV_MAINFILE')) {
 if (!nv_function_exists('nv_block_popup')) {
     function nv_block_popup($block_config)
     {
-        global $db, $db_config, $module_name, $user_info, $site_mods, $nv_Request;
+        global $db, $db_config, $module_name, $user_info, $site_mods, $nv_Request, $global_config;
 
         // Determine current environment
         $current_time = NV_CURRENTTIME;
