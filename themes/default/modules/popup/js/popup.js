@@ -23,7 +23,7 @@ var NV_POPUP = {
     },
 
     log: function(id, action) {
-        $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=popup&' + nv_op_variable + '=ajax', {
+        $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=popup&' + nv_fc_variable + '=ajax', {
             action: 'log',
             id: id,
             type: action,
