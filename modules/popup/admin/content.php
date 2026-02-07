@@ -153,13 +153,11 @@ foreach ($trigger_types as $key => $title) {
 $xtpl->assign('TRIGGER_VALUE', $row['trigger_config']['value']);
 
 // Modules
-$sql = "SELECT title, custom_title FROM " . NV_PREFIXLANG . "_setup_modules WHERE status=1 ORDER BY title ASC";
-$result = $db->query($sql);
-while ($mod = $result->fetch()) {
+foreach ($site_mods as $mod_name => $mod_info) {
     $xtpl->assign('MOD', [
-        'value' => $mod['title'],
-        'title' => $mod['custom_title'],
-        'checked' => in_array($mod['title'], $row['display_pages']) ? 'checked' : ''
+        'value' => $mod_name,
+        'title' => $mod_info['custom_title'],
+        'checked' => in_array($mod_name, $row['display_pages']) ? 'checked' : ''
     ]);
     $xtpl->parse('main.module');
 }
