@@ -2,6 +2,8 @@
 
 namespace NukeViet\Module\TuVi\Includes;
 
+use NukeViet\Module\TuVi\Includes\TuViConstants;
+
 class TuViLuanGiai {
 
     private $dictionary = [];
@@ -150,6 +152,54 @@ class TuViLuanGiai {
         }
 
         return implode(" ", $text_output);
+    }
+
+    public function luanGiaiTongQuan($canYear, $chiYear, $gender, $cuc) {
+        $html = "";
+
+        // 1. Am Duong Thuan Ly
+        $isThuanLy = false;
+        if ($gender == 1) { // Nam
+            if ($canYear % 2 == 0) $isThuanLy = true; // Duong Nam
+        } else { // Nu
+            if ($canYear % 2 != 0) $isThuanLy = true; // Am Nu
+        }
+
+        if ($isThuanLy) {
+             $html .= "<p><strong>Âm Dương Thuận Lý:</strong> Người được hưởng vòng vận đi thuận chiều, cuộc đời gặp nhiều may mắn, thuận lợi hơn người khác. Dễ đạt được ý nguyện.</p>";
+        } else {
+             $html .= "<p><strong>Âm Dương Nghịch Lý:</strong> Người có vòng vận đi nghịch, cuộc đời thường phải trải qua thử thách, phấn đấu nhiều mới thành công. Tính cách thường kiên cường, không chịu khuất phục.</p>";
+        }
+
+        // 2. Menh Cuc
+        $menhID = TuViConstants::getNapAmID($canYear, $chiYear);
+
+        $cucHanhID = 0;
+        switch($cuc) {
+            case 2: $cucHanhID = 3; break; // Thuy
+            case 3: $cucHanhID = 2; break; // Moc
+            case 4: $cucHanhID = 1; break; // Kim
+            case 5: $cucHanhID = 5; break; // Tho
+            case 6: $cucHanhID = 4; break; // Hoa
+        }
+
+        // 1=Kim, 2=Moc, 3=Thuy, 4=Hoa, 5=Tho
+        $sinh = [1=>3, 3=>2, 2=>4, 4=>5, 5=>1];
+
+        $tuongQuan = "";
+        if ($menhID == $cucHanhID) {
+            $tuongQuan = "Mệnh Cục Bình Hòa: Cuộc đời êm đềm, sự nghiệp tương xứng với tài năng.";
+        } elseif ($sinh[$menhID] == $cucHanhID) {
+            $tuongQuan = "Mệnh Sinh Cục: Người hay vất vả vì người khác, làm lợi cho đời, hay bị thiệt thòi.";
+        } elseif ($sinh[$cucHanhID] == $menhID) {
+            $tuongQuan = "Cục Sinh Mệnh: Hoàn cảnh ưu đãi, dễ gặp may mắn, thời thế tạo anh hùng.";
+        } else {
+            $tuongQuan = "Mệnh Cục Tương Khắc: Cuộc đời nhiều trở ngại nhưng nhờ nghị lực mà vượt qua hoàn cảnh.";
+        }
+
+        $html .= "<p><strong>" . $tuongQuan . "</strong></p>";
+
+        return $html;
     }
 
     private function getMeaning($star_id, $brightness, $scope) {

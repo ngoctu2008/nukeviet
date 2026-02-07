@@ -66,6 +66,14 @@ $xtpl->assign('USER', $userInfo);
 // Interpretation Output Buffer
 $interpretation_html = '';
 
+// Add General Interpretation (Tong Quan)
+$chartMeta = $horoscope->getMeta();
+$tongQuan = $luanGiai->luanGiaiTongQuan($chartMeta['can_year'], $chartMeta['chi_year'], $chartMeta['gender'], $chartMeta['cuc']);
+$interpretation_html .= "<div class='panel panel-success'>
+    <div class='panel-heading'><strong>Tổng Quan Lá Số</strong></div>
+    <div class='panel-body'>" . $tongQuan . "</div>
+</div>";
+
 // Assign Chart Data
 foreach ($chartData as $palace) {
     $xtpl->assign('PALACE', $palace);
