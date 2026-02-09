@@ -95,15 +95,15 @@
 
             <div class="stars-list pt-2">
                 <!-- BEGIN: chinh_tinh -->
-                <span class="sao-chinh color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b> ({STAR.element})<br>{STAR.content}">{STAR.name} <sup class="star-dacs">{STAR.dacs}</sup></span>
+                <span class="sao-chinh color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.tooltip_name}</b> ({STAR.tooltip_hanh})<br><b>Tính chất:</b> {STAR.tooltip_tinh_chat}<br><b>Đắc/Hãm:</b> {STAR.tooltip_dac_ham}<br><b>Ý nghĩa Mệnh:</b> {STAR.tooltip_y_nghia.menh}<br><b>Lưu sao:</b> {STAR.tooltip_luu_sao}">{STAR.name} <sup class="star-dacs">{STAR.dacs}</sup></span>
                 <!-- END: chinh_tinh -->
 
                 <!-- BEGIN: phu_tinh_tot -->
-                <span class="sao-tot color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b> ({STAR.element})<br>{STAR.content}">{STAR.name}</span>
+                <span class="sao-tot color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.tooltip_name}</b> ({STAR.tooltip_hanh})<br><b>Tính chất:</b> {STAR.tooltip_tinh_chat}<br><b>Đắc/Hãm:</b> {STAR.tooltip_dac_ham}<br><b>Ý nghĩa Mệnh:</b> {STAR.tooltip_y_nghia.menh}">{STAR.name}</span>
                 <!-- END: phu_tinh_tot -->
 
                 <!-- BEGIN: phu_tinh_xau -->
-                <span class="sao-xau color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.name}</b> ({STAR.element})<br>{STAR.content}">{STAR.name}</span>
+                <span class="sao-xau color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.tooltip_name}</b> ({STAR.tooltip_hanh})<br><b>Tính chất:</b> {STAR.tooltip_tinh_chat}<br><b>Đắc/Hãm:</b> {STAR.tooltip_dac_ham}<br><b>Ý nghĩa Mệnh:</b> {STAR.tooltip_y_nghia.menh}">{STAR.name}</span>
                 <!-- END: phu_tinh_xau -->
             </div>
 

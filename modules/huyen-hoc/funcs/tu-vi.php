@@ -54,6 +54,37 @@ if ($nv_Request->isset_request('submit', 'post')) {
         $name
     );
 
+    // Load Star Meanings from JSON
+    $starMeanings = [];
+    $jsonPath = NV_ROOTDIR . '/modules/' . $module_file . '/data/star_meanings.json';
+    if (file_exists($jsonPath)) {
+        $jsonContent = file_get_contents($jsonPath);
+        $starMeanings = json_decode($jsonContent, true);
+    }
+
+    // Enrich Star Data in La So
+    foreach ($laSoData['dia_ban'] as &$palace) {
+        $lists = ['chinh_tinh', 'phu_tinh_tot', 'phu_tinh_xau'];
+        foreach ($lists as $listName) {
+            if (!empty($palace[$listName])) {
+                foreach ($palace[$listName] as &$star) {
+                    if (isset($starMeanings[$star['code']])) {
+                        $info = $starMeanings[$star['code']];
+                        // Merge info fields
+                        $star['tooltip_name'] = $info['name'];
+                        $star['tooltip_hanh'] = $info['hanh'];
+                        $star['tooltip_loai'] = isset($info['loai']) ? $info['loai'] : '';
+                        $star['tooltip_tinh_chat'] = isset($info['dac_tinh']) ? $info['dac_tinh'] : '';
+                        $star['tooltip_dac_ham'] = isset($info['dac_ham']) ? $info['dac_ham'] : '';
+                        $star['tooltip_y_nghia'] = isset($info['y_nghia']) ? $info['y_nghia'] : [];
+                        $star['tooltip_luu_sao'] = isset($info['luu_sao']) ? $info['luu_sao'] : '';
+                        $star['tooltip_cach_cuc'] = isset($info['cach_cuc']) ? $info['cach_cuc'] : '';
+                    }
+                }
+            }
+        }
+    }
+
     // Luan Giai
     try {
         $interpreter = new TuViLuanGiai();
