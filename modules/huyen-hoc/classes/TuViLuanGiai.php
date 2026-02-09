@@ -152,8 +152,8 @@ class TuViLuanGiai {
             $chiKey = TuViLapSo::$DIA_CHI_KEYS[$palaceData['index']]; // ngo, ty, etc.
 
             // Map frontend keys back to DB keys
-            if ($chiKey == 'ty_rat') $chiKey = 'ty';
-            if ($chiKey == 'ty_snake') $chiKey = 'ti';
+            if ($chiKey == 'ty_chuot') $chiKey = 'ty';
+            if ($chiKey == 'ty_ran') $chiKey = 'ti';
 
             $posKey = 'SAO_' . strtoupper($star['code']) . '_CU_' . strtoupper($chiKey);
             $content = $this->fetchContent($posKey, 'general', 'pattern'); // High priority

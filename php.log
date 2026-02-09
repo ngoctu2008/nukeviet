@@ -1,0 +1,4 @@
+[Mon Feb  9 08:11:35 2026] PHP 8.3.6 Development Server (http://localhost:8000) started
+[Mon Feb  9 08:12:14 2026] [::1]:58566 Accepted
+[Mon Feb  9 08:12:14 2026] [::1]:58566 [302]: HEAD /index.php
+[Mon Feb  9 08:12:14 2026] [::1]:58566 Closing

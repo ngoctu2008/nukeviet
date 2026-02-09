@@ -52,18 +52,30 @@ function renderResult(data) {
     $('#step-3').hide();
     $('#step-4').fadeIn().addClass('fade-in');
 
-    if (data && data.id) {
-        $('#res-name').text('Quẻ số ' + data.id + ': ' + data.name_han);
-        $('#res-poem-han').text(data.poem_han);
-        $('#res-poem-viet').text(data.poem_viet);
-        $('#res-meaning').text(data.meaning);
-        if (data.note) {
-             $('#res-meaning').append('<br><small class="text-muted">(' + data.note + ')</small>');
-        }
+    if (data && data.chu) {
+        // Chu
+        $('#res-chu-name').text(data.chu.name);
+        $('#res-chu-nghia').text(data.chu.nghia);
+        $('#res-chu-dong').text(data.chu.dong);
+        $('#sum-chu').text(data.chu.name);
+
+        // Ho
+        $('#res-ho-name').text(data.ho.name);
+        $('#res-ho-nghia').text(data.ho.nghia);
+        $('#sum-ho').text(data.ho.name);
+
+        // Bien
+        $('#res-bien-name').text(data.bien.name);
+        $('#res-bien-nghia').text(data.bien.nghia);
+        $('#sum-bien').text(data.bien.name);
     } else {
         var msg = (data && data.error) ? data.error : 'Tâm chưa tịnh, ý chưa thông. Xin hãy thử lại sau.';
-        $('#res-name').text('Vô Vi Chi Quẻ');
-        $('#res-meaning').text(msg);
+        $('#res-chu-name').text('Vô Vi Chi Quẻ');
+        $('#res-chu-nghia').text(msg);
+        $('#res-ho-name').text('');
+        $('#res-ho-nghia').text('');
+        $('#res-bien-name').text('');
+        $('#res-bien-nghia').text('');
     }
 }
 
@@ -96,10 +108,11 @@ $(document).ready(function() {
             isShaking = false;
             ongXam.removeClass('shaking');
             var duration = new Date().getTime() - holdStartTime;
-            if (duration > 1000) { // Must hold for 1s
+            // Lower threshold for quick clicks (e.g. 500ms)
+            if (duration > 500) {
                 performDivination(duration);
             } else {
-                alert('Hãy thành tâm lắc ống xăm lâu hơn (giữ chuột trên 1 giây).');
+                alert('Hãy thành tâm giữ và lắc lâu hơn một chút (giữ chuột/tay trên 0.5 giây).');
             }
         }
     });
@@ -125,7 +138,7 @@ $(document).ready(function() {
                 ongXam.addClass('shaking');
                 setTimeout(function(){ ongXam.removeClass('shaking'); }, 500);
 
-                if (shakeDuration > 2000) { // Cumulative shake > 2s
+                if (shakeDuration > 1500) { // Cumulative shake > 1.5s
                     window.removeEventListener('devicemotion', handleMotion);
                     performDivination(shakeDuration);
                 }
@@ -136,9 +149,4 @@ $(document).ready(function() {
             lastZ = current.z;
         }
     }
-
-    // Reload
-    $('#btn-retry').click(function(){
-        location.reload();
-    });
 });

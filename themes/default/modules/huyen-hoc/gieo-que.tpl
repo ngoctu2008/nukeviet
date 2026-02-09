@@ -19,10 +19,12 @@
     <!-- Step 2: Interaction -->
     <div id="step-2" class="step-container" style="display: none;">
         <h2 class="step-title">GIEO QUẺ</h2>
-        <div id="ong-xam" class="ong-xam-container"></div>
+        <div id="ong-xam" class="ong-xam-container">
+            <div class="bat-quai-bg"></div>
+        </div>
         <div class="shake-prompt">
             <span class="d-block d-md-none">LẮC ĐIỆN THOẠI ĐỂ GIEO QUẺ</span>
-            <span class="d-none d-md-block desktop-prompt">Bấm và Giữ chuột vào ống xăm để lắc</span>
+            <span class="d-none d-md-block desktop-prompt">Bấm và Giữ chuột vào hình bát quái để gieo</span>
         </div>
     </div>
 
@@ -36,38 +38,56 @@
     </div>
 
     <!-- Step 4: Result -->
-    <div id="step-4" class="step-container" style="display: none; max-width: 900px;">
-        <h2 class="step-title">KẾT QUẢ</h2>
+    <div id="step-4" class="step-container" style="display: none; max-width: 1100px;">
+        <h2 class="step-title">KẾT QUẢ GIEO QUẺ</h2>
 
         <div class="result-card">
             <div class="result-card-inner">
-                <!-- Hexagram Name -->
-                <div id="res-name" class="hex-name"></div>
-
                 <div class="row">
-                    <!-- Chinese Poem -->
-                    <div class="col-md-12 col-sm-24 mb-3">
-                        <div class="poem-label">Thơ chữ Hán:</div>
-                        <div class="poem-content" id="res-poem-han"></div>
+                    <!-- Que Chu -->
+                    <div class="col-xs-24 col-sm-24 col-md-8 mb-3">
+                        <div class="hex-box hex-chu p-3 border rounded h-100">
+                            <h4 class="text-uppercase text-danger text-center border-bottom pb-2">Quẻ Chủ (Hiện Tại)</h4>
+                            <div id="res-chu-name" class="font-weight-bold h5 text-primary text-center mt-2"></div>
+                            <p id="res-chu-nghia" class="small text-justify mt-2"></p>
+                            <p id="res-chu-dong" class="font-italic text-muted text-center"></p>
+                        </div>
                     </div>
 
-                    <!-- Vietnamese Poem -->
-                    <div class="col-md-12 col-sm-24 mb-3">
-                        <div class="poem-label">Thơ dịch:</div>
-                        <div class="poem-content" id="res-poem-viet"></div>
+                    <!-- Que Ho -->
+                    <div class="col-xs-24 col-sm-24 col-md-8 mb-3">
+                         <div class="hex-box hex-ho p-3 border rounded h-100">
+                            <h4 class="text-uppercase text-info text-center border-bottom pb-2">Quẻ Hỗ (Diễn Biến)</h4>
+                            <div id="res-ho-name" class="font-weight-bold h5 text-primary text-center mt-2"></div>
+                            <p id="res-ho-nghia" class="small text-justify mt-2"></p>
+                            <p class="text-muted small text-center mt-2">(Quá trình diễn biến sự việc)</p>
+                        </div>
+                    </div>
+
+                    <!-- Que Bien -->
+                    <div class="col-xs-24 col-sm-24 col-md-8 mb-3">
+                         <div class="hex-box hex-bien p-3 border rounded h-100">
+                            <h4 class="text-uppercase text-success text-center border-bottom pb-2">Quẻ Biến (Kết Quả)</h4>
+                            <div id="res-bien-name" class="font-weight-bold h5 text-primary text-center mt-2"></div>
+                            <p id="res-bien-nghia" class="small text-justify mt-2"></p>
+                            <p class="text-muted small text-center mt-2">(Kết quả cuối cùng)</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Meaning -->
-                <div class="meaning-box">
-                    <h4>Lời bàn:</h4>
-                    <p id="res-meaning"></p>
+                <!-- Summary/Detail -->
+                <div class="meaning-box mt-4 p-4 bg-light border rounded">
+                    <h4 class="border-bottom pb-2 text-uppercase"><i class="fa fa-commenting-o"></i> Tổng Luận:</h4>
+                    <div id="res-summary">
+                        <p>Quẻ này cho thấy sự việc khởi đầu bởi <b id="sum-chu" class="text-danger"></b>, trải qua quá trình <b id="sum-ho" class="text-info"></b>, và sẽ kết thúc ở <b id="sum-bien" class="text-success"></b>.</p>
+                        <p class="font-italic text-muted mt-3">"Hãy suy ngẫm kỹ về ý nghĩa của từng quẻ, kết hợp với hoàn cảnh thực tế để tìm ra hướng đi đúng đắn nhất."</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="mt-4 text-center">
-            <button id="btn-retry" class="btn-mystic"><i class="fa fa-refresh"></i> Gieo quẻ khác</button>
+            <button onclick="location.reload()" class="btn btn-warning btn-lg"><i class="fa fa-refresh"></i> Gieo quẻ khác</button>
         </div>
     </div>
 

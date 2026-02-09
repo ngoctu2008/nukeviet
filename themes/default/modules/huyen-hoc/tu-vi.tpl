@@ -12,11 +12,11 @@
         <div class="card-body">
             <form action="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}" method="post">
                 <div class="row">
-                    <div class="col-md-12 form-group">
+                    <div class="col-xs-24 col-sm-12 col-md-12 form-group">
                         <label>{LANG.full_name}</label>
                         <input type="text" name="name" value="{INPUT.name}" class="form-control" placeholder="Nguyễn Văn A">
                     </div>
-                    <div class="col-md-6 form-group">
+                    <div class="col-xs-24 col-sm-12 col-md-12 form-group">
                         <label>{LANG.gender}</label>
                         <div>
                             <label class="radio-inline"><input type="radio" name="gender" value="1" {SELECTED_G_1}> {LANG.male}</label>
@@ -25,19 +25,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 form-group">
+                    <div class="col-xs-24 col-sm-6 col-md-6 form-group">
                         <label>{LANG.birth_day}</label>
                         <input type="number" name="day" value="{INPUT.d}" class="form-control" required>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-xs-24 col-sm-6 col-md-6 form-group">
                         <label>{LANG.birth_month}</label>
                         <input type="number" name="month" value="{INPUT.m}" class="form-control" required>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-xs-24 col-sm-6 col-md-6 form-group">
                         <label>{LANG.birth_year}</label>
                         <input type="number" name="year" value="{INPUT.y}" class="form-control" required>
                     </div>
-                    <div class="col-md-6 form-group">
+                    <div class="col-xs-24 col-sm-6 col-md-6 form-group">
                         <label>{LANG.birth_hour}</label>
                         <select name="hour" class="form-control">
                             <option value="0" {SELECTED_0}>{LANG.hour_ty}</option>
@@ -54,7 +54,7 @@
                             <option value="11" {SELECTED_11}>{LANG.hour_hoi}</option>
                         </select>
                     </div>
-                    <div class="col-md-6 form-group text-center">
+                    <div class="col-xs-24 col-sm-24 col-md-24 form-group text-center">
                         <label>&nbsp;</label>
                         <input type="submit" name="submit" value="{LANG.btn_create_laso}" class="btn btn-primary btn-block">
                     </div>
@@ -128,7 +128,7 @@
 
     <!-- Tabs Functionality -->
     <div class="row mt-4 no-print">
-        <div class="col-md-12">
+        <div class="col-xs-24 col-sm-24 col-md-24">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="tongquan-tab" data-toggle="tab" href="#tongquan" role="tab">
@@ -153,13 +153,13 @@
                 <div class="tab-pane fade show active" id="tongquan" role="tabpanel">
                     <h4>{LANG.tab_overview}</h4>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-24 col-sm-16 col-md-16">
                             <p>{LANG.menh}: <b class="text-{THIEN_BAN.menh_color}">{THIEN_BAN.menh_ngu_hanh}</b> - {LANG.cuc}: <b>{THIEN_BAN.cuc}</b></p>
                             <p>Âm Dương: <b>{THIEN_BAN.am_duong_ly}</b>.</p>
                             <p>Ngũ Hành: <b>{THIEN_BAN.cuc_menh_ly}</b>.</p>
                         </div>
                         <!-- BEGIN: score_box -->
-                        <div class="col-md-6 text-center">
+                        <div class="col-xs-24 col-sm-8 col-md-8 text-center">
                             <div class="alert alert-info p-2">
                                 <h5 class="m-0">{LANG.score}</h5>
                                 <h2 class="text-primary m-0">{SCORE}</h2>
@@ -258,7 +258,12 @@
             var targetYear = $('#select-year-han').val();
             var chiYear = $('#meta_chiYear').val();
             var gender = $('#meta_gender').val();
-            var birthYear = $('#meta_birthYear').val();
+
+            // Get full birth details for accurate monthly analysis
+            var birthDay = $('input[name="day"]').val();
+            var birthMonth = $('input[name="month"]').val();
+            var birthYear = $('input[name="year"]').val();
+            var birthHour = $('select[name="hour"]').val();
 
             $('#ket-qua-han').html('<p><i class="fa fa-spinner fa-spin"></i> {LANG.loading}</p>');
 
@@ -267,7 +272,10 @@
                 targetYear: targetYear,
                 chiYear: chiYear,
                 gender: gender,
-                birthYear: birthYear
+                birthDay: birthDay,
+                birthMonth: birthMonth,
+                birthYear: birthYear,
+                birthHour: birthHour
             }, function(res) {
                 if(res.status == 'success') {
                     $('#ket-qua-han').html(res.html);

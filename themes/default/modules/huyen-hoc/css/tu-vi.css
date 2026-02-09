@@ -19,7 +19,7 @@
 .laso-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, minmax(180px, auto));
+    grid-template-rows: repeat(4, minmax(220px, auto));
     gap: 2px;
     background-color: var(--border-color);
     border: 5px solid var(--border-color);
@@ -29,7 +29,7 @@
 
 .cung, .thien-ban {
     background-color: var(--palace-bg);
-    padding: 10px;
+    padding: 8px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -48,6 +48,7 @@
     justify-content: center;
     flex-direction: column;
     border: 2px double var(--border-color);
+    z-index: 10;
 }
 
 .header-cung {
@@ -56,13 +57,22 @@
     border-bottom: 1px dashed #ccc;
     padding-bottom: 5px;
     margin-bottom: 5px;
+    position: relative;
 }
 
 .cung-name {
     text-transform: uppercase;
     color: var(--highlight-color);
     display: block;
-    font-size: 14px;
+    font-size: 15px;
+}
+
+.cung-tieu-van {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 11px;
+    color: #999;
 }
 
 .stars-list {
@@ -74,6 +84,7 @@
     display: block;
     font-weight: bold;
     text-transform: uppercase;
+    margin-bottom: 2px;
 }
 
 .sao-tot {
@@ -92,6 +103,7 @@
     justify-content: space-between;
     font-size: 12px;
     color: #666;
+    margin-top: 5px;
 }
 
 .dai-van {
@@ -109,44 +121,56 @@
 
 /* Dac/Ham markers */
 .star-dacs {
-    font-size: 0.7em;
+    font-size: 0.8em;
     color: #555;
     margin-left: 2px;
+    vertical-align: super;
 }
 
 /* Tuan/Triet */
-.tuan-triet {
+.tuan-triet-container {
     position: absolute;
     top: 5px;
-    right: 5px;
+    left: 5px;
     display: flex;
     flex-direction: column;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: bold;
+    z-index: 5;
 }
 
-.label-tuan { background: #333; color: #fff; padding: 1px 3px; border-radius: 2px; margin-bottom: 2px; }
-.label-triet { background: #999; color: #fff; padding: 1px 3px; border-radius: 2px; }
+.label-tuan { background: #333; color: #fff; padding: 1px 3px; border-radius: 2px; margin-bottom: 2px; opacity: 0.8; }
+.label-triet { background: #999; color: #fff; padding: 1px 3px; border-radius: 2px; opacity: 0.8; }
 
-/* Grid Positioning for Palaces (0..11) */
 /*
-    Row 1: 5(Ty), 6(Ngo), 7(Mui), 8(Than)
-    Row 2: 4(Thin), [TB], [TB], 9(Dau)
-    Row 3: 3(Mao), [TB], [TB], 10(Tuat)
-    Row 4: 2(Dan), 1(Suu), 0(Ty), 11(Hoi)
+    Grid Positioning (North-Up / Paper Layout)
+    Top: Hoi(11) -> Ty(0) -> Suu(1) -> Dan(2)
+    Right: Mao(3)
+    Bottom: Thin(4) -> Ty(5) -> Ngo(6) -> Mui(7) ?? No.
+    Clockwise: Dan (2) -> Mao (3) -> Thin (4) -> Ty (5) -> Ngo (6) -> Mui (7) -> Than (8) -> Dau (9) -> Tuat (10) -> Hoi (11) -> Ty (0) -> Suu (1)
+
+    Standard An Sao Paper (Hoi -> Ty -> Suu -> Dan at TOP):
+    Row 1: Hoi(11), Ty(0), Suu(1), Dan(2)
+    Row 2: Tuat(10), [TB], [TB], Mao(3)
+    Row 3: Dau(9), [TB], [TB], Thin(4)
+    Row 4: Than(8), Mui(7), Ngo(6), Ty(5)
 */
-.cung-ty_snake { grid-area: 1 / 1; }
-.cung-ngo      { grid-area: 1 / 2; }
-.cung-mui      { grid-area: 1 / 3; }
-.cung-than     { grid-area: 1 / 4; }
-.cung-thin     { grid-area: 2 / 1; }
-.cung-dau      { grid-area: 2 / 4; }
-.cung-mao      { grid-area: 3 / 1; }
-.cung-tuat     { grid-area: 3 / 4; }
-.cung-dan      { grid-area: 4 / 1; }
-.cung-suu      { grid-area: 4 / 2; }
-.cung-ty_rat   { grid-area: 4 / 3; }
-.cung-hoi      { grid-area: 4 / 4; }
+
+.cung-hoi      { grid-area: 1 / 1; } /* Top Left */
+.cung-ty_chuot { grid-area: 1 / 2; }
+.cung-suu      { grid-area: 1 / 3; }
+.cung-dan      { grid-area: 1 / 4; } /* Top Right */
+
+.cung-tuat     { grid-area: 2 / 1; } /* Left Top */
+.cung-mao      { grid-area: 2 / 4; } /* Right Top */
+
+.cung-dau      { grid-area: 3 / 1; } /* Left Bottom */
+.cung-thin     { grid-area: 3 / 4; } /* Right Bottom */
+
+.cung-than     { grid-area: 4 / 1; } /* Bottom Left */
+.cung-mui      { grid-area: 4 / 2; }
+.cung-ngo      { grid-area: 4 / 3; }
+.cung-ty_ran   { grid-area: 4 / 4; } /* Bottom Right */
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -177,18 +201,22 @@
         padding: 0;
         background: white;
     }
-    .card, .nav-tabs, .tab-content, h2, form {
+    .card, .nav-tabs, .tab-content, h2, form, .no-print {
         display: none !important;
     }
     .laso-container {
         border: 2px solid #000;
         width: 100%;
-        height: 100vh; /* Fit page */
+        height: 100vh;
         page-break-inside: avoid;
+        grid-template-rows: repeat(4, 1fr); /* Force equal height in print */
     }
     .cung {
         border: 1px solid #999;
         font-size: 10pt;
+        padding: 2px;
     }
-    /* Show chart only */
+    .thien-ban {
+        border: 2px solid #000;
+    }
 }

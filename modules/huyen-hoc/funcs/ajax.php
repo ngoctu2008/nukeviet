@@ -22,6 +22,7 @@ foreach ($classes as $cls) {
 
 use NukeViet\Module\HuyenHoc\TuViLapSo;
 use NukeViet\Module\HuyenHoc\TuViLuanGiai;
+use NukeViet\Module\HuyenHoc\LunarCalendar;
 
 // Ensure JSON header if AJAX
 if ($nv_Request->isset_request('nv_ajax', 'get,post')) {
@@ -32,56 +33,124 @@ $action = $nv_Request->get_string('action', 'get,post', '');
 
 if ($action == 'xem_han') {
     try {
-        // Inputs: chiYear (of Birth), gender, targetYear, birthYear
-        $chiYear = $nv_Request->get_int('chiYear', 'post', 0);
-        $gender = $nv_Request->get_int('gender', 'post', 1);
+        // Inputs
         $targetYear = $nv_Request->get_int('targetYear', 'post', date('Y'));
-        $birthYear = $nv_Request->get_int('birthYear', 'post', date('Y')); // Added birthYear
+        $gender = $nv_Request->get_int('gender', 'post', 1);
 
-        // 1. Calculate Limits
+        // Full Birth Data (Solar)
+        $birthDay = $nv_Request->get_int('birthDay', 'post', 0);
+        $birthMonth = $nv_Request->get_int('birthMonth', 'post', 0);
+        $birthYear = $nv_Request->get_int('birthYear', 'post', 0);
+        $birthHour = $nv_Request->get_int('birthHour', 'post', 0);
+
+        // Fallback or Validate
+        if ($birthDay == 0 || $birthYear == 0) {
+             throw new Exception("Dữ liệu ngày sinh không hợp lệ.");
+        }
+
+        // 1. Convert Solar to Lunar & Get Chart
+        // We need the full chart to know what stars are in each palace for the Monthly Limits
+        $lunar = LunarCalendar::convertSolar2Lunar($birthDay, $birthMonth, $birthYear);
+        $canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], $birthHour);
+
+        $laSoData = TuViLapSo::lapLaSo(
+            $lunar['day'],
+            $lunar['month'],
+            $lunar['year'],
+            $birthHour,
+            $gender,
+            $canChi['canYear'],
+            $canChi['chiYear'],
+            'User' // Name doesn't matter for limits
+        );
+
+        $chart = $laSoData['dia_ban']; // 0..11 indexed
+        $chiYear = $canChi['chiYear']; // Use calculated chiYear
+
+        // 2. Calculate Limits
         $limitInfo = TuViLapSo::getLimitInfoForYear($chiYear, $gender, $targetYear, $birthYear);
 
         $html = '<div class="alert alert-info">';
         $html .= '<h4>Kết quả năm ' . $targetYear . ' (' . $limitInfo['target_chi'] . ')</h4>';
-        $html .= '<p><strong>Tuổi Âm:</strong> ' . $limitInfo['age_am'] . ' tuổi</p>'; // Added Age
-        $html .= '<p><strong>Tiểu vận tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['tieu_van_idx']] . '</p>';
-        $html .= '<p><strong>Lưu Thái Tuế tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['luu_thai_tue_idx']] . '</p>';
+        $html .= '<p><strong>Tuổi Âm:</strong> ' . $limitInfo['age_am'] . ' tuổi</p>';
+
+        $tieuVanPalace = isset($chart[$limitInfo['tieu_van_idx']]) ? $chart[$limitInfo['tieu_van_idx']]['palace_name'] : '';
+        $html .= '<p><strong>Tiểu vận tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['tieu_van_idx']] . ' (' . $tieuVanPalace . ')</p>';
+
+        $thaiTuePalace = isset($chart[$limitInfo['luu_thai_tue_idx']]) ? $chart[$limitInfo['luu_thai_tue_idx']]['palace_name'] : '';
+        $html .= '<p><strong>Lưu Thái Tuế tại cung:</strong> ' . TuViLapSo::$DIA_CHI[$limitInfo['luu_thai_tue_idx']] . ' (' . $thaiTuePalace . ')</p>';
 
         // Add 9 Stars & Han
         $saoInfo = $limitInfo['sao_han'];
-        $html .= '<p><strong>Sao chiếu mệnh:</strong> ' . $saoInfo['name'] . ' (' . ($saoInfo['type']=='tot'?'Tốt':($saoInfo['type']=='xau'?'Xấu':'Trung')) . ')</p>';
+        $html .= '<p><strong>Sao chiếu mệnh:</strong> <span class="text-' . ($saoInfo['type']=='tot'?'success':($saoInfo['type']=='xau'?'danger':'warning')) . '">' . $saoInfo['name'] . '</span> (' . ($saoInfo['type']=='tot'?'Tốt':($saoInfo['type']=='xau'?'Xấu':'Trung')) . ')</p>';
+
         $html .= '<p><strong>Hạn:</strong> ' . $limitInfo['han']['name'] . '</p>';
-        $html .= '<p><strong>Tam Tai:</strong> ' . ($limitInfo['tam_tai'] ? '<span class="text-danger">Có</span>' : 'Không') . '</p>';
+        $html .= '<p><strong>Tam Tai:</strong> ' . ($limitInfo['tam_tai'] ? '<span class="text-danger">Phạm Tam Tai</span>' : 'Không phạm') . '</p>';
+        $html .= '<p><strong>Phạm Thái Tuế:</strong> ' . ($limitInfo['pham_thai_tue'] ? '<span class="text-danger">Có</span>' : 'Không') . '</p>';
         $html .= '</div>';
 
-        // Luan Giai Chi Tiet
+        // Luan Giai Chi Tiet Sao Luu
         $interpreter = new TuViLuanGiai();
+        // Pass $limitInfo to interpreter if needed, or analyze manually
+        // Since TuViLuanGiai might not have specific limit analysis methods exposed or context-aware without chart, we do basic here.
+        // Actually, TuViLuanGiai might have analyzeLuuStars but we need to check if it accepts $limitInfo structure.
+        // In previous steps, I might have added it. Let's assume yes or implement basic.
+        // Checking previous read of ajax.php, it called $interpreter->analyzeLuuStars($limitInfo).
 
-        // Luu Stars Reading
-        $luuComments = $interpreter->analyzeLuuStars($limitInfo);
-        if (!empty($luuComments)) {
-            $html .= '<div class="card mb-3"><div class="card-header">Luận Giải Các Sao Lưu</div><div class="card-body">';
-            foreach ($luuComments as $comment) {
-                $html .= '<p><i class="fa fa-star-o"></i> ' . $comment . '</p>';
+        if (method_exists($interpreter, 'analyzeLuuStars')) {
+            $luuComments = $interpreter->analyzeLuuStars($limitInfo);
+            if (!empty($luuComments)) {
+                $html .= '<div class="card mb-3"><div class="card-header bg-primary text-white">Luận Giải Các Sao Lưu</div><div class="card-body">';
+                foreach ($luuComments as $comment) {
+                    $html .= '<p><i class="fa fa-star text-warning"></i> ' . $comment . '</p>';
+                }
+                $html .= '</div></div>';
             }
-            $html .= '</div></div>';
         }
 
-        // Monthly Limits Table
-        $html .= '<div class="card mb-3"><div class="card-header">Vận Hạn Các Tháng (Nguyệt Hạn)</div><div class="card-body">';
-        $html .= '<table class="table table-bordered table-sm"><thead><tr><th>Tháng</th><th>Cung Hạn</th><th>Diễn Biến</th></tr></thead><tbody>';
+        // Monthly Limits Table with Details
+        $html .= '<div class="card mb-3"><div class="card-header bg-primary text-white">Vận Hạn Các Tháng (Nguyệt Hạn)</div><div class="card-body p-0">';
+        $html .= '<table class="table table-striped table-bordered m-0"><thead><tr><th>Tháng</th><th>Cung Hạn</th><th>Sao Tọa Thủ (Diễn Biến)</th></tr></thead><tbody>';
 
         for ($m = 1; $m <= 12; $m++) {
             $monthIdx = TuViLapSo::getNguyetHan($limitInfo['tieu_van_idx'], $m, $gender);
+            $palaceData = isset($chart[$monthIdx]) ? $chart[$monthIdx] : null;
+
             $palaceName = TuViLapSo::$DIA_CHI[$monthIdx];
-            // Get reading for Nguyet Han at this palace
-            // This requires full chart access which we don't have here easily without re-running LapSo.
-            // But we can approximate or just list the Palace.
-            // Ideally we should pass chart to ajax but chart is heavy.
-            // For now, list Palace Name.
-            $html .= '<tr><td>' . $m . '</td><td>' . $palaceName . '</td><td><em>Xem tại cung ' . $palaceName . '</em></td></tr>';
+            $detail = '';
+
+            if ($palaceData) {
+                $palaceName .= ' (' . $palaceData['palace_name'] . ')';
+
+                // List Main Stars
+                $stars = [];
+                foreach ($palaceData['chinh_tinh'] as $s) {
+                    $stars[] = '<strong>' . $s['name'] . '</strong>';
+                }
+                // List Good/Bad Stars (Selective)
+                foreach ($palaceData['phu_tinh_xau'] as $s) {
+                     // Highlight bad stars
+                     if (in_array($s['code'], ['kinh_duong', 'da_la', 'hoa_tinh', 'linh_tinh', 'dia_khong', 'dia_kiep', 'hoa_ky'])) {
+                         $stars[] = '<span class="text-danger">' . $s['name'] . '</span>';
+                     }
+                }
+                 foreach ($palaceData['phu_tinh_tot'] as $s) {
+                     // Highlight good stars
+                     if (in_array($s['code'], ['loc_ton', 'hoa_loc', 'hoa_quyen', 'hoa_khoa', 'thien_khoi', 'thien_viet'])) {
+                         $stars[] = '<span class="text-success">' . $s['name'] . '</span>';
+                     }
+                }
+
+                if (!empty($stars)) {
+                    $detail = implode(', ', $stars);
+                } else {
+                    $detail = 'Bình thường';
+                }
+            }
+
+            $html .= '<tr><td class="text-center">' . $m . '</td><td>' . $palaceName . '</td><td>' . $detail . '</td></tr>';
         }
-        $html .= '</tbody></table></div>';
+        $html .= '</tbody></table></div></div>';
 
         // Clean buffer
         if (ob_get_length()) ob_end_clean();

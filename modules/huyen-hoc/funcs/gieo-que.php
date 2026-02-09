@@ -11,7 +11,10 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
     die('Stop!!!');
 }
 
-use NukeViet\Module\HuyenHoc\Divination;
+// Include class manually
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/GieoQue.php';
+
+use NukeViet\Module\HuyenHoc\GieoQue;
 
 $page_title = $lang_module['gieo_que'];
 
@@ -20,8 +23,11 @@ if ($nv_Request->isset_request('api_get_result', 'post')) {
     $duration = $nv_Request->get_int('duration', 'post', 0);
 
     try {
-        $divination = new Divination();
-        $result = $divination->getKhongMinhHexagram($duration);
+        $app = new GieoQue();
+        // Use duration as seed? Or just random.
+        // random_int is better.
+        $app->gieoNgauNhien();
+        $result = $app->layKetQua();
     } catch (\Throwable $e) {
         $result = ['error' => 'System error: ' . $e->getMessage()];
     }

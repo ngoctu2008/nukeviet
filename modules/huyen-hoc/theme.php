@@ -205,9 +205,9 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     }
                 }
 
-                $xtpl->parse('main.result.report.sec2.reading'); // ensure block exists if empty?
-                $xtpl->parse('main.result.report.sec2');
+                $xtpl->parse('main.result.report.sec2.reading');
             }
+            $xtpl->parse('main.result.report.sec2');
 
             // Section 3
             foreach ($rep['section_3'] as $line) {
