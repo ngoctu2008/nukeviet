@@ -143,34 +143,29 @@
 .label-triet { background: #999; color: #fff; padding: 1px 3px; border-radius: 2px; opacity: 0.8; }
 
 /*
-    Grid Positioning (North-Up / Paper Layout)
-    Top: Hoi(11) -> Ty(0) -> Suu(1) -> Dan(2)
-    Right: Mao(3)
-    Bottom: Thin(4) -> Ty(5) -> Ngo(6) -> Mui(7) ?? No.
-    Clockwise: Dan (2) -> Mao (3) -> Thin (4) -> Ty (5) -> Ngo (6) -> Mui (7) -> Than (8) -> Dau (9) -> Tuat (10) -> Hoi (11) -> Ty (0) -> Suu (1)
-
-    Standard An Sao Paper (Hoi -> Ty -> Suu -> Dan at TOP):
-    Row 1: Hoi(11), Ty(0), Suu(1), Dan(2)
-    Row 2: Tuat(10), [TB], [TB], Mao(3)
-    Row 3: Dau(9), [TB], [TB], Thin(4)
-    Row 4: Than(8), Mui(7), Ngo(6), Ty(5)
+    Grid Positioning (Matched to User Image: Ngọ Top-Left)
+    Layout:
+    Ngọ(1,1) -> Tỵ(1,2) -> Thìn(1,3) -> Mão(1,4)
+    Mùi(2,1)                           Dần(2,4)
+    Thân(3,1)                          Sửu(3,4)
+    Dậu(4,1) -> Tuất(4,2) -> Hợi(4,3) -> Tý(4,4)
 */
 
-.cung-hoi      { grid-area: 1 / 1; } /* Top Left */
-.cung-ty_chuot { grid-area: 1 / 2; }
-.cung-suu      { grid-area: 1 / 3; }
-.cung-dan      { grid-area: 1 / 4; } /* Top Right */
+.cung-ngo      { grid-area: 1 / 1; }
+.cung-ty_ran   { grid-area: 1 / 2; }
+.cung-thin     { grid-area: 1 / 3; }
+.cung-mao      { grid-area: 1 / 4; }
 
-.cung-tuat     { grid-area: 2 / 1; } /* Left Top */
-.cung-mao      { grid-area: 2 / 4; } /* Right Top */
+.cung-dan      { grid-area: 2 / 4; }
+.cung-suu      { grid-area: 3 / 4; }
 
-.cung-dau      { grid-area: 3 / 1; } /* Left Bottom */
-.cung-thin     { grid-area: 3 / 4; } /* Right Bottom */
+.cung-ty_chuot { grid-area: 4 / 4; }
+.cung-hoi      { grid-area: 4 / 3; }
+.cung-tuat     { grid-area: 4 / 2; }
+.cung-dau      { grid-area: 4 / 1; }
 
-.cung-than     { grid-area: 4 / 1; } /* Bottom Left */
-.cung-mui      { grid-area: 4 / 2; }
-.cung-ngo      { grid-area: 4 / 3; }
-.cung-ty_ran   { grid-area: 4 / 4; } /* Bottom Right */
+.cung-than     { grid-area: 3 / 1; }
+.cung-mui      { grid-area: 2 / 1; }
 
 /* Responsive */
 @media (max-width: 768px) {
