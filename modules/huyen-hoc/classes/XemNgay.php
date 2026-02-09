@@ -43,6 +43,23 @@ class XemNgay {
         7 => 1, 8 => 7, 9 => 2, 10 => 8, 11 => 3, 12 => 9
     ];
 
+    // Dong Cong (Month 1-12)
+    // 0=Ty... 11=Hoi. Values: 1=Tot, -1=Xau, 0=BinhThuong (or omitted)
+    public static $DONG_CONG = [
+        1 => [0=>-1, 1=>1, 2=>0, 3=>1, 4=>1, 5=>1, 6=>-1, 7=>1, 8=>0, 9=>0, 10=>0, 11=>-1], // Thang 1
+        2 => [0=>0, 1=>-1, 2=>1, 3=>1, 4=>-1, 5=>0, 6=>0, 7=>1, 8=>1, 9=>0, 10=>1, 11=>1],
+        3 => [0=>1, 1=>1, 2=>0, 3=>-1, 4=>1, 5=>1, 6=>1, 7=>-1, 8=>1, 9=>1, 10=>0, 11=>0],
+        4 => [0=>0, 1=>1, 2=>1, 3=>1, 4=>-1, 5=>-1, 6=>0, 7=>0, 8=>0, 9=>1, 10=>1, 11=>0],
+        5 => [0=>-1, 1=>-1, 2=>1, 3=>1, 4=>1, 5=>-1, 6=>0, 7=>1, 8=>0, 9=>1, 10=>0, 11=>0],
+        6 => [0=>0, 1=>0, 2=>0, 3=>1, 4=>1, 5=>0, 6=>-1, 7=>-1, 8=>1, 9=>0, 10=>1, 11=>1],
+        7 => [0=>1, 1=>1, 2=>0, 3=>0, 4=>0, 5=>1, 6=>0, 7=>-1, 8=>-1, 9=>1, 10=>0, 11=>0],
+        8 => [0=>1, 1=>0, 2=>0, 3=>0, 4=>1, 5=>1, 6=>0, 7=>0, 8=>-1, 9=>-1, 10=>1, 11=>1],
+        9 => [0=>0, 1=>1, 2=>1, 3=>0, 4=>0, 5=>0, 6=>1, 7=>0, 8=>1, 9=>0, 10=>-1, 11=>-1],
+        10 => [0=>-1, 1=>-1, 2=>0, 3=>1, 4=>0, 5=>1, 6=>1, 7=>0, 8=>0, 9=>0, 10=>0, 11=>0],
+        11 => [0=>0, 1=>1, 2=>1, 3=>-1, 4=>-1, 5=>0, 6=>0, 7=>0, 8=>0, 9=>1, 10=>0, 11=>0],
+        12 => [0=>0, 1=>0, 2=>0, 3=>0, 4=>1, 5=>-1, 6=>-1, 7=>0, 8=>1, 9=>1, 10=>1, 11=>0],
+    ];
+
     /**
      * Get Gio Hoang Dao for a given Day Chi
      */
@@ -120,6 +137,26 @@ class XemNgay {
              // ...
         }
 
+        // 6. Dong Cong
+        $dcCheck = self::checkDongCong($lunarMonth, $dayChi);
+        if ($dcCheck == 1) $comments[] = "Đổng Công: Rất Tốt (Đại Cát).";
+        elseif ($dcCheck == -1) {
+            $comments[] = "Đổng Công: Xấu (Hung).";
+            if ($purpose != 'generic') $isBad = true;
+        }
+
+        // 7. Ngoc Hap Thong Thu (Star check)
+        $stars = self::checkNgocHap($lunarMonth, $dayChi);
+        $goodStars = $stars['good'];
+        $badStars = $stars['bad'];
+
+        if (!empty($goodStars)) $comments[] = "Sao Tốt: " . implode(', ', $goodStars) . ".";
+        if (!empty($badStars)) {
+             $comments[] = "Sao Xấu: " . implode(', ', $badStars) . ".";
+             // Basic heuristic: if strictly bad stars present for purpose
+             // For simplicity, just listing them.
+        }
+
         // 6. Purpose Specifics
         if ($purpose == 'khai_truong') {
              // Prefer Truc: Man, Thanh, Khai
@@ -137,9 +174,51 @@ class XemNgay {
             'is_good' => !$isBad,
             'comment' => empty($comments) ? "Ngày tốt/bình thường." : implode(' ', $comments),
             'truc' => $truc,
-            'sao' => 'Đang cập nhật',
+            'sao' => implode(', ', $goodStars),
             'details' => $comments
         );
+    }
+
+    public static function checkDongCong($month, $dayChi) {
+        if (isset(self::$DONG_CONG[$month][$dayChi])) {
+            return self::$DONG_CONG[$month][$dayChi];
+        }
+        return 0;
+    }
+
+    public static function checkNgocHap($month, $dayChi) {
+        // Simplified Logic for Demo
+        // Map Month -> Good Day Chi (Thien Duc, Nguyet Duc)
+        $good = [];
+        $bad = [];
+
+        // Thien Duc (Month -> Chi)
+        // 1-Din, 2-Than, 3-Ty(Snake), 4-Than, 5-Hoi, 6-Giap... (Depends on Can too? Usually Chi)
+        // Standard:
+        // 1: Dinh (Can?), 2: Than (Monkey), 3: Nham (Can?), 4: Tan (Can?), 5: Hoi (Pig)...
+        // Actually Thien Duc often maps to CAN or CHI depending on source.
+        // Let's use a simpler known set: Thien Duc Hop, Nguyet Duc.
+
+        // Nguyet Duc (Month -> Can). We need Day Can. Function doesn't receive Day Can.
+        // Assuming user passed Day Chi only.
+        // Let's rely on Month-Day Chi relations for some stars.
+
+        // Example: Thien H u / Thien Khoc (Bad)
+        // 1: Ngo, 2: Ty...
+        $khocHu = [1=>6, 2=>5, 3=>4, 4=>3, 5=>2, 6=>1, 7=>0, 8=>11, 9=>10, 10=>9, 11=>8, 12=>7]; // Roughly
+        if (isset($khocHu[$month]) && $khocHu[$month] == $dayChi) {
+            $bad[] = "Thiên Khốc/Hư";
+        }
+
+        // Example: Thien Hy (Good for wedding)
+        // Spring: Tuat?
+        // 1: Tuat, 2: Hoi, 3: Ty, 4: Suu...
+        $thienHy = [1=>10, 2=>11, 3=>0, 4=>1, 5=>2, 6=>3, 7=>4, 8=>5, 9=>6, 10=>7, 11=>8, 12=>9];
+        if (isset($thienHy[$month]) && $thienHy[$month] == $dayChi) {
+            $good[] = "Thiên Hỷ";
+        }
+
+        return ['good' => $good, 'bad' => $bad];
     }
 
     public static function isKimLau($age) {

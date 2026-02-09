@@ -92,4 +92,37 @@ class Divination {
 
         return null;
     }
+
+    /**
+     * Mai Hoa Dich So (Time Based Hexagram)
+     * @param int $y Year (Chi Index 1-12)
+     * @param int $m Month
+     * @param int $d Day
+     * @param int $h Hour (Chi Index 1-12)
+     */
+    public static function getMaiHoaHexagram($y, $m, $d, $h) {
+        $trigrams = [
+            1 => 'Càn (Trời)', 2 => 'Đoài (Đầm)', 3 => 'Ly (Lửa)', 4 => 'Chấn (Sấm)',
+            5 => 'Tốn (Gió)', 6 => 'Khảm (Nước)', 7 => 'Cấn (Núi)', 8 => 'Khôn (Đất)'
+        ];
+
+        // Upper: (Y+M+D)%8
+        $upperVal = ($y + $m + $d) % 8;
+        if ($upperVal == 0) $upperVal = 8;
+
+        // Lower: (Y+M+D+H)%8
+        $lowerVal = ($y + $m + $d + $h) % 8;
+        if ($lowerVal == 0) $lowerVal = 8;
+
+        // Moving Line: (Y+M+D+H)%6
+        $movingLine = ($y + $m + $d + $h) % 6;
+        if ($movingLine == 0) $movingLine = 6;
+
+        return [
+            'upper' => $trigrams[$upperVal],
+            'lower' => $trigrams[$lowerVal],
+            'moving_line' => $movingLine,
+            'hex_name' => "Quẻ " . $trigrams[$upperVal] . " trên " . $trigrams[$lowerVal] . " dưới"
+        ];
+    }
 }

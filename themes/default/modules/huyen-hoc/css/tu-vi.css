@@ -1,134 +1,194 @@
-/* Tu Vi CSS Grid */
+/* Mystical Tu Vi Theme */
+:root {
+    --bg-color: #fdfbf7;
+    --border-color: #d4af37; /* Gold */
+    --text-color: #333;
+    --highlight-color: #8b0000; /* Dark Red */
+    --yang-color: #c0392b;
+    --yin-color: #2c3e50;
+    --palace-bg: #fff;
+    --thien-ban-bg: #fffdf0;
+}
+
+.tu-vi-container-wrapper {
+    font-family: 'Times New Roman', serif;
+    background-color: var(--bg-color);
+    padding: 20px;
+}
+
 .laso-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(4, minmax(180px, auto));
     gap: 2px;
-    background-color: #eee;
-    border: 2px solid #8b0000;
-    max-width: 800px;
+    background-color: var(--border-color);
+    border: 5px solid var(--border-color);
     margin: 0 auto;
-    font-size: 12px;
-    /* Define Areas: South Up (Standard Tu Vi) */
-    /* Row 1: Ti, Ngo, Mui, Than */
-    /* Row 2: Thin, [Center], [Center], Dau */
-    /* Row 3: Mao, [Center], [Center], Tuat */
-    /* Row 4: Dan, Suu, Ty, Hoi */
-    grid-template-areas:
-        "ty_snake ngo mui than"
-        "thin thien_ban thien_ban dau"
-        "mao thien_ban thien_ban tuat"
-        "dan suu ty_rat hoi";
+    max-width: 1200px;
 }
 
-.cung {
-    background-color: #fff;
-    padding: 5px;
+.cung, .thien-ban {
+    background-color: var(--palace-bg);
+    padding: 10px;
     position: relative;
-    border: 1px solid #ddd;
-    min-height: 120px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    font-size: 13px;
+    overflow: hidden;
 }
-
-/* Grid Area Assignments */
-.cung-ty_rat { grid-area: ty_rat; } /* Rat (0) */
-.cung-suu { grid-area: suu; } /* Ox (1) */
-.cung-dan { grid-area: dan; } /* Tiger (2) */
-.cung-mao { grid-area: mao; } /* Cat (3) */
-.cung-thin { grid-area: thin; } /* Dragon (4) */
-.cung-ty_snake { grid-area: ty_snake; } /* Snake (5) */
-.cung-ngo { grid-area: ngo; } /* Horse (6) */
-.cung-mui { grid-area: mui; } /* Goat (7) */
-.cung-than { grid-area: than; } /* Monkey (8) */
-.cung-dau { grid-area: dau; } /* Rooster (9) */
-.cung-tuat { grid-area: tuat; } /* Dog (10) */
-.cung-hoi { grid-area: hoi; } /* Pig (11) */
 
 .thien-ban {
-    grid-area: thien_ban;
-    background-color: #fff8e1;
-    border: 1px double #d4af37;
+    grid-column: 2 / span 2;
+    grid-row: 2 / span 2;
+    background-color: var(--thien-ban-bg);
+    text-align: center;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    padding: 10px;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px double var(--border-color);
 }
 
-/* Star Styles */
-.sao-chinh {
-    font-weight: bold;
-    font-size: 13px;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 2px;
-}
-
-.sao-phu {
-    font-size: 11px;
-}
-
-.star-dacs { font-size: 0.8em; margin-left: 3px; }
-
-/* Elements Colors */
-.color-kim { color: #808080; } /* Gray */
-.color-moc { color: #2e7d32; } /* Green */
-.color-thuy { color: #0277bd; } /* Blue/Black */
-.color-hoa { color: #d32f2f; } /* Red */
-.color-tho { color: #f57f17; } /* Brown/Yellow */
-
-/* Default colors if class missing */
-.text-kim { color: #808080; }
-.text-moc { color: #2e7d32; }
-.text-thuy { color: #0277bd; }
-.text-hoa { color: #d32f2f; }
-.text-tho { color: #f57f17; }
-
-/* Position Elements */
 .header-cung {
-    border-bottom: 1px dashed #ccc;
-    margin-bottom: 5px;
     text-align: center;
     font-weight: bold;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
 }
-.cung-name { color: #8b0000; font-size: 1.1em; }
-.cung-tieu-van { float: right; font-weight: normal; font-size: 0.9em; }
+
+.cung-name {
+    text-transform: uppercase;
+    color: var(--highlight-color);
+    display: block;
+    font-size: 14px;
+}
+
+.stars-list {
+    flex-grow: 1;
+    line-height: 1.4;
+}
+
+.sao-chinh {
+    display: block;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.sao-tot {
+    font-weight: 500;
+}
+
+.sao-xau {
+    font-style: italic;
+    font-size: 0.95em;
+}
 
 .footer-cung {
-    margin-top: auto; /* Push to bottom */
+    border-top: 1px dashed #ccc;
+    padding-top: 5px;
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
-    padding-top: 5px;
-    border-top: 1px dashed #eee;
+    font-size: 12px;
+    color: #666;
 }
 
-.dai-van { font-weight: bold; color: blue; }
-.trang-sinh { font-style: italic; color: #666; }
+.dai-van {
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--text-color);
+}
 
+/* Colors by Element */
+.color-kim { color: #7f8c8d; } /* Gray/Metal */
+.color-moc { color: #27ae60; } /* Green/Wood */
+.color-thuy { color: #2980b9; } /* Blue/Water */
+.color-hoa { color: #c0392b; } /* Red/Fire */
+.color-tho { color: #d35400; } /* Brown/Earth */
+
+/* Dac/Ham markers */
+.star-dacs {
+    font-size: 0.7em;
+    color: #555;
+    margin-left: 2px;
+}
+
+/* Tuan/Triet */
 .tuan-triet {
     position: absolute;
-    top: 2px;
-    right: 2px;
-    font-weight: bold;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    flex-direction: column;
     font-size: 10px;
+    font-weight: bold;
 }
-.label-tuan { background: #333; color: #fff; padding: 1px 3px; border-radius: 3px; margin-left: 2px; }
-.label-triet { background: #ccc; color: #000; padding: 1px 3px; border-radius: 3px; margin-left: 2px; }
 
-/* Mobile Responsive */
+.label-tuan { background: #333; color: #fff; padding: 1px 3px; border-radius: 2px; margin-bottom: 2px; }
+.label-triet { background: #999; color: #fff; padding: 1px 3px; border-radius: 2px; }
+
+/* Grid Positioning for Palaces (0..11) */
+/*
+    Row 1: 5(Ty), 6(Ngo), 7(Mui), 8(Than)
+    Row 2: 4(Thin), [TB], [TB], 9(Dau)
+    Row 3: 3(Mao), [TB], [TB], 10(Tuat)
+    Row 4: 2(Dan), 1(Suu), 0(Ty), 11(Hoi)
+*/
+.cung-ty_snake { grid-area: 1 / 1; }
+.cung-ngo      { grid-area: 1 / 2; }
+.cung-mui      { grid-area: 1 / 3; }
+.cung-than     { grid-area: 1 / 4; }
+.cung-thin     { grid-area: 2 / 1; }
+.cung-dau      { grid-area: 2 / 4; }
+.cung-mao      { grid-area: 3 / 1; }
+.cung-tuat     { grid-area: 3 / 4; }
+.cung-dan      { grid-area: 4 / 1; }
+.cung-suu      { grid-area: 4 / 2; }
+.cung-ty_rat   { grid-area: 4 / 3; }
+.cung-hoi      { grid-area: 4 / 4; }
+
+/* Responsive */
 @media (max-width: 768px) {
     .laso-container {
-        display: block;
-        border: none;
-    }
-    .cung {
-        margin-bottom: 10px;
-        min-height: auto;
+        display: flex;
+        flex-direction: column;
     }
     .thien-ban {
-        margin-bottom: 15px;
+        order: -1;
+        margin-bottom: 10px;
     }
+}
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .tu-vi-container-wrapper, .tu-vi-container-wrapper * {
+        visibility: visible;
+    }
+    .tu-vi-container-wrapper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white;
+    }
+    .card, .nav-tabs, .tab-content, h2, form {
+        display: none !important;
+    }
+    .laso-container {
+        border: 2px solid #000;
+        width: 100%;
+        height: 100vh; /* Fit page */
+        page-break-inside: avoid;
+    }
+    .cung {
+        border: 1px solid #999;
+        font-size: 10pt;
+    }
+    /* Show chart only */
 }

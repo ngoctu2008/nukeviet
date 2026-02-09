@@ -229,6 +229,21 @@ class TuViLuanGiai {
             $combinations[] = ['code' => 'KHONG_KIEP', 'content' => $this->fetchContent('SAO_KHONG_KIEP_COMBINATION', 'general', 'pattern')];
         }
 
+        // 4. Kinh + Da (Local)
+        if ($hasStarLocal('kinh_duong') && $hasStarLocal('da_la')) {
+             $combinations[] = ['code' => 'KINH_DA', 'content' => $this->fetchContent('SAO_KINH_DA_COMBINATION', 'general', 'pattern')];
+        }
+
+        // 5. Khoi + Viet (Local)
+        if ($hasStarLocal('thien_khoi') && $hasStarLocal('thien_viet')) {
+             $combinations[] = ['code' => 'KHOI_VIET', 'content' => $this->fetchContent('SAO_KHOI_VIET_COMBINATION', 'general', 'pattern')];
+        }
+
+        // 6. Ta + Huu (Local)
+        if ($hasStarLocal('ta_phu') && $hasStarLocal('huu_bat')) {
+             $combinations[] = ['code' => 'TA_HUU', 'content' => $this->fetchContent('SAO_TA_HUU_COMBINATION', 'general', 'pattern')];
+        }
+
         return $combinations;
     }
 
@@ -411,6 +426,24 @@ class TuViLuanGiai {
         $comments[] = "Lưu Kình Dương tại " . TuViLapSo::$DIA_CHI[$luu['luu_kinh_duong']] . ", Lưu Đà La tại " . TuViLapSo::$DIA_CHI[$luu['luu_da_la']] . ": " . $this->fetchContent('SAO_LUU_KINH_DA_GENERAL', 'general', 'pattern');
 
         return $comments;
+    }
+
+    /**
+     * Analyze Nguyet Han (Monthly Limit)
+     */
+    public function analyzeNguyetHan($chart, $monthIdx) {
+        $palace = $chart['dia_ban'][$monthIdx];
+        $readings = $this->getPalaceReading($palace, 'nguyet_han', $chart);
+        return $readings;
+    }
+
+    /**
+     * Analyze Nhat Han (Daily Limit)
+     */
+    public function analyzeNhatHan($chart, $dayIdx) {
+        $palace = $chart['dia_ban'][$dayIdx];
+        $readings = $this->getPalaceReading($palace, 'nhat_han', $chart);
+        return $readings;
     }
 
     private function normalizePalaceName($name) {

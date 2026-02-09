@@ -20,3 +20,4 @@ $submenu['lo-ban'] = $lang_module['lo_ban'];
 $submenu['dat-ten'] = $lang_module['dat_ten'];
 $submenu['sim-so'] = $lang_module['sim_so'];
 $submenu['gieo-que'] = $lang_module['gieo_que'];
+$submenu['import'] = 'Nhập Dữ Liệu';

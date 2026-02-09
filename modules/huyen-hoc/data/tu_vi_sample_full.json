@@ -1,0 +1,56 @@
+[
+    {
+        "star_key": "tu_vi",
+        "palace_key": "menh",
+        "topic": "general",
+        "content": "Tử Vi thủ Mệnh: Dáng người đẫy đà, sắc mặt hồng hào. Tính tình trung hậu, trọng danh dự, có tài lãnh đạo. Nữ mệnh vượng phu ích tử."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "quan_loc",
+        "topic": "general",
+        "content": "Tử Vi cư Quan: Công danh hiển hách, dễ làm lãnh đạo, quản lý. Được cấp trên tin dùng."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "nguyet_han",
+        "topic": "general",
+        "content": "Tháng có Tử Vi: Gặp quý nhân giúp đỡ, công việc thuận lợi, có thể được thăng chức hoặc khen thưởng."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "nhat_han",
+        "topic": "general",
+        "content": "Ngày có Tử Vi: Mọi việc hanh thông, gặp người quyền quý."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "menh",
+        "topic": "general",
+        "content": "Tham Lang thủ Mệnh: Đa tài đa nghệ, khéo léo nhưng tham vọng lớn. Nữ mệnh đào hoa, dễ vướng thị phi tình ái."
+    },
+    {
+        "star_key": "KHONG_KIEP",
+        "palace_key": "general",
+        "topic": "pattern",
+        "content": "Bộ Không Kiếp (Địa Không - Địa Kiếp): Chủ về sự phá tán, mất mát bất ngờ, tai nạn hình thương. Nhưng nếu đắc địa thì phát dã như lôi (phát nhanh nhưng không bền)."
+    },
+    {
+        "star_key": "KINH_DA",
+        "palace_key": "general",
+        "topic": "pattern",
+        "content": "Bộ Kình Đà (Kình Dương - Đà La): Chủ về sự kìm hãm, tiểu nhân, bệnh tật dai dẳng, tai nạn máu me."
+    },
+    {
+        "star_key": "SAO_LUU_THAI_TUE_GENERAL",
+        "palace_key": "general",
+        "topic": "pattern",
+        "content": "Năm hạn gặp Thái Tuế: Có nhiều biến động, dễ dính líu đến pháp luật, kiện tụng, tranh cãi (nếu gặp sao xấu). Nếu gặp sao tốt thì danh tiếng vang xa."
+    },
+    {
+        "star_key": "SAO_LUU_LOC_TON_GENERAL",
+        "palace_key": "general",
+        "topic": "pattern",
+        "content": "Năm hạn gặp Lộc Tồn: Có lộc bất ngờ, tiền bạc hanh thông, công việc làm ăn thuận lợi."
+    }
+]

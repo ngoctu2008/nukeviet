@@ -50,12 +50,38 @@ if ($action == 'xem_han') {
         // Add 9 Stars & Han
         $saoInfo = $limitInfo['sao_han'];
         $html .= '<p><strong>Sao chiếu mệnh:</strong> ' . $saoInfo['name'] . ' (' . ($saoInfo['type']=='tot'?'Tốt':($saoInfo['type']=='xau'?'Xấu':'Trung')) . ')</p>';
-        $html .= '<p><strong>Hạn:</strong> ' . $limitInfo['han'] . '</p>';
+        $html .= '<p><strong>Hạn:</strong> ' . $limitInfo['han']['name'] . '</p>';
         $html .= '<p><strong>Tam Tai:</strong> ' . ($limitInfo['tam_tai'] ? '<span class="text-danger">Có</span>' : 'Không') . '</p>';
-
-        $html .= '<hr>';
-        $html .= '<p><em>(Lời giải chi tiết đang được cập nhật từ dữ liệu mẫu...)</em></p>';
         $html .= '</div>';
+
+        // Luan Giai Chi Tiet
+        $interpreter = new TuViLuanGiai();
+
+        // Luu Stars Reading
+        $luuComments = $interpreter->analyzeLuuStars($limitInfo);
+        if (!empty($luuComments)) {
+            $html .= '<div class="card mb-3"><div class="card-header">Luận Giải Các Sao Lưu</div><div class="card-body">';
+            foreach ($luuComments as $comment) {
+                $html .= '<p><i class="fa fa-star-o"></i> ' . $comment . '</p>';
+            }
+            $html .= '</div></div>';
+        }
+
+        // Monthly Limits Table
+        $html .= '<div class="card mb-3"><div class="card-header">Vận Hạn Các Tháng (Nguyệt Hạn)</div><div class="card-body">';
+        $html .= '<table class="table table-bordered table-sm"><thead><tr><th>Tháng</th><th>Cung Hạn</th><th>Diễn Biến</th></tr></thead><tbody>';
+
+        for ($m = 1; $m <= 12; $m++) {
+            $monthIdx = TuViLapSo::getNguyetHan($limitInfo['tieu_van_idx'], $m, $gender);
+            $palaceName = TuViLapSo::$DIA_CHI[$monthIdx];
+            // Get reading for Nguyet Han at this palace
+            // This requires full chart access which we don't have here easily without re-running LapSo.
+            // But we can approximate or just list the Palace.
+            // Ideally we should pass chart to ajax but chart is heavy.
+            // For now, list Palace Name.
+            $html .= '<tr><td>' . $m . '</td><td>' . $palaceName . '</td><td><em>Xem tại cung ' . $palaceName . '</em></td></tr>';
+        }
+        $html .= '</tbody></table></div>';
 
         // Clean buffer
         if (ob_get_length()) ob_end_clean();

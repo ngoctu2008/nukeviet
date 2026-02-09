@@ -3,9 +3,12 @@
 <link rel="stylesheet" href="{NV_BASE_SITEURL}themes/default/css/font-awesome.min.css">
 
 <div class="tu-vi-container-wrapper">
-    <h2 class="text-center text-uppercase">{LANG.tu_vi}</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+        <h2 class="text-uppercase m-0">{LANG.tu_vi}</h2>
+        <button onclick="window.print()" class="btn btn-secondary"><i class="fa fa-print"></i> {LANG.print_laso}</button>
+    </div>
 
-    <div class="card mb-4">
+    <div class="card mb-4 no-print">
         <div class="card-body">
             <form action="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}" method="post">
                 <div class="row">
@@ -61,18 +64,20 @@
     </div>
 
     <!-- BEGIN: result -->
-    <hr>
+    <hr class="no-print">
 
     <!-- La So Chart -->
     <div class="laso-container">
         <!-- Thien Ban (Center) -->
         <div class="thien-ban">
             <div class="info-user">
-                <h3>{THIEN_BAN.ho_ten}</h3>
+                <h3 class="text-danger text-uppercase">{THIEN_BAN.ho_ten}</h3>
                 <p>Năm sinh: <b>{THIEN_BAN.nam_sinh}</b></p>
-                <p>Mệnh: <span class="text-{THIEN_BAN.menh_color} font-weight-bold">{THIEN_BAN.menh_ngu_hanh}</span></p>
+                <p>Mệnh: <span class="text-{THIEN_BAN.menh_color} font-weight-bold text-uppercase">{THIEN_BAN.menh_ngu_hanh}</span></p>
                 <p>Cục: <b>{THIEN_BAN.cuc}</b></p>
                 <p>{THIEN_BAN.am_duong}</p>
+                <p class="small text-muted">{THIEN_BAN.am_duong_ly}</p>
+                <p class="small text-muted">{THIEN_BAN.cuc_menh_ly}</p>
                 <!-- Hidden inputs for AJAX -->
                 <input type="hidden" id="meta_chiYear" value="{META.chiYear}">
                 <input type="hidden" id="meta_gender" value="{META.gender}">
@@ -85,26 +90,32 @@
         <div class="cung cung-{PALACE.key}">
             <div class="header-cung">
                 <span class="cung-name">{PALACE.palace_name}</span>
-                <!-- BEGIN: tieu_van --><span class="cung-tieu-van">({PALACE.tieu_van})</span><!-- END: tieu_van -->
+                <!-- BEGIN: tieu_van --><span class="cung-tieu-van text-muted small">({PALACE.tieu_van})</span><!-- END: tieu_van -->
             </div>
 
-            <div class="tuan-triet">
-                <!-- BEGIN: tuan --><span class="label-tuan">TUẦN</span><!-- END: tuan -->
-                <!-- BEGIN: triet --><span class="label-triet">TRIỆT</span><!-- END: triet -->
+            <div class="tuan-triet-container">
+                <!-- BEGIN: tuan --><div class="label-tuan">TUẦN</div><!-- END: tuan -->
+                <!-- BEGIN: triet --><div class="label-triet">TRIỆT</div><!-- END: triet -->
             </div>
 
-            <div class="stars-list pt-2">
+            <div class="stars-list pt-1 pl-1 pr-1">
                 <!-- BEGIN: chinh_tinh -->
-                <span class="sao-chinh color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.tooltip_name}</b> ({STAR.tooltip_hanh})<br><b>Tính chất:</b> {STAR.tooltip_tinh_chat}<br><b>Đắc/Hãm:</b> {STAR.tooltip_dac_ham}<br><b>Ý nghĩa Mệnh:</b> {STAR.tooltip_y_nghia.menh}<br><b>Lưu sao:</b> {STAR.tooltip_luu_sao}">{STAR.name} <sup class="star-dacs">{STAR.dacs}</sup></span>
+                <div class="sao-chinh color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.tooltip_name}</b><br>{STAR.tooltip_tinh_chat}">{STAR.name} <sup class="star-dacs font-weight-normal">({STAR.dacs})</sup></div>
                 <!-- END: chinh_tinh -->
 
                 <!-- BEGIN: phu_tinh_tot -->
-                <span class="sao-tot color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.tooltip_name}</b> ({STAR.tooltip_hanh})<br><b>Tính chất:</b> {STAR.tooltip_tinh_chat}<br><b>Đắc/Hãm:</b> {STAR.tooltip_dac_ham}<br><b>Ý nghĩa Mệnh:</b> {STAR.tooltip_y_nghia.menh}">{STAR.name}</span>
+                <span class="sao-tot color-{STAR.color}" data-toggle="tooltip" title="{STAR.tooltip_name}">{STAR.name}</span>
                 <!-- END: phu_tinh_tot -->
 
+                <br>
+
                 <!-- BEGIN: phu_tinh_xau -->
-                <span class="sao-xau color-{STAR.color}" data-toggle="tooltip" data-html="true" title="<b>{STAR.tooltip_name}</b> ({STAR.tooltip_hanh})<br><b>Tính chất:</b> {STAR.tooltip_tinh_chat}<br><b>Đắc/Hãm:</b> {STAR.tooltip_dac_ham}<br><b>Ý nghĩa Mệnh:</b> {STAR.tooltip_y_nghia.menh}">{STAR.name}</span>
+                <span class="sao-xau color-{STAR.color}" data-toggle="tooltip" title="{STAR.tooltip_name}">{STAR.name}</span>
                 <!-- END: phu_tinh_xau -->
+
+                <!-- BEGIN: vong_trang_sinh_star -->
+                 <div class="mt-1 text-secondary small font-italic">{STAR.name}</div>
+                <!-- END: vong_trang_sinh_star -->
             </div>
 
             <div class="footer-cung">
@@ -116,8 +127,8 @@
     </div>
 
     <!-- Tabs Functionality -->
-    <div class="row mt-4">
-        <div class="col-md-24">
+    <div class="row mt-4 no-print">
+        <div class="col-md-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="tongquan-tab" data-toggle="tab" href="#tongquan" role="tab">
@@ -142,17 +153,17 @@
                 <div class="tab-pane fade show active" id="tongquan" role="tabpanel">
                     <h4>{LANG.tab_overview}</h4>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <p>{LANG.menh}: <b class="text-{THIEN_BAN.menh_color}">{THIEN_BAN.menh_ngu_hanh}</b> - {LANG.cuc}: <b>{THIEN_BAN.cuc}</b></p>
                             <p>Âm Dương: <b>{THIEN_BAN.am_duong_ly}</b>.</p>
                             <p>Ngũ Hành: <b>{THIEN_BAN.cuc_menh_ly}</b>.</p>
                         </div>
                         <!-- BEGIN: score_box -->
-                        <div class="col-md-12 text-center">
-                            <div class="alert alert-info">
-                                <h3>{LANG.score}</h3>
-                                <h1 class="display-4 text-primary">{SCORE}</h1>
-                                <p>/ 100</p>
+                        <div class="col-md-6 text-center">
+                            <div class="alert alert-info p-2">
+                                <h5 class="m-0">{LANG.score}</h5>
+                                <h2 class="text-primary m-0">{SCORE}</h2>
+                                <small>/ 100</small>
                             </div>
                         </div>
                         <!-- END: score_box -->
@@ -160,7 +171,7 @@
                     <hr>
                     <!-- BEGIN: overview -->
                     <div class="mt-3">
-                        <h5 class="text-primary"><i class="fa fa-star"></i> {OVERVIEW.star} - {LANG.tab_overview}</h5>
+                        <h5 class="text-primary"><i class="fa fa-star"></i> {OVERVIEW.star}</h5>
                         <p class="text-justify">{OVERVIEW.content}</p>
                     </div>
                     <!-- END: overview -->
@@ -207,17 +218,6 @@
                         </div>
                     </div>
                     <!-- END: sec2 -->
-
-                    <!-- BEGIN: sec3 -->
-                    <div class="card mb-3">
-                        <div class="card-header bg-primary text-white text-uppercase">{LANG.sec3_title}</div>
-                        <div class="card-body">
-                            <ul>
-                                <!-- BEGIN: line --><li>{SEC3_LINE}</li><!-- END: line -->
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- END: sec3 -->
                     <!-- END: report -->
                 </div>
 

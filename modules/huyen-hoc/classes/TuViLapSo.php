@@ -768,4 +768,49 @@ class TuViLapSo {
         $palace = isset($map[$hh]) ? $map[$hh] : 'Mệnh';
         return ['palace' => $palace];
     }
+
+    /**
+     * Calculate Nguyet Han (Monthly Limit)
+     * Rule: Start from Tieu Van Palace (Month 1), follow Tieu Van direction (Nam Thuan, Nu Nghich)
+     */
+    public static function getNguyetHan($tieuVanIdx, $month, $gender) {
+        $direction = ($gender == 1) ? 1 : -1;
+        // Month 1 starts at Tieu Van Index
+        $idx = ($tieuVanIdx + (($month - 1) * $direction)) % 12;
+        if ($idx < 0) $idx += 12;
+        return $idx;
+    }
+
+    /**
+     * Calculate Nhat Han (Daily Limit)
+     * Rule: Start from Nguyet Han Palace (Day 1), follow Tieu Van direction
+     */
+    public static function getNhatHan($nguyetHanIdx, $day, $gender) {
+        $direction = ($gender == 1) ? 1 : -1;
+        // Day 1 starts at Nguyet Han Index
+        $idx = ($nguyetHanIdx + (($day - 1) * $direction)) % 12;
+        if ($idx < 0) $idx += 12;
+        return $idx;
+    }
+
+    /**
+     * Calculate Thoi Han (Hourly Limit)
+     * Rule: Start from Nhat Han Palace (Hour Ty - 0), follow Tieu Van direction
+     */
+    public static function getThoiHan($nhatHanIdx, $hourIdx, $gender) {
+        $direction = ($gender == 1) ? 1 : -1;
+        // Hour 0 (Ty) starts at Nhat Han Index
+        $idx = ($nhatHanIdx + ($hourIdx * $direction)) % 12;
+        if ($idx < 0) $idx += 12;
+        return $idx;
+    }
+
+    /**
+     * Get Detailed Luu Stars for Month/Day (Optional expansion)
+     */
+    public static function getLuuStarsDetailed($canYear, $chiYear, $month, $day) {
+        // Implement basics for Luu Stars dependent on time
+        // This can be expanded.
+        return [];
+    }
 }
