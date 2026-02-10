@@ -11,6 +11,8 @@ namespace NukeViet\Module\HuyenHoc;
 
 class FengShuiUtils {
 
+    // Utility class for Feng Shui calculations (Can, Chi, Ngu Hanh, Bat Trach)
+
     // Can: 0=Giáp, 1=Ất, ... 9=Quý
     public static $CAN = array('Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý');
 
