@@ -26,7 +26,28 @@ $birthYear = $nv_Request->get_int('birth_year', 'post,get', 0);
 $lunar = LunarCalendar::convertSolar2Lunar($d, $m, $y);
 $lunar['leap_msg'] = isset($lunar['leap']) && $lunar['leap'] ? '(Nhuận)' : '';
 
-$canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], 0);
+// Calculate Can Chi: Year/Month from Lunar, Day from Solar (JD)
+$ccLunar = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], 1, 0);
+$ccSolar = LunarCalendar::getCanChi($y, $m, $d, 0);
+
+$canChi = [
+    'canYear' => $ccLunar['canYear'],
+    'chiYear' => $ccLunar['chiYear'],
+    'canMonth' => $ccLunar['canMonth'],
+    'chiMonth' => $ccLunar['chiMonth'],
+    'canDay' => $ccSolar['canDay'],
+    'chiDay' => $ccSolar['chiDay']
+];
+
+// Map Can Chi to Text
+$canList = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
+$chiList = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
+
+$canChiText = [
+    'year' => $canList[$canChi['canYear']] . ' ' . $chiList[$canChi['chiYear']],
+    'month' => $canList[$canChi['canMonth']] . ' ' . $chiList[$canChi['chiMonth']],
+    'day' => $canList[$canChi['canDay']] . ' ' . $chiList[$canChi['chiDay']]
+];
 
 // Check current day status
 $info = XemNgay::checkNgayTotTheoMucDich($lunar['day'], $lunar['month'], $lunar['year'], $canChi['chiDay'], $purpose, $birthYear);
@@ -90,6 +111,18 @@ $xtpl->assign('INPUT', array(
 ));
 $xtpl->assign('LUNAR', $lunar);
 $xtpl->assign('INFO', $info);
+$xtpl->assign('CANCHI', $canChi);
+$xtpl->assign('CANCHI_TEXT', $canChiText);
+
+// Parse Age Analysis
+if (isset($info['age_analysis']) && !empty($info['age_analysis'])) {
+    foreach ($info['age_analysis'] as $analysis) {
+        $analysis['status_class'] = $analysis['bad'] ? 'danger' : 'success';
+        $analysis['icon'] = $analysis['bad'] ? 'fa-times' : 'fa-check';
+        $xtpl->assign('AGE_CHECK', $analysis);
+        $xtpl->parse('main.age_check');
+    }
+}
 
 // Map Gio Hoang Dao indices to names for current day
 $gioNamesFull = ['Tý (23-1h)', 'Sửu (1-3h)', 'Dần (3-5h)', 'Mão (5-7h)', 'Thìn (7-9h)', 'Tỵ (9-11h)',

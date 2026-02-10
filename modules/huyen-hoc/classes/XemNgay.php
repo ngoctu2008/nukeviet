@@ -117,24 +117,48 @@ class XemNgay {
             $isBad = true;
         }
 
-        // 5. Age-based checks (Kim Lau, Hoang Oc) for Dong Tho / Cuoi Hoi
-        if ($birthYear && ($purpose == 'dong_tho' || $purpose == 'cuoi_hoi' || $purpose == 'lam_nha')) {
+        // 5. Age-based checks (Kim Lau, Hoang Oc, Tam Tai) for specific purposes
+        $ageAnalysis = [];
+        if ($birthYear) {
              $age = $lunarYear - $birthYear + 1;
 
-             // Kim Lau (Dong Tho, Cuoi Hoi)
-             if (self::isKimLau($age)) {
-                 $comments[] = "Phạm Kim Lâu (Tuổi $age - Kỵ làm nhà/cưới hỏi).";
-                 $isBad = true;
+             // Kim Lau (Dong Tho, Cuoi Hoi, Lam Nha)
+             if ($purpose == 'dong_tho' || $purpose == 'cuoi_hoi' || $purpose == 'lam_nha') {
+                 if (self::isKimLau($age)) {
+                     $msg = "Phạm Kim Lâu (Tuổi $age - Kỵ làm nhà/cưới hỏi).";
+                     $comments[] = $msg;
+                     $ageAnalysis[] = ['type' => 'kim_lau', 'msg' => $msg, 'bad' => true];
+                     $isBad = true;
+                 } else {
+                     $ageAnalysis[] = ['type' => 'kim_lau', 'msg' => "Không phạm Kim Lâu.", 'bad' => false];
+                 }
              }
 
              // Hoang Oc (Dong Tho / Lam Nha)
-             if (($purpose == 'dong_tho' || $purpose == 'lam_nha') && self::isHoangOc($age)) {
-                 $comments[] = "Phạm Hoang Ốc (Tuổi $age - Kỵ làm nhà).";
-                 $isBad = true;
+             if ($purpose == 'dong_tho' || $purpose == 'lam_nha') {
+                 if (self::isHoangOc($age)) {
+                     $msg = "Phạm Hoang Ốc (Tuổi $age - Kỵ làm nhà).";
+                     $comments[] = $msg;
+                     $ageAnalysis[] = ['type' => 'hoang_oc', 'msg' => $msg, 'bad' => true];
+                     $isBad = true;
+                 } else {
+                     $ageAnalysis[] = ['type' => 'hoang_oc', 'msg' => "Không phạm Hoang Ốc.", 'bad' => false];
+                 }
              }
 
-             // Tam Tai (Optional check, requires full lookup, simplified here)
-             // ...
+             // Tam Tai (All purposes generally, but strictly for major events)
+             if ($purpose != 'generic') {
+                 if (self::isTamTai($age, $lunarYear)) {
+                     $msg = "Phạm Tam Tai (Năm nay xấu với tuổi).";
+                     $comments[] = $msg;
+                     $ageAnalysis[] = ['type' => 'tam_tai', 'msg' => $msg, 'bad' => true];
+                     // Tam Tai is not always a blocker for all days, but adds negative weight.
+                     // Marking as bad for simplicity in this strict mode.
+                     $isBad = true;
+                 } else {
+                     $ageAnalysis[] = ['type' => 'tam_tai', 'msg' => "Không phạm Tam Tai.", 'bad' => false];
+                 }
+             }
         }
 
         // 6. Dong Cong
@@ -175,7 +199,8 @@ class XemNgay {
             'comment' => empty($comments) ? "Ngày tốt/bình thường." : implode(' ', $comments),
             'truc' => $truc,
             'sao' => implode(', ', $goodStars),
-            'details' => $comments
+            'details' => $comments,
+            'age_analysis' => $ageAnalysis
         );
     }
 
@@ -238,29 +263,44 @@ class XemNgay {
         if ($tens == 0) $tens = 1; // 1-9 starts at 1
 
         // Determine start node based on tens
-        // 10 -> Node 1. 20 -> Node 2. 30 -> Node 3.
-        // If age < 10? Start at 1.
-
         $startNode = $tens;
-        if ($startNode > 6) $startNode = ($startNode - 1) % 6 + 1; // Wrap 7->1?
-        // Actually: 10->1, 20->2, 30->3, 40->4, 50->5, 60->6, 70->1...
+        if ($startNode > 6) $startNode = ($startNode - 1) % 6 + 1;
 
         // Count units
         $currentNode = $startNode;
-        for ($i = 0; $i < $units; $i++) { // If 30 (units=0), loop 0 times? No.
-             // If age 30: Start at 3. Count 0? Result 3.
-             // If age 31: Start at 3. Count 1? Node 4.
-             // Wait. Logic: 30 is Tam Dia Sat. 31 is Tu Tan Tai.
-             // So if units > 0, we increment.
-             // Loop logic:
+        for ($i = 0; $i < $units; $i++) {
              $currentNode++;
              if ($currentNode > 6) $currentNode = 1;
         }
-        // Adjustment: Since we started at $startNode which accounts for the first year of the decade?
-        // Example: Age 30. Tens=3. Start=3. Units=0. Loop doesn't run. Result 3 (Bad). Correct.
-        // Example: Age 31. Tens=3. Start=3. Units=1. Loop runs once. Result 4 (Good). Correct.
-        // Example: Age 33. Tens=3. Start=3. Units=3. Loop 3 times. 3->4->5->6. Result 6 (Bad). Correct.
 
         return in_array($currentNode, [3, 5, 6]);
+    }
+
+    public static function isTamTai($age, $currentYear) {
+        $birthYear = $currentYear - $age + 1;
+        $birthChi = ($birthYear - 4) % 12;
+        if ($birthChi < 0) $birthChi += 12;
+
+        $currentChi = ($currentYear - 4) % 12;
+        if ($currentChi < 0) $currentChi += 12;
+
+        // Group 1: Than (8), Ty (0), Thin (4) -> Tam Tai: Dan (2), Mao (3), Thin (4)
+        if (in_array($birthChi, [8, 0, 4])) {
+            return in_array($currentChi, [2, 3, 4]);
+        }
+        // Group 2: Ty (5), Dau (9), Suu (1) -> Tam Tai: Hoi (11), Ty (0), Suu (1)
+        if (in_array($birthChi, [5, 9, 1])) {
+            return in_array($currentChi, [11, 0, 1]);
+        }
+        // Group 3: Dan (2), Ngo (6), Tuat (10) -> Tam Tai: Than (8), Dau (9), Tuat (10)
+        if (in_array($birthChi, [2, 6, 10])) {
+            return in_array($currentChi, [8, 9, 10]);
+        }
+        // Group 4: Hoi (11), Mao (3), Mui (7) -> Tam Tai: Ty (5), Ngo (6), Mui (7)
+        if (in_array($birthChi, [11, 3, 7])) {
+            return in_array($currentChi, [5, 6, 7]);
+        }
+
+        return false;
     }
 }
