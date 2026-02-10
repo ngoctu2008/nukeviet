@@ -110,8 +110,6 @@ class NameAnalysis {
         $demDetails = self::getWordDetails($partsDem);
         $tenDetails = self::getWordDetails($partsTen);
 
-        $fullDetails = array_merge($hoDetails, $demDetails, $tenDetails);
-
         // 2. Calculate Strokes
         $sHo = self::sumStrokes($hoDetails);
         $sDem = self::sumStrokes($demDetails);
@@ -122,7 +120,6 @@ class NameAnalysis {
         $countTen = count($tenDetails);
 
         // 3. Calculate 5 Grids (Ngu Cach)
-        // Standard Tu Vi Nam Hoc logic based on number of words in Surname and Name
 
         $thien = 0; $dia = 0; $nhan = 0; $ngoai = 0; $tong = 0;
 
@@ -133,13 +130,10 @@ class NameAnalysis {
         if ($countHo == 1) {
             $thien = $sHo + 1;
         } else {
-            $thien = $sHo; // Double surname: Sum of surname strokes
+            $thien = $sHo;
         }
 
         // Dia Cach
-        // Dia = Name + Middle Name strokes (+ 1 if single char name with no middle)
-        // If (Dem + Ten) count == 1, Dia = sTen + 1.
-        // Else Dia = sDem + sTen.
         if (($countDem + $countTen) == 1) {
              $dia = ($sDem + $sTen) + 1;
         } else {
@@ -147,60 +141,43 @@ class NameAnalysis {
         }
 
         // Nhan Cach
-        // Usually Last Char of Surname + First Char of Name (Middle or First)
         $lastHoStroke = end($hoDetails)['strokes'];
-
-        // First Char of Name (Check Dem first, then Ten)
         $firstNameStroke = 0;
         if ($countDem > 0) {
             $firstNameStroke = reset($demDetails)['strokes'];
         } else {
             $firstNameStroke = reset($tenDetails)['strokes'];
         }
-
         $nhan = $lastHoStroke + $firstNameStroke;
 
         // Ngoai Cach
-        // Rule: (Total Strokes + Adjust) - Nhan Cach
-        // Common formula:
-        // Single Ho + Single Ten: Ngoai = 1+1=2. (Tong - Nhan + 2)
-        // Single Ho + Multi Ten: Ngoai = Last Name Stroke + 1. (Tong - Nhan + 1)
-        // Double Ho + Single Ten: Ngoai = First Surname Stroke + 1. (Tong - Nhan + 1)
-        // Double Ho + Multi Ten: Ngoai = First Surname Stroke + Last Name Stroke. (Tong - Nhan)
-        // Let's use the explicit formulas based on word counts.
-
         $firstHoStroke = reset($hoDetails)['strokes'];
         $lastNameStroke = end($tenDetails)['strokes'];
 
         if ($countHo == 1 && ($countDem + $countTen) == 1) {
             $ngoai = 2;
         } elseif ($countHo == 1 && ($countDem + $countTen) > 1) {
-            // Single Surname, Multi Name
-            // Ngoai = Last Name Char + 1 ? No, usually (Tong - Nhan) + 1.
-            // Let's check: Tong = S_Ho + S_Dem + S_Ten. Nhan = S_Ho + S_Dem. (If Name=Dem+Ten)
-            // Wait, Nhan = LastHo + FirstDem.
-            // If Single Ho (H1), Multi Name (D1, T1).
-            // Tong = H1 + D1 + T1.
-            // Nhan = H1 + D1.
-            // Ngoai = T1 + 1.
-            // (Tong - Nhan) + 1 = (H1+D1+T1) - (H1+D1) + 1 = T1 + 1. Correct.
             $ngoai = $lastNameStroke + 1;
         } elseif ($countHo > 1 && ($countDem + $countTen) == 1) {
-            // Double Surname, Single Name.
-            // Tong = H1 + H2 + N1.
-            // Nhan = H2 + N1.
-            // Ngoai = H1 + 1.
-            // (Tong - Nhan) + 1 = (H1+H2+N1) - (H2+N1) + 1 = H1 + 1. Correct.
             $ngoai = $firstHoStroke + 1;
         } else {
-            // Double Surname, Multi Name.
-            // Tong = H1 + H2 + D1 + T1.
-            // Nhan = H2 + D1.
-            // Ngoai = H1 + T1.
-            // (Tong - Nhan) = (H1+H2+D1+T1) - (H2+D1) = H1 + T1. Correct.
             $ngoai = $firstHoStroke + $lastNameStroke;
         }
 
+        // 4. Evaluate Grids
+        $nguCach = [
+            'thien' => self::evaluateCach('Thiên Cách', $thien),
+            'nhan' => self::evaluateCach('Nhân Cách', $nhan),
+            'dia' => self::evaluateCach('Địa Cách', $dia),
+            'ngoai' => self::evaluateCach('Ngoại Cách', $ngoai),
+            'tong' => self::evaluateCach('Tổng Cách', $tong)
+        ];
+
+        // 5. Am Duong Analysis
+        $amDuong = self::analyzeAmDuong($hoDetails, $demDetails, $tenDetails);
+
+        // 6. Tam Tai Analysis (Three Talents)
+        $tamTai = self::analyzeTamTai($nguCach['thien']['element_code'], $nguCach['nhan']['element_code'], $nguCach['dia']['element_code']);
 
         // Construct Result
         return array(
@@ -216,13 +193,9 @@ class NameAnalysis {
                 'ten' => $sTen,
                 'total' => $tong
             ],
-            'ngu_cach' => [
-                'thien' => self::evaluateCach('Thiên Cách', $thien),
-                'nhan' => self::evaluateCach('Nhân Cách', $nhan),
-                'dia' => self::evaluateCach('Địa Cách', $dia),
-                'ngoai' => self::evaluateCach('Ngoại Cách', $ngoai),
-                'tong' => self::evaluateCach('Tổng Cách', $tong)
-            ]
+            'ngu_cach' => $nguCach,
+            'am_duong' => $amDuong,
+            'tam_tai' => $tamTai
         );
     }
 
@@ -248,17 +221,26 @@ class NameAnalysis {
     private static function getWordDetails($words) {
         $details = [];
         foreach ($words as $word) {
-            // Try exact match (lowercase) first (for accented differentiation)
             $keyExact = mb_strtolower($word);
-            // Try normalized match (unaccented) second
-            $keyNorm = (function_exists('change_alias')) ? change_alias($word) : $keyExact;
-            $keyNorm = preg_replace('/[^a-z0-9]/', '', $keyNorm);
 
-            $info = null;
-            if (isset(self::$HAN_VIET_DICT[$keyExact])) {
-                $info = self::$HAN_VIET_DICT[$keyExact];
-            } elseif (isset(self::$HAN_VIET_DICT[$keyNorm])) {
-                $info = self::$HAN_VIET_DICT[$keyNorm];
+            // Try 1: Exact
+            $info = isset(self::$HAN_VIET_DICT[$keyExact]) ? self::$HAN_VIET_DICT[$keyExact] : null;
+
+            // Try 2: Normalized (change_alias or simple strip)
+            if (!$info) {
+                $keyNorm = (function_exists('change_alias')) ? change_alias($word) : self::slugify($word);
+                $keyNorm = preg_replace('/[^a-z0-9]/', '', $keyNorm);
+                if (isset(self::$HAN_VIET_DICT[$keyNorm])) {
+                    $info = self::$HAN_VIET_DICT[$keyNorm];
+                }
+            }
+
+            // Try 3: Normalized Lowercase of Exact (Manual accent stripping if change_alias failed or unavailable)
+            if (!$info) {
+                $keyStrip = self::stripAccents($keyExact);
+                if (isset(self::$HAN_VIET_DICT[$keyStrip])) {
+                    $info = self::$HAN_VIET_DICT[$keyStrip];
+                }
             }
 
             if ($info) {
@@ -266,18 +248,20 @@ class NameAnalysis {
                     'word' => $word,
                     'han' => $info['han'],
                     'strokes' => $info['strokes'],
-                    'meaning' => $info['meaning']
+                    'meaning' => $info['meaning'],
+                    'element' => isset($info['element']) ? $info['element'] : ''
                 ];
             } else {
                 // Fallback
-                $strokes = mb_strlen($word) * 2; // Rough estimate
+                $strokes = mb_strlen($word) * 2;
                 if ($strokes < 2) $strokes = 2;
 
                 $details[] = [
                     'word' => $word,
                     'han' => '?',
                     'strokes' => $strokes,
-                    'meaning' => 'Chưa có dữ liệu'
+                    'meaning' => 'Chưa có dữ liệu',
+                    'element' => ''
                 ];
             }
         }
@@ -293,26 +277,26 @@ class NameAnalysis {
     }
 
     private static function evaluateCach($name, $val) {
-        // Fix standard limit logic
         $val81 = $val;
         while ($val81 > 81) {
             $val81 -= 80;
         }
-        if ($val81 == 0) $val81 = 81; // Should not happen if loop correct but standard modulo logic
+        if ($val81 == 0) $val81 = 81;
 
         $meaning = isset(self::$MEANINGS_81[$val81]) ? self::$MEANINGS_81[$val81] : 'Bình thường (Bán Cát)';
 
-        // Ngu Hanh (Last digit: 1,2=Moc, 3,4=Hoa, 5,6=Tho, 7,8=Kim, 9,0=Thuy)
+        // Ngu Hanh Code: 1=Moc, 2=Moc, 3=Hoa, 4=Hoa, 5=Tho, 6=Tho, 7=Kim, 8=Kim, 9=Thuy, 0=Thuy
         $last = substr($val, -1);
         $el = '';
-        if (in_array($last, [1,2])) $el = 'Mộc';
-        elseif (in_array($last, [3,4])) $el = 'Hỏa';
-        elseif (in_array($last, [5,6])) $el = 'Thổ';
-        elseif (in_array($last, [7,8])) $el = 'Kim';
-        else $el = 'Thủy';
+        $elCode = ''; // moc, hoa, tho, kim, thuy
 
-        // Score (Simple heuristic from string)
-        $scoreClass = 'text-warning'; // Default
+        if (in_array($last, [1,2])) { $el = 'Mộc'; $elCode = 'moc'; }
+        elseif (in_array($last, [3,4])) { $el = 'Hỏa'; $elCode = 'hoa'; }
+        elseif (in_array($last, [5,6])) { $el = 'Thổ'; $elCode = 'tho'; }
+        elseif (in_array($last, [7,8])) { $el = 'Kim'; $elCode = 'kim'; }
+        else { $el = 'Thủy'; $elCode = 'thuy'; }
+
+        $scoreClass = 'text-warning';
         if (strpos($meaning, 'Đại Cát') !== false) $scoreClass = 'text-success bold';
         elseif (strpos($meaning, '(Cát)') !== false) $scoreClass = 'text-info';
         elseif (strpos($meaning, 'Đại Hung') !== false) $scoreClass = 'text-danger bold';
@@ -323,7 +307,139 @@ class NameAnalysis {
             'val' => $val,
             'meaning' => $meaning,
             'element' => $el,
+            'element_code' => $elCode,
             'class' => $scoreClass
         ];
+    }
+
+    private static function analyzeAmDuong($ho, $dem, $ten) {
+        $seq = [];
+        $seqText = [];
+        $balance = 0; // Close to 0 is good
+
+        $all = array_merge($ho, $dem, $ten);
+        foreach ($all as $word) {
+            $s = $word['strokes'];
+            if ($s % 2 == 0) {
+                $seq[] = 'Âm';
+                $seqText[] = '<span class="text-primary">Âm</span>';
+                $balance--;
+            } else {
+                $seq[] = 'Dương';
+                $seqText[] = '<span class="text-danger">Dương</span>';
+                $balance++;
+            }
+        }
+
+        $msg = '';
+        $absBal = abs($balance);
+        if ($absBal == 0 || $absBal == 1) {
+            $msg = 'Cân bằng Âm Dương rất tốt (Cát)';
+            $class = 'text-success bold';
+        } elseif ($absBal == count($all)) {
+            $msg = 'Thuần ' . ($balance > 0 ? 'Dương' : 'Âm') . ' (Hung) - Nên tránh';
+            $class = 'text-danger bold';
+        } else {
+            $msg = 'Tương đối cân bằng (Bình thường)';
+            $class = 'text-info';
+        }
+
+        return [
+            'sequence' => implode(' - ', $seqText),
+            'message' => $msg,
+            'class' => $class
+        ];
+    }
+
+    private static function analyzeTamTai($thien, $nhan, $dia) {
+        // Elements: kim, moc, thuy, hoa, tho
+        // Relation function
+        $rel = function($from, $to) {
+            $pairs = [
+                'kim' => ['thuy' => 'sinh', 'moc' => 'khac'],
+                'moc' => ['hoa' => 'sinh', 'tho' => 'khac'],
+                'thuy' => ['moc' => 'sinh', 'hoa' => 'khac'],
+                'hoa' => ['tho' => 'sinh', 'kim' => 'khac'],
+                'tho' => ['kim' => 'sinh', 'thuy' => 'khac']
+            ];
+            if ($from == $to) return 'hoa'; // Ty Hoa
+            if (isset($pairs[$from][$to])) return $pairs[$from][$to]; // Sinh/Khac
+
+            // Reverse check for Sinh/Khac (e.g. from is child of to)
+            // But standard Tam Tai checks Thien -> Nhan and Nhan -> Dia (One way flow or interactive?)
+            // Usually we interpret the RELATIONSHIP.
+            // If From generates To (Sinh Nhap - Good for To).
+            // If From controls To (Khac Nhap - Bad for To).
+
+            // Check if To generates From (Sinh Xuat - Bad for From)
+            if (isset($pairs[$to][$from]) && $pairs[$to][$from] == 'sinh') return 'duoc_sinh'; // To sinh From
+            if (isset($pairs[$to][$from]) && $pairs[$to][$from] == 'khac') return 'bi_khac'; // To khac From (Same as Khac Nhap above? No.)
+            // Logic:
+            // A sinh B: A loses, B gains.
+            // A khac B: A dominates, B hurt.
+
+            return 'binh_hoa';
+        };
+
+        $t_n = $rel($thien, $nhan); // Thien vs Nhan
+        $n_d = $rel($nhan, $dia); // Nhan vs Dia
+
+        // Interpretation
+        // Thien -> Nhan: Success/Superior Support
+        $msgTN = '';
+        $scoreTN = 0;
+        if ($t_n == 'sinh') { $msgTN = 'Thiên sinh Nhân: Được trời phú, quý nhân giúp đỡ, thành công thuận lợi (Đại Cát).'; $scoreTN = 2; }
+        elseif ($t_n == 'hoa') { $msgTN = 'Thiên Nhân tỷ hòa: Quan hệ hòa thuận, bình ổn (Cát).'; $scoreTN = 1; }
+        elseif ($t_n == 'duoc_sinh') { $msgTN = 'Nhân sinh Thiên: Phải nỗ lực nhiều, vất vả mới thành công (Bán Cát).'; $scoreTN = 0; }
+        elseif ($t_n == 'khac') { $msgTN = 'Thiên khắc Nhân: Bị cấp trên chèn ép, hay gặp tai họa, ốm đau (Hung).'; $scoreTN = -2; }
+        elseif ($t_n == 'bi_khac') { $msgTN = 'Nhân khắc Thiên: Chống đối cấp trên, không phục tùng, dễ thất bại (Hung).'; $scoreTN = -2; }
+        else { $msgTN = 'Bình thường.'; }
+
+        // Nhan -> Dia: Foundation/Spouse/Children
+        $msgND = '';
+        $scoreND = 0;
+        if ($n_d == 'sinh') { $msgND = 'Nhân sinh Địa: Gia đình hòa thuận, con cái ngoan ngoãn, nền tảng vững chắc (Đại Cát).'; $scoreND = 2; }
+        elseif ($n_d == 'hoa') { $msgND = 'Nhân Địa tỷ hòa: Vợ chồng hòa thuận (Cát).'; $scoreND = 1; }
+        elseif ($n_d == 'duoc_sinh') { $msgND = 'Địa sinh Nhân: Được gia đình hỗ trợ, vợ/chồng giúp đỡ (Cát).'; $scoreND = 1; }
+        elseif ($n_d == 'khac') { $msgND = 'Nhân khắc Địa: Khắc vợ/chồng/con cái, gia đạo bất an (Hung).'; $scoreND = -2; }
+        elseif ($n_d == 'bi_khac') { $msgND = 'Địa khắc Nhân: Bị gia đình lấn lướt, nền tảng lung lay (Hung).'; $scoreND = -2; }
+
+        $totalScore = $scoreTN + $scoreND;
+        $finalMsg = '';
+        $finalClass = '';
+        if ($totalScore >= 3) { $finalMsg = 'Đại Cát'; $finalClass = 'text-success bold'; }
+        elseif ($totalScore > 0) { $finalMsg = 'Cát'; $finalClass = 'text-info'; }
+        elseif ($totalScore > -2) { $finalMsg = 'Bình Hòa'; $finalClass = 'text-warning'; }
+        else { $finalMsg = 'Hung'; $finalClass = 'text-danger bold'; }
+
+        return [
+            'thien_nhan' => $msgTN,
+            'nhan_dia' => $msgND,
+            'score' => $totalScore,
+            'final' => $finalMsg,
+            'class' => $finalClass,
+            'thien_el' => $thien,
+            'nhan_el' => $nhan,
+            'dia_el' => $dia
+        ];
+    }
+
+    // Helpers
+    private static function slugify($text) {
+        // Simple manual slugify if change_alias not avail
+        $text = mb_strtolower($text);
+        $text = self::stripAccents($text);
+        return preg_replace('/[^a-z0-9]/', '', $text);
+    }
+
+    private static function stripAccents($str) {
+        $str = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $str);
+        $str = preg_replace("/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/", 'e', $str);
+        $str = preg_replace("/(ì|í|ị|ỉ|ĩ)/", 'i', $str);
+        $str = preg_replace("/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/", 'o', $str);
+        $str = preg_replace("/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/", 'u', $str);
+        $str = preg_replace("/(ỳ|ý|ỵ|ỷ|ỹ)/", 'y', $str);
+        $str = preg_replace("/(đ)/", 'd', $str);
+        return $str;
     }
 }

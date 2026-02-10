@@ -38,6 +38,8 @@ $xtpl->assign('INPUT', array('ho' => $ho, 'ten' => $ten, 'year' => $year));
 if (!empty($result)) {
     $xtpl->assign('RESULT', $result);
     $xtpl->assign('CACH', $result['ngu_cach']);
+    $xtpl->assign('AM_DUONG', $result['am_duong']);
+    $xtpl->assign('TAM_TAI', $result['tam_tai']);
 
     // Pass Han-Viet Breakdown
     $breakdown = array_merge($result['parts']['ho'], $result['parts']['dem'], $result['parts']['ten']);
