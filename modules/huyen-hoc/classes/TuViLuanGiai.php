@@ -19,8 +19,9 @@ class TuViLuanGiai {
         global $db, $db_config, $module_data;
         $this->db = $db;
         $prefix = isset($db_config['prefix']) ? $db_config['prefix'] : 'nv4';
+        $lang = defined('NV_LANG_DATA') ? NV_LANG_DATA : 'vi';
         $modData = isset($module_data) ? $module_data : 'huyen-hoc';
-        $this->table = $prefix . "_" . NV_LANG_DATA . "_" . str_replace('-', '_', $modData) . "_interpretations";
+        $this->table = $prefix . "_" . $lang . "_" . str_replace('-', '_', $modData) . "_interpretations";
         $this->starMeanings = $starMeanings;
     }
 
@@ -80,7 +81,7 @@ class TuViLuanGiai {
         return $result;
     }
 
-    private function assessPreDestiny($chart) {
+    public function assessPreDestiny($chart) {
         $meta = $chart['meta'];
         $comments = [];
 
@@ -263,7 +264,7 @@ class TuViLuanGiai {
         ];
     }
 
-    private function calculateScore($chart) {
+    public function calculateScore($chart) {
         return 75;
     }
 
