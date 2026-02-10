@@ -84,6 +84,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
             }
         }
     }
+    unset($palace);
 
     // Luan Giai
     try {
@@ -130,6 +131,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
                  }
              }
         }
+        unset($palace);
 
         // Add Tong Quan to laSoData
         $laSoData['luan_giai_tong_quan'] = array(
