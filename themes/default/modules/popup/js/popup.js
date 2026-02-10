@@ -88,8 +88,10 @@ function nv_popup_close(id) {
 }
 
 function nv_popup_init(id, type, value) {
-    // Check if already cookie set? (Already handled in PHP Block, but double check for robustness if PHP didn't catch it due to caching?)
-    // PHP block handles filtering. If it rendered, we assume we should try to show it (subject to trigger).
+    // Check client-side cookie to prevent F5 re-show if PHP layer didn't catch it (e.g. block caching)
+    if (NV_POPUP.getCookie('nv_popup_' + id)) {
+        return;
+    }
 
     if (type === 'immediate') {
         NV_POPUP.show(id);
