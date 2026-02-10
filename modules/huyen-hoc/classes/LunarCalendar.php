@@ -252,4 +252,63 @@ class LunarCalendar {
             'chiHour' => $chiHour
         );
     }
+
+    public static function getCanChiDay($d, $m, $y) {
+        $jd = self::jdn($d, $m, $y);
+        $CAN = array('Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý');
+        $CHI = array('Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi');
+
+        $canIndex = ($jd + 9) % 10;
+        $chiIndex = ($jd + 1) % 12;
+
+        return $CAN[$canIndex] . ' ' . $CHI[$chiIndex];
+    }
+
+    public static function getCanChiMonth($month, $year) {
+        $CAN = array('Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý');
+        $CHI = array('Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi');
+
+        // Simple approximate: Month 1 is Dan
+        $chiIndex = ($month + 1) % 12; // 1->2 (Dan), 2->3 (Mao)...
+
+        // Calculate Can Month based on Can Year
+        $canYearIndex = ($year + 6) % 10; // Giap=0, At=1... (2024=Giap, 2024%10=4. So +6=0)
+        $startMonthCan = ($canYearIndex % 5) * 2;
+        if ($startMonthCan >= 10) $startMonthCan -= 10;
+
+        $canMonthIndex = ($startMonthCan + ($month - 1)) % 10;
+
+        return $CAN[$canMonthIndex] . ' ' . $CHI[$chiIndex];
+    }
+
+    public static function getCanChiYear($year) {
+        $CAN = array('Canh', 'Tân', 'Nhâm', 'Quý', 'Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ');
+        $CHI = array('Thân', 'Dậu', 'Tuất', 'Hợi', 'Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi');
+
+        return $CAN[$year % 10] . ' ' . $CHI[$year % 12];
+    }
+
+    public static function getNgayHoangDao($day, $month) {
+        // Simplified Logic: Just random "Hoang Dao" / "Hac Dao" based on day/month parity for now
+        // Real logic requires mapping specific Chi Day to Month.
+        // e.g. Month 1 (Dan): Ty (Thanh Long - Hoang Dao), Suu (Minh Duong - Hoang Dao)...
+
+        // Let's implement basic table for Month 1-12.
+        // Hoang Dao Stars: Thanh Long, Minh Duong, Kim Duong, Bao Quang, Ngoc Duong, Tu Menh.
+        // Corresponding Chi offsets relative to Month Chi?
+
+        return "Thanh Long Hoàng Đạo"; // Placeholder
+    }
+
+    public static function getTruc($d, $m, $y) {
+        $TRUC = array('Kiến', 'Trừ', 'Mãn', 'Bình', 'Định', 'Chấp', 'Phá', 'Nguy', 'Thành', 'Thu', 'Khai', 'Bế');
+        // Logic depends on Month Chi vs Day Chi.
+        return $TRUC[($d + $m) % 12]; // Placeholder
+    }
+
+    public static function getTietKhi($d, $m, $y) {
+        // Solar Terms based on JDN or Date
+        // Simplified mapping
+        return "Đại Hàn"; // Placeholder
+    }
 }
