@@ -22,15 +22,22 @@ class LunarCalendar {
         $s1 = self::getNewMoonDay($k, $timeZone);
         $s2 = self::getNewMoonDay($k + 1, $timeZone);
 
-        while ($s1 > $minJl) {
+        $loopCount = 0;
+        $maxLoops = 50; // Safety limit (approx 4 years scan)
+
+        while ($s1 > $minJl && $loopCount < $maxLoops) {
             $k--;
             $s2 = $s1;
             $s1 = self::getNewMoonDay($k, $timeZone);
+            $loopCount++;
         }
-        while ($s2 <= $minJl) {
+
+        $loopCount = 0;
+        while ($s2 <= $minJl && $loopCount < $maxLoops) {
             $k++;
             $s1 = $s2;
             $s2 = self::getNewMoonDay($k + 1, $timeZone);
+            $loopCount++;
         }
 
         $lunarDay = (int)($minJl - $s1 + 1);
