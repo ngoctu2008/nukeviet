@@ -88,7 +88,8 @@ if ($nv_Request->isset_request('submit', 'post')) {
 
     // Luan Giai
     try {
-        $interpreter = new TuViLuanGiai();
+        // Pass Loaded Star Meanings to Interpreter
+        $interpreter = new TuViLuanGiai($starMeanings);
         $interpretation = $interpreter->luanGiai($laSoData);
         $structuredReport = $interpreter->generateStructuredReport($laSoData);
 

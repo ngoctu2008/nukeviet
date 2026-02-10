@@ -127,7 +127,7 @@
     </div>
 
     <!-- Tabs Functionality -->
-    <div class="row mt-4 no-print">
+    <div class="row mt-2 no-print">
         <div class="col-xs-24 col-sm-24 col-md-24">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
@@ -147,7 +147,7 @@
                 </li>
             </ul>
 
-            <div class="tab-content p-3 border border-top-0 bg-white" id="myTabContent">
+            <div class="tab-content p-2 border border-top-0 bg-white" id="myTabContent">
 
                 <!-- Tab Tong Quan -->
                 <div class="tab-pane fade show active" id="tongquan" role="tabpanel">
