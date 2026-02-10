@@ -67,9 +67,9 @@
     <hr class="no-print">
 
     <!-- La So Chart -->
-    <div class="laso-container">
+    <div class="la-so-tu-vi-grid">
         <!-- Thien Ban (Center) -->
-        <div class="thien-ban">
+        <div class="cung-thien-ban">
             <div class="info-user">
                 <h3 class="text-danger text-uppercase">{THIEN_BAN.ho_ten}</h3>
                 <p>Năm sinh: <b>{THIEN_BAN.nam_sinh}</b></p>
@@ -87,7 +87,7 @@
 
         <!-- 12 Palaces -->
         <!-- BEGIN: palace -->
-        <div class="cung cung-{PALACE.key}">
+        <div class="cung-so cung-{PALACE.key}">
             <div class="header-cung">
                 <span class="cung-name">{PALACE.palace_name}</span>
                 <!-- BEGIN: tieu_van --><span class="cung-tieu-van text-muted small">({PALACE.tieu_van})</span><!-- END: tieu_van -->
