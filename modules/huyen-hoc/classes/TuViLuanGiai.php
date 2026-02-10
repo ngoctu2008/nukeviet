@@ -24,39 +24,30 @@ class TuViLuanGiai {
         $this->starMeanings = $starMeanings;
     }
 
-    /**
-     * Set additional meanings if not passed in constructor
-     */
     public function setStarMeanings($meanings) {
         $this->starMeanings = $meanings;
     }
 
-    /**
-     * Get Interpretation for the whole chart
-     */
     public function luanGiai($chart) {
         $result = [];
 
-        // 1. Tien Thien (Goc re) - Step 1 of Logic
+        // 1. Tien Thien
         $result['tien_thien'] = $this->assessPreDestiny($chart);
 
         // 2. Score
         $result['score'] = $this->calculateScore($chart);
 
-        // 3. Luan Giai 12 Cung & Patterns
+        // 3. Luan Giai 12 Cung
         foreach ($chart['dia_ban'] as $i => $palace) {
             $key = $this->normalizePalaceName($palace['palace_name']);
 
-            // Step 5: VCD Logic (Borrow stars)
             if (empty($palace['chinh_tinh'])) {
                 $borrowed = $this->resolveVCD($i, $chart);
                 $palace['chinh_tinh_borrowed'] = $borrowed;
             }
 
-            // Standard reading with Enhanced Logic (Step 2 & 3)
             $reading = $key ? $this->getPalaceReading($palace, $key, $chart) : ['chinh_tinh'=>[], 'phu_tinh'=>[], 'general'=>[]];
 
-            // Step 4: Patterns (Cach Cuc)
             $patterns = $this->identifyPatterns($palace, $key, $chart);
             if ($patterns) {
                 foreach ($patterns as $pat) {
@@ -64,18 +55,15 @@ class TuViLuanGiai {
                 }
             }
 
-            // Cuong Nhuoc (Strength)
             $strength = $this->assessPalaceStrength($palace, $key, $chart['thien_ban']['menh_ngu_hanh']);
-            $reading['general'][] = ['star' => 'Đánh giá', 'content' => $strength];
+            $reading['evaluation'] = $strength;
 
             if ($key) $result[$key] = $reading;
             $result[$i] = $reading;
         }
 
-        // 4. Detailed Tong Quan Data
-        // If not enough from DB, use generic comments based on Menh/Than
+        // 4. Tong Quan
         if (empty($result['tong_quan_menh'])) {
-             // Generate generic based on Menh Palace Star
              $menhPalace = $chart['dia_ban'][$chart['meta']['menh_idx']];
              $starList = [];
              foreach($menhPalace['chinh_tinh'] as $s) $starList[] = $s['name'];
@@ -83,7 +71,6 @@ class TuViLuanGiai {
         }
 
         if (empty($result['tong_quan_than'])) {
-             // Generate generic based on Than Palace Star
              $thanPalace = $chart['dia_ban'][$chart['meta']['than_idx']];
              $starList = [];
              foreach($thanPalace['chinh_tinh'] as $s) $starList[] = $s['name'];
@@ -93,14 +80,10 @@ class TuViLuanGiai {
         return $result;
     }
 
-    /**
-     * Section 1: Tien Thien Analysis (Am Duong / Ngu Hanh)
-     */
     private function assessPreDestiny($chart) {
         $meta = $chart['meta'];
         $comments = [];
 
-        // 1. Am Duong Ly
         $canYear = $meta['canYear'];
         $menhIdx = $meta['menh_idx'];
         $isYearYang = ($canYear % 2 == 0);
@@ -118,7 +101,6 @@ class TuViLuanGiai {
                 : "Âm Dương Nghịch Lý: Độ số giảm bớt, cần nỗ lực nhiều hơn.";
         }
 
-        // 2. Ngu Hanh Sinh Khac (Menh vs Cuc)
         $cucElMap = [2 => 1, 6 => 2, 5 => 3, 4 => 4, 3 => 5];
         $menhEl = $meta['menh_element_id'];
         $cucID = $meta['cuc_id'];
@@ -149,9 +131,6 @@ class TuViLuanGiai {
         return $comments;
     }
 
-    /**
-     * Section 2 & 3: Enhanced Palace Reading
-     */
     private function getPalaceReading($palaceData, $palaceKey, $chart) {
         $readings = ['chinh_tinh' => [], 'phu_tinh' => [], 'general' => []];
 
@@ -167,7 +146,6 @@ class TuViLuanGiai {
         foreach ($starsToCheck as $star) {
             $content = '';
 
-            // 1. Check DB first (Specific Palace)
             $chiKey = TuViLapSo::$DIA_CHI_KEYS[$palaceData['index']];
             if ($chiKey == 'ty_chuot') $chiKey = 'ty';
             if ($chiKey == 'ty_ran') $chiKey = 'ti';
@@ -176,14 +154,11 @@ class TuViLuanGiai {
             $content = $this->fetchContent($posKey, 'general', 'pattern');
 
             if (!$content) {
-                 // 2. Generic Star in Palace
                  $content = $this->fetchContent($star['code'], $palaceKey, 'main');
             }
 
-            // 3. Use JSON fallback if DB empty
             if (!$content && isset($this->starMeanings[$star['code']])) {
                 $info = $this->starMeanings[$star['code']];
-                // Use 'y_nghia' array if available for specific palace
                 if (isset($info['y_nghia'][$palaceKey])) {
                     $content = $info['y_nghia'][$palaceKey];
                 } elseif (isset($info['dac_tinh'])) {
@@ -193,7 +168,6 @@ class TuViLuanGiai {
 
             if (!$content) $content = "Đang cập nhật...";
 
-            // Tuan/Triet
             if ($palaceData['tuan'] || $palaceData['triet']) {
                 $ttKey = 'SAO_' . strtoupper($star['code']) . '_GAP_TUAN_TRIET';
                 $ttContent = $this->fetchContent($ttKey, 'general', 'pattern');
@@ -206,15 +180,12 @@ class TuViLuanGiai {
             $readings['chinh_tinh'][] = ['star_code' => $star['code'], 'star' => $star['name'], 'content' => $content];
         }
 
-        // Phu Tinh
         $allPhu = array_merge($palaceData['phu_tinh_tot'], $palaceData['phu_tinh_xau']);
         foreach ($allPhu as $star) {
             $content = $this->fetchContent($star['code'], 'general', 'meaning');
 
-            // Fallback to JSON
             if (!$content && isset($this->starMeanings[$star['code']])) {
                 $info = $this->starMeanings[$star['code']];
-                // Try specific palace meaning first, then general meaning
                 if (isset($info['y_nghia'][$palaceKey])) {
                     $content = $info['y_nghia'][$palaceKey];
                 } elseif (isset($info['y_nghia']['general'])) {
@@ -229,7 +200,6 @@ class TuViLuanGiai {
             }
         }
 
-        // Minor Star Combinations
         $minorCombs = $this->analyzeMinorStarCombinations($palaceData, $palaceKey);
         if ($minorCombs) {
             foreach ($minorCombs as $comb) {
@@ -249,7 +219,6 @@ class TuViLuanGiai {
             return false;
         };
 
-        // Simplified checks for combinations
         if ($hasStarLocal('dao_hoa') && $hasStarLocal('hong_loan')) $combinations[] = ['code' => 'DAO_HONG', 'content' => "Đào Hồng hội chiếu: Duyên dáng, thu hút người khác phái."];
         if ($hasStarLocal('van_xuong') && $hasStarLocal('van_khuc')) $combinations[] = ['code' => 'XUONG_KHUC', 'content' => "Xương Khúc đồng cung: Văn hay chữ tốt, học hành thông minh."];
         if ($hasStarLocal('dia_khong') && $hasStarLocal('dia_kiep')) $combinations[] = ['code' => 'KHONG_KIEP', 'content' => "Không Kiếp đồng cung: Gian nan, thăng trầm, nhưng phát dã như lôi."];
@@ -257,19 +226,12 @@ class TuViLuanGiai {
         return $combinations;
     }
 
-    /**
-     * Resolve VCD
-     */
     private function resolveVCD($palaceIndex, $chart) {
         $oppositeIndex = ($palaceIndex + 6) % 12;
         return $chart['dia_ban'][$oppositeIndex]['chinh_tinh'];
     }
 
-    /**
-     * Pattern Recognition
-     */
     private function identifyPatterns($palace, $palaceKey, $chart) {
-        // ... (Same logic as before, can be expanded) ...
         return [];
     }
 
@@ -292,20 +254,21 @@ class TuViLuanGiai {
         elseif ($score > -5) $eval = "Cung Yếu (Xấu)";
         else $eval = "Cung Hãm (Rất Xấu)";
 
-        $detail = "Tổng điểm đánh giá: $score. ($goodStars sao tốt, $badStars sao xấu).";
-        return $eval . " - " . $detail;
+        return [
+            'rating' => $eval,
+            'score' => $score,
+            'good_count' => $goodStars,
+            'bad_count' => $badStars,
+            'text' => "$eval - Tổng điểm đánh giá: $score. ($goodStars sao tốt, $badStars sao xấu)."
+        ];
     }
 
     private function calculateScore($chart) {
-        // ... Same basic logic ...
-        return 75; // Mock for now or implement full logic
+        return 75;
     }
 
-    // ... (Other methods remain similar, but include $this->starMeanings fallback logic if needed) ...
-
-    // DB Fetch Helper
     private function fetchContent($starKey, $palaceKey, $topic = '') {
-        if (!$this->db) return ''; // Safety check for null DB
+        if (!$this->db) return '';
 
         $sql = "SELECT content FROM " . $this->table . " WHERE star_key = :star AND (palace_key = :palace OR palace_key = 'all' OR palace_key = 'general')";
         if ($topic) $sql .= " AND topic = :topic";
@@ -320,8 +283,6 @@ class TuViLuanGiai {
             return $row ? $row['content'] : '';
         } catch (\Exception $e) { return ''; }
     }
-
-    // ... Copy remaining methods from previous read or implement stubs ...
 
     private function normalizePalaceName($name) {
         $name = preg_replace('/\s*\(.*?\)/', '', $name);
@@ -339,8 +300,10 @@ class TuViLuanGiai {
         $report = [
             'section_1' => [
                 'info' => "Đương số: " . $laSo['thien_ban']['ho_ten'],
-                'am_duong' => [$analysis['tien_thien']['am_duong'], $analysis['tien_thien']['cuc_menh']],
-                'menh_than' => ['menh' => $analysis['tong_quan_menh'] ?? '...', 'than' => $analysis['tong_quan_than'] ?? '...']
+                'am_duong' => $analysis['tien_thien']['am_duong'],
+                'cuc_menh' => $analysis['tien_thien']['cuc_menh'],
+                'menh_text' => $analysis['tong_quan_menh'] ?? '...',
+                'than_text' => $analysis['tong_quan_than'] ?? '...'
             ],
             'section_2' => [],
             'section_3' => [],
@@ -348,11 +311,79 @@ class TuViLuanGiai {
         ];
 
         foreach ($laSo['dia_ban'] as $i => $p) {
-             $report['section_2'][] = [
-                 'name' => $p['palace_name'],
-                 'reading' => $analysis[$i]
-             ];
+             if (isset($analysis[$i])) {
+                 $report['section_2'][] = [
+                     'name' => $p['palace_name'],
+                     'reading' => $analysis[$i],
+                     'evaluation' => isset($analysis[$i]['evaluation']) ? $analysis[$i]['evaluation'] : null
+                 ];
+             }
         }
+
+        // Section 3: Limits
+        // Check if birth_year is available in meta
+        if (isset($laSo['meta']['birth_year']) && is_numeric($laSo['meta']['birth_year'])) {
+            $currentYear = date('Y');
+            $birthYear = $laSo['meta']['birth_year'];
+            $age = $currentYear - $birthYear + 1; // Lunar Age approx
+
+            $limitAnalysis = $this->luanGiaiHan($laSo, $age, $currentYear);
+
+            if (isset($limitAnalysis['dai_van'])) {
+                $report['section_3']['dai_van'] = $limitAnalysis['dai_van'];
+            }
+            if (isset($limitAnalysis['tieu_van'])) {
+                $report['section_3']['tieu_van'] = $limitAnalysis['tieu_van'];
+            }
+        }
+
         return $report;
+    }
+
+    public function luanGiaiHan($chart, $age, $year) {
+        // Find Dai Van
+        $daiVanIdx = -1;
+        $found = false;
+        foreach ($chart['dia_ban'] as $i => $p) {
+            $start = $p['dai_van'];
+            if ($age >= $start && $age < ($start + 10)) {
+                $daiVanIdx = $i;
+                $found = true;
+                break;
+            }
+        }
+
+        $results = [];
+
+        if ($found) {
+            $daiVanPalace = $chart['dia_ban'][$daiVanIdx];
+            $results['dai_van'] = [
+                'name' => "Đại Vận ($age - " . ($daiVanPalace['dai_van']+9) . " tuổi) tại " . $daiVanPalace['name'],
+                'reading' => $this->getPalaceReading($daiVanPalace, 'general', $chart),
+                'evaluation' => $this->assessPalaceStrength($daiVanPalace, 'general', $chart['thien_ban']['menh_ngu_hanh'])
+            ];
+        }
+
+        // Tieu Van
+        // Reuse logic from TuViLapSo if available
+        $birthYear = isset($chart['meta']['birth_year']) ? $chart['meta']['birth_year'] : ($year - $age + 1);
+        $limitInfo = TuViLapSo::getLimitInfoForYear(
+            $chart['meta']['chiYear'],
+            $chart['meta']['gender'],
+            $year,
+            $birthYear
+        );
+
+        if ($limitInfo) {
+            $tvIdx = $limitInfo['tieu_van_idx'];
+            $tvPalace = $chart['dia_ban'][$tvIdx];
+             $results['tieu_van'] = [
+                'name' => "Tiểu Vận năm $year (" . $limitInfo['target_chi'] . ") tại " . $tvPalace['name'],
+                'reading' => $this->getPalaceReading($tvPalace, 'general', $chart),
+                'evaluation' => $this->assessPalaceStrength($tvPalace, 'general', $chart['thien_ban']['menh_ngu_hanh'])
+            ];
+        }
+
+        return $results;
     }
 }

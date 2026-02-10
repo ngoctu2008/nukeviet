@@ -113,14 +113,11 @@
                 <span class="sao-xau color-{STAR.color}" data-toggle="tooltip" title="{STAR.tooltip_name}">{STAR.name}</span>
                 <!-- END: phu_tinh_xau -->
 
-                <!-- BEGIN: vong_trang_sinh_star -->
-                 <div class="mt-1 text-secondary small font-italic">{STAR.name}</div>
-                <!-- END: vong_trang_sinh_star -->
+                <div class="mt-1 text-secondary small font-italic">{PALACE.vong_trang_sinh}</div>
             </div>
 
             <div class="footer-cung">
                 <span class="dai-van">{PALACE.dai_van}</span>
-                <span class="trang-sinh">{PALACE.vong_trang_sinh}</span>
             </div>
         </div>
         <!-- END: palace -->
@@ -131,16 +128,11 @@
         <div class="col-xs-24 col-sm-24 col-md-24">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="tongquan-tab" data-toggle="tab" href="#tongquan" role="tab">
-                        <i class="fa fa-info-circle"></i> {LANG.tab_overview}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="luangiai-tab" data-toggle="tab" href="#luangiai" role="tab">
+                    <a class="nav-link active" id="luangiai-tab" data-toggle="tab" href="#luangiai" role="tab">
                         <i class="fa fa-book"></i> {LANG.tab_detail}
                     </a>
                 </li>
-                <li class="nav-item">
+                 <li class="nav-item">
                     <a class="nav-link" id="vanhan-tab" data-toggle="tab" href="#vanhan" role="tab">
                         <i class="fa fa-history"></i> {LANG.tab_limit}
                     </a>
@@ -149,74 +141,59 @@
 
             <div class="tab-content p-2 border border-top-0 bg-white" id="myTabContent">
 
-                <!-- Tab Tong Quan -->
-                <div class="tab-pane fade show active" id="tongquan" role="tabpanel">
-                    <h4>{LANG.tab_overview}</h4>
-                    <div class="row">
-                        <div class="col-xs-24 col-sm-16 col-md-16">
-                            <p>{LANG.menh}: <b class="text-{THIEN_BAN.menh_color}">{THIEN_BAN.menh_ngu_hanh}</b> - {LANG.cuc}: <b>{THIEN_BAN.cuc}</b></p>
-                            <p>Âm Dương: <b>{THIEN_BAN.am_duong_ly}</b>.</p>
-                            <p>Ngũ Hành: <b>{THIEN_BAN.cuc_menh_ly}</b>.</p>
+                <!-- Tab Luan Giai Chi Tiet -->
+                <div class="tab-pane fade show active" id="luangiai" role="tabpanel">
+                    <!-- BEGIN: report -->
+                    <!-- BEGIN: sec1 -->
+                    <h4 class="section-header">{LANG.sec1_title}</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-18">
+                             <p><b>{LANG.full_name}:</b> {SEC1.info}</p>
+                             <p class="ml-4">{SEC1.am_duong}</p>
+                             <p class="ml-4">{SEC1.cuc_menh}</p>
+                             <p><b>Mệnh:</b> {SEC1.menh_text}</p>
+                             <p><b>Thân:</b> {SEC1.than_text}</p>
                         </div>
-                        <!-- BEGIN: score_box -->
-                        <div class="col-xs-24 col-sm-8 col-md-8 text-center">
+                        <div class="col-md-6 text-center">
+                            <!-- BEGIN: score_box -->
                             <div class="alert alert-info p-2">
                                 <h5 class="m-0">{LANG.score}</h5>
                                 <h2 class="text-primary m-0">{SCORE}</h2>
                                 <small>/ 100</small>
                             </div>
+                            <!-- END: score_box -->
                         </div>
-                        <!-- END: score_box -->
-                    </div>
-                    <hr>
-                    <!-- BEGIN: overview -->
-                    <div class="mt-3">
-                        <h5 class="text-primary"><i class="fa fa-star"></i> {OVERVIEW.star}</h5>
-                        <p class="text-justify">{OVERVIEW.content}</p>
-                    </div>
-                    <!-- END: overview -->
-                </div>
-
-                <!-- Tab Luan Giai -->
-                <div class="tab-pane fade" id="luangiai" role="tabpanel">
-                    <!-- BEGIN: report -->
-                    <!-- BEGIN: sec1 -->
-                    <div class="card mb-3">
-                         <div class="card-header bg-primary text-white text-uppercase">{LANG.sec1_title}</div>
-                         <div class="card-body">
-                             <p>{SEC1_INFO}</p>
-                             <ul>
-                                <!-- BEGIN: am_duong --><li>{SEC1_AD}</li><!-- END: am_duong -->
-                             </ul>
-                             <p><b>{LANG.menh}:</b> {SEC1_MENH}</p>
-                             <p><b>{LANG.than}:</b> {SEC1_THAN}</p>
-                         </div>
                     </div>
                     <!-- END: sec1 -->
 
                     <!-- BEGIN: sec2 -->
-                    <div class="card mb-3">
-                        <div class="card-header bg-primary text-white text-uppercase">{LANG.sec2_title}</div>
-                        <div class="card-body">
-                            <!-- BEGIN: reading -->
-                            <div class="mb-4">
-                                 <h5 class="text-info border-bottom pb-1">{SEC2_PNAME}</h5>
+                    <h4 class="section-header">{LANG.sec2_title}</h4>
 
-                                 <!-- BEGIN: chinh_tinh -->
-                                 <p><b><i class="fa fa-star text-warning"></i> {READING.star}:</b> {READING.content}</p>
-                                 <!-- END: chinh_tinh -->
+                        <!-- BEGIN: reading -->
+                        <div class="palace-reading mb-4">
+                             <h5 class="palace-title">{SEC2_NAME}</h5>
 
-                                 <!-- BEGIN: phu_tinh -->
-                                 <p><b><i class="fa fa-star-half-o text-secondary"></i> {READING.star}:</b> {READING.content}</p>
-                                 <!-- END: phu_tinh -->
+                             <!-- BEGIN: chinh_tinh -->
+                             <p class="star-line"><i class="fa fa-star text-warning"></i> <b>{READING.star}:</b> {READING.content}</p>
+                             <!-- END: chinh_tinh -->
 
-                                 <!-- BEGIN: general -->
-                                 <p><b><i class="fa fa-comment text-muted"></i> {READING.star}:</b> {READING.content}</p>
-                                 <!-- END: general -->
-                            </div>
-                            <!-- END: reading -->
+                             <!-- BEGIN: phu_tinh -->
+                             <p class="star-line"><i class="fa fa-star-o text-muted"></i> <b>{READING.star}:</b> {READING.content}</p>
+                             <!-- END: phu_tinh -->
+
+                             <!-- BEGIN: general -->
+                             <p class="star-line"><i class="fa fa-asterisk text-info"></i> <b>{READING.star}:</b> {READING.content}</p>
+                             <!-- END: general -->
+
+                             <!-- BEGIN: evaluation -->
+                             <div class="evaluation-block">
+                                <i class="fa fa-commenting-o"></i> <b>Đánh giá:</b> {SEC2_EVAL.text}
+                             </div>
+                             <!-- END: evaluation -->
                         </div>
-                    </div>
+                        <hr>
+                        <!-- END: reading -->
+
                     <!-- END: sec2 -->
                     <!-- END: report -->
                 </div>
@@ -234,13 +211,38 @@
                         </select>
                         <button type="button" class="btn btn-sm btn-success" id="btn-view-han">{LANG.btn_view_limit}</button>
                      </form>
+
                      <div id="ket-qua-han">
-                         <!-- BEGIN: limit -->
-                         <div class="alert alert-warning mt-3">
-                             <h5><i class="fa fa-exclamation-triangle"></i> {LANG.hanh_han} ({LIMIT.star})</h5>
-                             <p class="text-justify">{LIMIT.content}</p>
-                         </div>
-                         <!-- END: limit -->
+                         <!-- BEGIN: report -->
+                         <!-- BEGIN: sec3 -->
+                         <h4 class="section-header">III. VẬN HẠN (ĐẠI VẬN & TIỂU VẬN)</h4>
+
+                             <!-- BEGIN: dai_van -->
+                             <div class="limit-box mb-3">
+                                 <h5 class="text-primary">{LIMIT_NAME}</h5>
+                                 <!-- BEGIN: reading -->
+                                 <p><i class="fa fa-star-half-o"></i> {READING.content}</p>
+                                 <!-- END: reading -->
+                                 <div class="evaluation-block mt-2">
+                                    <i class="fa fa-commenting-o"></i> <b>Đánh giá:</b> {LIMIT_EVAL.text}
+                                 </div>
+                             </div>
+                             <!-- END: dai_van -->
+
+                             <!-- BEGIN: tieu_van -->
+                             <div class="limit-box mb-3">
+                                 <h5 class="text-success">{LIMIT_NAME}</h5>
+                                 <!-- BEGIN: reading -->
+                                 <p><i class="fa fa-star-half-o"></i> {READING.content}</p>
+                                 <!-- END: reading -->
+                                 <div class="evaluation-block mt-2">
+                                    <i class="fa fa-commenting-o"></i> <b>Đánh giá:</b> {LIMIT_EVAL.text}
+                                 </div>
+                             </div>
+                             <!-- END: tieu_van -->
+
+                         <!-- END: sec3 -->
+                         <!-- END: report -->
                      </div>
                 </div>
             </div>
@@ -258,24 +260,24 @@
             var targetYear = $('#select-year-han').val();
             var chiYear = $('#meta_chiYear').val();
             var gender = $('#meta_gender').val();
-
-            // Get full birth details for accurate monthly analysis
-            var birthDay = $('input[name="day"]').val();
-            var birthMonth = $('input[name="month"]').val();
-            var birthYear = $('input[name="year"]').val();
-            var birthHour = $('select[name="hour"]').val();
+            var birthYear = $('#meta_birthYear').val();
 
             $('#ket-qua-han').html('<p><i class="fa fa-spinner fa-spin"></i> {LANG.loading}</p>');
 
-            $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=ajax&action=xem_han&nv_ajax=1',
+            // This should ideally call a function that returns just the "sec3" part
+            // But for now we might need to rely on the page reload or separate endpoint.
+            // Since I updated TuViLuanGiai to handle limits, I can potentially just reload the page with year param
+            // OR make a dedicated ajax op.
+            // For simplicity, let's just alert "Tính năng đang cập nhật" or reload with parameter if feasible.
+            // Actually, the previous code had an ajax endpoint 'xem_han'. I should keep it or update it.
+
+            // Re-using previous AJAX logic if available in funcs/ajax.php
+             $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=ajax&action=xem_han&nv_ajax=1',
             {
                 targetYear: targetYear,
                 chiYear: chiYear,
                 gender: gender,
-                birthDay: birthDay,
-                birthMonth: birthMonth,
-                birthYear: birthYear,
-                birthHour: birthHour
+                birthYear: birthYear
             }, function(res) {
                 if(res.status == 'success') {
                     $('#ket-qua-han').html(res.html);

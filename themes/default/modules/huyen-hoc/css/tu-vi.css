@@ -223,3 +223,74 @@
     /* Reset specific grid areas for mobile stack */
     .cung-so { grid-area: auto !important; }
 }
+
+/* --- Detailed Interpretation Styles --- */
+.section-header {
+    background-color: #337ab7; /* Bootstrap Primary Blue */
+    color: #fff;
+    padding: 10px 15px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.palace-reading {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+}
+
+.palace-title {
+    color: #337ab7;
+    font-weight: bold;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.star-line {
+    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.star-line i {
+    width: 20px;
+    text-align: center;
+    margin-right: 5px;
+}
+
+.evaluation-block {
+    background-color: #f9f9f9;
+    border-left: 4px solid #f0ad4e; /* Warning/Orange accent */
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+    color: #555;
+}
+
+.evaluation-block i {
+    color: #f0ad4e;
+    margin-right: 5px;
+    font-size: 1.2em;
+}
+
+/* Limit Box */
+.limit-box {
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.limit-box h5 {
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+}

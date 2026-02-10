@@ -521,6 +521,7 @@ class TuViLapSo {
             'thien_ban' => $thienBan,
             'dia_ban' => $chart,
             'meta' => [
+                'birth_year' => $yyyy,
                 'canYear' => $canYear, // 0..9
                 'chiYear' => $chiYear, // 0..11
                 'gender' => $gender, // 1/0

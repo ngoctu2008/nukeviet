@@ -67,154 +67,147 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
     $xtpl->assign('MODULE_FILE', $module_file);
     $xtpl->assign('INPUT', $input);
 
-    // Assign selected hour
     $xtpl->assign('SELECTED_' . $input['h'], 'selected="selected"');
     $xtpl->assign('SELECTED_G_' . $input['g'], 'checked="checked"');
-
-    // Sanitize function (Defined outside loop)
-    $sanitizeStar = function($s) {
-        $s['name'] = htmlspecialchars($s['name'] ?? '', ENT_QUOTES);
-        if (isset($s['content'])) $s['content'] = htmlspecialchars($s['content'], ENT_QUOTES);
-        if (isset($s['element'])) $s['element'] = htmlspecialchars($s['element'], ENT_QUOTES);
-        return $s;
-    };
 
     if (!empty($data['laso'])) {
         $laso = $data['laso'];
 
-        // Thien Ban
+        // Thien Ban Info
         if (isset($laso['thien_ban'])) {
             $xtpl->assign('THIEN_BAN', $laso['thien_ban']);
+            $xtpl->assign('META', $laso['meta']);
         }
 
-        // Overview & Limit (from luan_giai_tong_quan)
-        if (isset($laso['luan_giai_tong_quan'])) {
-            // Score
-            if (isset($laso['structured_report']['score'])) {
-                $xtpl->assign('SCORE', $laso['structured_report']['score']);
-                $xtpl->parse('main.result.score_box');
-            }
-
-            // Overview
-            if (!empty($laso['luan_giai_tong_quan']['overview'])) {
-                foreach ($laso['luan_giai_tong_quan']['overview'] as $ov) {
-                    $xtpl->assign('OVERVIEW', $ov);
-                    $xtpl->parse('main.result.overview');
-                }
-            }
-            // Limit
-            if (!empty($laso['luan_giai_tong_quan']['limit'])) {
-                foreach ($laso['luan_giai_tong_quan']['limit'] as $lim) {
-                    $xtpl->assign('LIMIT', $lim);
-                    $xtpl->parse('main.result.limit');
-                }
-            }
-        }
-
-        // Dia Ban (Palaces)
+        // Palaces (Grid View)
         if (isset($laso['dia_ban']) && is_array($laso['dia_ban'])) {
             foreach ($laso['dia_ban'] as $key => $palace) {
                 $xtpl->assign('PALACE', $palace);
 
-                // Tuan/Triet
                 if (!empty($palace['tuan'])) $xtpl->parse('main.result.palace.tuan');
                 if (!empty($palace['triet'])) $xtpl->parse('main.result.palace.triet');
                 if (!empty($palace['tieu_van'])) $xtpl->parse('main.result.palace.tieu_van');
 
-                // Chinh Tinh
-                if (!empty($palace['chinh_tinh'])) {
-                    foreach ($palace['chinh_tinh'] as $star) {
-                        $xtpl->assign('STAR', $sanitizeStar($star));
-                        $xtpl->parse('main.result.palace.chinh_tinh');
+                foreach (['chinh_tinh', 'phu_tinh_tot', 'phu_tinh_xau'] as $starType) {
+                    if (!empty($palace[$starType])) {
+                        foreach ($palace[$starType] as $star) {
+                            $xtpl->assign('STAR', $star);
+                            $xtpl->parse("main.result.palace.$starType");
+                        }
                     }
                 }
 
-                // Phu Tinh Tot
-                if (!empty($palace['phu_tinh_tot'])) {
-                    foreach ($palace['phu_tinh_tot'] as $star) {
-                        $xtpl->assign('STAR', $sanitizeStar($star));
-                        $xtpl->parse('main.result.palace.phu_tinh_tot');
-                    }
-                }
-
-                // Phu Tinh Xau
-                if (!empty($palace['phu_tinh_xau'])) {
-                    foreach ($palace['phu_tinh_xau'] as $star) {
-                        $xtpl->assign('STAR', $sanitizeStar($star));
-                        $xtpl->parse('main.result.palace.phu_tinh_xau');
-                    }
+                if (!empty($palace['vong_trang_sinh'])) {
+                     // Need star object for loop? No, just name in text.
+                     // Current tpl uses {PALACE.vong_trang_sinh} in footer, but also loops?
+                     // Let's stick to simple display in footer.
                 }
 
                 $xtpl->parse('main.result.palace');
             }
-
-            // Loop again for Luan Giai tab (palace_luan)
-            foreach ($laso['dia_ban'] as $key => $palace) {
-                $xtpl->assign('PALACE', $palace);
-
-                if (!empty($palace['luan_giai'])) {
-                    foreach ($palace['luan_giai'] as $reading) {
-                        $xtpl->assign('CONTENT', $reading);
-                        $xtpl->parse('main.result.palace_luan.content');
-                    }
-                } else {
-                    $xtpl->parse('main.result.palace_luan.empty');
-                }
-
-                $xtpl->parse('main.result.palace_luan');
-            }
         }
 
-        // Structured Report (Binh Giai Chi Tiet)
+        // Structured Report (Detail Tab)
         if (isset($laso['structured_report'])) {
             $rep = $laso['structured_report'];
 
-            // Section 1
-            $xtpl->assign('SEC1_INFO', $rep['section_1']['info']);
-            foreach ($rep['section_1']['am_duong'] as $line) {
-                $xtpl->assign('SEC1_AD', $line);
-                $xtpl->parse('main.result.report.sec1.am_duong');
-            }
-            $xtpl->assign('SEC1_MENH', $rep['section_1']['menh_than']['menh']);
-            $xtpl->assign('SEC1_THAN', $rep['section_1']['menh_than']['than']);
-            $xtpl->parse('main.result.report.sec1');
+            // Section 1: Overview
+            if (isset($rep['section_1'])) {
+                $s1 = $rep['section_1'];
+                $xtpl->assign('SEC1', [
+                    'info' => $s1['info'],
+                    'am_duong' => $s1['am_duong'],
+                    'cuc_menh' => $s1['cuc_menh'],
+                    'menh_text' => $s1['menh_text'],
+                    'than_text' => $s1['than_text']
+                ]);
 
-            // Section 2
-            foreach ($rep['section_2'] as $p) {
-                $xtpl->assign('SEC2_PNAME', $p['name']);
-
-                // Chinh Tinh
-                if (!empty($p['reading']['chinh_tinh'])) {
-                    foreach ($p['reading']['chinh_tinh'] as $r) {
-                        $xtpl->assign('READING', $r);
-                        $xtpl->parse('main.result.report.sec2.reading.chinh_tinh');
-                    }
-                }
-                // Phu Tinh
-                if (!empty($p['reading']['phu_tinh'])) {
-                    foreach ($p['reading']['phu_tinh'] as $r) {
-                        $xtpl->assign('READING', $r);
-                        $xtpl->parse('main.result.report.sec2.reading.phu_tinh');
-                    }
-                }
-                // General
-                if (!empty($p['reading']['general'])) {
-                    foreach ($p['reading']['general'] as $r) {
-                        $xtpl->assign('READING', $r);
-                        $xtpl->parse('main.result.report.sec2.reading.general');
-                    }
+                // Score Box
+                if (isset($rep['score'])) {
+                    $xtpl->assign('SCORE', $rep['score']);
+                    $xtpl->parse('main.result.report.sec1.score_box');
                 }
 
-                $xtpl->parse('main.result.report.sec2.reading');
+                $xtpl->parse('main.result.report.sec1');
             }
-            $xtpl->parse('main.result.report.sec2');
 
-            // Section 3
-            foreach ($rep['section_3'] as $line) {
-                $xtpl->assign('SEC3_LINE', $line);
-                $xtpl->parse('main.result.report.sec3.line');
+            // Section 2: Detailed Palaces
+            if (isset($rep['section_2'])) {
+                foreach ($rep['section_2'] as $p) {
+                    $xtpl->assign('SEC2_NAME', $p['name']);
+
+                    // Chinh Tinh
+                    if (!empty($p['reading']['chinh_tinh'])) {
+                        foreach ($p['reading']['chinh_tinh'] as $r) {
+                            $xtpl->assign('READING', $r);
+                            $xtpl->parse('main.result.report.sec2.chinh_tinh');
+                        }
+                    }
+
+                    // Phu Tinh
+                    if (!empty($p['reading']['phu_tinh'])) {
+                        foreach ($p['reading']['phu_tinh'] as $r) {
+                            $xtpl->assign('READING', $r);
+                            $xtpl->parse('main.result.report.sec2.phu_tinh');
+                        }
+                    }
+
+                    // General/Combinations
+                    if (!empty($p['reading']['general'])) {
+                         foreach ($p['reading']['general'] as $r) {
+                             $xtpl->assign('READING', $r);
+                             $xtpl->parse('main.result.report.sec2.general');
+                         }
+                    }
+
+                    // Evaluation
+                    if (!empty($p['evaluation'])) {
+                        $xtpl->assign('SEC2_EVAL', $p['evaluation']);
+                        $xtpl->parse('main.result.report.sec2.evaluation');
+                    }
+
+                    $xtpl->parse('main.result.report.sec2');
+                }
             }
-            $xtpl->parse('main.result.report.sec3');
+
+            // Section 3: Limits (Van Han)
+            if (isset($rep['section_3'])) {
+                // Dai Van
+                if (isset($rep['section_3']['dai_van'])) {
+                    $dv = $rep['section_3']['dai_van'];
+                    $xtpl->assign('LIMIT_NAME', $dv['name']);
+
+                    if (!empty($dv['reading']['general'])) {
+                        foreach ($dv['reading']['general'] as $r) {
+                            $xtpl->assign('READING', $r);
+                            $xtpl->parse('main.result.report.sec3.dai_van.reading');
+                        }
+                    }
+                    if (!empty($dv['evaluation'])) {
+                        $xtpl->assign('LIMIT_EVAL', $dv['evaluation']);
+                    }
+                    $xtpl->parse('main.result.report.sec3.dai_van');
+                }
+
+                // Tieu Van
+                if (isset($rep['section_3']['tieu_van'])) {
+                    $tv = $rep['section_3']['tieu_van'];
+                    $xtpl->assign('LIMIT_NAME', $tv['name']);
+
+                    if (!empty($tv['reading']['general'])) {
+                         foreach ($tv['reading']['general'] as $r) {
+                             $xtpl->assign('READING', $r);
+                             $xtpl->parse('main.result.report.sec3.tieu_van.reading');
+                         }
+                    }
+                    if (!empty($tv['evaluation'])) {
+                         $xtpl->assign('LIMIT_EVAL', $tv['evaluation']);
+                    }
+                    $xtpl->parse('main.result.report.sec3.tieu_van');
+                }
+
+                $xtpl->parse('main.result.report.sec3');
+            }
 
             $xtpl->parse('main.result.report');
         }
