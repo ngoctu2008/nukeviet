@@ -22,8 +22,6 @@ $year = $nv_Request->get_int('year', 'post,get', date('Y'));
 $result = array();
 if (!empty($ho) && !empty($ten)) {
     // Split 'ten' into 'tenDem' and 'tenChinh'
-    // E.g. "Ngoc Linh" -> Dem="Ngoc", Ten="Linh"
-    // E.g. "Linh" -> Dem="", Ten="Linh"
     $parts = explode(' ', trim($ten));
     $tenChinh = array_pop($parts);
     $tenDem = implode(' ', $parts);
@@ -40,6 +38,14 @@ $xtpl->assign('INPUT', array('ho' => $ho, 'ten' => $ten, 'year' => $year));
 if (!empty($result)) {
     $xtpl->assign('RESULT', $result);
     $xtpl->assign('CACH', $result['ngu_cach']);
+
+    // Pass Han-Viet Breakdown
+    $breakdown = array_merge($result['parts']['ho'], $result['parts']['dem'], $result['parts']['ten']);
+    foreach ($breakdown as $part) {
+        $xtpl->assign('PART', $part);
+        $xtpl->parse('main.result.part');
+    }
+
     $xtpl->parse('main.result');
 }
 

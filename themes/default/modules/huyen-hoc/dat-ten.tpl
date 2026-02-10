@@ -13,16 +13,75 @@
     <!-- BEGIN: result -->
     <hr>
     <div class="text-center">
-        <h3>Kết quả phân tích: {RESULT.ho} {RESULT.ten}</h3>
-        <p><strong>{RESULT.comment}</strong></p>
+        <h3>Kết quả phân tích: {RESULT.input}</h3>
+
+        <!-- Han-Viet Breakdown Table -->
+        <div class="table-responsive" style="margin-bottom: 20px;">
+            <table class="table table-bordered table-striped" style="width: auto; margin: 0 auto; min-width: 50%;">
+                <thead>
+                    <tr class="active">
+                        <th class="text-center">Chữ</th>
+                        <th class="text-center">Hán Tự</th>
+                        <th class="text-center">Số Nét</th>
+                        <th class="text-center">Ý Nghĩa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- BEGIN: part -->
+                    <tr>
+                        <td><strong>{PART.word}</strong></td>
+                        <td class="text-danger" style="font-size: 1.2em;">{PART.han}</td>
+                        <td>{PART.strokes}</td>
+                        <td class="text-left">{PART.meaning}</td>
+                    </tr>
+                    <!-- END: part -->
+                </tbody>
+            </table>
+        </div>
+
         <div class="row">
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-md-16 col-md-offset-4">
                 <table class="table table-bordered">
-                    <tr><td>Thiên Cách</td><td>{CACH.thien}</td></tr>
-                    <tr><td>Địa Cách</td><td>{CACH.dia}</td></tr>
-                    <tr><td>Nhân Cách</td><td>{CACH.nhan}</td></tr>
-                    <tr><td>Ngoại Cách</td><td>{CACH.ngoai}</td></tr>
-                    <tr><td><strong>Tổng Cách</strong></td><td><strong>{CACH.tong}</strong></td></tr>
+                    <thead>
+                        <tr class="active">
+                            <th class="text-center">Cách Cục</th>
+                            <th class="text-center">Số Lý</th>
+                            <th class="text-center">Ngũ Hành</th>
+                            <th class="text-center">Luận Giải</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Thiên Cách</strong> (Tổ tiên)</td>
+                            <td>{CACH.thien.val}</td>
+                            <td>{CACH.thien.element}</td>
+                            <td class="{CACH.thien.class}">{CACH.thien.meaning}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nhân Cách</strong> (Chủ vận)</td>
+                            <td>{CACH.nhan.val}</td>
+                            <td>{CACH.nhan.element}</td>
+                            <td class="{CACH.nhan.class}">{CACH.nhan.meaning}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Địa Cách</strong> (Tiền vận)</td>
+                            <td>{CACH.dia.val}</td>
+                            <td>{CACH.dia.element}</td>
+                            <td class="{CACH.dia.class}">{CACH.dia.meaning}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ngoại Cách</strong> (Xã giao)</td>
+                            <td>{CACH.ngoai.val}</td>
+                            <td>{CACH.ngoai.element}</td>
+                            <td class="{CACH.ngoai.class}">{CACH.ngoai.meaning}</td>
+                        </tr>
+                        <tr class="info">
+                            <td><strong>Tổng Cách</strong> (Hậu vận)</td>
+                            <td><strong>{CACH.tong.val}</strong></td>
+                            <td><strong>{CACH.tong.element}</strong></td>
+                            <td class="{CACH.tong.class}"><strong>{CACH.tong.meaning}</strong></td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
