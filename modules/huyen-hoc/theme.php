@@ -136,7 +136,7 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     'than_text' => $s1['than_text']
                 ]);
 
-                $xtpl->parse('main.result.report.sec1');
+                $xtpl->parse('main.result.report_detail.sec1');
             }
 
             // Section 2: Detailed Palaces
@@ -148,7 +148,7 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     if (!empty($p['reading']['chinh_tinh'])) {
                         foreach ($p['reading']['chinh_tinh'] as $r) {
                             $xtpl->assign('READING', $r);
-                            $xtpl->parse('main.result.report.sec2.chinh_tinh');
+                            $xtpl->parse('main.result.report_detail.sec2.chinh_tinh');
                         }
                     }
 
@@ -156,7 +156,7 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     if (!empty($p['reading']['phu_tinh'])) {
                         foreach ($p['reading']['phu_tinh'] as $r) {
                             $xtpl->assign('READING', $r);
-                            $xtpl->parse('main.result.report.sec2.phu_tinh');
+                            $xtpl->parse('main.result.report_detail.sec2.phu_tinh');
                         }
                     }
 
@@ -164,19 +164,20 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     if (!empty($p['reading']['general'])) {
                          foreach ($p['reading']['general'] as $r) {
                              $xtpl->assign('READING', $r);
-                             $xtpl->parse('main.result.report.sec2.general');
+                             $xtpl->parse('main.result.report_detail.sec2.general');
                          }
                     }
 
                     // Evaluation
                     if (!empty($p['evaluation'])) {
                         $xtpl->assign('SEC2_EVAL', $p['evaluation']);
-                        $xtpl->parse('main.result.report.sec2.evaluation');
+                        $xtpl->parse('main.result.report_detail.sec2.evaluation');
                     }
 
-                    $xtpl->parse('main.result.report.sec2');
+                    $xtpl->parse('main.result.report_detail.sec2');
                 }
             }
+            $xtpl->parse('main.result.report_detail');
 
             // Section 3: Limits (Van Han)
             if (isset($rep['section_3'])) {
@@ -188,13 +189,13 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     if (!empty($dv['reading']['general'])) {
                         foreach ($dv['reading']['general'] as $r) {
                             $xtpl->assign('READING', $r);
-                            $xtpl->parse('main.result.report.sec3.dai_van.reading');
+                            $xtpl->parse('main.result.report_limit.sec3.dai_van.reading');
                         }
                     }
                     if (!empty($dv['evaluation'])) {
                         $xtpl->assign('LIMIT_EVAL', $dv['evaluation']);
                     }
-                    $xtpl->parse('main.result.report.sec3.dai_van');
+                    $xtpl->parse('main.result.report_limit.sec3.dai_van');
                 }
 
                 // Tieu Van
@@ -205,19 +206,18 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     if (!empty($tv['reading']['general'])) {
                          foreach ($tv['reading']['general'] as $r) {
                              $xtpl->assign('READING', $r);
-                             $xtpl->parse('main.result.report.sec3.tieu_van.reading');
+                             $xtpl->parse('main.result.report_limit.sec3.tieu_van.reading');
                          }
                     }
                     if (!empty($tv['evaluation'])) {
                          $xtpl->assign('LIMIT_EVAL', $tv['evaluation']);
                     }
-                    $xtpl->parse('main.result.report.sec3.tieu_van');
+                    $xtpl->parse('main.result.report_limit.sec3.tieu_van');
                 }
 
-                $xtpl->parse('main.result.report.sec3');
+                $xtpl->parse('main.result.report_limit.sec3');
+                $xtpl->parse('main.result.report_limit');
             }
-
-            $xtpl->parse('main.result.report');
         }
 
         $xtpl->parse('main.result');

@@ -133,12 +133,16 @@ class NameAnalysis {
         // Fallback: Length of string * 2 (Rough approximation for demo)
         // Or simplistic map for common names
         $map = [
-            'Nguyen' => 6, 'Tran' => 9, 'Le' => 5, 'Pham' => 7, 'Huynh' => 12,
-            'Van' => 4, 'Thi' => 5,
-            'Hung' => 12, 'Dung' => 14, 'Duc' => 15
+            'nguyen' => 6, 'tran' => 9, 'le' => 5, 'pham' => 7, 'huynh' => 12,
+            'van' => 4, 'thi' => 5,
+            'hung' => 12, 'dung' => 14, 'duc' => 15
         ];
-        $key = remove_accents($str); // Assuming global helper exists or raw check
+
+        $key = (function_exists('change_alias')) ? change_alias($str) : strtolower($str);
+        // Clean key just in case (e.g. remove non-alphanumeric if change_alias not available)
+        $key = preg_replace('/[^a-z0-9]/', '', $key);
+
         // Simplified
-        return isset($map[$str]) ? $map[$str] : mb_strlen($str) * 2;
+        return isset($map[$key]) ? $map[$key] : mb_strlen($str) * 2;
     }
 }

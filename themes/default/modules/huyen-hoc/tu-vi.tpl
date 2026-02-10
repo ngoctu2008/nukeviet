@@ -176,7 +176,7 @@
 
                 <!-- Tab Luan Giai Chi Tiet -->
                 <div class="tab-pane fade" id="luangiai" role="tabpanel">
-                    <!-- BEGIN: report -->
+                    <!-- BEGIN: report_detail -->
                     <!-- BEGIN: sec1 -->
                     <h4 class="section-header">{LANG.sec1_title}</h4>
                     <div class="row mb-3">
@@ -190,36 +190,32 @@
                     </div>
                     <!-- END: sec1 -->
 
-                    <!-- BEGIN: sec2 -->
                     <h4 class="section-header">{LANG.sec2_title}</h4>
+                    <!-- BEGIN: sec2 -->
+                    <div class="palace-reading mb-4">
+                         <h5 class="palace-title">{SEC2_NAME}</h5>
 
-                        <!-- BEGIN: reading -->
-                        <div class="palace-reading mb-4">
-                             <h5 class="palace-title">{SEC2_NAME}</h5>
+                         <!-- BEGIN: chinh_tinh -->
+                         <p class="star-line"><i class="fa fa-star text-warning"></i> <b>{READING.star}:</b> {READING.content}</p>
+                         <!-- END: chinh_tinh -->
 
-                             <!-- BEGIN: chinh_tinh -->
-                             <p class="star-line"><i class="fa fa-star text-warning"></i> <b>{READING.star}:</b> {READING.content}</p>
-                             <!-- END: chinh_tinh -->
+                         <!-- BEGIN: phu_tinh -->
+                         <p class="star-line"><i class="fa fa-star-o text-muted"></i> <b>{READING.star}:</b> {READING.content}</p>
+                         <!-- END: phu_tinh -->
 
-                             <!-- BEGIN: phu_tinh -->
-                             <p class="star-line"><i class="fa fa-star-o text-muted"></i> <b>{READING.star}:</b> {READING.content}</p>
-                             <!-- END: phu_tinh -->
+                         <!-- BEGIN: general -->
+                         <p class="star-line"><i class="fa fa-asterisk text-info"></i> <b>{READING.star}:</b> {READING.content}</p>
+                         <!-- END: general -->
 
-                             <!-- BEGIN: general -->
-                             <p class="star-line"><i class="fa fa-asterisk text-info"></i> <b>{READING.star}:</b> {READING.content}</p>
-                             <!-- END: general -->
-
-                             <!-- BEGIN: evaluation -->
-                             <div class="evaluation-block">
-                                <i class="fa fa-commenting-o"></i> <b>Đánh giá:</b> {SEC2_EVAL.text}
-                             </div>
-                             <!-- END: evaluation -->
-                        </div>
-                        <hr>
-                        <!-- END: reading -->
-
+                         <!-- BEGIN: evaluation -->
+                         <div class="evaluation-block">
+                            <i class="fa fa-commenting-o"></i> <b>Đánh giá:</b> {SEC2_EVAL.text}
+                         </div>
+                         <!-- END: evaluation -->
+                    </div>
+                    <hr>
                     <!-- END: sec2 -->
-                    <!-- END: report -->
+                    <!-- END: report_detail -->
                 </div>
 
                 <!-- Tab Van Han -->
@@ -237,7 +233,7 @@
                      </form>
 
                      <div id="ket-qua-han">
-                         <!-- BEGIN: report -->
+                         <!-- BEGIN: report_limit -->
                          <!-- BEGIN: sec3 -->
                          <h4 class="section-header">III. VẬN HẠN (ĐẠI VẬN & TIỂU VẬN)</h4>
 
@@ -266,7 +262,7 @@
                              <!-- END: tieu_van -->
 
                          <!-- END: sec3 -->
-                         <!-- END: report -->
+                         <!-- END: report_limit -->
                      </div>
                 </div>
             </div>
