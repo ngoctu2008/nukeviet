@@ -4,7 +4,7 @@
 
     <div class="row">
         <!-- Left Column: Search Form -->
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-8 col-sm-24">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-search"></i> Tra Cứu Ngày Tốt</h3>
@@ -18,13 +18,13 @@
                         <div class="form-group">
                             <label>Ngày Dương Lịch</label>
                             <div class="row">
-                                <div class="col-xs-4">
+                                <div class="col-xs-8">
                                     <input type="number" name="d" value="{INPUT.d}" class="form-control" placeholder="Ngày" required>
                                 </div>
-                                <div class="col-xs-4">
+                                <div class="col-xs-8">
                                     <input type="number" name="m" value="{INPUT.m}" class="form-control" placeholder="Tháng" required>
                                 </div>
-                                <div class="col-xs-4">
+                                <div class="col-xs-8">
                                     <input type="number" name="y" value="{INPUT.y}" class="form-control" placeholder="Năm" required>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
         </div>
 
         <!-- Right Column: Results -->
-        <div class="col-md-8 col-sm-12">
+        <div class="col-md-16 col-sm-24">
             <!-- Date Info Panel -->
             <div class="panel panel-info">
                 <div class="panel-heading">

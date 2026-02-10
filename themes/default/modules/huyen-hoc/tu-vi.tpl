@@ -25,19 +25,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-24 col-sm-6 col-md-6 form-group">
+                    <div class="col-xs-24 col-sm-12 col-md-6 form-group">
                         <label>{LANG.birth_day}</label>
                         <input type="number" name="day" value="{INPUT.d}" class="form-control" required>
                     </div>
-                    <div class="col-xs-24 col-sm-6 col-md-6 form-group">
+                    <div class="col-xs-24 col-sm-12 col-md-6 form-group">
                         <label>{LANG.birth_month}</label>
                         <input type="number" name="month" value="{INPUT.m}" class="form-control" required>
                     </div>
-                    <div class="col-xs-24 col-sm-6 col-md-6 form-group">
+                    <div class="col-xs-24 col-sm-12 col-md-6 form-group">
                         <label>{LANG.birth_year}</label>
                         <input type="number" name="year" value="{INPUT.y}" class="form-control" required>
                     </div>
-                    <div class="col-xs-24 col-sm-6 col-md-6 form-group">
+                    <div class="col-xs-24 col-sm-12 col-md-6 form-group">
                         <label>{LANG.birth_hour}</label>
                         <select name="hour" class="form-control">
                             <option value="0" {SELECTED_0}>{LANG.hour_ty}</option>
