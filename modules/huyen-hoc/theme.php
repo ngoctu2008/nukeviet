@@ -79,6 +79,20 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
             $xtpl->assign('META', $laso['meta']);
         }
 
+        // Score Box (Overview Tab)
+        if (isset($laso['structured_report']['score'])) {
+            $xtpl->assign('SCORE', $laso['structured_report']['score']);
+            $xtpl->parse('main.result.score_box');
+        }
+
+        // Overview (Overview Tab)
+        if (isset($laso['luan_giai_tong_quan']['overview'])) {
+            foreach ($laso['luan_giai_tong_quan']['overview'] as $ov) {
+                $xtpl->assign('OVERVIEW', $ov);
+                $xtpl->parse('main.result.overview');
+            }
+        }
+
         // Palaces (Grid View)
         if (isset($laso['dia_ban']) && is_array($laso['dia_ban'])) {
             foreach ($laso['dia_ban'] as $key => $palace) {
@@ -121,12 +135,6 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                     'menh_text' => $s1['menh_text'],
                     'than_text' => $s1['than_text']
                 ]);
-
-                // Score Box
-                if (isset($rep['score'])) {
-                    $xtpl->assign('SCORE', $rep['score']);
-                    $xtpl->parse('main.result.report.sec1.score_box');
-                }
 
                 $xtpl->parse('main.result.report.sec1');
             }

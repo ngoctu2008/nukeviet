@@ -128,7 +128,12 @@
         <div class="col-xs-24 col-sm-24 col-md-24">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="luangiai-tab" data-toggle="tab" href="#luangiai" role="tab">
+                    <a class="nav-link active" id="tongquan-tab" data-toggle="tab" href="#tongquan" role="tab">
+                        <i class="fa fa-info-circle"></i> {LANG.tab_overview}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="luangiai-tab" data-toggle="tab" href="#luangiai" role="tab">
                         <i class="fa fa-book"></i> {LANG.tab_detail}
                     </a>
                 </li>
@@ -141,27 +146,46 @@
 
             <div class="tab-content p-2 border border-top-0 bg-white" id="myTabContent">
 
-                <!-- Tab Luan Giai Chi Tiet -->
-                <div class="tab-pane fade show active" id="luangiai" role="tabpanel">
-                    <!-- BEGIN: report -->
-                    <!-- BEGIN: sec1 -->
-                    <h4 class="section-header">{LANG.sec1_title}</h4>
-                    <div class="row mb-3">
-                        <div class="col-md-18">
-                             <p><b>{LANG.full_name}:</b> {SEC1.info}</p>
-                             <p class="ml-4">{SEC1.am_duong}</p>
-                             <p class="ml-4">{SEC1.cuc_menh}</p>
-                             <p><b>Mệnh:</b> {SEC1.menh_text}</p>
-                             <p><b>Thân:</b> {SEC1.than_text}</p>
+                <!-- Tab Tong Quan -->
+                <div class="tab-pane fade show active" id="tongquan" role="tabpanel">
+                    <h4>{LANG.tab_overview}</h4>
+                    <div class="row">
+                        <div class="col-xs-24 col-sm-16 col-md-16">
+                            <p>{LANG.menh}: <b class="text-{THIEN_BAN.menh_color}">{THIEN_BAN.menh_ngu_hanh}</b> - {LANG.cuc}: <b>{THIEN_BAN.cuc}</b></p>
+                            <p>Âm Dương: <b>{THIEN_BAN.am_duong_ly}</b>.</p>
+                            <p>Ngũ Hành: <b>{THIEN_BAN.cuc_menh_ly}</b>.</p>
                         </div>
-                        <div class="col-md-6 text-center">
-                            <!-- BEGIN: score_box -->
+                        <!-- BEGIN: score_box -->
+                        <div class="col-xs-24 col-sm-8 col-md-8 text-center">
                             <div class="alert alert-info p-2">
                                 <h5 class="m-0">{LANG.score}</h5>
                                 <h2 class="text-primary m-0">{SCORE}</h2>
                                 <small>/ 100</small>
                             </div>
-                            <!-- END: score_box -->
+                        </div>
+                        <!-- END: score_box -->
+                    </div>
+                    <hr>
+                    <!-- BEGIN: overview -->
+                    <div class="mt-3">
+                        <h5 class="text-primary"><i class="fa fa-star"></i> {OVERVIEW.star}</h5>
+                        <p class="text-justify">{OVERVIEW.content}</p>
+                    </div>
+                    <!-- END: overview -->
+                </div>
+
+                <!-- Tab Luan Giai Chi Tiet -->
+                <div class="tab-pane fade" id="luangiai" role="tabpanel">
+                    <!-- BEGIN: report -->
+                    <!-- BEGIN: sec1 -->
+                    <h4 class="section-header">{LANG.sec1_title}</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-24">
+                             <p><b>{LANG.full_name}:</b> {SEC1.info}</p>
+                             <p class="ml-4">{SEC1.am_duong}</p>
+                             <p class="ml-4">{SEC1.cuc_menh}</p>
+                             <p><b>Mệnh:</b> {SEC1.menh_text}</p>
+                             <p><b>Thân:</b> {SEC1.than_text}</p>
                         </div>
                     </div>
                     <!-- END: sec1 -->
@@ -264,14 +288,6 @@
 
             $('#ket-qua-han').html('<p><i class="fa fa-spinner fa-spin"></i> {LANG.loading}</p>');
 
-            // This should ideally call a function that returns just the "sec3" part
-            // But for now we might need to rely on the page reload or separate endpoint.
-            // Since I updated TuViLuanGiai to handle limits, I can potentially just reload the page with year param
-            // OR make a dedicated ajax op.
-            // For simplicity, let's just alert "Tính năng đang cập nhật" or reload with parameter if feasible.
-            // Actually, the previous code had an ajax endpoint 'xem_han'. I should keep it or update it.
-
-            // Re-using previous AJAX logic if available in funcs/ajax.php
              $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=ajax&action=xem_han&nv_ajax=1',
             {
                 targetYear: targetYear,
