@@ -158,53 +158,7 @@ var LoBanRuler = (function() {
         drawRulerBar(y2, ruler429);
         drawRulerBar(y3, ruler388);
 
-        // Draw Center Indicator (Overlay)
-        ctx.beginPath();
-        ctx.moveTo(cx, 0);
-        ctx.lineTo(cx, h);
-        ctx.strokeStyle = '#e65100'; // Darker Orange/Red
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Floating Value Box
-        drawFloatingValue(cx, 0);
-    }
-
-    function drawFloatingValue(cx, y) {
-        var valMM = Math.round(currentCm * 10);
-        var text = valMM + " mm";
-
-        ctx.font = 'bold 24px Arial';
-        var textMetrics = ctx.measureText(text);
-        var boxW = textMetrics.width + 30;
-        var boxH = 40;
-        var boxX = cx - boxW/2;
-        var boxY = y + 10; // Top padding
-
-        // Box Shadow
-        ctx.shadowColor = "rgba(0,0,0,0.3)";
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetX = 3;
-        ctx.shadowOffsetY = 3;
-
-        // Box BG
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(boxX, boxY, boxW, boxH);
-
-        // Border
-        ctx.strokeStyle = '#d9534f';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(boxX, boxY, boxW, boxH);
-
-        // Reset Shadow
-        ctx.shadowColor = "transparent";
-
-        // Text
-        ctx.fillStyle = '#d9534f';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(text, cx, boxY + boxH/2);
-        ctx.textBaseline = 'alphabetic'; // Reset
+        // Removed Center Indicator (Overlay) and Floating Value Box as per request
     }
 
     function drawRulerBar(y, rulerDef) {
@@ -213,7 +167,7 @@ var LoBanRuler = (function() {
 
         // Title
         ctx.fillStyle = '#333';
-        ctx.font = 'bold 16px Arial';
+        ctx.font = 'bold 18px Arial'; // Increased size and boldness
         ctx.textAlign = 'left';
         ctx.fillText(rulerDef.title, 5, y + 20);
 
@@ -274,7 +228,7 @@ var LoBanRuler = (function() {
 
                 // Major Name
                 ctx.fillStyle = textColor;
-                ctx.font = 'bold 20px "Times New Roman", serif';
+                ctx.font = 'bold 22px "Times New Roman", serif'; // Increased size
                 var midX = x1 + wSeg/2;
                 var majorY = ticksBaseY + 28; // Vertically centered in 45px height roughly
 
@@ -309,7 +263,7 @@ var LoBanRuler = (function() {
                     }
 
                     // Sub Text
-                    ctx.font = '12px Arial';
+                    ctx.font = 'bold 13px Arial'; // Bolder
                     ctx.fillStyle = textColor;
 
                     if (subW > 20) {
@@ -320,13 +274,13 @@ var LoBanRuler = (function() {
                         // Center is subY + subH/2 = subY + 20
 
                         if (textWidth > subW - 4 && words.length > 1) {
-                             ctx.font = '11px Arial';
+                             ctx.font = 'bold 11px Arial'; // Smaller but bold
                              // 2 lines
                              ctx.fillText(words[0], subMidX, subY + 16);
                              ctx.fillText(words.slice(1).join(' '), subMidX, subY + 30);
                         } else {
                              // Single line
-                             if (textWidth > subW - 2) ctx.font = '11px Arial';
+                             if (textWidth > subW - 2) ctx.font = 'bold 11px Arial';
                              ctx.fillText(subs[j], subMidX, subY + 24);
                         }
                     }
@@ -335,10 +289,6 @@ var LoBanRuler = (function() {
         }
 
         // 2. Draw Ticks (Overlays)
-        // Background for ticks area
-        // ctx.fillStyle = '#fff';
-        // ctx.fillRect(0, topY, w, 25);
-
         ctx.beginPath();
         ctx.strokeStyle = '#333';
         ctx.fillStyle = '#000';
@@ -361,7 +311,7 @@ var LoBanRuler = (function() {
             if (mm % 10 === 0) {
                 var cmVal = mm / 10;
                 if (cmVal % 1 === 0 && cmVal % 5 === 0) {
-                     ctx.font = '10px Arial';
+                     ctx.font = 'bold 12px Arial'; // Bold
                      ctx.fillText(cmVal, x, ticksBaseY - 18);
                 }
             }

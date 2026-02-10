@@ -51,7 +51,7 @@ if ($action == 'xem_han') {
         // 1. Convert Solar to Lunar & Get Chart
         // We need the full chart to know what stars are in each palace for the Monthly Limits
         $lunar = LunarCalendar::convertSolar2Lunar($birthDay, $birthMonth, $birthYear);
-        $canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], $birthHour);
+        $canChi = LunarCalendar::getCanChi($lunar['day'], $lunar['month'], $lunar['year'], $birthHour);
 
         $laSoData = TuViLapSo::lapLaSo(
             $lunar['day'],
@@ -68,6 +68,16 @@ if ($action == 'xem_han') {
         $chiYear = $canChi['chiYear']; // Use calculated chiYear
 
         // 2. Calculate Limits
+        // Ensure inputs are integers
+        $targetYear = (int)$targetYear;
+        $gender = (int)$gender;
+        $birthYear = (int)$birthYear;
+
+        // Validation
+        if ($targetYear < $birthYear) {
+             throw new Exception("Năm xem hạn phải lớn hơn hoặc bằng năm sinh ($birthYear).");
+        }
+
         $limitInfo = TuViLapSo::getLimitInfoForYear($chiYear, $gender, $targetYear, $birthYear);
 
         $html = '<div class="alert alert-info">';

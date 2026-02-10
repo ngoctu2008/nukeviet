@@ -1,5 +1,5 @@
 <!-- BEGIN: main -->
-<div class="panel panel-default block-lich-van-nien">
+<div class="panel panel-default block-lich-van-nien" style="cursor: pointer;" onclick="window.location.href='{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=xem-ngay&date={SOLAR.day}-{SOLAR.month}-{SOLAR.year}'">
     <div class="panel-body" style="padding: 0; position: relative; overflow: hidden; background: url('{NV_BASE_SITEURL}themes/{TEMPLATE}/images/bg-calendar.jpg') no-repeat center center; background-size: cover; color: #fff; min-height: 300px;">
         <!-- Fallback background if image missing -->
         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(58, 123, 213, 0.8), rgba(0, 210, 255, 0.6)); z-index: 1;"></div>
