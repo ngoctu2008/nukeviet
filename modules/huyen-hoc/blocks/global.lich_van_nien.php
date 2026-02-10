@@ -94,13 +94,14 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
         // Lunar Info
         $lunar = \NukeViet\Module\HuyenHoc\LunarCalendar::convertSolar2Lunar($day, $month, $year, 7.0);
 
-        // Check if array keys exist (Named keys vs Indexed keys)
-        // convertSolar2Lunar returns named keys: 'day', 'month', 'year', 'leap'
+        // convertSolar2Lunar returns array with keys: 'day', 'month', 'year', 'leap'
+        // Ensure robust access (sometimes returned as indexed array in old versions or different contexts?)
+        // Based on current read of LunarCalendar.php, it returns named keys.
 
-        $lunarDay = $lunar['day'];
-        $lunarMonth = $lunar['month'];
-        $lunarYear = $lunar['year'];
-        $lunarLeap = $lunar['leap'];
+        $lunarDay = isset($lunar['day']) ? $lunar['day'] : $lunar[0];
+        $lunarMonth = isset($lunar['month']) ? $lunar['month'] : $lunar[1];
+        $lunarYear = isset($lunar['year']) ? $lunar['year'] : $lunar[2];
+        $lunarLeap = isset($lunar['leap']) ? $lunar['leap'] : (isset($lunar[3]) ? $lunar[3] : 0);
 
         $can_chi_day = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiDay($day, $month, $year);
         $can_chi_month = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiMonth($lunarMonth, $lunarYear);
