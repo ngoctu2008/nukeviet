@@ -1,4 +1,4 @@
-// Gieo Que JS
+// Gieo Que JS - Redesigned Interface
 
 var shakeThreshold = 15;
 var lastX, lastY, lastZ;
@@ -39,7 +39,7 @@ function performDivination(duration) {
                     }
                 }
                 renderResult(data);
-            }, 1000);
+            }, 1500);
         },
         error: function() {
             alert('Có lỗi xảy ra. Vui lòng thử lại.');
@@ -48,42 +48,56 @@ function performDivination(duration) {
     });
 }
 
+function renderHexagram(containerId, lines) {
+    var container = $(containerId);
+    container.empty();
+    if (!lines || !Array.isArray(lines)) return;
+
+    // Lines come Top -> Bottom (index 0 is Top line 6)
+    // We render them simply as divs
+    lines.forEach(function(val) {
+        var type = (val == 1) ? 'yang' : 'yin';
+        var lineDiv = $('<div class="line ' + type + '"></div>');
+        container.append(lineDiv);
+    });
+}
+
 function renderResult(data) {
     $('#step-3').hide();
     $('#step-4').fadeIn().addClass('fade-in');
 
     if (data && data.chu) {
-        // Chu
+        // 1. Render Hexagrams
+        renderHexagram('#hex-vis-chu', data.chu.lines);
+        renderHexagram('#hex-vis-ho', data.ho.lines);
+        renderHexagram('#hex-vis-bien', data.bien.lines);
+
+        // 2. Render Basic Info
         $('#res-chu-name').text(data.chu.name);
         $('#res-chu-nghia').text(data.chu.nghia);
         $('#res-chu-dong').text(data.chu.dong);
 
-        // Ho
         $('#res-ho-name').text(data.ho.name);
         $('#res-ho-nghia').text(data.ho.nghia);
 
-        // Bien
         $('#res-bien-name').text(data.bien.name);
         $('#res-bien-nghia').text(data.bien.nghia);
 
-        // Tong Luan
-        var summaryHtml = '';
-        if (data.tong_luan && data.tong_luan.full_text) {
-             summaryHtml = data.tong_luan.full_text;
+        // 3. Render Detailed Interpretation
+        if (data.tong_luan) {
+            $('#interp-context').html(data.tong_luan.context);
+            $('#interp-process').html(data.tong_luan.process);
+            $('#interp-outcome').html(data.tong_luan.outcome);
+            $('#interp-advice').html(data.tong_luan.advice);
         } else {
              // Fallback
-             summaryHtml = '<p>Quẻ này cho thấy sự việc khởi đầu bởi <b class="text-danger">' + data.chu.name + '</b>, trải qua quá trình <b class="text-info">' + data.ho.name + '</b>, và sẽ kết thúc ở <b class="text-success">' + data.bien.name + '</b>.</p>';
+             $('#interp-context').text('Đang cập nhật...');
         }
-        $('#res-summary-content').html(summaryHtml);
 
     } else {
         var msg = (data && data.error) ? data.error : 'Tâm chưa tịnh, ý chưa thông. Xin hãy thử lại sau.';
         $('#res-chu-name').text('Vô Vi Chi Quẻ');
         $('#res-chu-nghia').text(msg);
-        $('#res-ho-name').text('');
-        $('#res-ho-nghia').text('');
-        $('#res-bien-name').text('');
-        $('#res-bien-nghia').text('');
     }
 }
 

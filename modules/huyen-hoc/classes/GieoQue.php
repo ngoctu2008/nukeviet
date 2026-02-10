@@ -296,22 +296,32 @@ class GieoQue {
 
         $tongLuan = $this->getDetailedInterpretation($this->queChu, $this->queHo, $this->queBien);
 
+        // Helper to get full 6 lines (Top -> Bottom)
+        $getLines = function($thuongID, $haID) {
+            $binT = $this->quaiToBin($thuongID);
+            $binH = $this->quaiToBin($haID);
+            return array_merge($binT, $binH);
+        };
+
         return [
             'chu' => [
                 'name' => $this->queChu['info']['name'],
                 'nghia' => $this->queChu['info']['nghia'],
                 'image' => '',
-                'dong' => "Hào động: " . $this->queChu['hao_dong']
+                'dong' => "Hào động: " . $this->queChu['hao_dong'],
+                'lines' => $getLines($this->queChu['thuong'], $this->queChu['ha'])
             ],
             'ho' => [
                 'name' => $this->queHo['info']['name'],
                 'nghia' => $this->queHo['info']['nghia'],
-                'desc' => "Quẻ Hỗ thể hiện quá trình diễn biến của sự việc."
+                'desc' => "Quẻ Hỗ thể hiện quá trình diễn biến của sự việc.",
+                'lines' => $getLines($this->queHo['thuong'], $this->queHo['ha'])
             ],
             'bien' => [
                 'name' => $this->queBien['info']['name'],
                 'nghia' => $this->queBien['info']['nghia'],
-                'desc' => "Quẻ Biến thể hiện kết quả cuối cùng."
+                'desc' => "Quẻ Biến thể hiện kết quả cuối cùng.",
+                'lines' => $getLines($this->queBien['thuong'], $this->queBien['ha'])
             ],
             'tong_luan' => $tongLuan
         ];
