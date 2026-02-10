@@ -294,11 +294,13 @@ class GieoQue {
     public function layKetQua() {
         if (empty($this->queChu)) return "Chưa gieo quẻ.";
 
+        $tongLuan = $this->getDetailedInterpretation($this->queChu, $this->queHo, $this->queBien);
+
         return [
             'chu' => [
                 'name' => $this->queChu['info']['name'],
                 'nghia' => $this->queChu['info']['nghia'],
-                'image' => '', // Fixed syntax error
+                'image' => '',
                 'dong' => "Hào động: " . $this->queChu['hao_dong']
             ],
             'ho' => [
@@ -310,7 +312,103 @@ class GieoQue {
                 'name' => $this->queBien['info']['name'],
                 'nghia' => $this->queBien['info']['nghia'],
                 'desc' => "Quẻ Biến thể hiện kết quả cuối cùng."
-            ]
+            ],
+            'tong_luan' => $tongLuan
         ];
+    }
+
+    private function getDetailedInterpretation($chu, $ho, $bien) {
+        // Data for Analysis
+        $tChu = self::BAT_QUAI[$chu['thuong']];
+        $hChu = self::BAT_QUAI[$chu['ha']];
+
+        $tBien = self::BAT_QUAI[$bien['thuong']];
+        $hBien = self::BAT_QUAI[$bien['ha']];
+
+        // 1. Analyze Main Hexagram (Context)
+        // Relationship between Thuong (Ngoai) and Ha (Noi)
+        // Thuong: Object/Situation. Ha: Subject/Self.
+        // Compare Elements: Sinh, Khac, Hoa
+        $relChu = $this->compareElements($hChu['hanh'], $tChu['hanh']); // Subject vs Object
+
+        $context = "";
+        switch ($relChu['type']) {
+            case 'sinh_xuat': // Subject generates Object (Weakening self)
+                $context = "Bối cảnh hiện tại cho thấy bạn đang phải nỗ lực, hao tâm tổn trí vì sự việc (Ta sinh Người). Sự khởi đầu có thể vất vả nhưng thể hiện sự chủ động của bạn.";
+                break;
+            case 'sinh_nhap': // Object generates Subject (Strengthening self)
+                $context = "Bối cảnh rất thuận lợi, bạn nhận được sự hỗ trợ từ hoàn cảnh hoặc quý nhân (Người sinh Ta). Mọi việc khởi đầu suôn sẻ, có lợi thế.";
+                break;
+            case 'khac_xuat': // Subject controls Object (Hard work but control)
+                $context = "Bạn đang ở thế chủ động kiểm soát tình hình (Ta khắc Người). Tuy nhiên, để đạt được mục tiêu cần phải đấu tranh và nỗ lực vượt qua trở ngại.";
+                break;
+            case 'khac_nhap': // Object controls Subject (Pressure)
+                $context = "Hoàn cảnh hiện tại đang gây bất lợi hoặc áp lực lên bạn (Người khắc Ta). Có nhiều trở ngại khách quan kìm hãm, cần cẩn trọng và kiên nhẫn.";
+                break;
+            case 'ty_hoa': // Same element (Harmony/Competition)
+                $context = "Bối cảnh hiện tại là sự tương hòa, bình đẳng (Tỷ Hòa). Bạn và đối tác/hoàn cảnh có sự tương đồng, dễ dàng hợp tác hoặc cạnh tranh công bằng.";
+                break;
+        }
+
+        // 2. Analyze Process (Ho Hexagram)
+        // Ho shows hidden factors/process
+        $process = "Trong quá trình diễn biến, quẻ Hỗ là **{$ho['info']['name']}**. Điều này ám chỉ giai đoạn giữa sẽ mang tính chất: {$ho['info']['nghia']}.";
+
+        // 3. Analyze Outcome (Bien Hexagram)
+        // Rel between Subject (Ha Bien) and Object (Thuong Bien) if transformed?
+        // Usually analyze the meaning of the Hexagram itself.
+        $outcome = "Kết quả cuối cùng dự báo bởi quẻ **{$bien['info']['name']}**. Ý nghĩa: {$bien['info']['nghia']}.";
+
+        // 4. Synthesis / Advice
+        // Compare Chu vs Bien rating (if available) or basic logic
+        // Simple Logic: Check keywords in meaning
+        $keywordsGood = ['Cát', 'Hanh thông', 'Thuận lợi', 'Tốt'];
+        $keywordsBad = ['Hung', 'Xấu', 'Bế tắc', 'Khốn'];
+
+        $isChuGood = $this->checkKeywords($chu['info']['nghia'], $keywordsGood, $keywordsBad);
+        $isBienGood = $this->checkKeywords($bien['info']['nghia'], $keywordsGood, $keywordsBad);
+
+        $advice = "";
+        if ($isChuGood && $isBienGood) {
+            $advice = "Đại Cát: Sự việc bắt đầu thuận lợi và kết thúc viên mãn. Bạn nên tự tin tiến hành theo kế hoạch.";
+        } elseif (!$isChuGood && !$isBienGood) {
+            $advice = "Đại Hung: Cả khởi đầu và kết thúc đều gặp khó khăn. Lời khuyên là nên dừng lại, xem xét kỹ lưỡng hoặc chờ thời cơ khác.";
+        } elseif ($isChuGood && !$isBienGood) {
+            $advice = "Đầu Xuôi Đuôi Lọt (Tiền Cát Hậu Hung): Ban đầu có vẻ thuận lợi nhưng về sau sẽ gặp trắc trở. Cần chuẩn bị phương án dự phòng cho những khó khăn phát sinh.";
+        } else {
+            $advice = "Khổ Tận Cam Lai (Tiền Hung Hậu Cát): Khởi đầu gian nan nhưng kiên trì sẽ gặt hái quả ngọt. Đừng nản lòng trước khó khăn trước mắt.";
+        }
+
+        return [
+            'context' => $context,
+            'process' => $process,
+            'outcome' => $outcome,
+            'advice' => $advice,
+            'full_text' => "<strong>1. Bối Cảnh:</strong> $context<br><br><strong>2. Diễn Biến:</strong> $process<br><br><strong>3. Kết Quả:</strong> $outcome<br><br><strong>4. Lời Khuyên:</strong> $advice"
+        ];
+    }
+
+    private function compareElements($subjectEl, $objectEl) {
+        // Elements: Kim, Moc, Thuy, Hoa, Tho
+        // Sinh: Kim->Thuy->Moc->Hoa->Tho->Kim
+        // Khac: Kim->Moc->Tho->Thuy->Hoa->Kim
+
+        if ($subjectEl == $objectEl) return ['type' => 'ty_hoa'];
+
+        $sinh = ['Kim'=>'Thủy', 'Thủy'=>'Mộc', 'Mộc'=>'Hỏa', 'Hỏa'=>'Thổ', 'Thổ'=>'Kim'];
+        $khac = ['Kim'=>'Mộc', 'Mộc'=>'Thổ', 'Thổ'=>'Thủy', 'Thủy'=>'Hỏa', 'Hỏa'=>'Kim'];
+
+        if ($sinh[$subjectEl] == $objectEl) return ['type' => 'sinh_xuat'];
+        if ($sinh[$objectEl] == $subjectEl) return ['type' => 'sinh_nhap'];
+        if ($khac[$subjectEl] == $objectEl) return ['type' => 'khac_xuat'];
+        if ($khac[$objectEl] == $subjectEl) return ['type' => 'khac_nhap'];
+
+        return ['type' => 'ty_hoa']; // Fallback
+    }
+
+    private function checkKeywords($text, $good, $bad) {
+        foreach ($good as $k) if (stripos($text, $k) !== false) return true;
+        foreach ($bad as $k) if (stripos($text, $k) !== false) return false;
+        return true; // Default neutral/good
     }
 }

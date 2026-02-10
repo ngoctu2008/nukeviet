@@ -57,17 +57,25 @@ function renderResult(data) {
         $('#res-chu-name').text(data.chu.name);
         $('#res-chu-nghia').text(data.chu.nghia);
         $('#res-chu-dong').text(data.chu.dong);
-        $('#sum-chu').text(data.chu.name);
 
         // Ho
         $('#res-ho-name').text(data.ho.name);
         $('#res-ho-nghia').text(data.ho.nghia);
-        $('#sum-ho').text(data.ho.name);
 
         // Bien
         $('#res-bien-name').text(data.bien.name);
         $('#res-bien-nghia').text(data.bien.nghia);
-        $('#sum-bien').text(data.bien.name);
+
+        // Tong Luan
+        var summaryHtml = '';
+        if (data.tong_luan && data.tong_luan.full_text) {
+             summaryHtml = data.tong_luan.full_text;
+        } else {
+             // Fallback
+             summaryHtml = '<p>Quẻ này cho thấy sự việc khởi đầu bởi <b class="text-danger">' + data.chu.name + '</b>, trải qua quá trình <b class="text-info">' + data.ho.name + '</b>, và sẽ kết thúc ở <b class="text-success">' + data.bien.name + '</b>.</p>';
+        }
+        $('#res-summary-content').html(summaryHtml);
+
     } else {
         var msg = (data && data.error) ? data.error : 'Tâm chưa tịnh, ý chưa thông. Xin hãy thử lại sau.';
         $('#res-chu-name').text('Vô Vi Chi Quẻ');

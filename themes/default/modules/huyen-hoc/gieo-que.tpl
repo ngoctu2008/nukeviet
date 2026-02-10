@@ -77,10 +77,10 @@
 
                 <!-- Summary/Detail -->
                 <div class="meaning-box mt-4 p-4 bg-light border rounded">
-                    <h4 class="border-bottom pb-2 text-uppercase"><i class="fa fa-commenting-o"></i> Tổng Luận:</h4>
-                    <div id="res-summary">
-                        <p>Quẻ này cho thấy sự việc khởi đầu bởi <b id="sum-chu" class="text-danger"></b>, trải qua quá trình <b id="sum-ho" class="text-info"></b>, và sẽ kết thúc ở <b id="sum-bien" class="text-success"></b>.</p>
-                        <p class="font-italic text-muted mt-3">"Hãy suy ngẫm kỹ về ý nghĩa của từng quẻ, kết hợp với hoàn cảnh thực tế để tìm ra hướng đi đúng đắn nhất."</p>
+                    <h4 class="border-bottom pb-2 text-uppercase"><i class="fa fa-commenting-o"></i> Tổng Luận Chi Tiết:</h4>
+                    <div id="res-summary-content" class="text-justify" style="font-size: 1.1em; line-height: 1.6;">
+                        <!-- Content will be injected by JS -->
+                        <div class="alert alert-warning"><i class="fa fa-spinner fa-spin"></i> Đang phân tích chi tiết...</div>
                     </div>
                 </div>
             </div>
