@@ -11,17 +11,24 @@
                 <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}">
 
                 <div class="form-group text-center">
-                    <div class="col-md-8 col-sm-8 col-xs-24">
+                    <div class="col-md-6 col-sm-6 col-xs-24">
                         <label class="sr-only">Họ</label>
                         <input type="text" name="ho" value="{INPUT.ho}" class="form-control input-lg" placeholder="Họ (Ví dụ: Nguyễn)" required>
                     </div>
-                    <div class="col-md-10 col-sm-10 col-xs-24">
+                    <div class="col-md-8 col-sm-8 col-xs-24">
                          <label class="sr-only">Tên Đệm & Tên</label>
                         <input type="text" name="ten" value="{INPUT.ten}" class="form-control input-lg" placeholder="Tên Đệm & Tên (Ví dụ: Văn A)" required>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-24">
+                    <div class="col-md-5 col-sm-5 col-xs-12">
                         <label class="sr-only">Năm Sinh</label>
                         <input type="number" name="year" value="{INPUT.year}" class="form-control input-lg" placeholder="Năm sinh" required>
+                    </div>
+                     <div class="col-md-5 col-sm-5 col-xs-12">
+                        <label class="sr-only">Giới Tính</label>
+                        <select name="gender" class="form-control input-lg">
+                            <option value="1" {INPUT.gender_male}>Nam</option>
+                            <option value="0" {INPUT.gender_female}>Nữ</option>
+                        </select>
                     </div>
                 </div>
                  <div class="text-center">
@@ -33,11 +40,11 @@
 
     <!-- BEGIN: result -->
     <div class="alert alert-info text-center" style="font-size: 1.2em;">
-        Kết quả phân tích cho: <strong>{RESULT.input}</strong> ({INPUT.year})
+        Kết quả phân tích cho: <strong>{RESULT.input}</strong> ({INPUT.year} - {PHONG_THUY.user.gioi_tinh})
     </div>
 
     <div class="row">
-        <!-- Cot Trai: Chi tiet Chu -->
+        <!-- Cot Trai: Chi tiet Chu + Phong Thuy -->
         <div class="col-md-10">
             <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title">1. Phân Tích Hán Tự</h3></div>
@@ -79,9 +86,41 @@
                     <p class="help-block"><small>(Số nét chẵn là Âm, lẻ là Dương. Cân bằng là tốt)</small></p>
                 </div>
             </div>
+
+            <!-- Phong Thuy Bat Trach -->
+            <div class="panel panel-info">
+                <div class="panel-heading"><h3 class="panel-title">5. Phong Thủy Mệnh & Cung Phi</h3></div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <strong>Mệnh (Nạp Âm):</strong> <span style="color:{PHONG_THUY.user.color}">{PHONG_THUY.user.menh_text}</span> ({PHONG_THUY.user.can_chi})
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Cung Phi (Bát Trạch):</strong> {PHONG_THUY.user.cung_text}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Hành của Tên (Tổng Cách):</strong> <span style="color:{PHONG_THUY.ten.color}">{PHONG_THUY.ten.hanh_ten}</span>
+                        </li>
+                    </ul>
+                    <hr style="margin: 10px 0;">
+                    <p><strong>So sánh Tên vs Mệnh:</strong> {PHONG_THUY.chi_tiet.vs_menh.msg}</p>
+                    <p><strong>So sánh Tên vs Cung:</strong> {PHONG_THUY.chi_tiet.vs_cung.msg}</p>
+
+                    <!-- BEGIN: warning_nu -->
+                    <div class="alert alert-danger" style="margin-top: 10px;">
+                        {PHONG_THUY.chi_tiet.canh_bao_nu.msg}
+                    </div>
+                    <!-- END: warning_nu -->
+
+                    <div class="text-center" style="margin-top: 10px;">
+                        <h4>KẾT LUẬN: <span class="label label-primary">{PHONG_THUY.ket_luan}</span></h4>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Cot Phai: Ngu Cach -->
+        <!-- Cot Phai: Ngu Cach + Tam Tai -->
         <div class="col-md-14">
              <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title">3. Ngũ Cách (Cát - Hung)</h3></div>

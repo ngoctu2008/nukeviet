@@ -18,6 +18,7 @@ $page_title = $lang_module['dat_ten'];
 $ho = $nv_Request->get_string('ho', 'post,get', '');
 $ten = $nv_Request->get_string('ten', 'post,get', '');
 $year = $nv_Request->get_int('year', 'post,get', date('Y'));
+$gender = $nv_Request->get_int('gender', 'post,get', 1); // 1=Nam, 0=Nu
 
 $result = array();
 if (!empty($ho) && !empty($ten)) {
@@ -26,20 +27,33 @@ if (!empty($ho) && !empty($ten)) {
     $tenChinh = array_pop($parts);
     $tenDem = implode(' ', $parts);
 
-    $result = NameAnalysis::analyze($ho, $tenDem, $tenChinh, $year);
+    $result = NameAnalysis::analyze($ho, $tenDem, $tenChinh, $year, $gender);
 }
 
 $xtpl = new XTemplate('dat-ten.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
-$xtpl->assign('INPUT', array('ho' => $ho, 'ten' => $ten, 'year' => $year));
+$xtpl->assign('INPUT', array(
+    'ho' => $ho,
+    'ten' => $ten,
+    'year' => $year,
+    'gender_male' => ($gender == 1) ? 'selected="selected"' : '',
+    'gender_female' => ($gender == 0) ? 'selected="selected"' : ''
+));
 
 if (!empty($result)) {
     $xtpl->assign('RESULT', $result);
     $xtpl->assign('CACH', $result['ngu_cach']);
     $xtpl->assign('AM_DUONG', $result['am_duong']);
     $xtpl->assign('TAM_TAI', $result['tam_tai']);
+
+    if (isset($result['phong_thuy']) && !empty($result['phong_thuy'])) {
+        $xtpl->assign('PHONG_THUY', $result['phong_thuy']);
+        if (!empty($result['phong_thuy']['chi_tiet']['canh_bao_nu']['msg'])) {
+             $xtpl->parse('main.result.warning_nu');
+        }
+    }
 
     // Pass Han-Viet Breakdown
     $breakdown = array_merge($result['parts']['ho'], $result['parts']['dem'], $result['parts']['ten']);

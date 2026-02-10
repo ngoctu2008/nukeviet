@@ -98,7 +98,7 @@ class NameAnalysis {
         81 => 'Hoàn bản quy nguyên, vạn sự như ý (Đại Cát)'
     );
 
-    public static function analyze($ho, $tenDem, $ten, $year) {
+    public static function analyze($ho, $tenDem, $ten, $year, $gender = 1) {
         self::loadDictionary();
 
         // 1. Parse Input
@@ -179,6 +179,14 @@ class NameAnalysis {
         // 6. Tam Tai Analysis (Three Talents)
         $tamTai = self::analyzeTamTai($nguCach['thien']['element_code'], $nguCach['nhan']['element_code'], $nguCach['dia']['element_code']);
 
+        // 7. Ten Phong Thuy (Detailed Feng Shui)
+        $phongThuy = null;
+        if (class_exists('NukeViet\Module\HuyenHoc\TenPhongThuy')) {
+             $tpt = new TenPhongThuy();
+             // Gender: 1=Nam, 0=Nu. Function expects same.
+             $phongThuy = $tpt->phanTichTen($year, $tong, $gender);
+        }
+
         // Construct Result
         return array(
             'input' => "$ho $tenDem $ten",
@@ -195,7 +203,8 @@ class NameAnalysis {
             ],
             'ngu_cach' => $nguCach,
             'am_duong' => $amDuong,
-            'tam_tai' => $tamTai
+            'tam_tai' => $tamTai,
+            'phong_thuy' => $phongThuy
         );
     }
 
