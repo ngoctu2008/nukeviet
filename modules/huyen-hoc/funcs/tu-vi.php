@@ -35,6 +35,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     $hour = $data_input['h'];
     $gender = $data_input['g'];
     $name = $data_input['name'];
+    if (empty($name)) $name = 'Đương số';
 
     // Convert Solar to Lunar
     $lunar = LunarCalendar::convertSolar2Lunar($day, $month, $year);

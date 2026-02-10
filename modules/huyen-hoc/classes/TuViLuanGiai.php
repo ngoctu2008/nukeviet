@@ -82,6 +82,14 @@ class TuViLuanGiai {
              $result['tong_quan_menh'] = "Mệnh an tại " . $menhPalace['name'] . ", có các sao chính: " . (implode(', ', $starList) ?: "Vô Chính Diệu");
         }
 
+        if (empty($result['tong_quan_than'])) {
+             // Generate generic based on Than Palace Star
+             $thanPalace = $chart['dia_ban'][$chart['meta']['than_idx']];
+             $starList = [];
+             foreach($thanPalace['chinh_tinh'] as $s) $starList[] = $s['name'];
+             $result['tong_quan_than'] = "Thân cư " . $thanPalace['name'] . ", có các sao chính: " . (implode(', ', $starList) ?: "Vô Chính Diệu");
+        }
+
         return $result;
     }
 

@@ -514,7 +514,7 @@ class TuViLapSo {
             'am_duong' => ($isDuong ? 'Dương' : 'Âm') . ' ' . ($gender==1 ? 'Nam' : 'Nữ'),
             'menh_color' => isset([1=>'thuy', 2=>'hoa', 3=>'tho', 4=>'kim', 5=>'moc'][$banMenhEl]) ? [1=>'thuy', 2=>'hoa', 3=>'tho', 4=>'kim', 5=>'moc'][$banMenhEl] : 'default',
             'am_duong_ly' => self::calculateYinYangBalance($canYear, $chiYear, $posMenh, $gender),
-            'cuc_menh_ly' => self::calculateElementRelation($banMenhEl, $cucMap[$cucElement])
+            'cuc_menh_ly' => self::calculateElementRelation($banMenhEl, $cucElement)
         );
 
         return [

@@ -1,106 +1,225 @@
-/* Tu Vi Grid Layout - Based on User Requirement (Ty Top-Left) */
+/* Modern Tu Vi CSS - Vivid & Intuitive */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+.tu-vi-container-wrapper {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
 .la-so-tu-vi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr); /* Fixed height rows */
-    gap: 5px;
-    width: 100%;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 8px;
+    background: #fdfbf7; /* Off-white paper look */
+    border: 5px solid #8d6e63; /* Wood frame color */
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    max-width: 1200px;
     margin: 0 auto;
-    aspect-ratio: 1 / 1; /* Keep it square */
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 5px;
+    aspect-ratio: 1/1; /* Maintain square aspect ratio */
 }
 
 /* Base Palace Style */
 .cung-so {
-    border: 1px solid #ccc;
     background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
     padding: 5px;
-    font-size: 12px;
+    font-size: 13px;
     position: relative;
-    overflow: hidden; /* Prevent spill */
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
 
-/* Responsive Font Size */
-@media (max-width: 768px) {
-    .cung-so { font-size: 10px; padding: 2px; }
-    .star-name { font-size: 9px; }
+.cung-so:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+    z-index: 5;
 }
 
-/* Specific Grid Positions */
+/* Palace Header */
+.header-cung {
+    background: #795548; /* Brown earthy tone */
+    color: #fff;
+    padding: 3px 5px;
+    text-align: center;
+    border-radius: 3px 3px 0 0;
+    margin: -5px -5px 5px -5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-/* Top Row (Left to Right): Ty -> Hoi -> Tuat -> Dau */
-.cung-ty_chuot { grid-area: 1 / 1; }
-.cung-hoi      { grid-area: 1 / 2; }
-.cung-tuat     { grid-area: 1 / 3; }
-.cung-dau      { grid-area: 1 / 4; }
+.cung-tieu-van {
+    font-size: 0.8em;
+    font-weight: normal;
+    margin-left: 5px;
+    color: #ffecb3;
+}
 
-/* Left Column (Top to Bottom): Ty -> Suu -> Dan -> Mao */
-/* Ty is 1/1 already */
-.cung-suu      { grid-area: 2 / 1; }
-.cung-dan      { grid-area: 3 / 1; }
-.cung-mao      { grid-area: 4 / 1; }
+/* Star Lists */
+.stars-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 1.4;
+}
 
-/* Bottom Row (Left to Right): Mao -> Thin -> Ty(Ran) -> Ngo */
-/* Mao is 4/1 already */
-.cung-thin     { grid-area: 4 / 2; }
-.cung-ty_ran   { grid-area: 4 / 3; }
-.cung-ngo      { grid-area: 4 / 4; }
+/* Star Styles */
+.sao-chinh {
+    font-weight: 700;
+    font-size: 1.1em;
+    display: block;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+.star-dacs {
+    font-size: 0.8em;
+    opacity: 0.8;
+}
 
-/* Right Column (Bottom to Top): Ngo -> Mui -> Than -> Dau */
-/* Ngo is 4/4 already */
-.cung-mui      { grid-area: 3 / 4; }
-.cung-than     { grid-area: 2 / 4; }
-/* Dau is 1/4 already */
+/* Star Colors */
+.color-kim { color: #607D8B; } /* Metal - Grey/Blue */
+.color-moc { color: #2E7D32; } /* Wood - Green */
+.color-thuy { color: #0277BD; } /* Water - Blue */
+.color-hoa { color: #C62828; } /* Fire - Red */
+.color-tho { color: #795548; } /* Earth - Brown */
+.color-default { color: #333; }
+
+.sao-tot {
+    font-weight: 500;
+    margin-right: 4px;
+    display: inline-block;
+}
+.sao-xau {
+    font-weight: 500;
+    margin-right: 4px;
+    display: inline-block;
+    /* Often bad stars are darker or specific color, but using element color is good too.
+       Let's add a subtle marker for bad stars? */
+}
+
+/* Tuan / Triet */
+.tuan-triet-container {
+    position: absolute;
+    top: 25px;
+    right: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.label-tuan {
+    background: #424242;
+    color: #fff;
+    font-size: 9px;
+    padding: 1px 4px;
+    border-radius: 2px;
+    opacity: 0.9;
+}
+
+.label-triet {
+    background: #d32f2f;
+    color: #fff;
+    font-size: 9px;
+    padding: 1px 4px;
+    border-radius: 2px;
+    opacity: 0.9;
+}
+
+/* Footer (Dai Van / Trang Sinh) */
+.footer-cung {
+    border-top: 1px solid #eee;
+    padding-top: 3px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #555;
+}
+
+.dai-van {
+    color: #d81b60; /* Highlight Age Limit */
+}
+
+.trang-sinh {
+    font-style: italic;
+    font-weight: normal;
+    color: #777;
+}
+
+/* --- GRID POSITIONS (South-Up Standard) --- */
+
+/* Row 1 (Top): Ty(Snake) -> Ngo -> Mui -> Than */
+.cung-ty_ran { grid-area: 1 / 1; }
+.cung-ngo    { grid-area: 1 / 2; }
+.cung-mui    { grid-area: 1 / 3; }
+.cung-than   { grid-area: 1 / 4; }
+
+/* Row 2: Thin (Left), Dau (Right) */
+.cung-thin   { grid-area: 2 / 1; }
+.cung-dau    { grid-area: 2 / 4; }
+
+/* Row 3: Mao (Left), Tuat (Right) */
+.cung-mao    { grid-area: 3 / 1; }
+.cung-tuat   { grid-area: 3 / 4; }
+
+/* Row 4 (Bottom): Dan -> Suu -> Ty(Rat) -> Hoi */
+.cung-dan    { grid-area: 4 / 1; }
+.cung-suu    { grid-area: 4 / 2; }
+.cung-ty_chuot { grid-area: 4 / 3; }
+.cung-hoi    { grid-area: 4 / 4; }
 
 /* Center (Thien Ban) */
 .cung-thien-ban {
-    grid-area: 2 / 2 / 4 / 4; /* Spans Row 2-3, Col 2-3 */
-    background: #fff8e1; /* Light yellow background for center */
-    border: 2px solid #d4af37;
+    grid-area: 2 / 2 / 4 / 4;
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border: 2px solid #ffb300;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    z-index: 10;
+    padding: 15px;
+    box-shadow: inset 0 0 20px rgba(255, 193, 7, 0.2);
 }
 
-/* Star Styles */
-.star-chinh-tinh { font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 2px; }
-.star-phu-tinh-tot { color: #2e7d32; display: inline-block; margin-right: 3px; }
-.star-phu-tinh-xau { color: #c62828; display: inline-block; margin-right: 3px; }
-.star-vong-trang-sinh { color: #666; font-style: italic; font-size: 0.9em; position: absolute; bottom: 2px; right: 2px; }
-.tieu-van-label { position: absolute; top: 2px; right: 2px; font-weight: bold; color: #555; }
-.dai-van-label { position: absolute; bottom: 2px; left: 2px; font-weight: bold; color: #000; }
-.palace-name {
-    text-align: center;
-    font-weight: bold;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 5px;
-    padding-bottom: 2px;
-    background: #f0f0f0;
-    color: #333;
-}
-.palace-header { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 2px; }
-
-/* Tuan / Triet */
-.tuan-triet-marker {
-    position: absolute;
-    background: #000;
-    color: #fff;
-    padding: 1px 3px;
-    font-size: 9px;
-    border-radius: 2px;
-    z-index: 5;
+.info-user h3 {
+    margin: 0 0 10px 0;
+    color: #d32f2f;
+    font-weight: 700;
+    font-size: 1.5em;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
 }
 
-/* Triet logic depends on boundary between palaces. Simplification: Mark on palace */
-.is-triet { border-right: 3px solid #333; }
-.is-tuan { border-right: 3px dashed #666; }
+.info-user p {
+    margin: 3px 0;
+    font-size: 14px;
+}
 
-/* Tooltip custom */
-.star-tooltip { cursor: help; border-bottom: 1px dotted #999; }
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .la-so-tu-vi-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto; /* Stacked */
+        aspect-ratio: auto;
+    }
+
+    .cung-thien-ban {
+        grid-area: 1 / 1 / 2 / 3; /* Top full width */
+        margin-bottom: 10px;
+    }
+
+    /* Reset specific grid areas for mobile stack */
+    .cung-so { grid-area: auto !important; }
+}
