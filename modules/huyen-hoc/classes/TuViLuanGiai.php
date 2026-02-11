@@ -56,6 +56,17 @@ class TuViLuanGiai {
                 }
             }
 
+            // Integrate Advanced Pattern Recognition for Menh
+            if ($key == 'menh' && class_exists('\\NukeViet\\Module\\HuyenHoc\\TuViAdvanced')) {
+                $adv = new TuViAdvanced(['dia_ban' => $chart['dia_ban'], 'meta' => $chart['meta']]);
+                $advPatterns = $adv->detectCachCuc();
+                if ($advPatterns) {
+                    foreach ($advPatterns as $pat) {
+                         $reading['general'][] = ['star' => 'Cách Cục Đặc Biệt', 'content' => "<strong>" . $pat['name'] . ":</strong> " . $pat['content']];
+                    }
+                }
+            }
+
             $strength = $this->assessPalaceStrength($palace, $key, $chart['thien_ban']['menh_ngu_hanh']);
             $reading['evaluation'] = $strength;
 
@@ -79,6 +90,66 @@ class TuViLuanGiai {
         }
 
         return $result;
+    }
+
+    public function luanGiaiNguoiThan($chart, $relation) {
+        if (!class_exists('\\NukeViet\\Module\\HuyenHoc\\TuViAdvanced')) return null;
+
+        $adv = new TuViAdvanced(['dia_ban' => $chart['dia_ban'], 'meta' => $chart['meta']]);
+        $shiftedData = $adv->lapCucNguoiThan($relation);
+
+        if (!$shiftedData) return null;
+
+        $result = [
+            'title' => $shiftedData['title'],
+            'readings' => []
+        ];
+
+        // Analyze mapped palaces
+        foreach ($shiftedData['mapping'] as $item) {
+            $palaceName = $item['chuc_nang_moi'];
+            $palaceData = $item['cung_goc'];
+            $realPos = $item['real_pos'];
+
+            // Normalize key for reading lookup (e.g. "Mệnh" -> "menh")
+            $key = $this->normalizePalaceName($palaceName);
+
+            // Use existing reading logic but pass the "real" palace data
+            // Note: $palaceData contains the stars of the REAL position.
+            // But we are interpreting it as the NEW function (e.g. original Phuc Duc is now Spouse's Quan Loc).
+            // So we should look up meanings for "Quan Loc" ($key='quan_loc') using stars in $palaceData.
+
+            // Handle VCD for the shifted palace
+            if (empty($palaceData['chinh_tinh'])) {
+                 $borrowed = $this->resolveVCD($realPos, $chart);
+                 $palaceData['chinh_tinh_borrowed'] = $borrowed;
+            }
+
+            $reading = $this->getPalaceReading($palaceData, $key, $chart);
+
+            $result['readings'][] = [
+                'name' => $palaceName,
+                'original_name' => $palaceData['palace_name'],
+                'desc' => $item['relation_desc'],
+                'reading' => $reading,
+                'stars' => $this->summarizeStars($palaceData)
+            ];
+        }
+
+        return $result;
+    }
+
+    private function summarizeStars($palace) {
+        $main = [];
+        foreach($palace['chinh_tinh'] as $s) $main[] = $s['name'];
+        if (empty($main) && !empty($palace['chinh_tinh_borrowed'])) {
+            $borrowed = [];
+            foreach($palace['chinh_tinh_borrowed'] as $s) $borrowed[] = $s['name'];
+            $mainStr = "Vô Chính Diệu (mượn " . implode(', ', $borrowed) . ")";
+        } else {
+            $mainStr = implode(', ', $main);
+        }
+        return $mainStr;
     }
 
     public function assessPreDestiny($chart) {
@@ -213,16 +284,40 @@ class TuViLuanGiai {
 
     private function analyzeMinorStarCombinations($palace, $palaceKey) {
         $combinations = [];
-        $hasStarLocal = function($code) use ($palace) {
-            foreach (array_merge($palace['phu_tinh_tot'], $palace['phu_tinh_xau']) as $s) {
-                if ($s['code'] == $code) return true;
-            }
-            return false;
-        };
+        $allStars = array_merge($palace['phu_tinh_tot'], $palace['phu_tinh_xau']);
+        $codes = array_map(function($s) { return $s['code']; }, $allStars);
 
-        if ($hasStarLocal('dao_hoa') && $hasStarLocal('hong_loan')) $combinations[] = ['code' => 'DAO_HONG', 'content' => "Đào Hồng hội chiếu: Duyên dáng, thu hút người khác phái."];
-        if ($hasStarLocal('van_xuong') && $hasStarLocal('van_khuc')) $combinations[] = ['code' => 'XUONG_KHUC', 'content' => "Xương Khúc đồng cung: Văn hay chữ tốt, học hành thông minh."];
-        if ($hasStarLocal('dia_khong') && $hasStarLocal('dia_kiep')) $combinations[] = ['code' => 'KHONG_KIEP', 'content' => "Không Kiếp đồng cung: Gian nan, thăng trầm, nhưng phát dã như lôi."];
+        // Tu Linh: Long Tri, Phuong Cac, Bach Ho, Hoa Cai
+        if (count(array_intersect(['long_tri', 'phuong_cac', 'bach_ho', 'hoa_cai'], $codes)) >= 3) {
+            $combinations[] = ['code' => 'TU_LINH', 'content' => "Bộ Tứ Linh (Long Phượng Hổ Cái): Công danh hiển hách, sự nghiệp vẻ vang, được trọng vọng."];
+        }
+
+        // Luc Sat (Hoi Tu): Kinh Da Khong Kiep Hoa Linh
+        $satCount = count(array_intersect(['kinh_duong', 'da_la', 'dia_khong', 'dia_kiep', 'hoa_tinh', 'linh_tinh'], $codes));
+        if ($satCount >= 3) {
+            $combinations[] = ['code' => 'LUC_SAT_HOI_TU', 'content' => "Lục Sát hội tụ: Cuộc đời nhiều sóng gió, tai ương, cần tu tâm dưỡng tính để hóa giải."];
+        }
+
+        // Dao Hong
+        if (in_array('dao_hoa', $codes) && in_array('hong_loan', $codes)) {
+            $combinations[] = ['code' => 'DAO_HONG', 'content' => "Đào Hồng hội chiếu: Duyên dáng, thu hút người khác phái, tình duyên phong phú."];
+        }
+
+        // Xuong Khuc
+        if (in_array('van_xuong', $codes) && in_array('van_khuc', $codes)) {
+            $combinations[] = ['code' => 'XUONG_KHUC', 'content' => "Xương Khúc đồng cung: Văn hay chữ tốt, học hành thông minh, có năng khiếu nghệ thuật."];
+        }
+
+        // Khong Kiep
+        if (in_array('dia_khong', $codes) && in_array('dia_kiep', $codes)) {
+            $combinations[] = ['code' => 'KHONG_KIEP', 'content' => "Không Kiếp đồng cung: Gian nan, thăng trầm, bạo phát bạo tàn."];
+        }
+
+        // Tu Hoa (Khoa Quyen Loc)
+        $tuHoaCount = count(array_intersect(['hoa_khoa', 'hoa_quyen', 'hoa_loc'], $codes));
+        if ($tuHoaCount >= 2) {
+             $combinations[] = ['code' => 'TAM_HOA_LIEN_CHAU', 'content' => "Tam Hóa (Khoa Quyền Lộc): Phú quý song toàn, danh tiếng lẫy lừng."];
+        }
 
         return $combinations;
     }
@@ -233,7 +328,45 @@ class TuViLuanGiai {
     }
 
     private function identifyPatterns($palace, $palaceKey, $chart) {
-        return [];
+        $patterns = [];
+        $stars = [];
+        foreach ($palace['chinh_tinh'] as $s) $stars[] = $s['code'];
+        // If VCD, check borrowed
+        if (empty($stars) && !empty($palace['chinh_tinh_borrowed'])) {
+            foreach ($palace['chinh_tinh_borrowed'] as $s) $stars[] = $s['code'];
+        }
+
+        // 1. Tu Phu Vu Tuong (Leadership)
+        // Check if any of Tu Vi, Thien Phu, Vu Khuc, Thien Tuong, Liem Trinh are present
+        $groupTPVT = ['tu_vi', 'thien_phu', 'vu_khuc', 'thien_tuong', 'liem_trinh'];
+        if (array_intersect($stars, $groupTPVT)) {
+             $patterns[] = ['code' => 'TU_PHU_VU_TUONG', 'content' => "Cách Tử Phủ Vũ Tướng: Có tài lãnh đạo, quản lý, cuộc sống thường ổn định, uy quyền."];
+        }
+
+        // 2. Sat Pha Tham (Action)
+        $groupSPT = ['that_sat', 'pha_quan', 'tham_lang'];
+        if (array_intersect($stars, $groupSPT)) {
+            $patterns[] = ['code' => 'SAT_PHA_THAM', 'content' => "Cách Sát Phá Tham: Cá tính mạnh mẽ, hành động quyết liệt, thích hợp kinh doanh hoặc võ nghiệp."];
+        }
+
+        // 3. Co Nguyet Dong Luong (Stability/Support)
+        $groupCNDL = ['thien_co', 'thai_am', 'thien_dong', 'thien_luong'];
+        if (array_intersect($stars, $groupCNDL)) {
+            $patterns[] = ['code' => 'CO_NGUYET_DONG_LUONG', 'content' => "Cách Cơ Nguyệt Đồng Lương: Thích ổn định, làm công ăn lương, hành chính, văn phòng hoặc phúc lợi."];
+        }
+
+        // 4. Cu Nhat (Public/Speech)
+        $groupCN = ['cu_mon', 'thai_duong'];
+        if (array_intersect($stars, $groupCN)) {
+            $patterns[] = ['code' => 'CU_NHAT', 'content' => "Cách Cự Nhật: Giỏi ăn nói, ngoại giao, làm việc liên quan đến ngôn ngữ, luật pháp hoặc chính trị."];
+        }
+
+        // 5. Nhat Nguyet (Sun/Moon)
+        if (in_array('thai_duong', $stars) && in_array('thai_am', $stars)) {
+             $patterns[] = ['code' => 'NHAT_NGUYET', 'content' => "Cách Nhật Nguyệt đồng tranh: Thông minh nhưng hay thay đổi, cuộc đời nhiều biến động sáng tối."];
+        }
+
+        return $patterns;
     }
 
     private function assessPalaceStrength($palace, $palaceKey, $menhElement) {
@@ -242,7 +375,7 @@ class TuViLuanGiai {
         $badStars = 0;
 
         foreach ($palace['chinh_tinh'] as $s) {
-            if (in_array($s['dacs'], ['M', 'V', 'Đ'])) { $score += 2; $goodStars++; }
+            if (in_array($s['dacs'], ['M', 'V', 'Đ', 'D'])) { $score += 2; $goodStars++; }
             elseif ($s['dacs'] == 'H') { $score -= 2; $badStars++; }
         }
         foreach ($palace['phu_tinh_tot'] as $s) { $score += 1; $goodStars++; }
@@ -265,7 +398,72 @@ class TuViLuanGiai {
     }
 
     public function calculateScore($chart) {
-        return 75;
+        $score = 50; // Base score
+        $menhIdx = $chart['meta']['menh_idx'];
+        $menhPalace = $chart['dia_ban'][$menhIdx];
+
+        // 1. Am Duong / Ngu Hanh (+/- 5-10 pts)
+        $meta = $chart['meta'];
+        $isYearYang = ($meta['canYear'] % 2 == 0);
+        $isPalaceYang = ($menhIdx % 2 == 0);
+        if ($isYearYang == $isPalaceYang) $score += 5; else $score -= 2;
+
+        // Menh vs Cuc
+        $cucMap = [2=>1, 6=>2, 5=>3, 4=>4, 3=>5]; // Cuc ID to Element ID
+        $cucEl = isset($cucMap[$meta['cuc_id']]) ? $cucMap[$meta['cuc_id']] : 0;
+        $menhEl = $meta['menh_element_id'];
+
+        // Simple relation check (Sinh/Khac)
+        $sinh = [4=>1, 1=>5, 5=>2, 2=>3, 3=>4]; // Kim(4)->Thuy(1)...
+        $khac = [4=>5, 5=>3, 3=>1, 1=>2, 2=>4];
+
+        if ($menhEl == $cucEl) $score += 2; // Binh Hoa
+        elseif (isset($sinh[$cucEl]) && $sinh[$cucEl] == $menhEl) $score += 5; // Cuc Sinh Menh (Tot)
+        elseif (isset($sinh[$menhEl]) && $sinh[$menhEl] == $cucEl) $score -= 2; // Menh Sinh Cuc (Hao)
+        elseif (isset($khac[$cucEl]) && $khac[$cucEl] == $menhEl) $score -= 5; // Cuc Khac Menh (Xau)
+        elseif (isset($khac[$menhEl]) && $khac[$menhEl] == $cucEl) $score += 3; // Menh Khac Cuc (Kha)
+
+        // 2. Chinh Tinh in Menh
+        $stars = $menhPalace['chinh_tinh'];
+        if (empty($stars)) {
+            // VCD: Check borrowed? usually VCD is weaker unless good borrowed stars.
+            // Let's take borrowed stars but reduce value.
+            $stars = $menhPalace['chinh_tinh_borrowed'];
+            $score -= 5; // Penalty for VCD
+        }
+
+        foreach ($stars as $s) {
+            switch ($s['dacs']) {
+                case 'M': $score += 5; break; // Mieu
+                case 'V': $score += 4; break; // Vuong
+                case 'D': case 'Đ': $score += 3; break; // Dac
+                case 'B': $score += 1; break; // Binh
+                case 'H': $score -= 5; break; // Ham
+                default: break;
+            }
+        }
+
+        // 3. Phu Tinh (Luc Sat / Luc Cat)
+        // Luc Cat: Van Xuong, Van Khuc, Ta Phu, Huu Bat, Thien Khoi, Thien Viet (+1 each)
+        $goodCodes = ['van_xuong', 'van_khuc', 'ta_phu', 'huu_bat', 'thien_khoi', 'thien_viet', 'hoa_khoa', 'hoa_quyen', 'hoa_loc', 'loc_ton'];
+        foreach ($menhPalace['phu_tinh_tot'] as $s) {
+            if (in_array($s['code'], $goodCodes)) $score += 1;
+        }
+
+        // Luc Sat: Kinh Duong, Da La, Dia Khong, Dia Kiep, Hoa Tinh, Linh Tinh (-2 each unless Dac)
+        $badCodes = ['kinh_duong', 'da_la', 'dia_khong', 'dia_kiep', 'hoa_tinh', 'linh_tinh'];
+        foreach ($menhPalace['phu_tinh_xau'] as $s) {
+            if (in_array($s['code'], $badCodes)) {
+                if ($s['dacs'] == 'D' || $s['dacs'] == 'M') $score += 1; // Dac dia phat da nhu loi
+                else $score -= 2;
+            }
+        }
+
+        // Clamp
+        if ($score > 100) $score = 100;
+        if ($score < 0) $score = 0;
+
+        return $score;
     }
 
     private function fetchContent($starKey, $palaceKey, $topic = '') {

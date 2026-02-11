@@ -80,12 +80,14 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
             $data['can_chi_gio'] = $info['can_chi']['gio'];
 
             $data['tiet_khi'] = $info['tiet_khi'];
-            $data['ngay_hoang_dao'] = $info['ngay_hoang_dao']['msg']; // Use msg for full text
+            $data['ngay_hoang_dao'] = $info['ngay_hoang_dao']['msg'];
             $data['ngay_hoang_dao_type'] = $info['ngay_hoang_dao']['type'];
 
-            // Get Lucky Hours list from LunarCalendar (LichVanNien doesn't provide list yet)
+            $data['ly_thuan_phong'] = $info['ly_thuan_phong'];
+            $data['tuoi_xung'] = $info['tuoi_xung'];
+            $data['huong_xuat_hanh'] = $info['huong_xuat_hanh'];
+
             if (class_exists('\\NukeViet\\Module\\HuyenHoc\\LunarCalendar')) {
-                // LichVanNien provides IDs for easy lookup
                 $chiNgay = $info['ids']['chi_ngay'];
                 $data['gio_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getGioHoangDao($chiNgay);
             }
@@ -106,7 +108,6 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
             $data['gio_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getGioHoangDao($canChiInfo['chi_index']);
             $data['ngay_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getNgayHoangDao($canChiInfo['chi_index'], $lunar['month']);
         } else {
-             // Basic Fallback
              $data['lunar_day'] = '?';
              $data['gio_hoang_dao'] = [];
         }
@@ -116,7 +117,6 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
             $block_tpl_name = 'block_lich_van_nien.tpl';
             $block_tpl_path = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_info['module_theme'];
         } else {
-            // Default template in module
             $block_tpl_name = 'block_lich_van_nien.tpl';
             $block_tpl_path = NV_ROOTDIR . '/themes/default/modules/' . $module_file;
         }
@@ -124,7 +124,10 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
         $xtpl = new XTemplate($block_tpl_name, $block_tpl_path);
         $xtpl->assign('DATA', $data);
         $xtpl->assign('BLOCK_ID', $block_config['bid']);
-        $xtpl->assign('MODULE_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_info['module_theme']);
+
+        // Use module_file to ensure we target the huyen-hoc module for AJAX
+        $xtpl->assign('MODULE_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_file);
+        $xtpl->assign('AJAX_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_file . '&' . NV_OP_VARIABLE . '=ajax&action=block_calendar');
 
         if (isset($block_config['show_zodiac']) && $block_config['show_zodiac'] && !empty($data['gio_hoang_dao'])) {
             foreach ($data['gio_hoang_dao'] as $gio) {
@@ -132,6 +135,14 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
                 $xtpl->parse('main.show_zodiac.loop');
             }
             $xtpl->parse('main.show_zodiac');
+        }
+
+        if (!empty($data['ly_thuan_phong'])) {
+            foreach ($data['ly_thuan_phong'] as $ltp) {
+                $xtpl->assign('LTP', $ltp);
+                $xtpl->parse('main.show_ltp.loop');
+            }
+            $xtpl->parse('main.show_ltp');
         }
 
         $xtpl->parse('main');

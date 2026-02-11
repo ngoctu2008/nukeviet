@@ -12,7 +12,7 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
 }
 
 // Include classes manually if autoload fails
-$classes = ['TuViLapSo', 'TuViLuanGiai', 'FengShuiUtils', 'LunarCalendar'];
+$classes = ['TuViLapSo', 'TuViLuanGiai', 'FengShuiUtils', 'LunarCalendar', 'LichVanNien', 'TuViAdvanced'];
 foreach ($classes as $cls) {
     $file = NV_ROOTDIR . '/modules/' . $module_file . '/classes/' . $cls . '.php';
     if (file_exists($file)) {
@@ -23,6 +23,8 @@ foreach ($classes as $cls) {
 use NukeViet\Module\HuyenHoc\TuViLapSo;
 use NukeViet\Module\HuyenHoc\TuViLuanGiai;
 use NukeViet\Module\HuyenHoc\LunarCalendar;
+use NukeViet\Module\HuyenHoc\LichVanNien;
+use NukeViet\Module\HuyenHoc\TuViAdvanced;
 
 // Ensure JSON header if AJAX
 if ($nv_Request->isset_request('nv_ajax', 'get,post')) {
@@ -30,6 +32,139 @@ if ($nv_Request->isset_request('nv_ajax', 'get,post')) {
 }
 
 $action = $nv_Request->get_string('action', 'get,post', '');
+
+if ($action == 'block_calendar') {
+    try {
+        $day = $nv_Request->get_int('day', 'get', date('j'));
+        $month = $nv_Request->get_int('month', 'get', date('n'));
+        $year = $nv_Request->get_int('year', 'get', date('Y'));
+
+        // Solar Info
+        $daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+        $timestamp = mktime(12, 0, 0, $month, $day, $year);
+        $wday = date('w', $timestamp);
+
+        $data = [
+            'solar_day' => $day,
+            'solar_month' => $month,
+            'solar_year' => $year,
+            'day_of_week' => $daysOfWeek[$wday]
+        ];
+
+        $app = new LichVanNien();
+        $info = $app->getInfo($day, $month, $year, 12);
+
+        $data['lunar_day'] = $info['am_lich']['day'];
+        $data['lunar_month'] = $info['am_lich']['month'];
+        $data['lunar_year'] = $info['am_lich']['year'];
+        $data['is_leap'] = $info['am_lich']['leap'];
+
+        $data['can_chi_day'] = $info['can_chi']['ngay'];
+        $data['can_chi_month'] = $info['can_chi']['thang'];
+        $data['can_chi_year'] = $info['can_chi']['nam'];
+
+        $data['tiet_khi'] = $info['tiet_khi'];
+        $data['ngay_hoang_dao'] = $info['ngay_hoang_dao']['msg'];
+        $data['ngay_hoang_dao_type'] = $info['ngay_hoang_dao']['type'];
+
+        $data['ly_thuan_phong'] = $info['ly_thuan_phong'];
+        $data['tuoi_xung'] = $info['tuoi_xung'];
+        $data['huong_xuat_hanh'] = $info['huong_xuat_hanh'];
+
+        // Lucky Hours
+        $chiNgay = $info['ids']['chi_ngay'];
+        $data['gio_hoang_dao'] = LunarCalendar::getGioHoangDao($chiNgay);
+
+        echo json_encode(['status' => 'success', 'data' => $data]);
+        die();
+
+    } catch (\Exception $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        die();
+    }
+}
+
+if ($action == 'luan_giai_nguoi_than') {
+    try {
+        $relation = $nv_Request->get_string('relation', 'post', '');
+
+        // Full Birth Data (Solar) - Reconstruct Chart
+        $birthDay = $nv_Request->get_int('birthDay', 'post', 0);
+        $birthMonth = $nv_Request->get_int('birthMonth', 'post', 0);
+        $birthYear = $nv_Request->get_int('birthYear', 'post', 0);
+        $birthHour = $nv_Request->get_int('birthHour', 'post', 0);
+        $gender = $nv_Request->get_int('gender', 'post', 1);
+
+        if ($birthDay == 0 || $birthYear == 0) {
+             throw new Exception("Dữ liệu ngày sinh không hợp lệ.");
+        }
+
+        $lunar = LunarCalendar::convertSolar2Lunar($birthDay, $birthMonth, $birthYear);
+        $canChi = LunarCalendar::getCanChi($lunar['day'], $lunar['month'], $lunar['year'], $birthHour);
+
+        $laSoData = TuViLapSo::lapLaSo(
+            $lunar['day'], $lunar['month'], $lunar['year'], $birthHour, $gender,
+            $canChi['canYear'], $canChi['chiYear'], 'User'
+        );
+
+        $interpreter = new TuViLuanGiai();
+        $relativeData = $interpreter->luanGiaiNguoiThan($laSoData, $relation);
+
+        if (!$relativeData) {
+            throw new Exception("Không thể luận giải cho mối quan hệ này.");
+        }
+
+        $html = '<div class="alert alert-success text-center"><strong>' . $relativeData['title'] . '</strong></div>';
+        $html .= '<div class="accordion" id="accordionRelative">';
+
+        foreach ($relativeData['readings'] as $idx => $reading) {
+            $collapseId = "collapseRel" . $idx;
+            $html .= '<div class="card">';
+            $html .= '<div class="card-header" id="heading' . $idx . '">';
+            $html .= '<h5 class="mb-0"><button class="btn btn-link" type="button" data-toggle="collapse" data-target="#' . $collapseId . '">';
+            $html .= $reading['name'] . ' (' . $reading['original_name'] . ')';
+            $html .= '</button></h5></div>';
+
+            $html .= '<div id="' . $collapseId . '" class="collapse ' . ($idx==0?'show':'') . '" data-parent="#accordionRelative">';
+            $html .= '<div class="card-body">';
+            $html .= '<p class="text-muted small"><em>' . $reading['desc'] . '</em></p>';
+            $html .= '<p><strong>Sao chính:</strong> ' . $reading['stars'] . '</p>';
+
+            // Loop through interpretation details
+            if (!empty($reading['reading']['chinh_tinh'])) {
+                 $html .= '<h6>Chính Tinh:</h6><ul>';
+                 foreach ($reading['reading']['chinh_tinh'] as $ct) {
+                     $html .= '<li><strong>' . $ct['star'] . ':</strong> ' . $ct['content'] . '</li>';
+                 }
+                 $html .= '</ul>';
+            }
+             if (!empty($reading['reading']['phu_tinh'])) {
+                 $html .= '<h6>Phụ Tinh quan trọng:</h6><ul>';
+                 foreach ($reading['reading']['phu_tinh'] as $pt) {
+                     $html .= '<li><strong>' . $pt['star'] . ':</strong> ' . $pt['content'] . '</li>';
+                 }
+                 $html .= '</ul>';
+            }
+            if (!empty($reading['reading']['general'])) {
+                 $html .= '<h6>Tổng Quan & Cách Cục:</h6><ul>';
+                 foreach ($reading['reading']['general'] as $g) {
+                     $html .= '<li><strong>' . $g['star'] . ':</strong> ' . $g['content'] . '</li>';
+                 }
+                 $html .= '</ul>';
+            }
+
+            $html .= '</div></div></div>';
+        }
+        $html .= '</div>';
+
+        echo json_encode(['status' => 'success', 'html' => $html]);
+        die();
+
+    } catch (\Exception $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        die();
+    }
+}
 
 if ($action == 'xem_han') {
     try {
@@ -49,34 +184,23 @@ if ($action == 'xem_han') {
         }
 
         // 1. Convert Solar to Lunar & Get Chart
-        // We need the full chart to know what stars are in each palace for the Monthly Limits
         $lunar = LunarCalendar::convertSolar2Lunar($birthDay, $birthMonth, $birthYear);
         $canChi = LunarCalendar::getCanChi($lunar['day'], $lunar['month'], $lunar['year'], $birthHour);
 
         $laSoData = TuViLapSo::lapLaSo(
-            $lunar['day'],
-            $lunar['month'],
-            $lunar['year'],
-            $birthHour,
-            $gender,
-            $canChi['canYear'],
-            $canChi['chiYear'],
-            'User' // Name doesn't matter for limits
+            $lunar['day'], $lunar['month'], $lunar['year'], $birthHour, $gender,
+            $canChi['canYear'], $canChi['chiYear'], 'User'
         );
 
-        $chart = $laSoData['dia_ban']; // 0..11 indexed
-        $chiYear = $canChi['chiYear']; // Use calculated chiYear
+        $chart = $laSoData['dia_ban'];
+        $chiYear = $canChi['chiYear'];
 
         // 2. Calculate Limits
-        // Ensure inputs are integers
         $targetYear = (int)$targetYear;
         $gender = (int)$gender;
         $birthYear = (int)$birthYear;
 
-        // Validation
-        if ($targetYear < $birthYear) {
-             throw new Exception("Năm xem hạn phải lớn hơn hoặc bằng năm sinh ($birthYear).");
-        }
+        if ($targetYear < $birthYear) throw new Exception("Năm xem hạn phải lớn hơn hoặc bằng năm sinh ($birthYear).");
 
         $limitInfo = TuViLapSo::getLimitInfoForYear($chiYear, $gender, $targetYear, $birthYear);
 
@@ -101,11 +225,6 @@ if ($action == 'xem_han') {
 
         // Luan Giai Chi Tiet Sao Luu
         $interpreter = new TuViLuanGiai();
-        // Pass $limitInfo to interpreter if needed, or analyze manually
-        // Since TuViLuanGiai might not have specific limit analysis methods exposed or context-aware without chart, we do basic here.
-        // Actually, TuViLuanGiai might have analyzeLuuStars but we need to check if it accepts $limitInfo structure.
-        // In previous steps, I might have added it. Let's assume yes or implement basic.
-        // Checking previous read of ajax.php, it called $interpreter->analyzeLuuStars($limitInfo).
 
         if (method_exists($interpreter, 'analyzeLuuStars')) {
             $luuComments = $interpreter->analyzeLuuStars($limitInfo);
@@ -131,21 +250,16 @@ if ($action == 'xem_han') {
 
             if ($palaceData) {
                 $palaceName .= ' (' . $palaceData['palace_name'] . ')';
-
-                // List Main Stars
                 $stars = [];
                 foreach ($palaceData['chinh_tinh'] as $s) {
                     $stars[] = '<strong>' . $s['name'] . '</strong>';
                 }
-                // List Good/Bad Stars (Selective)
                 foreach ($palaceData['phu_tinh_xau'] as $s) {
-                     // Highlight bad stars
                      if (in_array($s['code'], ['kinh_duong', 'da_la', 'hoa_tinh', 'linh_tinh', 'dia_khong', 'dia_kiep', 'hoa_ky'])) {
                          $stars[] = '<span class="text-danger">' . $s['name'] . '</span>';
                      }
                 }
                  foreach ($palaceData['phu_tinh_tot'] as $s) {
-                     // Highlight good stars
                      if (in_array($s['code'], ['loc_ton', 'hoa_loc', 'hoa_quyen', 'hoa_khoa', 'thien_khoi', 'thien_viet'])) {
                          $stars[] = '<span class="text-success">' . $s['name'] . '</span>';
                      }
@@ -157,7 +271,6 @@ if ($action == 'xem_han') {
                     $detail = 'Bình thường';
                 }
             }
-
             $html .= '<tr><td class="text-center">' . $m . '</td><td>' . $palaceName . '</td><td>' . $detail . '</td></tr>';
         }
         $html .= '</tbody></table></div></div>';
