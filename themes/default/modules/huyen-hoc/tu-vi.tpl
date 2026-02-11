@@ -304,9 +304,12 @@
                 if(res.status == 'success') {
                     $('#ket-qua-han').html(res.html);
                 } else {
-                    $('#ket-qua-han').html('<p class="text-danger">{LANG.error}</p>');
+                    var msg = res.message ? res.message : '{LANG.error}';
+                    $('#ket-qua-han').html('<p class="text-danger">' + msg + '</p>');
                 }
-            }, 'json');
+            }, 'json').fail(function() {
+                $('#ket-qua-han').html('<p class="text-danger">{LANG.error}</p>');
+            });
         });
     });
 </script>
