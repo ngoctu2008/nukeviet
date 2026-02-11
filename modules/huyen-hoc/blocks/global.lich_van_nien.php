@@ -2,9 +2,9 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author Jules (ai@nukeviet.vn)
- * @Copyright (C) 2024 Jules. All rights reserved
- * @Createdate Mon, 21 Oct 2024 00:00:00 GMT
+ * @Author VINADES.,JSC <contact@vinades.vn>
+ * @Copyright (C) 2024 VINADES.,JSC. All rights reserved
+ * @License: http://opensource.org/licenses/mit-license.php MIT License
  */
 
 if (!defined('NV_MAINFILE')) {
@@ -13,133 +13,117 @@ if (!defined('NV_MAINFILE')) {
 
 if (!nv_function_exists('nv_block_config_lich_van_nien')) {
     /**
-     * nv_block_config_lich_van_nien()
-     *
-     * @param mixed $module
-     * @param mixed $data_block
-     * @param mixed $lang_block
-     * @return
+     * Cấu hình block trong AdminCP
      */
     function nv_block_config_lich_van_nien($module, $data_block, $lang_block)
     {
-        $html = '';
+        $html = '<div class="form-group row">';
+        $html .= '<label class="col-sm-4 control-label">Hiển thị giờ Hoàng Đạo</label>';
+        $html .= '<div class="col-sm-8">';
+        $html .= '<input type="checkbox" name="config_show_zodiac" value="1" ' . (isset($data_block['show_zodiac']) && $data_block['show_zodiac'] ? 'checked="checked"' : '') . ' />';
+        $html .= '</div></div>';
         return $html;
     }
 
     /**
-     * nv_block_config_lich_van_nien_submit()
-     *
-     * @param mixed $module
-     * @param mixed $lang_block
-     * @return
+     * Lưu cấu hình block
      */
     function nv_block_config_lich_van_nien_submit($module, $lang_block)
     {
-        return array();
+        global $nv_Request;
+        return [
+            'show_zodiac' => $nv_Request->get_int('config_show_zodiac', 'post', 0),
+        ];
     }
 
     /**
-     * nv_block_lich_van_nien()
-     *
-     * @param mixed $block_config
-     * @return
+     * Hiển thị block ngoài Front-end
      */
     function nv_block_lich_van_nien($block_config)
     {
-        global $site_mods, $module_info, $module_name, $module_file, $module_data;
+        global $module_info, $module_file;
 
-        $module = $block_config['module'];
-
-        // Ensure necessary classes are loaded
-        if (!class_exists('\\NukeViet\\Module\\HuyenHoc\\LunarCalendar')) {
-            // Check if Huyen Hoc is active
-            if (isset($site_mods['huyen-hoc'])) {
-                $module_path = NV_ROOTDIR . '/modules/' . $site_mods['huyen-hoc']['module_file'];
-                require_once $module_path . '/classes/LunarCalendar.php';
-            } else {
-                 // Try relative to current block file if module not active or standard
-                 if (file_exists(NV_ROOTDIR . '/modules/huyen-hoc/classes/LunarCalendar.php')) {
-                     require_once NV_ROOTDIR . '/modules/huyen-hoc/classes/LunarCalendar.php';
-                 }
-            }
-        }
-
-        // Use current date or request date (future enhancement)
-        $day = (int)date('d');
-        $month = (int)date('m');
-        $year = (int)date('Y');
-        $time = time();
-
-        if (file_exists(NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/huyen-hoc/block_lich_van_nien.tpl')) {
-            $block_theme = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/huyen-hoc';
+        // Use Module's LunarCalendar Class if available
+        $classFile = NV_ROOTDIR . '/modules/' . $module_file . '/classes/LunarCalendar.php';
+        if (file_exists($classFile)) {
+            require_once $classFile;
+            $useModuleClass = true;
         } else {
-            $block_theme = NV_ROOTDIR . '/themes/default/modules/huyen-hoc';
+            // Fallback to core if exists
+            if (file_exists(NV_ROOTDIR . '/includes/core/amlich.php')) {
+                require_once NV_ROOTDIR . '/includes/core/amlich.php';
+            }
+            $useModuleClass = false;
         }
 
-        $xtpl = new XTemplate('block_lich_van_nien.tpl', $block_theme);
+        $today = getdate();
+        $day = $today['mday'];
+        $month = $today['mon'];
+        $year = $today['year'];
 
-        $xtpl->assign('TEMPLATE', $module_info['template']);
-        $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+        $data = [];
+        $data['solar'] = sprintf('%02d/%02d/%04d', $day, $month, $year);
 
-        // Solar Info
-        $solar_info = array(
-            'day' => $day,
-            'month' => $month,
-            'year' => $year,
-            'day_name' => nv_date('l', $time), // e.g. "Thứ Bảy"
-            'full_date' => nv_date('l, d/m/Y', $time)
-        );
-        $xtpl->assign('SOLAR', $solar_info);
+        if ($useModuleClass && class_exists('\\NukeViet\\Module\\HuyenHoc\\LunarCalendar')) {
+            $lunar = \NukeViet\Module\HuyenHoc\LunarCalendar::convertSolar2Lunar($day, $month, $year, 7.0);
+            $data['lunar_day'] = $lunar['day'];
+            $data['lunar_month'] = $lunar['month'];
+            $data['lunar_year'] = $lunar['year'];
+            $data['is_leap'] = $lunar['leap'];
 
-        // Lunar Info
-        $lunar = \NukeViet\Module\HuyenHoc\LunarCalendar::convertSolar2Lunar($day, $month, $year, 7.0);
+            // Get Can Chi using Module Class logic
+            $canChi = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiDay($day, $month, $year);
+            $data['can_chi_day'] = $canChi;
+            $data['can_chi_month'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiMonth($lunar['month'], $lunar['year']);
+            $data['can_chi_year'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiYear($lunar['year']);
 
-        // convertSolar2Lunar returns array with keys: 'day', 'month', 'year', 'leap'
-        // Ensure robust access (sometimes returned as indexed array in old versions or different contexts?)
-        // Based on current read of LunarCalendar.php, it returns named keys.
+        } elseif (function_exists('convertSolar2Lunar')) {
+            // Core amlich.php usage
+            $lunar = convertSolar2Lunar($day, $month, $year, 7.0);
+            $data['lunar_day'] = $lunar[0];
+            $data['lunar_month'] = $lunar[1];
+            $data['lunar_year'] = $lunar[2];
+            $data['is_leap'] = $lunar[3];
 
-        $lunarDay = isset($lunar['day']) ? $lunar['day'] : $lunar[0];
-        $lunarMonth = isset($lunar['month']) ? $lunar['month'] : $lunar[1];
-        $lunarYear = isset($lunar['year']) ? $lunar['year'] : $lunar[2];
-        $lunarLeap = isset($lunar['leap']) ? $lunar['leap'] : (isset($lunar[3]) ? $lunar[3] : 0);
+            if (function_exists('getCanChiDay')) {
+                $data['can_chi_day'] = getCanChiDay($day, $month, $year);
+                $data['can_chi_month'] = getCanChiMonth($lunar[1], $lunar[2]);
+                $data['can_chi_year'] = getCanChiYear($lunar[2]);
+            }
+        } else {
+            // No calendar logic found
+            $data['lunar_day'] = '?';
+            $data['lunar_month'] = '?';
+            $data['lunar_year'] = '?';
+            $data['can_chi_day'] = '';
+            $data['can_chi_month'] = '';
+            $data['can_chi_year'] = '';
+        }
 
-        $can_chi_day = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiDay($day, $month, $year);
-        $can_chi_month = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiMonth($lunarMonth, $lunarYear);
-        $can_chi_year = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiYear($lunarYear);
+        // Determine template file
+        if (file_exists(NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_info['module_theme'] . '/block_lich_van_nien.tpl')) {
+            $block_tpl_name = 'block_lich_van_nien.tpl';
+            $block_tpl_path = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_info['module_theme'];
+        } else {
+            // Default template in module
+            $block_tpl_name = 'block_lich_van_nien.tpl';
+            $block_tpl_path = NV_ROOTDIR . '/themes/default/modules/' . $module_file;
+        }
 
-        // Hoang Dao / Hac Dao
-        $hoang_dao = \NukeViet\Module\HuyenHoc\LunarCalendar::getNgayHoangDao($lunarDay, $lunarMonth);
+        $xtpl = new XTemplate($block_tpl_name, $block_tpl_path);
+        $xtpl->assign('DATA', $data);
+        $xtpl->assign('BLOCK_ID', $block_config['bid']);
+        $xtpl->assign('MODULE_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_info['module_theme']);
 
-        // Truc (12 Truc)
-        $truc = \NukeViet\Module\HuyenHoc\LunarCalendar::getTruc($day, $month, $year);
-
-        // Tiet Khi
-        $tiet_khi = \NukeViet\Module\HuyenHoc\LunarCalendar::getTietKhi($day, $month, $year);
-
-        $lunar_info = array(
-            'day' => $lunarDay,
-            'month' => $lunarMonth,
-            'year' => $lunarYear,
-            'leap' => ($lunarLeap ? '(Nhuận)' : ''),
-            'can_chi_day' => $can_chi_day,
-            'can_chi_month' => $can_chi_month,
-            'can_chi_year' => $can_chi_year,
-            'hoang_dao' => $hoang_dao,
-            'truc' => $truc,
-            'tiet_khi' => $tiet_khi
-        );
-        $xtpl->assign('LUNAR', $lunar_info);
-
-        // Quote (Hardcoded or Random from DB if available)
-        $quotes = [
-            "Cuộc sống như một cuốn sách. Kẻ điên rồ giở qua nhanh chóng. Người khôn ngoan vừa đọc vừa suy nghĩ vì biết rằng mình chỉ được đọc có một lần. - Jean Paul",
-            "Hạnh phúc không phải là đích đến, mà là hành trình chúng ta đang đi.",
-            "Hãy hướng về phía mặt trời, bóng tối sẽ ngả về sau bạn."
-        ];
-        $quote = $quotes[array_rand($quotes)];
-        $xtpl->assign('QUOTE', $quote);
+        if (isset($block_config['show_zodiac']) && $block_config['show_zodiac']) {
+            $xtpl->parse('main.zodiac');
+        }
 
         $xtpl->parse('main');
         return $xtpl->text('main');
     }
+}
+
+if (defined('NV_SYSTEM')) {
+    $content = nv_block_lich_van_nien($block_config);
 }
