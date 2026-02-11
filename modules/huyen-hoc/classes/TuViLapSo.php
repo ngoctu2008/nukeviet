@@ -544,8 +544,8 @@ class TuViLapSo {
 
         // --- 1. Tieu Van Palace (Tieu Han) Logic Update ---
         // Rules:
-        // Than-Ty-Thin (8,0,4) -> Start Tuat (10)
         // Dan-Ngo-Tuat (2,6,10) -> Start Thin (4)
+        // Than-Ty-Thin (8,0,4) -> Start Tuat (10)
         // Ty-Dau-Suu (5,9,1) -> Start Mui (7)
         // Hoi-Mao-Mui (11,3,7) -> Start Suu (1)
         // Direction: Male Clockwise (1), Female Counter-Clockwise (-1)
@@ -573,11 +573,6 @@ class TuViLapSo {
         $phamThaiTue = ($chiYear == $targetChi);
 
         // --- 3. Cuu Dieu Tinh Quan (9 Stars) ---
-        // Male: 1=La Hau, 2=Tho Tu, 3=Thuy Dieu, 4=Thai Bach, 5=Thai Duong, 6=Van Hon, 7=Ke Do, 8=Thai Am, 0(9)=Moc Duc
-        // Female: 1=Ke Do, 2=Van Hon, 3=Moc Duc, 4=Thai Am, 5=Tho Tu, 6=La Hau, 7=Thai Duong, 8=Thai Bach, 0(9)=Thuy Dieu
-        // Based on user provided mapping:
-        // Nam: 10t (du 1) La Hau. So Age%9 = 1 -> La Hau.
-
         $stars9 = [
             1 => ['code' => 'la_hau', 'name' => 'La Hầu', 'type' => 'xau'],
             2 => ['code' => 'tho_tu', 'name' => 'Thổ Tú', 'type' => 'trung'],
@@ -637,8 +632,6 @@ class TuViLapSo {
 
         // Luu Loc Ton (Based on Year Can)
         // Can of Viewing Year.
-        // Need Can of Viewing Year. $targetYear.
-        // CanYear = ($targetYear - 4) % 10.
         $targetCan = ($targetYear - 4) % 10;
         if ($targetCan < 0) $targetCan += 10;
 
@@ -651,11 +644,6 @@ class TuViLapSo {
         $luuStars['luu_da_la'] = ($luuLoc - 1 + 12) % 12;
 
         // Luu Dao Hoa / Hong Loan
-        // Dao Hoa: Same as Thien Ma groups logic but different positions
-        // Dan/Ngo/Tuat -> Mao (3)
-        // Than/Ty/Thin -> Dau (9)
-        // Ty/Dau/Suu -> Ngo (6)
-        // Hoi/Mao/Mui -> Ty (0)
         $luuDao = 0;
         if (in_array($targetChi, [2, 6, 10])) $luuDao = 3;
         elseif (in_array($targetChi, [8, 0, 4])) $luuDao = 9;
@@ -669,74 +657,16 @@ class TuViLapSo {
         $luuStars['luu_hong_loan'] = $luuHong;
 
         // --- 4. Bat Han (8 Limits) ---
-        // Nam: 1=Huynh Tuyen, 2=Tam Kheo, 3=Ngu Mo, 4=Thien Tinh, 5=Toan Tan, 6=Thien La, 7=Dia Vong, 0(8)=Diem Vuong
-        // Nu: 1=Toan Tan, 2=Thien La, 3=Dia Vong, 4=Diem Vuong, 5=Huynh Tuyen, 6=Tam Kheo, 7=Ngu Mo, 0(8)=Thien Tinh
-        // User logic: "Nam 10t (du 1) han Tam Kheo..." -> Wait. User said remainder 1 is Tam Kheo?
-        // Let's re-read carefully: "Logic tính Hạn (Hạn niên) cũng tương tự theo tuổi [3] Ví dụ: Nam 10t (dư 1) hạn Tam Kheo..."
-        // Remainder of Age % 8 ? Or Age % 9? Usually Han is Age % 8? No, Han is usually mapped to Age directly or a different cycle.
-        // Standard:
-        // 10t: Nam La Hau, Nu Ke Do.
-        // 10t: Nam Huynh Tuyen, Nu Toan Tan? (Start depends on Age 10, 20, etc).
-        // Let's follow user's specific mapping request: "Nam 10t (dư 1) hạn Tam Kheo".
-        // Let's assume user implies Age % 9 for Han too? Or Age % 8?
-        // Standard Huyen Hoc:
-        // Nam: 10 Huynh Tuyen, 20 Tam Kheo...
-        // Let's stick to the user's explicit array request if provided.
-        // User array hint: "Mảng map tương tự cho Hạn: Huỳnh Tuyền, Tam Kheo, Ngũ Mộ, Thiên Tinh, Toán Tận, Thiên La, Địa Võng, Diêm Vương."
-        // And example: "Nam 10t (dư 1) hạn Tam Kheo".
-        // If 10 % 9 = 1 -> Tam Kheo.
-        // If 19 % 9 = 1 -> Tam Kheo.
-        // This suggests Age % 9 map for Han as well? Or Age % 8?
-        // Standard limits are 8 types. So Age % 8 makes more sense mathematically.
-        // If 10t is Tam Kheo (Nam). 10 % 8 = 2. So Remainder 2 = Tam Kheo.
-        // If 11t (11%8=3) -> Ngu Mo?
-        // Let's assume standard Age % 8 sequence starting from specific ages.
-        // BUT user said "Nam 10t (dư 1) hạn Tam Kheo". If modulo 9, 10%9=1. If modulo 8, 10%8=2.
-        // User text: "Logic tính Hạn... cũng tương tự theo tuổi... Ví dụ: Nam 10t (dư 1)..." -> Heavily implies Modulo 9 or consistent "Dư 1" concept.
-        // However, there are only 8 limits.
-        // Let's use the USER'S list order mapped to the USER'S example.
-        // User List: Huynh Tuyen, Tam Kheo, Ngu Mo, Thien Tinh, Toan Tan, Thien La, Dia Vong, Diem Vuong.
-        // If 1 -> Tam Kheo? Then 0 -> Huynh Tuyen?
-        // Let's use standard Vietnam Tu Vi Han logic for safety if ambiguous, OR implement strictly what is asked.
-        // "Ban can lap mang map tuong tu cho Han...".
-        // Let's map 1..8 (and 0) using standard knowledge + user hint.
-        // Standard Nam: 10 La Hau - Huynh Tuyen.
-        // User says 10 - Tam Kheo. This contradicts standard.
-        // "Nam 10t (dư 1) hạn Tam Kheo".
-        // I will follow the User's "Remainder 1 = Tam Kheo" pattern for Nam.
-        // Order: Huynh Tuyen, Tam Kheo, Ngu Mo, Thien Tinh, Toan Tan, Thien La, Dia Vong, Diem Vuong.
-        // If 1 = Tam Kheo. Then 2 = Ngu Mo... 0(8) = Huynh Tuyen?
-
         $hans = [
-            1 => ['code' => 'tam_kheo', 'name' => 'Tam Kheo'],
-            2 => ['code' => 'ngu_mo', 'name' => 'Ngũ Mộ'],
-            3 => ['code' => 'thien_tinh', 'name' => 'Thiên Tinh'],
-            4 => ['code' => 'toan_tan', 'name' => 'Toán Tận'],
-            5 => ['code' => 'thien_la', 'name' => 'Thiên La'],
-            6 => ['code' => 'dia_vong', 'name' => 'Địa Võng'],
-            7 => ['code' => 'diem_vuong', 'name' => 'Diêm Vương'],
-            0 => ['code' => 'huynh_tuyen', 'name' => 'Huỳnh Tuyền'] // Remainder 0 or 8
+            1 => ['code' => 'huynh_tuyen', 'name' => 'Huỳnh Tuyền'],
+            2 => ['code' => 'tam_kheo', 'name' => 'Tam Kheo'],
+            3 => ['code' => 'ngu_mo', 'name' => 'Ngũ Mộ'],
+            4 => ['code' => 'thien_tinh', 'name' => 'Thiên Tinh'],
+            5 => ['code' => 'toan_tan', 'name' => 'Toán Tận'],
+            6 => ['code' => 'thien_la', 'name' => 'Thiên La'],
+            7 => ['code' => 'dia_vong', 'name' => 'Địa Võng'],
+            0 => ['code' => 'diem_vuong', 'name' => 'Diêm Vương'] // Remainder 0 or 8
         ];
-
-        // Nu: "Nu đi nghịch"? Or different map?
-        // User didn't specify Nu map example, just "tuong tu".
-        // Standard Nu: 10 Ke Do - Thien Tinh.
-        // Let's use a symmetric or standard map for Nu if not specified.
-        // Let's use the provided list in reverse or shifted for Nu to match "Toán Tận" example in user prompt text later?
-        // "Nếu gặp Hạn Thiên La: Đề phòng cảnh vợ chồng ly cách...".
-        // I will use a simplified map for Nu based on standard offset if possible, or same keys for now but careful.
-        // Let's assume Nu follows standard difference.
-        // For Code Robustness: I will use the same $hans array key-map for now but noting the User's specific "10t -> Tam Kheo" overrides standard "10t -> Huynh Tuyen".
-        // Actually, usually Han is calculated by `Age` lookup table, not simple modulo.
-        // But requested to use `Age % 9`?
-        // "Dùng phép chia lấy dư (%) của Tuổi Âm cho 9 để xác định". -> The prompt explicitly says % 9 for Star AND Limit.
-        // Wait, 8 limits but % 9?
-        // If remainder is 8 (Thai Bach), what is Limit?
-        // If remainder is 0 (Moc Duc), what is Limit?
-        // This implies a mapping of 9 remainders to 8 limits? Or the Prompt meant % 8 for limits?
-        // "Logic tính Hạn... cũng tương tự theo tuổi [3]". Reference [3] is likely a book.
-        // Given the ambiguity and "8 hạn" constraint, I will use `Age % 8` for limits.
-        // Mapping `hans` as defined above (1=Tam Kheo).
 
         $hanInfo = $hans[$age % 8]; // Using % 8 for 8 limits.
 

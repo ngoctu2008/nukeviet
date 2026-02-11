@@ -62,7 +62,14 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
         $year = $today['year'];
 
         $data = [];
-        $data['solar'] = sprintf('%02d/%02d/%04d', $day, $month, $year);
+        $data['solar_day'] = $day;
+        $data['solar_month'] = $month;
+        $data['solar_year'] = $year;
+        $data['tiet_khi'] = '';
+        $data['gio_hoang_dao'] = [];
+
+        $daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+        $data['day_of_week'] = $daysOfWeek[$today['wday']];
 
         if ($useModuleClass && class_exists('\\NukeViet\\Module\\HuyenHoc\\LunarCalendar')) {
             $lunar = \NukeViet\Module\HuyenHoc\LunarCalendar::convertSolar2Lunar($day, $month, $year, 7.0);
@@ -72,10 +79,12 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
             $data['is_leap'] = $lunar['leap'];
 
             // Get Can Chi using Module Class logic
-            $canChi = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiDay($day, $month, $year);
-            $data['can_chi_day'] = $canChi;
+            $canChiInfo = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiDayInfo($day, $month, $year);
+            $data['can_chi_day'] = $canChiInfo['name'];
             $data['can_chi_month'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiMonth($lunar['month'], $lunar['year']);
             $data['can_chi_year'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiYear($lunar['year']);
+            $data['tiet_khi'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getTietKhi($day, $month, $year);
+            $data['gio_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getGioHoangDao($canChiInfo['chi_index']);
 
         } elseif (function_exists('convertSolar2Lunar')) {
             // Core amlich.php usage
@@ -115,8 +124,12 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
         $xtpl->assign('BLOCK_ID', $block_config['bid']);
         $xtpl->assign('MODULE_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_info['module_theme']);
 
-        if (isset($block_config['show_zodiac']) && $block_config['show_zodiac']) {
-            $xtpl->parse('main.zodiac');
+        if (isset($block_config['show_zodiac']) && $block_config['show_zodiac'] && !empty($data['gio_hoang_dao'])) {
+            foreach ($data['gio_hoang_dao'] as $gio) {
+                $xtpl->assign('GIO', $gio);
+                $xtpl->parse('main.show_zodiac.loop');
+            }
+            $xtpl->parse('main.show_zodiac');
         }
 
         $xtpl->parse('main');

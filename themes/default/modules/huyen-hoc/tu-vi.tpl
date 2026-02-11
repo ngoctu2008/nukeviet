@@ -140,9 +140,9 @@
                         <i class="fa fa-book"></i> {LANG.tab_detail}
                     </a>
                 </li>
-                 <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" id="vanhan-tab" data-toggle="tab" href="#vanhan" role="tab">
-                        <i class="fa fa-history"></i> {LANG.tab_limit}
+                        <i class="fa fa-history"></i> Xem Vận Hạn
                     </a>
                 </li>
             </ul>
@@ -223,49 +223,22 @@
 
                 <!-- Tab Van Han -->
                 <div class="tab-pane fade" id="vanhan" role="tabpanel">
-                     <form id="form-xem-han" class="form-inline mb-3">
-                        <label>{LANG.year_view}:</label>
+                     <div class="form-inline mb-3">
+                        <label>Chọn Năm Xem Hạn:</label>
                         <select class="form-control mx-2" id="select-year-han">
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
-                            <option value="2026">2026</option>
+                            <option value="2026" selected>2026</option>
                             <option value="2027">2027</option>
                             <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
                         </select>
-                        <button type="button" class="btn btn-sm btn-success" id="btn-view-han">{LANG.btn_view_limit}</button>
-                     </form>
-
+                        <button type="button" class="btn btn-success" id="btn-view-han"><i class="fa fa-eye"></i> Xem Ngay</button>
+                     </div>
+                     <hr>
                      <div id="ket-qua-han">
-                         <!-- BEGIN: report_limit -->
-                         <!-- BEGIN: sec3 -->
-                         <h4 class="section-header">III. VẬN HẠN (ĐẠI VẬN & TIỂU VẬN)</h4>
-
-                             <!-- BEGIN: dai_van -->
-                             <div class="limit-box mb-3">
-                                 <h5 class="text-primary">{LIMIT_NAME}</h5>
-                                 <!-- BEGIN: reading -->
-                                 <p><i class="fa fa-star-half-o"></i> {READING.content}</p>
-                                 <!-- END: reading -->
-                                 <div class="evaluation-block mt-2">
-                                    <i class="fa fa-commenting-o"></i> <b>Đánh giá:</b> {LIMIT_EVAL.text}
-                                 </div>
-                             </div>
-                             <!-- END: dai_van -->
-
-                             <!-- BEGIN: tieu_van -->
-                             <div class="limit-box mb-3">
-                                 <h5 class="text-success">{LIMIT_NAME}</h5>
-                                 <!-- BEGIN: reading -->
-                                 <p><i class="fa fa-star-half-o"></i> {READING.content}</p>
-                                 <!-- END: reading -->
-                                 <div class="evaluation-block mt-2">
-                                    <i class="fa fa-commenting-o"></i> <b>Đánh giá:</b> {LIMIT_EVAL.text}
-                                 </div>
-                             </div>
-                             <!-- END: tieu_van -->
-
-                         <!-- END: sec3 -->
-                         <!-- END: report_limit -->
+                         <div class="alert alert-info">Vui lòng chọn năm và nhấn Xem Ngay để xem luận giải vận hạn chi tiết.</div>
                      </div>
                 </div>
             </div>
@@ -280,35 +253,30 @@
 
         // Handle Xem Han AJAX
         $('#btn-view-han').on('click', function() {
-            var targetYear = $('#select-year-han').val();
-            var chiYear = $('#meta_chiYear').val();
-            var gender = $('#meta_gender').val();
+            var viewYear = $('#select-year-han').val();
 
+            // Get meta data from hidden inputs
             var birthDay = $('#meta_birthDay').val();
             var birthMonth = $('#meta_birthMonth').val();
             var birthYear = $('#meta_birthYear').val();
             var birthHour = $('#meta_birthHour').val();
+            var gender = $('#meta_gender').val();
+            var name = '{INPUT.name}'; // Use template variable or input
 
-            $('#ket-qua-han').html('<p><i class="fa fa-spinner fa-spin"></i> {LANG.loading}</p>');
+            $('#ket-qua-han').html('<div class="text-center p-5"><i class="fa fa-spinner fa-spin fa-3x"></i><br>Đang luận giải vận hạn...</div>');
 
-             $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=ajax&action=xem_han&nv_ajax=1',
-            {
-                targetYear: targetYear,
-                chiYear: chiYear,
-                gender: gender,
-                birthDay: birthDay,
-                birthMonth: birthMonth,
-                birthYear: birthYear,
-                birthHour: birthHour
+            $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tu-vi&ajax_get_han=1', {
+                d: birthDay,
+                m: birthMonth,
+                y: birthYear,
+                h: birthHour,
+                g: gender,
+                view_year: viewYear,
+                name: name
             }, function(res) {
-                if(res.status == 'success') {
-                    $('#ket-qua-han').html(res.html);
-                } else {
-                    var msg = res.message ? res.message : '{LANG.error}';
-                    $('#ket-qua-han').html('<p class="text-danger">' + msg + '</p>');
-                }
-            }, 'json').fail(function() {
-                $('#ket-qua-han').html('<p class="text-danger">{LANG.error}</p>');
+                $('#ket-qua-han').html(res);
+            }).fail(function() {
+                $('#ket-qua-han').html('<div class="alert alert-danger">Lỗi kết nối. Vui lòng thử lại.</div>');
             });
         });
     });

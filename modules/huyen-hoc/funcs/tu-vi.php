@@ -14,8 +14,62 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
 use NukeViet\Module\HuyenHoc\LunarCalendar;
 use NukeViet\Module\HuyenHoc\TuViLapSo;
 use NukeViet\Module\HuyenHoc\TuViLuanGiai;
+use NukeViet\Module\HuyenHoc\TuViVanHan;
+use NukeViet\Module\HuyenHoc\TuViSaoHan;
 
 $page_title = $lang_module['tu_vi'];
+
+// AJAX: Xem Vận Hạn
+if ($nv_Request->isset_request('ajax_get_han', 'post')) {
+    $birthDay = $nv_Request->get_int('d', 'post', 1);
+    $birthMonth = $nv_Request->get_int('m', 'post', 1);
+    $birthYear = $nv_Request->get_int('y', 'post', 1990);
+    $birthHour = $nv_Request->get_int('h', 'post', 0);
+    $gender = $nv_Request->get_int('g', 'post', 1);
+    $viewYear = $nv_Request->get_int('view_year', 'post', date('Y'));
+    $name = $nv_Request->get_string('name', 'post', 'Đương số');
+
+    // 1. Convert Lunar for Birth
+    $lunar = LunarCalendar::convertSolar2Lunar($birthDay, $birthMonth, $birthYear);
+    $canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], $birthHour);
+
+    // 2. Lap La So Goc
+    $laSoData = TuViLapSo::lapLaSo(
+        $lunar['day'],
+        $lunar['month'],
+        $lunar['year'],
+        $birthHour,
+        $gender,
+        $canChi['canYear'],
+        $canChi['chiYear'],
+        $name
+    );
+
+    // Load Star Meanings (fix for undefined variable)
+    $starMeanings = [];
+    $jsonPath = NV_ROOTDIR . '/modules/' . $module_file . '/data/star_meanings.json';
+    if (file_exists($jsonPath)) {
+        $jsonContent = file_get_contents($jsonPath);
+        $starMeanings = json_decode($jsonContent, true);
+    }
+
+    // 3. Tinh Sao Han (Cuu Dieu, Tam Tai...)
+    $saoHanApp = new TuViSaoHan($birthYear, $gender, $viewYear);
+    $htmlSaoHan = $saoHanApp->execute();
+
+    // 4. Tinh Van Han (Tu Vi Chart Limits)
+    $vanHanApp = new TuViVanHan($laSoData, $viewYear);
+    $htmlVanHan = $vanHanApp->luanGiaiChiTiet();
+
+    // Combine
+    $html = '<div class="row">';
+    $html .= '<div class="col-md-6">' . $htmlSaoHan . '</div>';
+    $html .= '<div class="col-md-6">' . $htmlVanHan . '</div>';
+    $html .= '</div>';
+
+    echo $html;
+    die();
+}
 
 $result = array();
 
