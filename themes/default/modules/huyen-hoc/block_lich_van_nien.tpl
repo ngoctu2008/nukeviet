@@ -11,8 +11,9 @@
                 <div class="lunar-text">Tháng {DATA.lunar_month} ({DATA.can_chi_month})</div>
                 <div class="lunar-day">{DATA.lunar_day}</div>
                 <div class="lunar-text">Năm {DATA.lunar_year}</div>
-                <div class="can-chi-small text-muted">{DATA.can_chi_day} - {DATA.can_chi_year}</div>
-                <div class="zodiac-day-status mt-1 text-success small">{DATA.ngay_hoang_dao}</div>
+                <div class="can-chi-small text-muted">{DATA.can_chi_day}</div>
+                <div class="can-chi-small text-muted">{DATA.can_chi_year}</div>
+                <div class="zodiac-day-status mt-1 small" style="color: {DATA.ngay_hoang_dao_type_color|default:'green'}">{DATA.ngay_hoang_dao}</div>
             </div>
             <div class="col-xs-6 col-md-6 col-6 text-center solar-term-container" style="padding-left: 5px; padding-right: 5px;">
                 <div class="solar-term-label mb-2">Tiết khí</div>

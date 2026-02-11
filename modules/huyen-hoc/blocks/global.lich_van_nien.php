@@ -43,42 +43,61 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
     {
         global $module_info, $module_file;
 
-        // Use Module's LunarCalendar Class if available
-        $classFile = NV_ROOTDIR . '/modules/' . $module_file . '/classes/LunarCalendar.php';
-        if (file_exists($classFile)) {
-            require_once $classFile;
-            $useModuleClass = true;
-        } else {
-            // Fallback to core if exists
-            if (file_exists(NV_ROOTDIR . '/includes/core/amlich.php')) {
-                require_once NV_ROOTDIR . '/includes/core/amlich.php';
-            }
-            $useModuleClass = false;
-        }
+        // Require classes
+        $lunarFile = NV_ROOTDIR . '/modules/' . $module_file . '/classes/LunarCalendar.php';
+        $lichFile = NV_ROOTDIR . '/modules/' . $module_file . '/classes/LichVanNien.php';
+
+        if (file_exists($lunarFile)) require_once $lunarFile;
+        if (file_exists($lichFile)) require_once $lichFile;
 
         $today = getdate();
         $day = $today['mday'];
         $month = $today['mon'];
         $year = $today['year'];
+        $hour = $today['hours'];
 
         $data = [];
         $data['solar_day'] = $day;
         $data['solar_month'] = $month;
         $data['solar_year'] = $year;
-        $data['tiet_khi'] = '';
-        $data['gio_hoang_dao'] = [];
 
         $daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
         $data['day_of_week'] = $daysOfWeek[$today['wday']];
 
-        if ($useModuleClass && class_exists('\\NukeViet\\Module\\HuyenHoc\\LunarCalendar')) {
+        // Use new LichVanNien class if available
+        if (class_exists('\\NukeViet\\Module\\HuyenHoc\\LichVanNien')) {
+            $app = new \NukeViet\Module\HuyenHoc\LichVanNien();
+            $info = $app->getInfo($day, $month, $year, $hour);
+
+            $data['lunar_day'] = $info['am_lich']['day'];
+            $data['lunar_month'] = $info['am_lich']['month'];
+            $data['lunar_year'] = $info['am_lich']['year'];
+            $data['is_leap'] = $info['am_lich']['leap'];
+
+            $data['can_chi_day'] = $info['can_chi']['ngay'];
+            $data['can_chi_month'] = $info['can_chi']['thang'];
+            $data['can_chi_year'] = $info['can_chi']['nam'];
+            $data['can_chi_gio'] = $info['can_chi']['gio'];
+
+            $data['tiet_khi'] = $info['tiet_khi'];
+            $data['ngay_hoang_dao'] = $info['ngay_hoang_dao']['msg']; // Use msg for full text
+            $data['ngay_hoang_dao_type'] = $info['ngay_hoang_dao']['type'];
+
+            // Get Lucky Hours list from LunarCalendar (LichVanNien doesn't provide list yet)
+            if (class_exists('\\NukeViet\\Module\\HuyenHoc\\LunarCalendar')) {
+                // LichVanNien provides IDs for easy lookup
+                $chiNgay = $info['ids']['chi_ngay'];
+                $data['gio_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getGioHoangDao($chiNgay);
+            }
+
+        } elseif (class_exists('\\NukeViet\\Module\\HuyenHoc\\LunarCalendar')) {
+            // Fallback to old logic
             $lunar = \NukeViet\Module\HuyenHoc\LunarCalendar::convertSolar2Lunar($day, $month, $year, 7.0);
             $data['lunar_day'] = $lunar['day'];
             $data['lunar_month'] = $lunar['month'];
             $data['lunar_year'] = $lunar['year'];
             $data['is_leap'] = $lunar['leap'];
 
-            // Get Can Chi using Module Class logic
             $canChiInfo = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiDayInfo($day, $month, $year);
             $data['can_chi_day'] = $canChiInfo['name'];
             $data['can_chi_month'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiMonth($lunar['month'], $lunar['year']);
@@ -86,28 +105,10 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
             $data['tiet_khi'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getTietKhi($day, $month, $year);
             $data['gio_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getGioHoangDao($canChiInfo['chi_index']);
             $data['ngay_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getNgayHoangDao($canChiInfo['chi_index'], $lunar['month']);
-
-        } elseif (function_exists('convertSolar2Lunar')) {
-            // Core amlich.php usage
-            $lunar = convertSolar2Lunar($day, $month, $year, 7.0);
-            $data['lunar_day'] = $lunar[0];
-            $data['lunar_month'] = $lunar[1];
-            $data['lunar_year'] = $lunar[2];
-            $data['is_leap'] = $lunar[3];
-
-            if (function_exists('getCanChiDay')) {
-                $data['can_chi_day'] = getCanChiDay($day, $month, $year);
-                $data['can_chi_month'] = getCanChiMonth($lunar[1], $lunar[2]);
-                $data['can_chi_year'] = getCanChiYear($lunar[2]);
-            }
         } else {
-            // No calendar logic found
-            $data['lunar_day'] = '?';
-            $data['lunar_month'] = '?';
-            $data['lunar_year'] = '?';
-            $data['can_chi_day'] = '';
-            $data['can_chi_month'] = '';
-            $data['can_chi_year'] = '';
+             // Basic Fallback
+             $data['lunar_day'] = '?';
+             $data['gio_hoang_dao'] = [];
         }
 
         // Determine template file
