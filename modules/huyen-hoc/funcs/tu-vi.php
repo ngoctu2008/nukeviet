@@ -16,6 +16,9 @@ use NukeViet\Module\HuyenHoc\TuViLapSo;
 use NukeViet\Module\HuyenHoc\TuViLuanGiai;
 use NukeViet\Module\HuyenHoc\TuViVanHan;
 use NukeViet\Module\HuyenHoc\TuViSaoHan;
+use NukeViet\Module\HuyenHoc\TuViAdvanced;
+use NukeViet\Module\HuyenHoc\TuViHuongNghiep;
+use NukeViet\Module\HuyenHoc\TuViYLy;
 
 $page_title = $lang_module['tu_vi'];
 
@@ -198,6 +201,33 @@ if ($nv_Request->isset_request('submit', 'post')) {
         );
 
         $laSoData['structured_report'] = $structuredReport;
+
+        // --- Advanced Analysis ---
+        // Prepare calculator object/array wrapper for new classes
+        $calcData = [
+            'dia_ban' => $laSoData['dia_ban'], // 0..11 indexed
+            'meta' => $laSoData['meta'],
+            'input' => $data_input
+        ];
+
+        // 1. Cach Cuc & Relational
+        $adv = new TuViAdvanced($calcData);
+        $laSoData['cach_cuc'] = $adv->detectCachCuc();
+        // Pre-calculate relations
+        $laSoData['relations'] = [
+            'vo_chong' => $adv->lapCucNguoiThan('PHU_THE'),
+            'cha_me' => $adv->lapCucNguoiThan('PHU_MAU'),
+            'con_cai' => $adv->lapCucNguoiThan('TU_TUC')
+        ];
+
+        // 2. Career
+        $career = new TuViHuongNghiep($calcData);
+        $laSoData['career_report'] = $career->renderReport();
+
+        // 3. Health (Y Ly)
+        $health = new TuViYLy($calcData);
+        $laSoData['health_diagnosis'] = $health->chanDoanBenh();
+        $laSoData['health_diet'] = $health->goiYThucDuong();
 
     } catch (\Exception $e) {
         // Ignore error if DB not ready

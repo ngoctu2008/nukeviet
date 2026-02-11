@@ -145,12 +145,30 @@
                         <i class="fa fa-history"></i> Xem Vận Hạn
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="nangcao-tab" data-toggle="tab" href="#nangcao" role="tab">
+                        <i class="fa fa-magic"></i> Nâng Cao
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="suckhoe-tab" data-toggle="tab" href="#suckhoe" role="tab">
+                        <i class="fa fa-heartbeat"></i> Sức Khỏe
+                    </a>
+                </li>
             </ul>
 
             <div class="tab-content p-2 border border-top-0 bg-white" id="myTabContent">
 
                 <!-- Tab Tong Quan -->
                 <div class="tab-pane fade show active" id="tongquan" role="tabpanel">
+                    <!-- BEGIN: cach_cuc -->
+                    <div class="alert alert-warning">
+                        <h5><i class="fa fa-bolt"></i> CÁCH CỤC ĐẶC BIỆT</h5>
+                        <!-- BEGIN: item -->
+                        <p class="mb-1"><strong class="{ITEM.type}">{ITEM.name}:</strong> {ITEM.desc}</p>
+                        <!-- END: item -->
+                    </div>
+                    <!-- END: cach_cuc -->
                     <h4>{LANG.tab_overview}</h4>
                     <div class="row">
                         <div class="col-xs-24 col-sm-16 col-md-16">
@@ -241,6 +259,78 @@
                          <div class="alert alert-info">Vui lòng chọn năm và nhấn Xem Ngay để xem luận giải vận hạn chi tiết.</div>
                      </div>
                 </div>
+
+                <!-- Tab Nang Cao (Su Nghiep & Quan He) -->
+                <div class="tab-pane fade" id="nangcao" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-24">
+                            {CAREER_REPORT}
+                        </div>
+                    </div>
+                    <hr>
+                    <h4><i class="fa fa-users"></i> QUAN HỆ GIA ĐẠO (LẬP CỰC)</h4>
+                    <div class="accordion" id="accRelations">
+                        <!-- BEGIN: relation -->
+                        <div class="card mb-1">
+                            <div class="card-header p-1" id="heading{RELATION_KEY}">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{RELATION_KEY}">
+                                        {RELATION_TITLE}
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse{RELATION_KEY}" class="collapse" data-parent="#accRelations">
+                                <div class="card-body">
+                                    <table class="table table-bordered table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Cung chức (Mới)</th>
+                                                <th>Cung gốc (Của bạn)</th>
+                                                <th>Sao Chính</th>
+                                                <th>Ý nghĩa</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- BEGIN: map -->
+                                            <tr>
+                                                <td>{MAP.chuc_nang_moi}</td>
+                                                <td>{MAP.cung_goc.palace_name}</td>
+                                                <td>{MAP.sao_chinh}</td>
+                                                <td>{MAP.relation_desc}</td>
+                                            </tr>
+                                            <!-- END: map -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: relation -->
+                    </div>
+                </div>
+
+                <!-- Tab Suc Khoe -->
+                <div class="tab-pane fade" id="suckhoe" role="tabpanel">
+                    <h4><i class="fa fa-user-md"></i> CHẨN ĐOÁN SỨC KHỎE (ĐÔNG Y & TỬ VI)</h4>
+                    <div class="alert alert-{HEALTH_WARN_CLASS}">
+                        <h5>Cung Tật Ách: {HEALTH_DIAGNOSIS.cung_tat}</h5>
+                        <ul>
+                            <!-- BEGIN: health_detail -->
+                            <li>{HEALTH_LINE}</li>
+                            <!-- END: health_detail -->
+                        </ul>
+                    </div>
+
+                    <div class="card bg-light mt-3">
+                        <div class="card-body">
+                            <h4><i class="fa fa-leaf"></i> CHẾ ĐỘ THỰC DƯỠNG CẢI VẬN</h4>
+                            <h5>{HEALTH_DIET.name}</h5>
+                            <p><strong>Màu sắc may mắn:</strong> {HEALTH_DIET.mau_sac}</p>
+                            <p><strong>Thực phẩm khuyên dùng:</strong> {HEALTH_DIET.thuc_pham}</p>
+                            <p><strong>Lời khuyên sinh hoạt:</strong> {HEALTH_DIET.loi_khuyen}</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
