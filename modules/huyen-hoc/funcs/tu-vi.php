@@ -20,6 +20,13 @@ use NukeViet\Module\HuyenHoc\TuViAdvanced;
 use NukeViet\Module\HuyenHoc\TuViHuongNghiep;
 use NukeViet\Module\HuyenHoc\TuViYLy;
 
+// Manual require to ensure classes are loaded if autoloader fails
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViAdvanced.php';
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViHuongNghiep.php';
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViYLy.php';
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViVanHan.php';
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViSaoHan.php';
+
 $page_title = $lang_module['tu_vi'];
 
 // AJAX: Xem Vận Hạn

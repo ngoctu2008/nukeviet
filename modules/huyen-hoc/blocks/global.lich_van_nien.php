@@ -85,6 +85,7 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
             $data['can_chi_year'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getCanChiYear($lunar['year']);
             $data['tiet_khi'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getTietKhi($day, $month, $year);
             $data['gio_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getGioHoangDao($canChiInfo['chi_index']);
+            $data['ngay_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getNgayHoangDao($canChiInfo['chi_index'], $lunar['month']);
 
         } elseif (function_exists('convertSolar2Lunar')) {
             // Core amlich.php usage

@@ -297,9 +297,51 @@ class LunarCalendar {
         return $CAN[$year % 10] . ' ' . $CHI[$year % 12];
     }
 
-    public static function getNgayHoangDao($day, $month) {
-        // Simplified Logic: Just random "Hoang Dao" / "Hac Dao" based on day/month parity for now
-        return "Thanh Long Hoàng Đạo"; // Placeholder
+    public static function getNgayHoangDao($dayChiIndex, $month) {
+        // Hoang Dao Stars mapping by Month (Lunar)
+        // 1 (Dan): Ty, Suu, Ty(ran), Mui (Thanh Long, Minh Duong, Kim Duong, Bao Quang, Ngoc Duong, Tu Menh)
+        // Correct Rule (Luc Nham Dai Don):
+        // Month 1, 7: Ty (Thanh Long), Suu (Minh Duong), Thin (Kim Duong), Ty (Thien Tai?), Mui (Ngoc Duong), Tuat (Tu Menh).
+        // Let's use simplified 6 Hoang Dao stars mapping.
+        // Offsets from Month Branch?
+        // Month 1 (Dan): Start Thanh Long at Ty (0).
+        // Month 2 (Mao): Start Thanh Long at Dan (2).
+        // Month 3 (Thin): Start Thanh Long at Thin (4).
+        // Offset = (Month - 1) * 2.
+
+        $start = (($month - 1) * 2) % 12;
+
+        // Sequence of 12 Stars:
+        // 1. Thanh Long (H), 2. Minh Duong (H), 3. Thien Cuong (Black), 4. Chu Tuoc (B), 5. Kim Duong (H), 6. Kim Quy (H)
+        // 7. Thien Hinh (B), 8. Ngoc Duong (H), 9. Thien Lao (B), 10. Nguyen Vu (B), 11. Tu Menh (H), 12. Cau Tran (B)
+        // Hoang Dao (H): 1, 2, 5, 6, 8, 11
+        // Hac Dao (B): 3, 4, 7, 9, 10, 12
+
+        $map = [
+            1 => 'Thanh Long (Hoàng Đạo)',
+            2 => 'Minh Đường (Hoàng Đạo)',
+            3 => 'Thiên Cương (Hắc Đạo)',
+            4 => 'Chu Tước (Hắc Đạo)',
+            5 => 'Kim Đường (Hoàng Đạo)',
+            6 => 'Kim Quỹ (Hoàng Đạo)',
+            7 => 'Thiên Hình (Hắc Đạo)',
+            8 => 'Ngọc Đường (Hoàng Đạo)',
+            9 => 'Thiên Lao (Hắc Đạo)',
+            10 => 'Nguyên Vũ (Hắc Đạo)',
+            11 => 'Tư Mệnh (Hoàng Đạo)',
+            12 => 'Câu Trận (Hắc Đạo)'
+        ];
+
+        // Calculate Star at Day Chi
+        // Star 1 starts at $start.
+        // Day Chi $dayChiIndex.
+        // Distance = ($dayChiIndex - $start + 12) % 12.
+        // Star Index = Distance + 1.
+
+        $dist = ($dayChiIndex - $start + 12) % 12;
+        $starIdx = $dist + 1;
+
+        return isset($map[$starIdx]) ? $map[$starIdx] : 'Bình thường';
     }
 
     public static function getGioHoangDao($dayChiIndex) {

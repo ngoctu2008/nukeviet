@@ -8,13 +8,15 @@
     <div class="calendar-bottom-card">
         <div class="row" style="margin-left: -5px; margin-right: -5px;">
             <div class="col-xs-6 col-md-6 col-6 lunar-col" style="padding-left: 5px; padding-right: 5px;">
-                <div class="lunar-text">Tháng {DATA.lunar_month}</div>
+                <div class="lunar-text">Tháng {DATA.lunar_month} ({DATA.can_chi_month})</div>
                 <div class="lunar-day">{DATA.lunar_day}</div>
                 <div class="lunar-text">Năm {DATA.lunar_year}</div>
-                <div class="can-chi-small text-muted">{DATA.can_chi_year}</div>
+                <div class="can-chi-small text-muted">{DATA.can_chi_day} - {DATA.can_chi_year}</div>
+                <div class="zodiac-day-status mt-1 text-success small">{DATA.ngay_hoang_dao}</div>
             </div>
             <div class="col-xs-6 col-md-6 col-6 text-center solar-term-container" style="padding-left: 5px; padding-right: 5px;">
-                <div class="solar-term-val">{DATA.tiet_khi}</div>
+                <div class="solar-term-label mb-2">Tiết khí</div>
+                <div class="solar-term-val text-uppercase text-danger">{DATA.tiet_khi}</div>
             </div>
         </div>
 
