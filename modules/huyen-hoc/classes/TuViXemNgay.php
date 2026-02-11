@@ -87,6 +87,135 @@ class TuViXemNgay {
         return $result;
     }
 
+    /**
+     * Tinh Trung Tang (Nhap Mo, Thien Di, Trung Tang)
+     * Rule: Men -> 10 start Dan (2), Clockwise. Women -> 10 start Than (8), Counter-Clockwise.
+     * Sequence: 10 -> 20 -> ... -> Age -> Month -> Day -> Hour.
+     * Fall into:
+     * - Than, Ty, Thin, Ngo: Nhap Mo (Good)
+     * - Ty, Hoi, Dan, Dau: Thien Di (Normal)
+     * - Suu, Mui, Tuat, Mao: Trung Tang (Bad)
+     * (Simplified mapping - Different schools vary, using common one)
+     */
+    public function xemTrungTang($deceasedInfo, $headYear, $relatives) {
+        $age = $deceasedInfo['age'];
+        $gender = $deceasedInfo['gender']; // 1=Nam, 0=Nu
+        $deathTime = $deceasedInfo['death_time']; // ['m'=>..., 'd'=>..., 'h'=>...] Lunar
+
+        $month = $deathTime['m'];
+        $day = $deathTime['d'];
+        $hourChi = $deathTime['h_chi']; // 0-11
+
+        // 1. Calculate Palaces (Cung)
+        $startPos = ($gender == 1) ? 2 : 8; // Dan : Than
+        $direction = ($gender == 1) ? 1 : -1;
+
+        // Count Age (10, 20...)
+        $tens = floor($age / 10);
+        $units = $age % 10;
+
+        // 10s step
+        $pos = $startPos;
+        for ($i=1; $i<$tens; $i++) { // 10 is start, so start counting from 20
+             $pos = ($pos + $direction);
+             if ($pos > 11) $pos = 0; if ($pos < 0) $pos = 11;
+        }
+
+        // Units step (From 10s pos)
+        if ($units > 0) {
+            // First unit counts 1 step? Or 11 is next? Usually: 10 at X. 11 at X+1.
+            // So if age 13: 10->X. 11->X+1. 12->X+2. 13->X+3.
+            for ($i=0; $i<$units; $i++) {
+                $pos = ($pos + $direction);
+                if ($pos > 11) $pos = 0; if ($pos < 0) $pos = 11;
+            }
+        }
+        $cungTuoi = $pos; // Nien (Age)
+
+        // Month step (From Age pos)
+        // Month 1 is next step? Or start at Age pos?
+        // Usually: Month 1 at Age Pos? Or Age Pos + 1?
+        // Let's assume: From Age Pos, count months. Month 1 = Age Pos.
+        $pos = $cungTuoi;
+        for ($i=1; $i<$month; $i++) {
+            $pos = ($pos + $direction);
+            if ($pos > 11) $pos = 0; if ($pos < 0) $pos = 11;
+        }
+        $cungThang = $pos;
+
+        // Day step
+        $pos = $cungThang;
+        for ($i=1; $i<$day; $i++) {
+            $pos = ($pos + $direction);
+            if ($pos > 11) $pos = 0; if ($pos < 0) $pos = 11;
+        }
+        $cungNgay = $pos;
+
+        // Hour step (From Day pos, count Chi Hour? Or number of hours?)
+        // Ty (0) = 1?
+        // Let's count steps: Ty is step 1.
+        $stepsH = $hourChi + 1;
+        $pos = $cungNgay;
+        for ($i=1; $i<$stepsH; $i++) {
+            $pos = ($pos + $direction);
+            if ($pos > 11) $pos = 0; if ($pos < 0) $pos = 11;
+        }
+        $cungGio = $pos;
+
+        // 2. Evaluate
+        // Nhom:
+        // Nhap Mo: Thin (4), Tuat (10), Suu (1), Mui (7) -> Earth/Grave?
+        // Let's use the standard "Dan Than Ty Hoi - Thien Di", "Ty Ngo Mao Dau - Trung Tang", "Thin Tuat Suu Mui - Nhap Mo".
+
+        $evaluate = function($idx) {
+            if (in_array($idx, [4, 10, 1, 7])) return ['type'=>'nhap_mo', 'text'=>'Nhập Mộ (Tốt)'];
+            if (in_array($idx, [2, 8, 5, 11])) return ['type'=>'thien_di', 'text'=>'Thiên Di (Bình thường)'];
+            return ['type'=>'trung_tang', 'text'=>'Trùng Tang (Xấu)'];
+        };
+
+        $resTuoi = $evaluate($cungTuoi);
+        $resThang = $evaluate($cungThang);
+        $resNgay = $evaluate($cungNgay);
+        $resGio = $evaluate($cungGio);
+
+        $conclusion = "Bình thường.";
+        $alertClass = "info";
+
+        $countTT = 0; $countNM = 0;
+        foreach ([$resTuoi, $resThang, $resNgay, $resGio] as $r) {
+            if ($r['type'] == 'trung_tang') $countTT++;
+            if ($r['type'] == 'nhap_mo') $countNM++;
+        }
+
+        if ($countTT > 0 && $countNM == 0) {
+            $conclusion = "ĐẠI HUNG: Phạm Trùng Tang ($countTT cung). Cần làm lễ trấn yểm.";
+            $alertClass = "danger";
+        } elseif ($countNM > 0) {
+            $conclusion = "ĐẠI CÁT: Được Nhập Mộ ($countNM cung). Người mất yên nghỉ, con cháu phát đạt.";
+            $alertClass = "success";
+        } else {
+            $conclusion = "Thiên Di: Ra đi nhẹ nhàng, không phạm trùng tang.";
+            $alertClass = "warning";
+        }
+
+        // 3. Check Conflicts
+        $conflicts = [];
+        // Head (Truong Nam) vs Deceased Year (Tu Hanh Xung)
+        $dChi = ($deceasedInfo['year'] - 4) % 12;
+        $hChi = ($headYear - 4) % 12;
+        if (abs($dChi - $hChi) == 6) $conflicts[] = "Tuổi Trưởng nam xung với tuổi người mất.";
+
+        return [
+            'tuoi_val' => TuViConstants::CHI[$cungTuoi], 'tuoi_text' => $resTuoi['text'],
+            'thang_val' => TuViConstants::CHI[$cungThang], 'thang_text' => $resThang['text'],
+            'ngay_val' => TuViConstants::CHI[$cungNgay], 'ngay_text' => $resNgay['text'],
+            'gio_val' => TuViConstants::CHI[$cungGio], 'gio_text' => $resGio['text'],
+            'main_conclusion' => $conclusion,
+            'alert_class' => $alertClass,
+            'conflicts' => $conflicts
+        ];
+    }
+
     // --- 1. LOGIC XEM KHAI TRƯƠNG ---
     private function xemKhaiTruong($res) {
         if ($this->userYear > 0) {
