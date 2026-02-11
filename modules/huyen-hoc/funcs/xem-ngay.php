@@ -13,8 +13,66 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
 
 use NukeViet\Module\HuyenHoc\XemNgay;
 use NukeViet\Module\HuyenHoc\LunarCalendar;
+use NukeViet\Module\HuyenHoc\TuViMuonTuoi;
 
 $page_title = $lang_module['xem_ngay'];
+
+$func = $nv_Request->get_string('func', 'get', 'xem_ngay');
+
+if ($func == 'muon_tuoi') {
+    // Requires class TuViMuonTuoi (Assuming loaded in main/ajax or here)
+    if (!class_exists('TuViMuonTuoi')) {
+        require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViMuonTuoi.php';
+    }
+
+    $targetYear = $nv_Request->get_int('target_year', 'get', date('Y'));
+    $ownerYear = $nv_Request->get_int('owner_year', 'get', 0);
+
+    $muonTuoi = new TuViMuonTuoi($targetYear);
+    $candidates = $ownerYear > 0 ? $muonTuoi->timNguoiMuonTuoi($ownerYear) : [];
+
+    $xtpl = new XTemplate('xem-ngay.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+    $xtpl->assign('LANG', $lang_module);
+    $xtpl->assign('MODULE_NAME', $module_name);
+    $xtpl->assign('OP', $op);
+    $xtpl->assign('TARGET_YEAR', $targetYear);
+    $xtpl->assign('OWNER_YEAR', $ownerYear);
+    $xtpl->assign('INPUT', ['birth_year' => $ownerYear]);
+
+    if (!empty($candidates)) {
+        foreach ($candidates as $cand) {
+            $cand['age'] = $cand['age'];
+            $cand['score'] = $cand['score'];
+
+            foreach ($cand['comment'] as $c) {
+                $xtpl->assign('DETAIL', $c);
+                $xtpl->parse('main.muon_tuoi_result.candidate.detail');
+            }
+
+            $xtpl->assign('CANDIDATE', $cand);
+            $xtpl->parse('main.muon_tuoi_result.candidate');
+        }
+    } elseif ($ownerYear > 0) {
+        $xtpl->parse('main.muon_tuoi_result.no_candidate');
+    }
+
+    $xtpl->parse('main.muon_tuoi_result');
+
+    // Parse common purpose options for tab switching
+    $purposes = ['generic' => 'Xem chung', 'cuoi_hoi' => 'Cưới hỏi', 'lam_nha' => 'Làm nhà'];
+    foreach ($purposes as $k => $v) {
+        $xtpl->assign('PURPOSE', ['key' => $k, 'title' => $v, 'selected' => '']);
+        $xtpl->parse('main.purpose_option');
+    }
+
+    $xtpl->parse('main');
+    $contents = $xtpl->text('main');
+
+    include NV_ROOTDIR . '/includes/header.php';
+    echo nv_site_theme($contents);
+    include NV_ROOTDIR . '/includes/footer.php';
+    exit();
+}
 
 $d = $nv_Request->get_int('d', 'post,get', date('d'));
 $m = $nv_Request->get_int('m', 'post,get', date('m'));
@@ -120,7 +178,7 @@ if (isset($info['age_analysis']) && !empty($info['age_analysis'])) {
         $analysis['status_class'] = $analysis['bad'] ? 'danger' : 'success';
         $analysis['icon'] = $analysis['bad'] ? 'fa-times' : 'fa-check';
         $xtpl->assign('AGE_CHECK', $analysis);
-        $xtpl->parse('main.age_check');
+        $xtpl->parse('main.date_info.age_check');
     }
 }
 
@@ -131,9 +189,12 @@ $gioNamesFull = ['Tý (23-1h)', 'Sửu (1-3h)', 'Dần (3-5h)', 'Mão (5-7h)', '
 foreach($gioHoangDao as $g) {
     if (isset($gioNamesFull[$g])) {
         $xtpl->assign('GIO', array('name' => $gioNamesFull[$g]));
-        $xtpl->parse('main.gio');
+        $xtpl->parse('main.date_info.gio');
     }
 }
+
+// Enable Date Info Block
+$xtpl->parse('main.date_info');
 
 // Parse Purpose Options
 foreach ($purposes as $k => $v) {

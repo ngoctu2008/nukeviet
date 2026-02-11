@@ -1,181 +1,118 @@
 <?php
 
+/**
+ * @Dự án module Huyền học cho NukeViet 4.5.07
+ * @Người lập trình: Phạm Ngọc Tú (ngoctu.dnkd@gmail.com)
+ * @Ngày triển khai: 01/01/2026
+ * @Ngày hoàn thành: 11/02/2026
+ */
+
 namespace NukeViet\Module\HuyenHoc;
 
 class TuViYLy {
-    private $laso;      // Dữ liệu lá số
-    private $birthMonth;// Tháng sinh (Âm lịch)
-    private $tatAchPos; // Vị trí cung Tật Ách
 
-    // --- CƠ SỞ DỮ LIỆU Y LÝ (SAO -> BỆNH) ---
-    // Mapping Sao với Bộ phận cơ thể và Bệnh lý
-    const Y_LY_SAO = [
-        // Chính Tinh
-        'TU_VI'      => ['part' => 'Dạ dày, Tỳ vị', 'benh' => 'Đau dạ dày, tiêu hóa kém, hay bị đầy hơi.'],
-        'THIEN_CO'   => ['part' => 'Gan, Mật, Thần kinh', 'benh' => 'Gan nóng, mất ngủ, đau đầu, tê bì chân tay.'],
-        'THAI_DUONG' => ['part' => 'Mắt, Tim, Máu', 'benh' => 'Mắt kém (cận/loạn), cao huyết áp, tim mạch, đau đầu.'],
-        'VU_KHUC'    => ['part' => 'Phổi, Mũi, Xương', 'benh' => 'Viêm xoang, ho khan, phổi yếu, đau nhức xương khớp.'],
-        'THIEN_DONG' => ['part' => 'Tai, Bàng quang, Thận', 'benh' => 'Thận yếu, đau lưng, tai ù, rối loạn bài tiết.'],
-        'LIEM_TRINH' => ['part' => 'Máu huyết, Ung nhọt', 'benh' => 'Nóng trong, mụn nhọt, thiếu máu, phụ nữ kỵ huyết hư.'],
-        'THIEN_PHU'  => ['part' => 'Dạ dày (Phủ tạng)', 'benh' => 'Đau bao tử, béo phì, phù thũng.'],
-        'THAI_AM'    => ['part' => 'Mắt, Thận, Phụ khoa', 'benh' => 'Mắt yếu, thận hư, nữ giới bệnh phụ khoa, kinh nguyệt.'],
-        'THAM_LANG'  => ['part' => 'Gan, Thận, Sinh dục', 'benh' => 'Phong thấp, bệnh do tửu sắc, gan thận suy nhược.'],
-        'CU_MON'     => ['part' => 'Miệng, Họng, Phế quản', 'benh' => 'Viêm họng hạt, hen suyễn, bệnh từ miệng vào.'],
-        'THIEN_TUONG'=> ['part' => 'Mặt, Đầu, Tiết niệu', 'benh' => 'Dị ứng da mặt, sỏi thận, bệnh đường tiết niệu.'],
-        'THIEN_LUONG'=> ['part' => 'Tỳ vị, Tuyến vú', 'benh' => 'Tiêu hóa kém, nữ giới đề phòng u vú.'],
-        'THAT_SAT'   => ['part' => 'Phổi, Đại tràng', 'benh' => 'Lao phổi, trĩ, táo bón, hay bị ngoại thương.'],
-        'PHA_QUAN'   => ['part' => 'Thận, Răng, Tóc', 'benh' => 'Răng yếu, tóc bạc sớm, suy nhược thần kinh, mụn nhọt.'],
+    // Ngu Hanh mapping to Body Parts & Tastes
+    // Kim: Phổi, Ruột già - Cay
+    // Mộc: Gan, Mật - Chua
+    // Thủy: Thận, Bàng quang - Mặn
+    // Hỏa: Tim, Ruột non - Đắng
+    // Thổ: Dạ dày, Lá lách - Ngọt
 
-        // Phụ Tinh quan trọng
-        'KINH_DUONG' => ['part' => 'Chân tay, Lưng', 'benh' => 'Dễ bị thương tích, mổ xẻ, đau lưng cấp.'],
-        'DA_LA'      => ['part' => 'Răng, Xương, Da', 'benh' => 'Sâu răng, vết chàm, bệnh mãn tính dây dưa khó khỏi.'],
-        'HOA_KY'     => ['part' => 'Mắt, Lưỡi, Ruột', 'benh' => 'Đau mắt, ngộ độc thực phẩm, bệnh lạ khó chữa.'],
-        'HOA_LINH'   => ['part' => 'Thần kinh, Tim', 'benh' => 'Sốt cao, co giật, tim đập nhanh, mụn nhọt viêm sưng.'],
-        'DIA_KHONG'  => ['part' => 'Huyết áp, Ung thư', 'benh' => 'Huyết áp thất thường, bệnh ung nhọt ác tính.'],
-        'THIEN_HINH' => ['part' => 'Gân cốt, Dao kéo', 'benh' => 'Thương tích tay chân, dễ phải phẫu thuật.'],
-        'THIEN_RIEU' => ['part' => 'Sinh dục, Bài tiết', 'benh' => 'Thận yếu, bệnh xã hội, mộng tinh, huyết trắng.']
-    ];
+    public static function diagnoseHealth($cungTatAch, $menhElement) {
+        $diagnosis = [];
+        $warnings = [];
 
-    // --- CƠ SỞ DỮ LIỆU THỰC DƯỠNG (NGŨ HÀNH KHUYẾT) ---
-    // Dựa trên lý thuyết "Mệnh Khuyết" (Thiếu hành gì bổ sung hành đó)
-    const THUC_DUONG = [
-        'KIM' => [ // Khuyết Kim (Thường sinh mùa Xuân: Dần, Mão, Thìn)
-            'name' => 'Khuyết Kim (Cần bổ sung Kim)',
-            'mau_sac' => 'Trắng, Xám, Bạc, Vàng kim',
-            'thuc_pham' => 'Thịt gà, Phổi heo, Tổ yến, Củ cải trắng, Lê, Sữa, Kem, Rượu trắng.',
-            'loi_khuyen' => 'Nên đeo trang sức vàng bạc, đồng hồ kim loại. Tránh để móng tay quá dài. Sáng dậy nên soi gương.'
-        ],
-        'MOC' => [ // Khuyết Mộc (Thường sinh mùa Thu: Thân, Dậu, Tuất)
-            'name' => 'Khuyết Mộc (Cần bổ sung Mộc)',
-            'mau_sac' => 'Xanh lá cây, Xanh lục',
-            'thuc_pham' => 'Rau xanh, Salad, Các loại nấm, Đậu xanh, Quả chua (Chanh, Cam), Giấm, Thịt vịt.',
-            'loi_khuyen' => 'Nên trồng cây trong nhà, nuôi mèo, để tóc dài, đọc sách giấy. Sáng dậy nên đi dạo công viên.'
-        ],
-        'THUY' => [ // Khuyết Thủy (Thường sinh mùa Hạ: Tỵ, Ngọ, Mùi)
-            'name' => 'Khuyết Thủy (Cần bổ sung Thủy)',
-            'mau_sac' => 'Đen, Xanh dương, Xám tro',
-            'thuc_pham' => 'Cá, Hải sản, Đậu phụ, Đậu đen, Rong biển, Tổ yến, Nước khoáng, Bia lạnh.',
-            'loi_khuyen' => 'Nên tắm sáng, uống nhiều nước, nuôi cá cảnh. Nhà vệ sinh cần sạch sẽ. Thường xuyên đi bơi.'
-        ],
-        'HOA' => [ // Khuyết Hỏa (Thường sinh mùa Đông: Hợi, Tý, Sửu)
-            'name' => 'Khuyết Hỏa (Cần bổ sung Hỏa)',
-            'mau_sac' => 'Đỏ, Tím, Hồng, Cam',
-            'thuc_pham' => 'Thịt bò, Thịt dê, Ớt, Gừng, Tỏi, Rượu vang đỏ, Cà chua, Táo đỏ, Socola.',
-            'loi_khuyen' => 'Nên vào bếp nấu ăn, dùng đèn ánh sáng vàng/đỏ. Nuôi chó hoặc rùa. Tắm nắng buổi sáng.'
-        ],
-        'THO' => [ // Khuyết Thổ (Sinh các tháng Tứ Mộ: Thìn, Tuất, Sửu, Mùi - nhưng cần tính kỹ)
-            // Trong Tử vi ứng dụng, thường gộp vào Hỏa hoặc Kim tùy tàng can.
-            // Ở đây để đơn giản ta dùng chế độ cân bằng.
-            'name' => 'Cân Bằng Thổ (Bổ sung Thổ)',
-            'mau_sac' => 'Vàng, Nâu đất',
-            'thuc_pham' => 'Thịt chó, Thịt dê, Khoai lang, Khoai tây, Bí ngô, Đường phèn.',
-            'loi_khuyen' => 'Nên đi chân trần trên đất/cát, dùng đồ gốm sứ, đá quý phong thủy.'
-        ]
-    ];
+        // 1. Analyze Stars in Tat Ach
+        $stars = array_merge($cungTatAch['chinh_tinh'], $cungTatAch['phu_tinh_xau']);
 
-    public function __construct($calculatorData) {
-        $this->laso = $calculatorData['dia_ban'];
-        $this->birthMonth = $calculatorData['input']['m']; // Assuming $data_input passed or stored
-        // Wait, TuViLapSo result doesn't explicitly return month in a simple key, it's in 'meta' or passed separately.
-        // In funcs/tu-vi.php, I passed $data_input separately.
-        // I should reconstruct data to match usage.
-        // Check funcs/tu-vi.php usage plan.
-
-        // Tìm vị trí cung Tật Ách
-        foreach ($this->laso as $cung) {
-            if (strpos($cung['palace_name'], 'Tật Ách') !== false) {
-                $this->tatAchPos = $cung['index'];
-                break;
-            }
-        }
-    }
-
-    // --- PHẦN 1: CHẨN ĐOÁN BỆNH LÝ (CUNG TẬT ÁCH) ---
-
-    public function chanDoanBenh() {
-        $cungTat = $this->laso[$this->tatAchPos];
-
-        // Extract codes
-        $tatCaSao = [];
-        foreach($cungTat['chinh_tinh'] as $s) $tatCaSao[] = strtoupper($s['code']);
-        if(isset($cungTat['phu_tinh_tot'])) foreach($cungTat['phu_tinh_tot'] as $s) $tatCaSao[] = strtoupper($s['code']);
-        if(isset($cungTat['phu_tinh_xau'])) foreach($cungTat['phu_tinh_xau'] as $s) $tatCaSao[] = strtoupper($s['code']);
-
-        $chanDoan = [];
-        $nguyCoCao = false;
-
-        // 1. Quét từng sao
-        foreach ($tatCaSao as $sao) {
-            if (isset(self::Y_LY_SAO[$sao])) {
-                $info = self::Y_LY_SAO[$sao];
-                // Nếu gặp Tuần Triệt tại Tật Ách -> Bệnh nặng hóa nhẹ, bệnh nhẹ hóa không (Tốt)
-                if ($cungTat['tuan'] || $cungTat['triet']) {
-                    $chanDoan[] = "Có sao <strong>$sao</strong> nhưng nhờ Tuần/Triệt nên giải trừ được: {$info['benh']}";
-                } else {
-                    $chanDoan[] = "Do ảnh hưởng của <strong>$sao</strong>: Chú ý vùng {$info['part']}. Nguy cơ: {$info['benh']}";
-                }
+        foreach ($stars as $s) {
+            $code = $s['code'];
+            // Specific Health meanings
+            switch ($code) {
+                case 'thien_co': $warnings[] = "Gan mật kém, hay lo nghĩ gây suy nhược thần kinh."; break;
+                case 'thai_duong': $warnings[] = "Huyết áp cao, mắt kém, bệnh tim mạch."; break;
+                case 'vu_khuc': $warnings[] = "Bệnh hô hấp, phổi, mũi họng."; break;
+                case 'thien_dong': $warnings[] = "Bệnh tiêu hóa, dạ dày lạnh, hay đau bụng."; break;
+                case 'liem_trinh': $warnings[] = "Nóng trong, mụn nhọt, bệnh về máu."; break;
+                case 'tham_lang': $warnings[] = "Bệnh gan, thận, hoặc do tửu sắc quá độ."; break;
+                case 'cu_mon': $warnings[] = "Dạ dày, thực quản, bệnh miệng."; break;
+                case 'thien_tuong': $warnings[] = "Bệnh ngoài da, dị ứng, hoặc bàng quang."; break;
+                case 'thien_luong': $warnings[] = "Tỳ vị (tiêu hóa) yếu, nhưng gặp bệnh mau khỏi."; break;
+                case 'that_sat': $warnings[] = "Bệnh phổi, ho hen, hoặc chấn thương kim khí."; break;
+                case 'pha_quan': $warnings[] = "Bệnh thận, máu huyết, hoặc bệnh phụ nữ/nam khoa."; break;
+                case 'hoa_ky': $warnings[] = "Mắt kém, khí huyết không thông, hay bị bệnh lặt vặt lâu khỏi."; break;
+                case 'kinh_duong': $warnings[] = "Dễ bị phẫu thuật, chấn thương tay chân."; break;
+                case 'da_la': $warnings[] = "Bệnh mãn tính, răng miệng, xương khớp."; break;
+                case 'dia_khong': case 'dia_kiep': $warnings[] = "Ung nhọt, bệnh lạ, hoặc bệnh về khí huyết."; break;
             }
         }
 
-        // 2. Phát hiện Tổ hợp nguy hiểm (Pattern Recognition)
-        $msg = $this->detectBenhPattern($tatCaSao);
-        if ($msg) {
-            $chanDoan[] = "<span style='color:red; font-weight:bold'>⚠ Cảnh báo đặc biệt: $msg</span>";
-            $nguyCoCao = true;
+        if (empty($warnings)) {
+            $warnings[] = "Cung Tật Ách tốt, ít bệnh tật nguy hiểm. Chú ý giữ gìn sức khỏe theo mùa.";
         }
 
-        if (empty($chanDoan)) {
-            $chanDoan[] = "Cung Tật Ách tốt, ít bệnh tật nguy hiểm. Tuy nhiên cần chú ý sức khỏe theo vận hạn.";
-        }
+        // 2. Recommend Diet based on Menh Element (Balance)
+        // Principle: Eat foods of Generating Element (Sinh) and Same Element (Hoa). Avoid Controlling (Khac).
+        // Also: Weak organ needs tonifying.
+
+        $diet = self::getDietAdvice($menhElement);
 
         return [
-            'cung_tat' => $cungTat['name'],
-            'chi_tiet' => $chanDoan,
-            'canh_bao' => $nguyCoCao
+            'cung_tat' => $cungTatAch['palace_name'],
+            'diagnosis' => $warnings,
+            'diet' => $diet
         ];
     }
 
-    // --- PHẦN 2: THỰC DƯỠNG CẢI VẬN (MỆNH KHUYẾT) ---
-
-    public function goiYThucDuong() {
-        // Xác định Ngũ hành khuyết thiếu dựa trên Mùa sinh (Tháng Âm lịch)
-
-        $thang = $this->birthMonth;
-        $keyKhuyet = '';
-
-        if (in_array($thang, [1, 2, 3])) $keyKhuyet = 'KIM';
-        elseif (in_array($thang, [4, 5, 6])) $keyKhuyet = 'THUY';
-        elseif (in_array($thang, [7, 8, 9])) $keyKhuyet = 'MOC';
-        elseif (in_array($thang, [10, 11, 12])) $keyKhuyet = 'HOA';
-
-        return self::THUC_DUONG[$keyKhuyet];
-    }
-
-    // --- HELPER FUNCTIONS ---
-
-    private function detectBenhPattern($stars) {
-        $patterns = [];
-
-        // Thái Dương + Đà La/Hóa Kỵ/Riêu -> Mắt kém
-        if (in_array('THAI_DUONG', $stars) && (in_array('DA_LA', $stars) || in_array('HOA_KY', $stars) || in_array('THIEN_RIEU', $stars))) {
-            $patterns[] = "Thái Dương gặp Ám tinh: Đề phòng các bệnh nặng về Mắt hoặc Tim mạch.";
+    private static function getDietAdvice($elementId) {
+        // 1=Kim, 2=Thuy, 3=Hoa, 4=Tho, 5=Moc (Checking standard again or using generic names)
+        // Using name string for safety if ID varies
+        // Map ID to Name if int
+        $elName = $elementId;
+        if (is_numeric($elementId)) {
+             // Assuming: 1=Thuy, 2=Hoa, 3=Tho, 4=Kim, 5=Moc (from TuViLapSo)
+             $map = [1=>'Thủy', 2=>'Hỏa', 3=>'Thổ', 4=>'Kim', 5=>'Mộc'];
+             $elName = isset($map[$elementId]) ? $map[$elementId] : 'Unknown';
         }
 
-        // Tham Lang + Đà La/Riêu -> Bệnh phong tình
-        if (in_array('THAM_LANG', $stars) && (in_array('DA_LA', $stars) || in_array('THIEN_RIEU', $stars))) {
-            $patterns[] = "Tham Lang ngộ Riêu Đà: Cẩn thận các bệnh lây qua đường tình dục hoặc thận suy.";
+        switch ($elName) {
+            case 'Kim':
+                return [
+                    'name' => 'Mệnh Kim (Phổi/Đại tràng)',
+                    'mau_sac' => 'Trắng, Xám, Ghi, Vàng, Nâu đất',
+                    'thuc_pham' => 'Gạo trắng, củ cải, lê, tỏi, gừng, thịt gà. Nên ăn cay vừa phải để bổ Phổi.',
+                    'loi_khuyen' => 'Tránh hút thuốc. Tập hít thở sâu. Giữ ấm cổ họng.'
+                ];
+            case 'Mộc':
+                return [
+                    'name' => 'Mệnh Mộc (Gan/Mật)',
+                    'mau_sac' => 'Xanh lá, Đen, Xanh dương',
+                    'thuc_pham' => 'Rau xanh, cải bó xôi, chanh, giấm, thịt bò. Vị chua đi vào Gan.',
+                    'loi_khuyen' => 'Hạn chế rượu bia. Tránh thức khuya. Nên tập yoga hoặc đi dạo dưới cây xanh.'
+                ];
+            case 'Thủy':
+                return [
+                    'name' => 'Mệnh Thủy (Thận/Bàng quang)',
+                    'mau_sac' => 'Đen, Xanh dương, Trắng, Xám',
+                    'thuc_pham' => 'Đậu đen, rong biển, hải sản, thịt lợn. Vị mặn (vừa phải) tốt cho Thận.',
+                    'loi_khuyen' => 'Uống đủ nước. Tránh nhịn tiểu. Giữ ấm vùng lưng và chân.'
+                ];
+            case 'Hỏa':
+                return [
+                    'name' => 'Mệnh Hỏa (Tim/Ruột non)',
+                    'mau_sac' => 'Đỏ, Hồng, Tím, Xanh lá',
+                    'thuc_pham' => 'Mướp đắng, rau đắng, tim lợn, dưa hấu. Vị đắng thanh nhiệt tốt cho Tim.',
+                    'loi_khuyen' => 'Tránh xúc động mạnh. Hạn chế đồ cay nóng quá mức. Tập thiền định.'
+                ];
+            case 'Thổ':
+                return [
+                    'name' => 'Mệnh Thổ (Tỳ/Vị)',
+                    'mau_sac' => 'Vàng, Nâu, Đỏ, Hồng',
+                    'thuc_pham' => 'Khoai lang, bí ngô, cà rốt, thịt bò, mật ong. Vị ngọt tự nhiên tốt cho Tỳ vị.',
+                    'loi_khuyen' => 'Ăn uống đúng giờ. Tránh lo nghĩ quá nhiều hại dạ dày. Hạn chế đồ lạnh sống.'
+                ];
+            default:
+                return ['name' => 'Chưa xác định', 'mau_sac'=>'', 'thuc_pham'=>'', 'loi_khuyen'=>''];
         }
-
-        // Liêm Trinh + Bạch Hổ -> Máu huyết, ung nhọt
-        if (in_array('LIEM_TRINH', $stars) && in_array('BACH_HO', $stars)) {
-            $patterns[] = "Liêm Trinh Bạch Hổ: Đề phòng bệnh về máu huyết, phụ nữ cần tầm soát u bướu.";
-        }
-
-        // Không Kiếp + Hình -> Mổ xẻ
-        if ((in_array('DIA_KHONG', $stars) || in_array('DIA_KIEP', $stars)) && in_array('THIEN_HINH', $stars)) {
-            $patterns[] = "Không Kiếp Hình: Dễ có can thiệp dao kéo, phẫu thuật trong đời.";
-        }
-
-        return !empty($patterns) ? implode('<br>', $patterns) : null;
     }
 }

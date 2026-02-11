@@ -64,6 +64,23 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
         $daysOfWeek = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
         $data['day_of_week'] = $daysOfWeek[$today['wday']];
 
+        // Proverbs Database (Mini)
+        $proverbs = [
+            "Lời nói chẳng mất tiền mua, lựa lời mà nói cho vừa lòng nhau.",
+            "Uống nước nhớ nguồn.",
+            "Ăn quả nhớ kẻ trồng cây.",
+            "Một cây làm chẳng nên non, ba cây chụm lại nên hòn núi cao.",
+            "Gần mực thì đen, gần đèn thì sáng.",
+            "Có công mài sắt, có ngày nên kim.",
+            "Lá lành đùm lá rách.",
+            "Bầu ơi thương lấy bí cùng, tuy rằng khác giống nhưng chung một giàn.",
+            "Thương người như thể thương thân.",
+            "Tốt gỗ hơn tốt nước sơn."
+        ];
+        // Select based on day of year to rotate
+        $dayOfYear = date('z');
+        $data['proverb'] = $proverbs[$dayOfYear % count($proverbs)];
+
         // Use new LichVanNien class if available
         if (class_exists('\\NukeViet\\Module\\HuyenHoc\\LichVanNien')) {
             $app = new \NukeViet\Module\HuyenHoc\LichVanNien();

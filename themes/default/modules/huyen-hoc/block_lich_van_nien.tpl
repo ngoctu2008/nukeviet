@@ -1,11 +1,14 @@
 <!-- BEGIN: main -->
 <div class="calendar-block-wrapper text-center" id="block-calendar-{BLOCK_ID}">
-    <div class="calendar-nav d-flex justify-content-between align-items-center mb-3">
-        <button class="btn btn-sm btn-light btn-prev-day" type="button" title="Ngày trước"><i class="fa fa-chevron-left"></i></button>
+    <!-- Top Nav with Hidden Buttons on Hover -->
+    <div class="calendar-nav position-relative mb-3">
+        <div class="nav-overlay">
+            <button class="btn btn-sm btn-light btn-prev-day nav-btn left" type="button" title="Ngày trước"><i class="fa fa-chevron-left"></i></button>
+            <button class="btn btn-sm btn-light btn-next-day nav-btn right" type="button" title="Ngày sau"><i class="fa fa-chevron-right"></i></button>
+        </div>
         <div class="current-date-display font-weight-bold text-uppercase" style="cursor:pointer;" id="datepicker-trigger-{BLOCK_ID}">
             THÁNG <span class="lbl-month">{DATA.solar_month}</span> NĂM <span class="lbl-year">{DATA.solar_year}</span>
         </div>
-        <button class="btn btn-sm btn-light btn-next-day" type="button" title="Ngày sau"><i class="fa fa-chevron-right"></i></button>
     </div>
 
     <input type="hidden" id="cal-day-{BLOCK_ID}" value="{DATA.solar_day}">
@@ -42,7 +45,12 @@
             </div>
         </div>
 
-        <div class="extra-info mt-3 pt-2 border-top small">
+        <!-- Ca dao tuc ngu -->
+        <div class="proverb-section mt-2 pt-2 border-top text-center font-italic text-muted small">
+            <span class="lbl-proverb">"{DATA.proverb}"</span>
+        </div>
+
+        <div class="extra-info mt-2 pt-2 border-top small">
             <div class="mb-1">
                 <strong><i class="fa fa-ban text-danger"></i> Tuổi xung:</strong> <span class="lbl-tuoi-xung">{DATA.tuoi_xung}</span>
             </div>
@@ -74,6 +82,12 @@
                 </ul>
             </div>
         </div>
+
+        <div class="mt-3 text-center">
+            <a href="{MODULE_URL}&{NV_OP_VARIABLE}=xem-ngay" class="btn btn-primary btn-sm btn-block">
+                <i class="fa fa-calendar-check-o"></i> Xem Ngày Tốt Xấu
+            </a>
+        </div>
     </div>
 </div>
 
@@ -84,14 +98,29 @@
     border-radius: 8px;
     border: 1px solid #e9ecef;
     font-family: Arial, sans-serif;
+    position: relative;
 }
-.calendar-nav .btn {
+/* Nav buttons hidden by default, show on hover of wrapper */
+.calendar-block-wrapper:hover .nav-btn {
+    opacity: 1;
+}
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 10;
     border-radius: 50%;
     width: 30px;
     height: 30px;
-    padding: 0;
     line-height: 30px;
+    padding: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+.nav-btn.left { left: 10px; }
+.nav-btn.right { right: 10px; }
+
 .solar-day {
     font-size: 60px;
     font-weight: bold;
@@ -115,6 +144,7 @@
     line-height: 1;
 }
 .comma:last-child { display: none; }
+.calendar-nav { position: relative; height: 30px; line-height: 30px; }
 </style>
 
 <script>
@@ -134,12 +164,10 @@ $(document).ready(function() {
                 $block.css('opacity', '1');
                 if (res.status == 'success') {
                     var data = res.data;
-                    // Update inputs
                     $('#cal-day-' + blockId).val(data.solar_day);
                     $('#cal-month-' + blockId).val(data.solar_month);
                     $('#cal-year-' + blockId).val(data.solar_year);
 
-                    // Update labels
                     $block.find('.lbl-day').text(data.solar_day);
                     $block.find('.lbl-month').text(data.solar_month);
                     $block.find('.lbl-year').text(data.solar_year);
@@ -157,8 +185,8 @@ $(document).ready(function() {
 
                     $block.find('.lbl-tuoi-xung').text(data.tuoi_xung);
                     $block.find('.lbl-xuat-hanh').text(data.huong_xuat_hanh);
+                    $block.find('.lbl-proverb').text('"' + data.proverb + '"');
 
-                    // Update Zodiac Hours
                     var zHtml = '';
                     if (data.gio_hoang_dao && data.gio_hoang_dao.length > 0) {
                         $.each(data.gio_hoang_dao, function(i, v) {
@@ -167,7 +195,6 @@ $(document).ready(function() {
                     }
                     $block.find('.lbl-zodiac-hours').html(zHtml);
 
-                    // Update LTP
                     var ltpHtml = '';
                     if (data.ly_thuan_phong && data.ly_thuan_phong.length > 0) {
                         $.each(data.ly_thuan_phong, function(i, v) {

@@ -10,49 +10,116 @@
                     <h3 class="panel-title"><i class="fa fa-search"></i> Tra Cứu Ngày Tốt</h3>
                 </div>
                 <div class="panel-body">
-                    <form action="{NV_BASE_SITEURL}index.php" method="get">
-                        <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}">
-                        <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}">
-                        <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}">
+                    <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+                        <li class="active"><a href="#tab-xem-ngay" data-toggle="tab">Xem Ngày</a></li>
+                        <li><a href="#tab-muon-tuoi" data-toggle="tab">Mượn Tuổi</a></li>
+                    </ul>
 
-                        <div class="form-group">
-                            <label>Ngày Dương Lịch</label>
-                            <div class="row">
-                                <div class="col-xs-8">
-                                    <input type="number" name="d" value="{INPUT.d}" class="form-control" placeholder="Ngày" required>
+                    <div class="tab-content">
+                        <!-- Tab Xem Ngay -->
+                        <div class="tab-pane active" id="tab-xem-ngay">
+                            <form action="{NV_BASE_SITEURL}index.php" method="get">
+                                <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}">
+                                <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}">
+                                <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}">
+
+                                <div class="form-group">
+                                    <label>Ngày Dương Lịch</label>
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <input type="number" name="d" value="{INPUT.d}" class="form-control" placeholder="Ngày" required>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <input type="number" name="m" value="{INPUT.m}" class="form-control" placeholder="Tháng" required>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <input type="number" name="y" value="{INPUT.y}" class="form-control" placeholder="Năm" required>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-xs-8">
-                                    <input type="number" name="m" value="{INPUT.m}" class="form-control" placeholder="Tháng" required>
+
+                                <div class="form-group">
+                                    <label>Mục đích công việc</label>
+                                    <select name="purpose" class="form-control">
+                                        <!-- BEGIN: purpose_option -->
+                                        <option value="{PURPOSE.key}" {PURPOSE.selected}>{PURPOSE.title}</option>
+                                        <!-- END: purpose_option -->
+                                    </select>
                                 </div>
-                                <div class="col-xs-8">
-                                    <input type="number" name="y" value="{INPUT.y}" class="form-control" placeholder="Năm" required>
+
+                                <div class="form-group">
+                                    <label>Năm sinh gia chủ (Âm lịch)</label>
+                                    <input type="number" name="birth_year" value="{INPUT.birth_year}" class="form-control" placeholder="Ví dụ: 1983">
+                                    <p class="help-block"><small>Nhập năm sinh để xem tuổi hợp/kỵ (Kim Lâu, Hoang Ốc, Tam Tai).</small></p>
                                 </div>
-                            </div>
+
+                                <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-calendar-check-o"></i> Xem Kết Quả</button>
+                            </form>
                         </div>
 
-                        <div class="form-group">
-                            <label>Mục đích công việc</label>
-                            <select name="purpose" class="form-control">
-                                <!-- BEGIN: purpose_option -->
-                                <option value="{PURPOSE.key}" {PURPOSE.selected}>{PURPOSE.title}</option>
-                                <!-- END: purpose_option -->
-                            </select>
-                        </div>
+                        <!-- Tab Muon Tuoi -->
+                        <div class="tab-pane" id="tab-muon-tuoi">
+                            <form action="{NV_BASE_SITEURL}index.php" method="get">
+                                <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}">
+                                <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}">
+                                <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}">
+                                <input type="hidden" name="func" value="muon_tuoi">
 
-                        <div class="form-group">
-                            <label>Năm sinh gia chủ (Âm lịch)</label>
-                            <input type="number" name="birth_year" value="{INPUT.birth_year}" class="form-control" placeholder="Ví dụ: 1983">
-                            <p class="help-block"><small>Nhập năm sinh để xem tuổi hợp/kỵ (Kim Lâu, Hoang Ốc, Tam Tai).</small></p>
-                        </div>
+                                <div class="form-group">
+                                    <label>Năm làm nhà (Dương lịch)</label>
+                                    <select name="target_year" class="form-control">
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026" selected>2026</option>
+                                        <option value="2027">2027</option>
+                                    </select>
+                                </div>
 
-                        <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-calendar-check-o"></i> Xem Kết Quả</button>
-                    </form>
+                                <div class="form-group">
+                                    <label>Năm sinh gia chủ</label>
+                                    <input type="number" name="owner_year" value="{INPUT.birth_year}" class="form-control" placeholder="Ví dụ: 1984" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-success btn-block"><i class="fa fa-users"></i> Tìm Người Mượn Tuổi</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Right Column: Results -->
         <div class="col-md-16 col-sm-24">
+            <!-- BEGIN: muon_tuoi_result -->
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Kết Quả Tìm Người Mượn Tuổi Năm {TARGET_YEAR} (Gia chủ: {OWNER_YEAR})</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- BEGIN: candidate -->
+                    <div class="media" style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                        <div class="media-left">
+                            <span class="badge" style="font-size: 1.2em; background-color: #5cb85c;">{CANDIDATE.score} đ</span>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Tuổi {CANDIDATE.birth_year} ({CANDIDATE.can_chi}) - {CANDIDATE.age} tuổi</h4>
+                            <p><strong>Mệnh:</strong> {CANDIDATE.menh}</p>
+                            <ul class="list-unstyled">
+                                <!-- BEGIN: detail -->
+                                <li><i class="fa fa-check text-success"></i> {DETAIL}</li>
+                                <!-- END: detail -->
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- END: candidate -->
+                    <!-- BEGIN: no_candidate -->
+                    <div class="alert alert-warning">Không tìm thấy tuổi nào phù hợp trong năm nay.</div>
+                    <!-- END: no_candidate -->
+                </div>
+            </div>
+            <!-- END: muon_tuoi_result -->
+
+            <!-- BEGIN: date_info -->
             <!-- Date Info Panel -->
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -111,6 +178,7 @@
                     </div>
                 </div>
             </div>
+            <!-- END: date_info -->
         </div>
     </div>
 
