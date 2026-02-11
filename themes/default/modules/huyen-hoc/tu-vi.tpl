@@ -81,7 +81,10 @@
                 <!-- Hidden inputs for AJAX -->
                 <input type="hidden" id="meta_chiYear" value="{META.chiYear}">
                 <input type="hidden" id="meta_gender" value="{META.gender}">
+                <input type="hidden" id="meta_birthDay" value="{INPUT.d}">
+                <input type="hidden" id="meta_birthMonth" value="{INPUT.m}">
                 <input type="hidden" id="meta_birthYear" value="{INPUT.y}">
+                <input type="hidden" id="meta_birthHour" value="{INPUT.h}">
             </div>
         </div>
 
@@ -280,7 +283,11 @@
             var targetYear = $('#select-year-han').val();
             var chiYear = $('#meta_chiYear').val();
             var gender = $('#meta_gender').val();
+
+            var birthDay = $('#meta_birthDay').val();
+            var birthMonth = $('#meta_birthMonth').val();
             var birthYear = $('#meta_birthYear').val();
+            var birthHour = $('#meta_birthHour').val();
 
             $('#ket-qua-han').html('<p><i class="fa fa-spinner fa-spin"></i> {LANG.loading}</p>');
 
@@ -289,7 +296,10 @@
                 targetYear: targetYear,
                 chiYear: chiYear,
                 gender: gender,
-                birthYear: birthYear
+                birthDay: birthDay,
+                birthMonth: birthMonth,
+                birthYear: birthYear,
+                birthHour: birthHour
             }, function(res) {
                 if(res.status == 'success') {
                     $('#ket-qua-han').html(res.html);

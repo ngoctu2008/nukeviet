@@ -17,6 +17,7 @@ $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
 $xtpl->assign('TEMPLATE', $module_info['template']);
 $xtpl->assign('MODULE_FILE', $module_file);
+$xtpl->assign('MODULE_NAME', $module_name);
 
 // Inputs
 $year1 = $nv_Request->get_int('year1', 'post,get', 0);
