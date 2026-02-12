@@ -11,6 +11,59 @@ namespace NukeViet\Module\HuyenHoc;
 
 class TuViHuongNghiep {
 
+    private $quanLoc;
+    private $menh;
+    private $taiBach;
+
+    public function __construct($calcData) {
+        if (isset($calcData['dia_ban'])) {
+            $diaBan = $calcData['dia_ban'];
+            $meta = $calcData['meta'];
+
+            // Find Quan Loc, Menh, Tai Bach indices
+            $menhIdx = $meta['menh_idx'];
+            $quanIdx = ($menhIdx + 4) % 12; // Quan Loc is Menh + 4 (clockwise) or -4?
+            // Standard: Menh(1), Huynh(2), Phu(3), Tu(4), Tai(5), Tat(6), Thien(7), No(8), Quan(9).
+            // So Quan is Menh - 4 (or +8).
+            // But wait, my TuViLapSo index might be 0..11.
+            // Check TuViLapSo: Menh, Phu Mau, Phuc Duc, Dien Trach, Quan Loc...
+            // Menh=0, Phu=1, Phuc=2, Dien=3, Quan=4.
+            // So Quan Loc is Menh + 4.
+            // Tai Bach is Menh + 8.
+            $quanIdx = ($menhIdx + 4) % 12;
+            $taiIdx = ($menhIdx + 8) % 12;
+
+            $this->menh = isset($diaBan[$menhIdx]) ? $diaBan[$menhIdx] : [];
+            $this->quanLoc = isset($diaBan[$quanIdx]) ? $diaBan[$quanIdx] : [];
+            $this->taiBach = isset($diaBan[$taiIdx]) ? $diaBan[$taiIdx] : [];
+        }
+    }
+
+    public function renderReport() {
+        if (empty($this->quanLoc)) return '<div class="alert alert-warning">Chưa có dữ liệu Quan Lộc để phân tích.</div>';
+
+        $analysis = self::analyzeCareer($this->quanLoc, $this->menh, $this->taiBach);
+
+        $html = '<div class="career-report">';
+        $html .= '<h4><i class="fa fa-briefcase"></i> ĐỊNH HƯỚNG NGHỀ NGHIỆP (Cung Quan Lộc: ' . $this->quanLoc['palace_name'] . ')</h4>';
+
+        if (!empty($analysis['jobs'])) {
+            $html .= '<div class="alert alert-success"><strong><i class="fa fa-check-circle"></i> Ngành nghề phù hợp:</strong><br>';
+            $html .= '<ul class="mb-0">';
+            foreach ($analysis['jobs'] as $job) {
+                $html .= '<li>' . $job . '</li>';
+            }
+            $html .= '</ul></div>';
+        }
+
+        if (!empty($analysis['advice'])) {
+            $html .= '<div class="alert alert-info"><strong><i class="fa fa-lightbulb-o"></i> Lời khuyên:</strong> ' . $analysis['advice'] . '</div>';
+        }
+
+        $html .= '</div>';
+        return $html;
+    }
+
     public static function analyzeCareer($quanLoc, $menh, $taiBach) {
         $advice = [];
         $suitableJobs = [];

@@ -157,8 +157,8 @@
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-8 form-group">
-                                        <label>Năm sinh (*)</label>
-                                        <input type="number" name="deceased_year" class="form-control" required placeholder="19xx">
+                                        <label>Năm sinh (Dương lịch) (*)</label>
+                                        <input type="number" name="deceased_year" class="form-control" required placeholder="19xx" value="{INPUT_TT.deceased_year}">
                                     </div>
                                     <div class="col-md-8 form-group">
                                         <label>Giới tính (*)</label>
@@ -169,7 +169,7 @@
                                     </div>
                                     <div class="col-md-8 form-group">
                                         <label>Thời gian mất (*)</label>
-                                        <input type="datetime-local" name="death_time" class="form-control" required>
+                                        <input type="datetime-local" name="death_time" class="form-control" required value="{INPUT_TT.death_time}">
                                     </div>
                                 </div>
                             </div>
@@ -179,8 +179,8 @@
                             <div class="panel-heading">Trưởng nam / Chủ lễ</div>
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label>Năm sinh (*)</label>
-                                    <input type="number" name="head_year" class="form-control" placeholder="19xx">
+                                    <label>Năm sinh (Dương lịch)</label>
+                                    <input type="number" name="head_year" class="form-control" placeholder="19xx" value="{INPUT_TT.head_year}">
                                 </div>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <label>Năm sinh người thân (Cách nhau dấu phẩy)</label>
-                                    <input type="text" name="relatives_list" class="form-control" placeholder="1983, 1990, 2005...">
+                                    <input type="text" name="relatives_list" class="form-control" placeholder="1983, 1990, 2005..." value="{INPUT_TT.relatives_list}">
                                 </div>
                             </div>
                         </div>
@@ -226,12 +226,11 @@
                         </tr>
                     </table>
 
-                    <h5>Xung khắc Trưởng Nam / Người thân:</h5>
-                    <ul>
-                        <!-- BEGIN: conflict -->
-                        <li>{CONFLICT}</li>
-                        <!-- END: conflict -->
-                    </ul>
+                    <!-- BEGIN: conflict -->
+                    <div class="alert alert-warning">
+                        <strong>Xung khắc:</strong> {CONFLICT}
+                    </div>
+                    <!-- END: conflict -->
                 </div>
             </div>
             <!-- END: trung_tang_result -->

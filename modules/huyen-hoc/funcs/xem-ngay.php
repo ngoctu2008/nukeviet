@@ -36,67 +36,71 @@ if ($func == 'trung_tang') {
     $headYear = $nv_Request->get_int('head_year', 'post', 0);
     $relativesStr = $nv_Request->get_string('relatives_list', 'post', '');
 
-    if ($deceasedYear == 0 || empty($deathTimeStr)) {
-        die("Vui lòng nhập đầy đủ thông tin người mất.");
-    }
-
-    // Parse Death Time
-    $dt = strtotime($deathTimeStr);
-    $d = date('j', $dt);
-    $m = date('n', $dt);
-    $y = date('Y', $dt);
-    $h = date('G', $dt);
-
-    // Convert to Lunar for calculation
-    $lunar = LunarCalendar::convertSolar2Lunar($d, $m, $y);
-    $canChi = LunarCalendar::getCanChi($y, $m, $d, $h);
-
-    // Deceased Info
-    $age = $lunar['year'] - $deceasedYear + 1;
-    $deceasedInfo = [
-        'year' => $deceasedYear,
-        'gender' => $deceasedGender,
-        'age' => $age,
-        'death_time' => [
-            'd' => $lunar['day'],
-            'm' => $lunar['month'],
-            'y' => $lunar['year'],
-            'h_chi' => $canChi['chiHour']
-        ]
-    ];
-
-    // Relatives
-    $relatives = [];
-    if (!empty($relativesStr)) {
-        $parts = explode(',', $relativesStr);
-        foreach ($parts as $p) {
-            $rYear = (int)trim($p);
-            if ($rYear > 0) $relatives[] = $rYear;
-        }
-    }
-
-    $app = new TuViXemNgay($deceasedYear, $deceasedGender, "$y-$m-$d");
-    $result = $app->xemTrungTang($deceasedInfo, $headYear, $relatives);
-
     $xtpl = new XTemplate('xem-ngay.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('MODULE_NAME', $module_name);
     $xtpl->assign('OP', $op);
-
-    // Assign Result
-    $xtpl->assign('TT_RESULT', $result);
-
-    if (!empty($result['conflicts'])) {
-        foreach ($result['conflicts'] as $c) {
-            $xtpl->assign('CONFLICT', $c);
-            $xtpl->parse('main.trung_tang_result.conflict');
-        }
-    }
-
-    $xtpl->parse('main.trung_tang_result');
-
-    // Set Active Tab
     $xtpl->assign('ACTIVE_TAB_TANG_LE', 'active');
+
+    // Keep inputs
+    $xtpl->assign('INPUT_TT', [
+        'deceased_year' => $deceasedYear,
+        'death_time' => $deathTimeStr,
+        'head_year' => $headYear,
+        'relatives_list' => $relativesStr
+    ]);
+
+    if ($deceasedYear > 0 && !empty($deathTimeStr)) {
+        // Parse Death Time
+        $dt = strtotime($deathTimeStr);
+        $d = date('j', $dt);
+        $m = date('n', $dt);
+        $y = date('Y', $dt);
+        $h = date('G', $dt);
+
+        // Convert to Lunar for calculation
+        $lunar = LunarCalendar::convertSolar2Lunar($d, $m, $y);
+        $canChi = LunarCalendar::getCanChi($y, $m, $d, $h);
+
+        // Deceased Info
+        $age = $lunar['year'] - $deceasedYear + 1;
+        $deceasedInfo = [
+            'year' => $deceasedYear,
+            'gender' => $deceasedGender,
+            'age' => $age,
+            'death_time' => [
+                'd' => $lunar['day'],
+                'm' => $lunar['month'],
+                'y' => $lunar['year'],
+                'h_chi' => $canChi['chiHour']
+            ]
+        ];
+
+        // Relatives
+        $relatives = [];
+        if (!empty($relativesStr)) {
+            $parts = explode(',', $relativesStr);
+            foreach ($parts as $p) {
+                $rYear = (int)trim($p);
+                if ($rYear > 0) $relatives[] = $rYear;
+            }
+        }
+
+        $app = new TuViXemNgay($deceasedYear, $deceasedGender, "$y-$m-$d");
+        $result = $app->xemTrungTang($deceasedInfo, $headYear, $relatives);
+
+        // Assign Result
+        $xtpl->assign('TT_RESULT', $result);
+
+        if (!empty($result['conflicts'])) {
+            foreach ($result['conflicts'] as $c) {
+                $xtpl->assign('CONFLICT', $c);
+                $xtpl->parse('main.trung_tang_result.conflict');
+            }
+        }
+
+        $xtpl->parse('main.trung_tang_result');
+    }
 
     $xtpl->parse('main');
     $contents = $xtpl->text('main');
@@ -109,7 +113,6 @@ if ($func == 'trung_tang') {
 
 if ($func == 'muon_tuoi') {
     if (!class_exists('NukeViet\Module\HuyenHoc\TuViMuonTuoi')) {
-        // Fallback require if loop above failed for some reason
         require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViMuonTuoi.php';
     }
 
@@ -176,7 +179,7 @@ $xtpl->assign('INPUT', ['d'=>$d, 'm'=>$m, 'y'=>$y, 'birth_year'=>$birthYear]);
 
 // Tab Active Logic
 $activeTab = 'ACTIVE_TAB_' . strtoupper($tab);
-if ($tab == 'khai_truong') $activeTab = 'ACTIVE_TAB_KHAI_TRUONG'; // Fix mapping if needed
+if ($tab == 'khai_truong') $activeTab = 'ACTIVE_TAB_KHAI_TRUONG';
 $xtpl->assign($activeTab, 'active');
 
 // Handle Specific Tab Logic
