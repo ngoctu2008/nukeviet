@@ -333,7 +333,9 @@ class TuViLuanGiai {
         foreach ($palace['chinh_tinh'] as $s) $stars[] = $s['code'];
         // If VCD, check borrowed
         if (empty($stars) && !empty($palace['chinh_tinh_borrowed'])) {
-            foreach ($palace['chinh_tinh_borrowed'] as $s) $stars[] = $s['code'];
+            foreach ($palace['chinh_tinh_borrowed'] as $s) {
+                 if (is_array($s) && isset($s['code'])) $stars[] = $s['code'];
+            }
         }
 
         // 1. Tu Phu Vu Tuong (Leadership)

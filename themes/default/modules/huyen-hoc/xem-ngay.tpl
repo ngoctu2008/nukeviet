@@ -40,8 +40,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- BEGIN: general_result -->
                 <div class="col-md-16">
-                    <!-- BEGIN: general_result -->
                     <div class="panel panel-info">
                         <div class="panel-heading">Kết quả ngày {INPUT.d}/{INPUT.m}/{INPUT.y}</div>
                         <div class="panel-body">
@@ -57,19 +57,18 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- END: general_result -->
                 </div>
+                <!-- END: general_result -->
             </div>
         </div>
 
         <!-- TAB 2: KHAI TRUONG -->
         <div role="tabpanel" class="tab-pane {ACTIVE_TAB_KHAI_TRUONG}" id="tab-khai-truong">
-            <form action="{NV_BASE_SITEURL}index.php" method="get" class="form-inline mb-3">
+            <form action="{NV_BASE_SITEURL}index.php" method="get" class="form-inline mb-3 well">
                 <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}">
                 <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}">
                 <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}">
                 <input type="hidden" name="tab" value="khai_truong">
-                <input type="hidden" name="purpose" value="khai_truong">
 
                 <div class="form-group">
                     <label class="mr-2">Năm sinh chủ sự:</label>
@@ -82,54 +81,110 @@
                 </div>
                 <button type="submit" class="btn btn-success">Tìm Ngày Tốt</button>
             </form>
-            <hr>
+
             <!-- BEGIN: khai_truong_result -->
-            <!-- Use good_days block -->
-            {GOOD_DAYS_LIST}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="success"><th>Ngày Dương</th><th>Ngày Âm</th><th>Can Chi</th><th>Điểm</th><th>Lý do</th></tr>
+                    </thead>
+                    <tbody>
+                        <!-- BEGIN: day -->
+                        <tr>
+                            <td>{DAY.day}/{INPUT.m}</td>
+                            <td>{DAY.lunar_day}/{DAY.lunar_month}</td>
+                            <td>{DAY.can_chi}</td>
+                            <td><span class="badge">{DAY.diem}</span></td>
+                            <td>{DAY.ly_do}</td>
+                        </tr>
+                        <!-- END: day -->
+                    </tbody>
+                </table>
+            </div>
             <!-- END: khai_truong_result -->
         </div>
 
         <!-- TAB 3: LAM NHA -->
         <div role="tabpanel" class="tab-pane {ACTIVE_TAB_LAM_NHA}" id="tab-lam-nha">
              <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <div class="panel panel-warning">
-                        <div class="panel-heading">Tra Cứu Tuổi Làm Nhà / Mượn Tuổi</div>
+                        <div class="panel-heading">Tra Cứu Tuổi Làm Nhà</div>
                         <div class="panel-body">
                             <form action="{NV_BASE_SITEURL}index.php" method="get">
                                 <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}">
                                 <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}">
                                 <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}">
                                 <input type="hidden" name="tab" value="lam_nha">
-                                <input type="hidden" name="func" value="muon_tuoi">
 
                                 <div class="form-group">
                                     <label>Năm dự định làm nhà:</label>
-                                    <input type="number" name="target_year" value="{TARGET_YEAR}" class="form-control">
+                                    <div class="row">
+                                        <div class="col-xs-6"><input type="number" name="target_year" value="{TARGET_YEAR}" class="form-control" placeholder="Năm"></div>
+                                        <div class="col-xs-6"><input type="number" name="target_month" value="{TARGET_MONTH}" class="form-control" placeholder="Tháng dự kiến"></div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Năm sinh gia chủ:</label>
                                     <input type="number" name="owner_year" value="{OWNER_YEAR}" class="form-control">
                                 </div>
-                                <button type="submit" class="btn btn-warning btn-block">Kiểm Tra & Tìm Tuổi Mượn</button>
+                                <button type="submit" class="btn btn-warning btn-block">Kiểm Tra & Tìm Ngày</button>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-16">
                     <!-- BEGIN: lam_nha_result -->
-                    <!-- BEGIN: candidate -->
-                    <div class="media border-bottom pb-2">
-                        <div class="media-left">
-                            <span class="badge" style="background-color: #5cb85c;">{CANDIDATE.score}</span>
-                        </div>
-                        <div class="media-body">
-                            <h5 class="media-heading">{CANDIDATE.birth_year} ({CANDIDATE.can_chi})</h5>
-                            <small>{CANDIDATE.comment_str}</small>
+
+                    <!-- BEGIN: owner_check -->
+                    <div class="alert alert-{OWNER_ALERT}">
+                        <strong>Kết quả gia chủ ({OWNER_YEAR}):</strong> {OWNER_MSG}
+                    </div>
+                    <!-- END: owner_check -->
+
+                    <!-- BEGIN: borrow_list -->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Danh sách tuổi mượn (Gợi ý)</div>
+                        <div class="panel-body" style="max-height: 200px; overflow-y: auto;">
+                            <!-- BEGIN: candidate -->
+                            <div class="media border-bottom pb-2">
+                                <div class="media-left">
+                                    <span class="badge" style="background-color: #5cb85c;">{CANDIDATE.score}</span>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="media-heading">Sinh năm {CANDIDATE.birth_year} ({CANDIDATE.can_chi})</h5>
+                                    <small>{CANDIDATE.comment_str}</small>
+                                </div>
+                            </div>
+                            <!-- END: candidate -->
                         </div>
                     </div>
-                    <!-- END: candidate -->
-                    <!-- BEGIN: no_candidate --><div class="alert alert-danger">Không tìm thấy tuổi phù hợp.</div><!-- END: no_candidate -->
+                    <!-- END: borrow_list -->
+
+                    <!-- BEGIN: good_days -->
+                    <div class="panel panel-success">
+                        <div class="panel-heading">Ngày tốt động thổ trong tháng {TARGET_MONTH}/{TARGET_YEAR}</div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr><th>Ngày Dương</th><th>Ngày Âm</th><th>Can Chi</th><th>Điểm</th><th>Lý do</th></tr>
+                                </thead>
+                                <tbody>
+                                    <!-- BEGIN: day -->
+                                    <tr>
+                                        <td>{DAY.day}</td>
+                                        <td>{DAY.lunar_day}/{DAY.lunar_month}</td>
+                                        <td>{DAY.can_chi}</td>
+                                        <td>{DAY.diem}</td>
+                                        <td>{DAY.ly_do}</td>
+                                    </tr>
+                                    <!-- END: day -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END: good_days -->
+
                     <!-- END: lam_nha_result -->
                 </div>
              </div>
@@ -137,7 +192,63 @@
 
         <!-- TAB 4: CUOI HOI -->
         <div role="tabpanel" class="tab-pane {ACTIVE_TAB_CUOI_HOI}" id="tab-cuoi-hoi">
-            <div class="alert alert-info">Chức năng đang cập nhật...</div>
+            <div class="well">
+                <form action="{NV_BASE_SITEURL}index.php" method="get" class="form-inline">
+                    <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}">
+                    <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}">
+                    <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}">
+                    <input type="hidden" name="tab" value="cuoi_hoi">
+
+                    <div class="form-group">
+                        <label>Năm sinh Chú rể:</label>
+                        <input type="number" name="groom_year" value="{GROOM_YEAR}" class="form-control" style="width: 80px">
+                    </div>
+                    <div class="form-group">
+                        <label>Năm sinh Cô dâu:</label>
+                        <input type="number" name="bride_year" value="{BRIDE_YEAR}" class="form-control" style="width: 80px">
+                    </div>
+                    <div class="form-group">
+                        <label>Tháng/Năm tổ chức:</label>
+                        <input type="number" name="target_month" value="{TARGET_MONTH}" class="form-control" style="width: 60px"> /
+                        <input type="number" name="target_year" value="{TARGET_YEAR}" class="form-control" style="width: 80px">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Xem Ngày Cưới</button>
+                </form>
+            </div>
+
+            <!-- BEGIN: cuoi_hoi_result -->
+
+            <!-- BEGIN: bride_check -->
+            <div class="alert alert-{BRIDE_ALERT}">
+                <strong>Tuổi Cô dâu ({BRIDE_YEAR} - {BRIDE_AGE} tuổi):</strong> {BRIDE_MSG}
+            </div>
+            <!-- END: bride_check -->
+
+            <!-- BEGIN: good_days -->
+            <div class="panel panel-danger">
+                <div class="panel-heading">Ngày tốt cưới hỏi trong tháng {TARGET_MONTH}/{TARGET_YEAR}</div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr class="danger"><th>Ngày Dương</th><th>Ngày Âm</th><th>Can Chi</th><th>Điểm</th><th>Lý do</th></tr>
+                        </thead>
+                        <tbody>
+                            <!-- BEGIN: day -->
+                            <tr>
+                                <td>{DAY.day}</td>
+                                <td>{DAY.lunar_day}/{DAY.lunar_month}</td>
+                                <td>{DAY.can_chi}</td>
+                                <td>{DAY.diem}</td>
+                                <td>{DAY.ly_do}</td>
+                            </tr>
+                            <!-- END: day -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END: good_days -->
+
+            <!-- END: cuoi_hoi_result -->
         </div>
 
         <!-- TAB 5: TANG LE (TRUNG TANG) -->
@@ -150,7 +261,6 @@
                         <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}">
                         <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}">
                         <input type="hidden" name="tab" value="tang_le">
-                        <input type="hidden" name="func" value="trung_tang">
 
                         <div class="panel panel-default">
                             <div class="panel-heading">Thông tin người mất</div>
@@ -200,7 +310,7 @@
                 </div>
             </div>
 
-            <!-- BEGIN: trung_tang_result -->
+            <!-- BEGIN: tang_le_result -->
             <div class="panel panel-primary mt-3">
                 <div class="panel-heading">Kết quả luận giải</div>
                 <div class="panel-body">
@@ -233,7 +343,7 @@
                     <!-- END: conflict -->
                 </div>
             </div>
-            <!-- END: trung_tang_result -->
+            <!-- END: tang_le_result -->
         </div>
 
     </div>

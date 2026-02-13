@@ -27,22 +27,26 @@ use NukeViet\Module\HuyenHoc\TuViXemNgay;
 
 $page_title = $lang_module['xem_ngay'];
 
-$func = $nv_Request->get_string('func', 'post,get', 'xem_ngay');
+// Initialize XTemplate
+$xtpl = new XTemplate('xem-ngay.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+$xtpl->assign('LANG', $lang_module);
+$xtpl->assign('MODULE_NAME', $module_name);
+$xtpl->assign('OP', $op);
 
-if ($func == 'trung_tang') {
+$tab = $nv_Request->get_string('tab', 'post,get', 'general');
+$func = $nv_Request->get_string('func', 'post,get', '');
+
+// Handle Specific Functions (AJAX or Form Submits)
+
+// --- 1. TANG LE (TRUNG TANG) ---
+if ($func == 'trung_tang' || $tab == 'tang_le') {
     $deceasedYear = $nv_Request->get_int('deceased_year', 'post', 0);
     $deceasedGender = $nv_Request->get_int('deceased_gender', 'post', 1);
     $deathTimeStr = $nv_Request->get_string('death_time', 'post', '');
     $headYear = $nv_Request->get_int('head_year', 'post', 0);
     $relativesStr = $nv_Request->get_string('relatives_list', 'post', '');
 
-    $xtpl = new XTemplate('xem-ngay.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
-    $xtpl->assign('LANG', $lang_module);
-    $xtpl->assign('MODULE_NAME', $module_name);
-    $xtpl->assign('OP', $op);
     $xtpl->assign('ACTIVE_TAB_TANG_LE', 'active');
-
-    // Keep inputs
     $xtpl->assign('INPUT_TT', [
         'deceased_year' => $deceasedYear,
         'death_time' => $deathTimeStr,
@@ -56,11 +60,11 @@ if ($func == 'trung_tang') {
         $d = date('j', $dt);
         $m = date('n', $dt);
         $y = date('Y', $dt);
-        $h = date('G', $dt);
+        $h = date('G', $dt); // 0-23
 
-        // Convert to Lunar for calculation
+        // Convert to Lunar
         $lunar = LunarCalendar::convertSolar2Lunar($d, $m, $y);
-        $canChi = LunarCalendar::getCanChi($y, $m, $d, $h);
+        $canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], $h);
 
         // Deceased Info
         $age = $lunar['year'] - $deceasedYear + 1;
@@ -95,121 +99,177 @@ if ($func == 'trung_tang') {
         if (!empty($result['conflicts'])) {
             foreach ($result['conflicts'] as $c) {
                 $xtpl->assign('CONFLICT', $c);
-                $xtpl->parse('main.trung_tang_result.conflict');
+                $xtpl->parse('main.tang_le_result.conflict');
             }
         }
-
-        $xtpl->parse('main.trung_tang_result');
+        $xtpl->parse('main.tang_le_result');
     }
-
-    $xtpl->parse('main');
-    $contents = $xtpl->text('main');
-
-    include NV_ROOTDIR . '/includes/header.php';
-    echo nv_site_theme($contents);
-    include NV_ROOTDIR . '/includes/footer.php';
-    exit();
 }
 
-if ($func == 'muon_tuoi') {
-    if (!class_exists('NukeViet\Module\HuyenHoc\TuViMuonTuoi')) {
-        require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViMuonTuoi.php';
-    }
-
+// --- 2. LAM NHA (MUON TUOI & XEM NGAY) ---
+elseif ($tab == 'lam_nha' || $func == 'muon_tuoi') {
     $targetYear = $nv_Request->get_int('target_year', 'get', date('Y'));
+    $targetMonth = $nv_Request->get_int('target_month', 'get', date('m'));
     $ownerYear = $nv_Request->get_int('owner_year', 'get', 0);
+    $gender = 1; // Default Male for House Owner
 
-    $muonTuoi = new TuViMuonTuoi($targetYear);
-    $candidates = $ownerYear > 0 ? $muonTuoi->timNguoiMuonTuoi($ownerYear) : [];
-
-    $xtpl = new XTemplate('xem-ngay.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
-    $xtpl->assign('LANG', $lang_module);
-    $xtpl->assign('MODULE_NAME', $module_name);
-    $xtpl->assign('OP', $op);
+    $xtpl->assign('ACTIVE_TAB_LAM_NHA', 'active');
     $xtpl->assign('TARGET_YEAR', $targetYear);
+    $xtpl->assign('TARGET_MONTH', $targetMonth);
     $xtpl->assign('OWNER_YEAR', $ownerYear);
 
-    // Candidates Loop...
-    if (!empty($candidates)) {
-        foreach ($candidates as $cand) {
-            $candComment = implode(', ', $cand['comment']);
-            $xtpl->assign('CANDIDATE', array_merge($cand, ['comment_str' => $candComment]));
-            $xtpl->parse('main.lam_nha_result.candidate');
-        }
-    } elseif ($ownerYear > 0) {
-        $xtpl->parse('main.lam_nha_result.no_candidate');
-    }
-    $xtpl->parse('main.lam_nha_result');
-    $xtpl->assign('ACTIVE_TAB_LAM_NHA', 'active');
+    if ($ownerYear > 0) {
+        // A. Check Owner
+        $muonTuoiTool = new TuViMuonTuoi($targetYear);
+        $ownerAnalysis = $muonTuoiTool->analyzeCandidate($ownerYear, $ownerYear);
 
-    $xtpl->parse('main');
-    $contents = $xtpl->text('main');
-    include NV_ROOTDIR . '/includes/header.php';
-    echo nv_site_theme($contents);
-    include NV_ROOTDIR . '/includes/footer.php';
-    exit();
+        $ownerStatus = [
+            'is_good' => $ownerAnalysis['is_eligible'],
+            'score' => $ownerAnalysis['score'],
+            'details' => $ownerAnalysis['bad_factors'], // Kim Lau, Hoang Oc...
+            'comment' => $ownerAnalysis['comment']
+        ];
+
+        $xtpl->assign('OWNER_STATUS', $ownerStatus);
+
+        // Render Owner Analysis details
+        $badList = [];
+        if ($ownerStatus['details']['kim_lau']) $badList[] = "Phạm Kim Lâu";
+        if ($ownerStatus['details']['hoang_oc']) $badList[] = "Phạm Hoang Ốc (" . $ownerStatus['details']['hoang_oc'] . ")";
+        if ($ownerStatus['details']['tam_tai']) $badList[] = "Phạm Tam Tai";
+        if ($ownerStatus['details']['thai_tue']) $badList[] = "Phạm Thái Tuế";
+
+        $xtpl->assign('OWNER_MSG', empty($badList) ? "Tuổi đẹp, có thể động thổ." : implode(', ', $badList));
+        $xtpl->assign('OWNER_ALERT', empty($badList) ? "success" : "danger");
+        $xtpl->parse('main.lam_nha_result.owner_check');
+
+        // B. Find Candidates (If Bad)
+        if (!$ownerAnalysis['is_eligible']) {
+            $candidates = $muonTuoiTool->timNguoiMuonTuoi($ownerYear);
+            foreach ($candidates as $cand) {
+                $candComment = implode(', ', $cand['comment']);
+                $xtpl->assign('CANDIDATE', array_merge($cand, ['comment_str' => $candComment]));
+                $xtpl->parse('main.lam_nha_result.borrow_list.candidate');
+            }
+            $xtpl->parse('main.lam_nha_result.borrow_list');
+        }
+
+        // C. Find Good Days (Based on Owner OR Best Candidate?)
+        // Usually based on Owner for Tam Hop, but avoid Owner's Xung.
+        // If borrowing, technically should use Borrower's age.
+        // For simplicity, we list general good days for House Building in the month.
+
+        $app = new TuViXemNgay($ownerYear, $gender, "$targetYear-$targetMonth-01");
+        $goodDays = $app->goiYNgayTotTrongThang($targetMonth, $targetYear, 'LAM_NHA');
+
+        foreach ($goodDays as $gd) {
+            $xtpl->assign('DAY', $gd);
+            $xtpl->parse('main.lam_nha_result.good_days.day');
+        }
+        $xtpl->parse('main.lam_nha_result.good_days');
+
+        $xtpl->parse('main.lam_nha_result');
+    }
 }
 
-// Default View
-$d = $nv_Request->get_int('d', 'post,get', date('d'));
-$m = $nv_Request->get_int('m', 'post,get', date('m'));
-$y = $nv_Request->get_int('y', 'post,get', date('Y'));
-$tab = $nv_Request->get_string('tab', 'get', 'general');
-$purpose = $nv_Request->get_string('purpose', 'get', 'generic');
-$birthYear = $nv_Request->get_int('birth_year', 'post,get', 0);
+// --- 3. CUOI HOI ---
+elseif ($tab == 'cuoi_hoi') {
+    $groomYear = $nv_Request->get_int('groom_year', 'get', 0);
+    $brideYear = $nv_Request->get_int('bride_year', 'get', 0);
+    $targetYear = $nv_Request->get_int('target_year', 'get', date('Y'));
+    $targetMonth = $nv_Request->get_int('target_month', 'get', date('m'));
 
-// Basic Lunar Calc for General Tab
-$lunar = LunarCalendar::convertSolar2Lunar($d, $m, $y);
-$lunar['leap_msg'] = isset($lunar['leap']) && $lunar['leap'] ? '(Nhuận)' : '';
-$ccLunar = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], 1, 0);
-$ccSolar = LunarCalendar::getCanChi($y, $m, $d, 0);
-$canList = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
-$chiList = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
-$canChiText = [
-    'year' => $canList[$ccLunar['canYear']] . ' ' . $chiList[$ccLunar['chiYear']],
-    'month' => $canList[$ccLunar['canMonth']] . ' ' . $chiList[$ccLunar['chiMonth']],
-    'day' => $canList[$ccSolar['canDay']] . ' ' . $chiList[$ccSolar['chiDay']]
-];
+    $xtpl->assign('ACTIVE_TAB_CUOI_HOI', 'active');
+    $xtpl->assign('GROOM_YEAR', $groomYear);
+    $xtpl->assign('BRIDE_YEAR', $brideYear);
+    $xtpl->assign('TARGET_YEAR', $targetYear);
+    $xtpl->assign('TARGET_MONTH', $targetMonth);
 
-$xtpl = new XTemplate('xem-ngay.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
-$xtpl->assign('LANG', $lang_module);
-$xtpl->assign('MODULE_NAME', $module_name);
-$xtpl->assign('OP', $op);
-$xtpl->assign('INPUT', ['d'=>$d, 'm'=>$m, 'y'=>$y, 'birth_year'=>$birthYear]);
+    if ($brideYear > 0) {
+        // Check Bride Age (Kim Lau)
+        $age = $targetYear - $brideYear + 1; // Lunar Age approx (assuming Tet passed)
+        $rem = $age % 9;
+        $kimLau = in_array($rem, [1, 3, 6, 8]);
 
-// Tab Active Logic
-$activeTab = 'ACTIVE_TAB_' . strtoupper($tab);
-if ($tab == 'khai_truong') $activeTab = 'ACTIVE_TAB_KHAI_TRUONG';
-$xtpl->assign($activeTab, 'active');
+        $xtpl->assign('BRIDE_AGE', $age);
+        $xtpl->assign('BRIDE_MSG', $kimLau ? "Phạm Kim Lâu (Kỵ cưới hỏi)" : "Không phạm Kim Lâu (Tốt)");
+        $xtpl->assign('BRIDE_ALERT', $kimLau ? "danger" : "success");
+        $xtpl->parse('main.cuoi_hoi_result.bride_check');
 
-// Handle Specific Tab Logic
-if ($tab == 'general') {
+        // Good Days
+        // Use Bride's age for filtering (usually Bride is main factor for wedding date)
+        $app = new TuViXemNgay($brideYear, 0, "$targetYear-$targetMonth-01");
+        $goodDays = $app->goiYNgayTotTrongThang($targetMonth, $targetYear, 'CUOI_HOI');
+
+        foreach ($goodDays as $gd) {
+            $xtpl->assign('DAY', $gd);
+            $xtpl->parse('main.cuoi_hoi_result.good_days.day');
+        }
+        $xtpl->parse('main.cuoi_hoi_result.good_days');
+
+        $xtpl->parse('main.cuoi_hoi_result');
+    }
+}
+
+// --- 4. KHAI TRUONG ---
+elseif ($tab == 'khai_truong') {
+    $birthYear = $nv_Request->get_int('birth_year', 'get', 0);
+    $m = $nv_Request->get_int('m', 'get', date('m'));
+    $y = $nv_Request->get_int('y', 'get', date('Y'));
+
+    $xtpl->assign('ACTIVE_TAB_KHAI_TRUONG', 'active');
+    $xtpl->assign('INPUT', ['birth_year'=>$birthYear, 'm'=>$m, 'y'=>$y]);
+
+    if ($birthYear > 0) {
+        $app = new TuViXemNgay($birthYear, 1, "$y-$m-01");
+        $goodDays = $app->goiYNgayTotTrongThang($m, $y, 'KHAI_TRUONG');
+
+        foreach ($goodDays as $gd) {
+            $xtpl->assign('DAY', $gd);
+            $xtpl->parse('main.khai_truong_result.day');
+        }
+        $xtpl->parse('main.khai_truong_result');
+    }
+}
+
+// --- 5. GENERAL (DEFAULT) ---
+else { // tab = general
+    $d = $nv_Request->get_int('d', 'get', date('d'));
+    $m = $nv_Request->get_int('m', 'get', date('m'));
+    $y = $nv_Request->get_int('y', 'get', date('Y'));
+
+    $xtpl->assign('ACTIVE_TAB_GENERAL', 'active');
+    $xtpl->assign('INPUT', ['d'=>$d, 'm'=>$m, 'y'=>$y]);
+
+    // Calculate Info
+    $lunar = LunarCalendar::convertSolar2Lunar($d, $m, $y);
+    $lunar['leap_msg'] = isset($lunar['leap']) && $lunar['leap'] ? '(Nhuận)' : '';
+
+    $ccLunar = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], 1, 0);
+    $ccSolar = LunarCalendar::getCanChi($y, $m, $d, 0);
+    $canList = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
+    $chiList = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
+    $canChiText = [
+        'year' => $canList[$ccLunar['canYear']] . ' ' . $chiList[$ccLunar['chiYear']],
+        'month' => $canList[$ccLunar['canMonth']] . ' ' . $chiList[$ccLunar['chiMonth']],
+        'day' => $canList[$ccSolar['canDay']] . ' ' . $chiList[$ccSolar['chiDay']]
+    ];
+
     $app = new TuViXemNgay(0, 1, "$y-$m-$d");
     $info = $app->phanTichNgay('GENERIC');
     $info['alert_type'] = ($info['diem_so'] >= 0) ? 'success' : 'danger';
+
     $xtpl->assign('LUNAR', $lunar);
     $xtpl->assign('CANCHI_TEXT', $canChiText);
     $xtpl->assign('INFO', $info);
-    foreach ($info['binh_giai'] as $bg) {
-        $xtpl->assign('DETAIL', $bg);
-        $xtpl->parse('main.general_result.detail');
+
+    if (!empty($info['binh_giai'])) {
+        foreach ($info['binh_giai'] as $bg) {
+            $xtpl->assign('DETAIL', $bg);
+            $xtpl->parse('main.general_result.detail');
+        }
     }
     $xtpl->parse('main.general_result');
-} elseif ($tab == 'khai_truong') {
-    if ($birthYear > 0) {
-        $app = new TuViXemNgay($birthYear, 1, "$y-$m-01"); // Dummy date, just need year/month
-        $goodDays = $app->goiYNgayTotTrongThang($m, $y, 'KHAI_TRUONG');
-
-        $listHtml = '<div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Ngày Dương</th><th>Ngày Âm</th><th>Can Chi</th><th>Điểm</th><th>Lý do</th></tr></thead><tbody>';
-        foreach ($goodDays as $gd) {
-            $listHtml .= "<tr><td>{$gd['day']}/$m</td><td>{$gd['lunar_day']}/{$gd['lunar_month']}</td><td>{$gd['can_chi']}</td><td>{$gd['diem']}</td><td>{$gd['ly_do']}</td></tr>";
-        }
-        $listHtml .= '</tbody></table></div>';
-        $xtpl->assign('GOOD_DAYS_LIST', $listHtml);
-    } else {
-        $xtpl->assign('GOOD_DAYS_LIST', '<div class="alert alert-warning">Vui lòng nhập năm sinh để xem ngày tốt.</div>');
-    }
-    $xtpl->parse('main.khai_truong_result');
 }
 
 $xtpl->parse('main');
