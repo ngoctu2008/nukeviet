@@ -11,13 +11,71 @@ namespace NukeViet\Module\HuyenHoc;
 
 class TuViYLy {
 
-    // Ngu Hanh mapping to Body Parts & Tastes
-    // Kim: Phổi, Ruột già - Cay
-    // Mộc: Gan, Mật - Chua
-    // Thủy: Thận, Bàng quang - Mặn
-    // Hỏa: Tim, Ruột non - Đắng
-    // Thổ: Dạ dày, Lá lách - Ngọt
+    private $tatAch;
+    private $menhElement;
 
+    // Instance Constructor
+    public function __construct($calcData) {
+        if (isset($calcData['dia_ban'])) {
+            $diaBan = $calcData['dia_ban'];
+            $meta = $calcData['meta'];
+
+            // Find Tat Ach index
+            $menhIdx = $meta['menh_idx'];
+            // Tat Ach is Menh + 5 (clockwise) or -7
+            // Menh=0, Phu=1, Phuc=2, Dien=3, Quan=4, No=5, Di=6, Tat=7? No.
+            // Let's check TuViLapSo: Menh, Phu Mau, Phuc Duc, Dien Trach, Quan Loc, No Boc, Thien Di, Tat Ach...
+            // Indices: 0, 1, 2, 3, 4, 5, 6, 7.
+            // So Tat Ach is Menh + 7?
+            // Wait, previous file `TuViLapSo` defined:
+            // $palaceNames = array('Mệnh', 'Phụ Mẫu', 'Phúc Đức', 'Điền Trạch', 'Quan Lộc', 'Nô Bộc', 'Thiên Di', 'Tật Ách', ...);
+            // So index 7 relative to Menh? No, Loop fills array.
+            // $posMenh is starting point. Then loop $i=0..11 backwards (Counter-Clockwise).
+            // Palace 0 is Menh. Palace 1 is Huynh De (if counter-clockwise)?
+            // Wait, standard Tu Vi:
+            // An Cung: Menh -> Phu Mau -> Phuc Duc (Nghich hay Thuan?)
+            // Nam Thuan Nu Nghich ONLY for Dai Van.
+            // An Cung Chuc: Always Counter-Clockwise (Nghich).
+            // Index 0: Menh. Index 11: Phụ Mẫu. Index 10: Phúc Đức.
+            // Let's check `TuViLapSo` loop again.
+            // $pos = ($posMenh - $i) % 12.
+            // i=0: Menh. i=1: Phu Mau (at Menh-1). i=2: Phuc Duc (at Menh-2).
+            // So Palaces are placed Counter-Clockwise.
+            // Tat Ach is at index 7 in the names array.
+            // So Position = ($posMenh - 7).
+
+            // But we need to find the palace in `$diaBan` that has `palace_name` containing "Tật Ách".
+            // Since `$diaBan` is 0..11 indexed by Earthly Branch (Ty..Hoi).
+
+            $tatAchIdx = -1;
+            foreach ($diaBan as $idx => $p) {
+                if (mb_strpos($p['palace_name'], 'Tật Ách') !== false) {
+                    $tatAchIdx = $idx;
+                    break;
+                }
+            }
+
+            $this->tatAch = ($tatAchIdx >= 0) ? $diaBan[$tatAchIdx] : [];
+            $this->menhElement = $meta['menh_element_id'];
+        }
+    }
+
+    // Instance Method: Chan Doan Benh
+    public function chanDoanBenh() {
+        if (empty($this->tatAch)) return ['cung_tat'=>'Không xác định', 'diagnosis'=>['Chưa có dữ liệu'], 'diet'=>[]];
+
+        $result = self::diagnoseHealth($this->tatAch, $this->menhElement);
+        return $result; // Returns full array including diagnosis lines
+    }
+
+    // Instance Method: Goi Y Thuc Duong
+    public function goiYThucDuong() {
+        if (empty($this->tatAch)) return [];
+        $result = self::diagnoseHealth($this->tatAch, $this->menhElement);
+        return $result['diet'];
+    }
+
+    // Static Logic (preserved)
     public static function diagnoseHealth($cungTatAch, $menhElement) {
         $diagnosis = [];
         $warnings = [];
@@ -52,9 +110,6 @@ class TuViYLy {
         }
 
         // 2. Recommend Diet based on Menh Element (Balance)
-        // Principle: Eat foods of Generating Element (Sinh) and Same Element (Hoa). Avoid Controlling (Khac).
-        // Also: Weak organ needs tonifying.
-
         $diet = self::getDietAdvice($menhElement);
 
         return [
@@ -65,12 +120,10 @@ class TuViYLy {
     }
 
     private static function getDietAdvice($elementId) {
-        // 1=Kim, 2=Thuy, 3=Hoa, 4=Tho, 5=Moc (Checking standard again or using generic names)
-        // Using name string for safety if ID varies
-        // Map ID to Name if int
         $elName = $elementId;
         if (is_numeric($elementId)) {
-             // Assuming: 1=Thuy, 2=Hoa, 3=Tho, 4=Kim, 5=Moc (from TuViLapSo)
+             // 1=Thuy, 2=Hoa, 3=Tho, 4=Kim, 5=Moc (from TuViLapSo map usually)
+             // Check TuViLapSo $nhNames = [1=>'Thủy', 2=>'Hỏa', 3=>'Thổ', 4=>'Kim', 5=>'Mộc'];
              $map = [1=>'Thủy', 2=>'Hỏa', 3=>'Thổ', 4=>'Kim', 5=>'Mộc'];
              $elName = isset($map[$elementId]) ? $map[$elementId] : 'Unknown';
         }
