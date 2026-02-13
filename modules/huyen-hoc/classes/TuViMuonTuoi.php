@@ -7,10 +7,6 @@
  * @Ngày hoàn thành: 11/02/2026
  */
 
-// FIX: Do not require_once using NV_ROOTDIR here if class might be autoloaded or used in test script with different path structure.
-// Instead, check if class exists or assume autoloader/test script handles inclusion.
-// For TuViMuonTuoi, we need TuViConstants.
-
 namespace NukeViet\Module\HuyenHoc;
 
 use NukeViet\Module\HuyenHoc\TuViConstants;
@@ -137,8 +133,8 @@ class TuViMuonTuoi {
             while ($start > 6) $start -= 6;
         }
 
-        $pos = ($start + $units - 1) % 6;
-        if ($pos <= 0) $pos += 6;
+        $pos = ($start + $units) % 6;
+        if ($pos == 0) $pos = 6;
 
         $current = $pos;
 

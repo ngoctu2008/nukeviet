@@ -15,6 +15,7 @@ use NukeViet\Module\HuyenHoc\TuViMuonTuoi;
 
 class TuViXemNgay {
     protected $userYear;    // Năm sinh gia chủ (Âm/Dương depending on context, usually Lunar Year stored as Int)
+    protected $partnerYear; // Năm sinh đối tác (Vợ/Chồng/Người yêu) - Optional
     protected $userGender;  // 1: Nam, 0: Nữ
     protected $currentDate; // Ngày cần xem (Dương lịch Y-m-d)
     protected $lunarDate;   // Ngày Âm lịch [day, month, year, can, chi]
@@ -44,9 +45,13 @@ class TuViXemNgay {
         $this->lunarDate = $this->convertSolarToLunar($d, $m, $y);
 
         // Init Muon Tuoi for current year
-        if (class_exists('NukeViet\Module\HuyenHoc\TuViMuonTuoi')) {
-            $this->muonTuoiTool = new TuViMuonTuoi($y);
+        if (class_exists('\NukeViet\Module\HuyenHoc\TuViMuonTuoi')) {
+            $this->muonTuoiTool = new \NukeViet\Module\HuyenHoc\TuViMuonTuoi($y);
         }
+    }
+
+    public function setPartnerYear($y) {
+        $this->partnerYear = $y;
     }
 
     /**
@@ -144,21 +149,22 @@ class TuViXemNgay {
                 if ($checkUser['bad_factors']['tam_tai']) $bad[] = "Tam Tai";
                 if ($checkUser['bad_factors']['thai_tue']) $bad[] = "Thái Tuế";
 
-                $res['binh_giai'][] = "Năm nay tuổi phạm: " . implode(', ', $bad) . ".";
-                $res['ket_luan'] = "Đại Kỵ Động Thổ";
+                $badStr = implode(', ', $bad);
+                $res['binh_giai'][] = "Tuổi {$checkUser['age']} không đẹp để làm nhà năm nay: Phạm {$badStr}. Nên mượn tuổi.";
+                $res['ket_luan'] = "Tuổi Xấu Động Thổ";
 
                 // Hóa giải
                 $candidates = $this->muonTuoiTool->timNguoiMuonTuoi($this->userYear);
                 $goiY = [];
-                foreach(array_slice($candidates, 0, 5) as $cand) {
-                    $goiY[] = "Tuổi {$cand['birth_year']} ({$cand['can_chi']}) - {$cand['score']} điểm";
+                foreach(array_slice($candidates, 0, 10) as $cand) {
+                    $goiY[] = "{$cand['can_chi']} ({$cand['birth_year']})";
                 }
                 $res['hoa_giai'] = [
                     'phuong_phap' => 'Mượn tuổi động thổ',
                     'danh_sach_goi_y' => $goiY
                 ];
             } else {
-                $res['binh_giai'][] = "Tuổi đẹp, không phạm hạn lớn. Có thể tự đứng tên.";
+                $res['binh_giai'][] = "Tuổi {$checkUser['age']} đẹp, không phạm hạn lớn. Có thể tự đứng tên.";
 
                 // Check Day
                 $dayChi = $this->lunarDate['can_chi']['chi'];
@@ -178,23 +184,32 @@ class TuViXemNgay {
 
     // --- 3. LOGIC XEM CƯỚI HỎI ---
     private function xemCuoiHoi($res) {
-        $age = $this->lunarDate['year'] - $this->userYear + 1;
+        // Determine Bride's Age
+        $brideYear = ($this->userGender == 0) ? $this->userYear : $this->partnerYear;
 
-        // Nu pham Kim Lau kỵ cuoi
-        if ($this->userGender == 0) { // Female
-             $rem = $age % 9;
-             if (in_array($rem, [1, 3, 6, 8])) {
-                 $res['binh_giai'][] = "CẢNH BÁO: Nữ chủ phạm Kim Lâu ($age tuổi). Cần thận trọng.";
-                 $res['diem_so'] -= 3;
-             }
+        if ($brideYear) {
+            // Use Solar Year to align with general expectation (e.g. Planning for "Year 2026")
+            // This matches the Building logic which uses Solar Year for Age.
+            $age = $this->solarDate['y'] - $brideYear + 1;
+            $rem = $age % 9;
+
+            if (in_array($rem, [1, 3, 6, 8])) {
+                $res['binh_giai'][] = "CẢNH BÁO: Tuổi cô dâu ($age) phạm Kim Lâu. Không nên cưới năm nay.";
+                $res['diem_so'] -= 5;
+            } else {
+                $res['binh_giai'][] = "Tuổi cô dâu đẹp, không phạm Kim Lâu.";
+                $res['diem_so'] += 2;
+            }
+        } else {
+            $res['binh_giai'][] = "Lưu ý: Chưa cung cấp năm sinh cô dâu để tính Kim Lâu.";
         }
 
-        // Check Day
-        // Tranh Sat Chu, Tam Nuong (Already checked)
-        // Uu tien: Thien Hy, Nguyet Duc...
+        // Check Day Specifics for Wedding (Thien Hy, etc - placeholders for now)
+        // Avoid bad days already checked in checkBachKy
 
-        if ($res['diem_so'] >= 7) $res['ket_luan'] = "Ngày Đẹp Cưới Hỏi";
-        else $res['ket_luan'] = "Nên Chọn Ngày Khác";
+        if ($res['diem_so'] >= 7) $res['ket_luan'] = "Ngày Đại Cát cho Cưới Hỏi";
+        elseif ($res['diem_so'] >= 5) $res['ket_luan'] = "Ngày Có Thể Cưới (Trung Bình)";
+        else $res['ket_luan'] = "Không Tốt cho Cưới Hỏi";
 
         return $res;
     }
@@ -363,11 +378,21 @@ class TuViXemNgay {
             $analysis = $app->phanTichNgay($purpose);
 
             if ($analysis['diem_so'] > 0 && !$analysis['is_bad_day']) {
+                $jd = LunarCalendar::jdn($d, $month, $year);
+                $chiDay = ($jd + 1) % 12;
+                $hoangDao = LunarCalendar::getNgayHoangDao($chiDay, $app->lunarDate['month']);
+                $gioTotList = LunarCalendar::getGioHoangDao($chiDay);
+                $gioTotStr = [];
+                foreach ($gioTotList as $g) $gioTotStr[] = $g['name'];
+
                 $listDays[] = [
                     'day' => $d,
                     'lunar_day' => $app->lunarDate['day'],
                     'lunar_month' => $app->lunarDate['month'],
                     'can_chi' => $app->lunarDate['can_chi']['name'],
+                    'hoang_dao' => (strpos($hoangDao, 'Hoàng Đạo') !== false) ? 'Có' : '-',
+                    'truc' => LunarCalendar::getTruc($d, $month, $year),
+                    'gio_tot' => implode(', ', $gioTotStr),
                     'diem' => $analysis['diem_so'],
                     'ly_do' => implode('; ', $analysis['binh_giai'])
                 ];

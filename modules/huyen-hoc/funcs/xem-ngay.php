@@ -135,12 +135,23 @@ elseif ($tab == 'lam_nha' || $func == 'muon_tuoi') {
         // Render Owner Analysis details
         $badList = [];
         if ($ownerStatus['details']['kim_lau']) $badList[] = "Phạm Kim Lâu";
-        if ($ownerStatus['details']['hoang_oc']) $badList[] = "Phạm Hoang Ốc (" . $ownerStatus['details']['hoang_oc'] . ")";
+        if ($ownerStatus['details']['hoang_oc']) $badList[] = "Phạm Hoang Ốc";
         if ($ownerStatus['details']['tam_tai']) $badList[] = "Phạm Tam Tai";
         if ($ownerStatus['details']['thai_tue']) $badList[] = "Phạm Thái Tuế";
 
-        $xtpl->assign('OWNER_MSG', empty($badList) ? "Tuổi đẹp, có thể động thổ." : implode(', ', $badList));
-        $xtpl->assign('OWNER_ALERT', empty($badList) ? "success" : "danger");
+        $badStr = implode(', ', $badList);
+        $age = $ownerAnalysis['age'];
+
+        if (empty($badList)) {
+            $msg = "Tuổi $age đẹp, không phạm hạn lớn. Có thể tự đứng tên động thổ.";
+            $alert = "success";
+        } else {
+            $msg = "Tuổi $age không đẹp để làm nhà năm nay: $badStr. Nên mượn tuổi.";
+            $alert = "warning";
+        }
+
+        $xtpl->assign('OWNER_MSG', $msg);
+        $xtpl->assign('OWNER_ALERT', $alert);
         $xtpl->parse('main.lam_nha_result.owner_check');
 
         // B. Find Candidates (If Bad)
@@ -187,13 +198,22 @@ elseif ($tab == 'cuoi_hoi') {
 
     if ($brideYear > 0) {
         // Check Bride Age (Kim Lau)
-        $age = $targetYear - $brideYear + 1; // Lunar Age approx (assuming Tet passed)
+        $age = $targetYear - $brideYear + 1; // Lunar Age approx
         $rem = $age % 9;
         $kimLau = in_array($rem, [1, 3, 6, 8]);
 
         $xtpl->assign('BRIDE_AGE', $age);
-        $xtpl->assign('BRIDE_MSG', $kimLau ? "Phạm Kim Lâu (Kỵ cưới hỏi)" : "Không phạm Kim Lâu (Tốt)");
-        $xtpl->assign('BRIDE_ALERT', $kimLau ? "danger" : "success");
+
+        if ($kimLau) {
+            $msg = "Tuổi cô dâu ($age) phạm Kim Lâu. Không nên cưới năm nay.";
+            $alert = "danger";
+        } else {
+            $msg = "Tuổi cô dâu đẹp ($age tuổi), không phạm Kim Lâu.";
+            $alert = "success";
+        }
+
+        $xtpl->assign('BRIDE_MSG', $msg);
+        $xtpl->assign('BRIDE_ALERT', $alert);
         $xtpl->parse('main.cuoi_hoi_result.bride_check');
 
         // Good Days

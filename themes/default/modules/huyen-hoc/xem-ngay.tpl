@@ -86,7 +86,15 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     <thead>
-                        <tr class="success"><th>Ngày Dương</th><th>Ngày Âm</th><th>Can Chi</th><th>Điểm</th><th>Lý do</th></tr>
+                        <tr class="success">
+                            <th>Ngày Dương</th>
+                            <th>Ngày Âm</th>
+                            <th>Can Chi</th>
+                            <th>Trực</th>
+                            <th>Hoàng Đạo</th>
+                            <th>Giờ Tốt</th>
+                            <th>Điểm</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <!-- BEGIN: day -->
@@ -94,8 +102,10 @@
                             <td>{DAY.day}/{INPUT.m}</td>
                             <td>{DAY.lunar_day}/{DAY.lunar_month}</td>
                             <td>{DAY.can_chi}</td>
+                            <td>{DAY.truc}</td>
+                            <td>{DAY.hoang_dao}</td>
+                            <td>{DAY.gio_tot}</td>
                             <td><span class="badge">{DAY.diem}</span></td>
-                            <td>{DAY.ly_do}</td>
                         </tr>
                         <!-- END: day -->
                     </tbody>
@@ -167,7 +177,15 @@
                         <div class="table-responsive">
                             <table class="table table-bordered table-condensed">
                                 <thead>
-                                    <tr><th>Ngày Dương</th><th>Ngày Âm</th><th>Can Chi</th><th>Điểm</th><th>Lý do</th></tr>
+                                    <tr>
+                                        <th>Ngày Dương</th>
+                                        <th>Ngày Âm</th>
+                                        <th>Can Chi</th>
+                                        <th>Trực</th>
+                                        <th>Hoàng Đạo</th>
+                                        <th>Giờ Tốt</th>
+                                        <th>Điểm</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     <!-- BEGIN: day -->
@@ -175,8 +193,10 @@
                                         <td>{DAY.day}</td>
                                         <td>{DAY.lunar_day}/{DAY.lunar_month}</td>
                                         <td>{DAY.can_chi}</td>
-                                        <td>{DAY.diem}</td>
-                                        <td>{DAY.ly_do}</td>
+                                        <td>{DAY.truc}</td>
+                                        <td>{DAY.hoang_dao}</td>
+                                        <td>{DAY.gio_tot}</td>
+                                        <td><span class="badge">{DAY.diem}</span></td>
                                     </tr>
                                     <!-- END: day -->
                                 </tbody>
@@ -230,7 +250,15 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>
-                            <tr class="danger"><th>Ngày Dương</th><th>Ngày Âm</th><th>Can Chi</th><th>Điểm</th><th>Lý do</th></tr>
+                            <tr class="danger">
+                                <th>Ngày Dương</th>
+                                <th>Ngày Âm</th>
+                                <th>Can Chi</th>
+                                <th>Trực</th>
+                                <th>Hoàng Đạo</th>
+                                <th>Giờ Tốt</th>
+                                <th>Điểm</th>
+                            </tr>
                         </thead>
                         <tbody>
                             <!-- BEGIN: day -->
@@ -238,8 +266,10 @@
                                 <td>{DAY.day}</td>
                                 <td>{DAY.lunar_day}/{DAY.lunar_month}</td>
                                 <td>{DAY.can_chi}</td>
-                                <td>{DAY.diem}</td>
-                                <td>{DAY.ly_do}</td>
+                                <td>{DAY.truc}</td>
+                                <td>{DAY.hoang_dao}</td>
+                                <td>{DAY.gio_tot}</td>
+                                <td><span class="badge">{DAY.diem}</span></td>
                             </tr>
                             <!-- END: day -->
                         </tbody>
