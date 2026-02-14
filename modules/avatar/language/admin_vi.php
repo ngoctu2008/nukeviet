@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @Project NUKEVIET 4.x
+ * @Author Phạm Ngọc Tú <ngoctu.dnkd@gmail.com>
+ * @Copyright (C) 2024 Phạm Ngọc Tú. All rights reserved
+ *
+ * @Createdate Dec 19, 2025
+ */
+
+if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
+    die('Stop!!!');
+}
+
+$lang_translator['author'] = 'Author Name';
+$lang_translator['createdate'] = '19/12/2025';
+$lang_translator['copyright'] = '@Copyright (C) 2024 Phạm Ngọc Tú. All rights reserved';
+$lang_translator['info'] = '';
+$lang_translator['langtype'] = 'lang_module';
+
+$lang_module['main'] = 'Danh sách khung ảnh';
+$lang_module['config'] = 'Cấu hình';
+$lang_module['save'] = 'Lưu lại';
+$lang_module['add_template'] = 'Thêm khung ảnh mới';
+$lang_module['edit'] = 'Sửa';
+$lang_module['delete'] = 'Xóa';
+$lang_module['delete_confirm'] = 'Bạn có chắc chắn muốn xóa?';
+$lang_module['title'] = 'Tiêu đề';
+$lang_module['description'] = 'Mô tả';
+$lang_module['status'] = 'Trạng thái';
+$lang_module['active'] = 'Hoạt động';
+$lang_module['feature'] = 'Chức năng';
+$lang_module['weight'] = 'Thứ tự';
+$lang_module['views'] = 'Lượt xem';
+$lang_module['downloads'] = 'Lượt tải';
+
+$lang_module['home_description'] = 'Mô tả trang chủ';
+
+//Lang for function main
+$lang_module['add'] = 'Thêm mới';
+$lang_module['search_title'] = 'Nhập từ khóa tìm kiếm';
+$lang_module['search_submit'] = 'Tìm kiếm';
+$lang_module['image'] = 'Khung hình';
+
+//Lang for function content
+$lang_module['content'] = 'Thêm khung hình mới';
+$lang_module['error_required_title'] = 'Lỗi: bạn cần nhập dữ liệu cho Tiêu đề';
+$lang_module['error_required_image'] = 'Lỗi: bạn cần nhập dữ liệu cho Khung hình';
+$lang_module['error_url_image'] = 'Lỗi: url image không đúng';
+
+// Categories
+$lang_module['categories'] = 'Quản lý danh mục';
+$lang_module['add_cat'] = 'Thêm danh mục';
+$lang_module['alias'] = 'Liên kết tĩnh';
+$lang_module['parent'] = 'Thuộc danh mục';
+$lang_module['root'] = 'Danh mục gốc';
+$lang_module['viewcat'] = 'Giao diện hiển thị';
+$lang_module['groups_view'] = 'Quyền xem';
+$lang_module['groups_use'] = 'Quyền sử dụng';
+$lang_module['error_title'] = 'Lỗi: Chưa nhập tiêu đề';
+$lang_module['error_alias'] = 'Lỗi: Liên kết tĩnh đã tồn tại';
+$lang_module['error_insert'] = 'Lỗi: Không thể thêm dữ liệu';
+$lang_module['error_update'] = 'Lỗi: Không thể cập nhật dữ liệu';
+$lang_module['category'] = 'Danh mục';
+
+// Config
+$lang_module['config_per_page_cat'] = 'Số danh mục trên 1 trang';
+$lang_module['config_per_page_row'] = 'Số khung hình trên 1 trang';
