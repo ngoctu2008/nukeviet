@@ -11,8 +11,67 @@ namespace NukeViet\Module\HuyenHoc;
 
 class TuViSaoHan {
 
-    // Cuu Dieu Tinh Quan logic is already in TuViLapSo::getLimitInfoForYear.
-    // This class can be used to get detailed meaning of the annual star and limit.
+    protected $birthYear;
+    protected $gender;
+    protected $viewYear;
+
+    public function __construct($birthYear, $gender, $viewYear) {
+        $this->birthYear = $birthYear;
+        $this->gender = $gender;
+        $this->viewYear = $viewYear;
+    }
+
+    public function execute() {
+        // Calculate Age (Lunar)
+        $age = $this->viewYear - $this->birthYear + 1;
+
+        // Use TuViLapSo helper to get stars
+        // We need chiYear for getLimitInfoForYear, but for Sao Han (Cuu Dieu) only Age & Gender matter.
+        // However, TuViLapSo requires chiYear for Tam Tai / Pham Thai Tue logic.
+        // Let's get chiYear from birthYear.
+
+        // Chi: 0=Than, 1=Dau, 2=Tuat... No.
+        // Standard Chi: 0=Ty, 1=Suu, 2=Dan...
+        // 1984 (Giap Ty) -> 0.
+        // Formula: ($year - 4) % 12.
+        $chiYear = ($this->birthYear - 4) % 12;
+        if ($chiYear < 0) $chiYear += 12;
+
+        $limitInfo = TuViLapSo::getLimitInfoForYear($chiYear, $this->gender, $this->viewYear, $this->birthYear);
+
+        if (!$limitInfo) return "<div class='alert alert-danger'>Lỗi tính toán sao hạn.</div>";
+
+        $sao = $limitInfo['sao_han'];
+        $han = $limitInfo['han'];
+
+        // Get Detailed Meanings
+        $meanings = self::getSaoHanMeaning($sao['name'], $han['name']);
+
+        $html = "<div class='sao-han-box'>";
+        $html .= "<h3>Sao Hạn Năm " . $this->viewYear . " (Tuổi " . $age . ")</h3>";
+
+        // Sao Chieu Menh
+        $classSao = ($sao['type'] == 'tot') ? 'good' : (($sao['type'] == 'xau') ? 'bad' : 'neutral');
+        $html .= "<div class='sao-row $classSao'>";
+        $html .= "<h4>Sao Chiếu Mệnh: <strong>" . $sao['name'] . "</strong></h4>";
+        $html .= "<p>" . $meanings['sao_desc'] . "</p>";
+        $html .= "</div>";
+
+        // Han
+        $html .= "<div class='han-row'>";
+        $html .= "<h4>Hạn: <strong>" . $han['name'] . "</strong></h4>";
+        $html .= "<p>" . $meanings['han_desc'] . "</p>";
+        $html .= "</div>";
+
+        // Tam Tai / Kim Lau / Thai Tue logic handled in TuViVanHan?
+        // Or duplicate here? Usually "Sao Han" refers to Cuu Dieu & Bat Han.
+        // TuViVanHan handles Chart limits.
+        // So this is sufficient.
+
+        $html .= "</div>";
+
+        return $html;
+    }
 
     public static function getSaoHanMeaning($saoName, $hanName) {
         $saoMeanings = [

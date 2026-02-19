@@ -267,6 +267,10 @@ class TuViLuanGiai {
                 }
             }
 
+            if (!$content && isset($star['is_luu']) && $star['is_luu']) {
+                $content = "Sao lưu động hành niên.";
+            }
+
             if ($content) {
                  $readings['phu_tinh'][] = ['star_code' => $star['code'], 'star' => $star['name'], 'content' => $content];
             }
@@ -578,13 +582,73 @@ class TuViLuanGiai {
         if ($limitInfo) {
             $tvIdx = $limitInfo['tieu_van_idx'];
             $tvPalace = $chart['dia_ban'][$tvIdx];
+
+            // Inject Luu Stars
+            $tvPalace = $this->injectLuuStars($tvPalace, $limitInfo['luu_stars']);
+
              $results['tieu_van'] = [
                 'name' => "Tiểu Vận năm $year (" . $limitInfo['target_chi'] . ") tại " . $tvPalace['name'],
                 'reading' => $this->getPalaceReading($tvPalace, 'general', $chart),
-                'evaluation' => $this->assessPalaceStrength($tvPalace, 'general', $chart['thien_ban']['menh_ngu_hanh'])
+                'evaluation' => $this->assessPalaceStrength($tvPalace, 'general', $chart['thien_ban']['menh_ngu_hanh']),
+                'han_info' => [
+                    'sao_han' => $limitInfo['sao_han'], // Cuu Dieu
+                    'bat_han' => $limitInfo['han'], // Huynh Tuyen...
+                    'tam_tai' => $limitInfo['tam_tai'],
+                    'pham_thai_tue' => $limitInfo['pham_thai_tue']
+                ]
             ];
+
+            // General Warning
+            $warnings = [];
+            if ($limitInfo['tam_tai']) $warnings[] = "Năm nay phạm Tam Tai.";
+            if ($limitInfo['pham_thai_tue']) $warnings[] = "Năm tuổi (Phạm Thái Tuế), cần thận trọng.";
+            if ($limitInfo['sao_han']['type'] == 'xau') $warnings[] = "Sao " . $limitInfo['sao_han']['name'] . " chiếu mệnh (Xấu).";
+
+            $results['tieu_van']['warnings'] = $warnings;
         }
 
         return $results;
+    }
+
+    private function injectLuuStars($palace, $luuStars) {
+        // Map luu keys to base keys
+        $map = [
+            'luu_thai_tue' => 'thai_tue',
+            'luu_tang_mon' => 'tang_mon',
+            'luu_bach_ho' => 'bach_ho',
+            'luu_thien_khoc' => 'thien_khoc',
+            'luu_thien_hu' => 'thien_hu',
+            'luu_thien_ma' => 'thien_ma',
+            'luu_loc_ton' => 'loc_ton',
+            'luu_kinh_duong' => 'kinh_duong',
+            'luu_da_la' => 'da_la',
+            'luu_dao_hoa' => 'dao_hoa',
+            'luu_hong_loan' => 'hong_loan'
+        ];
+
+        $pIdx = $palace['index'];
+
+        foreach ($luuStars as $key => $locIdx) {
+            if ($locIdx == $pIdx && isset($map[$key])) {
+                $baseCode = $map[$key];
+                $info = TuViLapSo::getStarInfo($baseCode);
+                if ($info) {
+                    $star = [
+                        'code' => $key,
+                        'name' => 'Lưu ' . $info['name'],
+                        'element' => TuViLapSo::getElementName($info['element_id']),
+                        'dacs' => '',
+                        'is_luu' => true
+                    ];
+
+                    if ($info['type_id'] == 3) {
+                        $palace['phu_tinh_xau'][] = $star;
+                    } else {
+                        $palace['phu_tinh_tot'][] = $star;
+                    }
+                }
+            }
+        }
+        return $palace;
     }
 }

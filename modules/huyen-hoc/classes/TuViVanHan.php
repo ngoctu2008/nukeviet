@@ -252,6 +252,10 @@ class TuViVanHan {
                 case 'L_DA_LA':
                     $msg .= "<li><strong>Lưu Kình/Đà tại $tenCung:</strong> Đề phòng tiểu nhân, cản trở, trì trệ công việc của $tenCung.</li>";
                     break;
+                case 'L_THIEN_KHOC':
+                case 'L_THIEN_HU':
+                    $msg .= "<li><strong>Lưu Khốc/Hư tại $tenCung:</strong> Chủ về chuyện buồn phiền, nước mắt, hoặc hư hại nhỏ tại $tenCung.</li>";
+                    break;
             }
         }
         $msg .= "</ul>";
@@ -264,26 +268,17 @@ class TuViVanHan {
         $chiSinh = $this->userInfo['chi_year'];
         $chiNam = $this->chiNamXem;
 
-        // Thân Tý Thìn bị Dần Mão Thìn
+        // Thân Tý Thìn (8,0,4) bị Dần Mão Thìn (2,3,4)
         if (in_array($chiSinh, [0,4,8]) && in_array($chiNam, [2,3,4])) $tamTai = true;
-        // Dần Ngọ Tuất bị Thân Dậu Tuất
-        if (in_array($chiSinh, [2,6,10]) && in_array($chiNam, [8,1,2])) $tamTai = true; // Use index 9 for Dau
-        // Wait, standard Chi: 0=Ty, 1=Suu, 2=Dan, 3=Mao, 4=Thin, 5=Ty, 6=Ngo, 7=Mui, 8=Than, 9=Dau, 10=Tuat, 11=Hoi.
 
-        // User original code used [8,1,2] for Than Dau Tuat?
-        // Than=8, Dau=9, Tuat=10.
-        // User code: if (in_array($chiSinh, [2,6,10]) && in_array($chiNam, [8,1,2]))
-        // Maybe User thinks 1 is Dau? No, 1 is Suu.
-        // I will fix this logic to standard Tam Tai.
+        // Dần Ngọ Tuất (2,6,10) bị Thân Dậu Tuất (8,9,10)
+        if (in_array($chiSinh, [2,6,10]) && in_array($chiNam, [8,9,10])) $tamTai = true;
 
         // Tỵ Dậu Sửu (5,9,1) bị Hợi Tý Sửu (11,0,1)
         if (in_array($chiSinh, [5,9,1]) && in_array($chiNam, [11,0,1])) $tamTai = true;
 
         // Hợi Mão Mùi (11,3,7) bị Tỵ Ngọ Mùi (5,6,7)
         if (in_array($chiSinh, [11,3,7]) && in_array($chiNam, [5,6,7])) $tamTai = true;
-
-        // Fix Dan Ngo Tuat logic
-        if (in_array($chiSinh, [2,6,10]) && in_array($chiNam, [8,9,10])) $tamTai = true;
 
         $msg = "<div class='summary-box'>";
         if ($tamTai) $msg .= "<p class='warn'>⚠ Năm nay phạm <strong>Tam Tai</strong>. Nên cẩn trọng đầu tư lớn, hạn chế đi sông nước.</p>";
