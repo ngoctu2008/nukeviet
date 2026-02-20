@@ -85,6 +85,19 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
             $xtpl->parse('main.result.score_box');
         }
 
+        // Cach Cuc (Patterns)
+        if (isset($laso['cach_cuc']) && is_array($laso['cach_cuc'])) {
+            foreach ($laso['cach_cuc'] as $cc) {
+                // Ensure desc is present
+                if (!isset($cc['desc'])) $cc['desc'] = $cc['content'];
+                $xtpl->assign('ITEM', $cc);
+                $xtpl->parse('main.result.cach_cuc.item');
+            }
+            if (!empty($laso['cach_cuc'])) {
+                $xtpl->parse('main.result.cach_cuc');
+            }
+        }
+
         // Overview (Overview Tab)
         if (isset($laso['luan_giai_tong_quan']['overview'])) {
             foreach ($laso['luan_giai_tong_quan']['overview'] as $ov) {
@@ -109,12 +122,6 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                             $xtpl->parse("main.result.palace.$starType");
                         }
                     }
-                }
-
-                if (!empty($palace['vong_trang_sinh'])) {
-                     // Need star object for loop? No, just name in text.
-                     // Current tpl uses {PALACE.vong_trang_sinh} in footer, but also loops?
-                     // Let's stick to simple display in footer.
                 }
 
                 $xtpl->parse('main.result.palace');
@@ -178,46 +185,57 @@ function nv_theme_huyen_hoc_tu_vi($data, $input)
                 }
             }
             $xtpl->parse('main.result.report_detail');
+        }
 
-            // Section 3: Limits (Van Han)
-            if (isset($rep['section_3'])) {
-                // Dai Van
-                if (isset($rep['section_3']['dai_van'])) {
-                    $dv = $rep['section_3']['dai_van'];
-                    $xtpl->assign('LIMIT_NAME', $dv['name']);
+        // Career (Advanced Tab)
+        if (isset($laso['career_report'])) {
+            $xtpl->assign('CAREER_REPORT', $laso['career_report']);
+        }
 
-                    if (!empty($dv['reading']['general'])) {
-                        foreach ($dv['reading']['general'] as $r) {
-                            $xtpl->assign('READING', $r);
-                            $xtpl->parse('main.result.report_limit.sec3.dai_van.reading');
-                        }
+        // Relations (Advanced Tab)
+        if (isset($laso['relations']) && is_array($laso['relations'])) {
+            foreach ($laso['relations'] as $relKey => $relData) {
+                if (!$relData) continue;
+
+                $title = isset($relData['title']) ? $relData['title'] : strtoupper($relKey);
+                $xtpl->assign('RELATION_TITLE', $title);
+                $xtpl->assign('RELATION_KEY', $relKey);
+
+                if (isset($relData['readings'])) {
+                    foreach ($relData['readings'] as $map) {
+                        $xtpl->assign('MAP', [
+                            'chuc_nang_moi' => $map['name'],
+                            'cung_goc' => ['palace_name' => $map['original_name']],
+                            'sao_chinh' => $map['stars'],
+                            'relation_desc' => $map['desc']
+                        ]);
+                        $xtpl->parse('main.result.relation.map');
                     }
-                    if (!empty($dv['evaluation'])) {
-                        $xtpl->assign('LIMIT_EVAL', $dv['evaluation']);
-                    }
-                    $xtpl->parse('main.result.report_limit.sec3.dai_van');
                 }
 
-                // Tieu Van
-                if (isset($rep['section_3']['tieu_van'])) {
-                    $tv = $rep['section_3']['tieu_van'];
-                    $xtpl->assign('LIMIT_NAME', $tv['name']);
-
-                    if (!empty($tv['reading']['general'])) {
-                         foreach ($tv['reading']['general'] as $r) {
-                             $xtpl->assign('READING', $r);
-                             $xtpl->parse('main.result.report_limit.sec3.tieu_van.reading');
-                         }
-                    }
-                    if (!empty($tv['evaluation'])) {
-                         $xtpl->assign('LIMIT_EVAL', $tv['evaluation']);
-                    }
-                    $xtpl->parse('main.result.report_limit.sec3.tieu_van');
-                }
-
-                $xtpl->parse('main.result.report_limit.sec3');
-                $xtpl->parse('main.result.report_limit');
+                $xtpl->parse('main.result.relation');
             }
+        }
+
+        // Health (Suc Khoe Tab)
+        if (isset($laso['health_diagnosis'])) {
+            $hd = $laso['health_diagnosis'];
+            $xtpl->assign('HEALTH_DIAGNOSIS', $hd);
+
+            // Determine warning class based on content length or keywords?
+            // Simple default
+            $xtpl->assign('HEALTH_WARN_CLASS', 'info');
+
+            if (isset($hd['diagnosis']) && is_array($hd['diagnosis'])) {
+                foreach ($hd['diagnosis'] as $line) {
+                    $xtpl->assign('HEALTH_LINE', $line);
+                    $xtpl->parse('main.result.health_detail');
+                }
+            }
+        }
+
+        if (isset($laso['health_diet'])) {
+            $xtpl->assign('HEALTH_DIET', $laso['health_diet']);
         }
 
         $xtpl->parse('main.result');

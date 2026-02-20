@@ -160,11 +160,18 @@ class TuViVanHan {
         $html .= "<p>Tuổi Âm: <strong>$tuoiAm tuổi</strong></p>";
 
         // 1. Luận Đại Hạn (Gốc 10 năm)
-        $cungDaiHan = $this->lasoGoc[$this->posDaiHan];
-        $html .= "<div class='han-box dai-han'>";
-        $html .= "<h4>1. Đại Hạn 10 năm (Tại cung {$cungDaiHan['name']} - {$cungDaiHan['palace_name']})</h4>";
-        $html .= $this->phanTichCung($cungDaiHan, 'DAI_HAN');
-        $html .= "</div>";
+        if (isset($this->posDaiHan) && isset($this->lasoGoc[$this->posDaiHan])) {
+            $cungDaiHan = $this->lasoGoc[$this->posDaiHan];
+            $html .= "<div class='han-box dai-han'>";
+            $html .= "<h4>1. Đại Hạn 10 năm (Tại cung {$cungDaiHan['name']} - {$cungDaiHan['palace_name']})</h4>";
+            $html .= $this->phanTichCung($cungDaiHan, 'DAI_HAN');
+            $html .= "</div>";
+        } else {
+             $html .= "<div class='han-box dai-han'>";
+             $html .= "<h4>1. Đại Hạn 10 năm</h4>";
+             $html .= "<p>Đương số chưa nhập đại hạn (Tuổi nhỏ hơn Cục số).</p>";
+             $html .= "</div>";
+        }
 
         // 2. Luận Tiểu Hạn (Gốc 1 năm)
         $cungTieuHan = $this->lasoGoc[$this->posTieuHan];

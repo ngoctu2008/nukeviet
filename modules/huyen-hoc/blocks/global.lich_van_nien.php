@@ -41,12 +41,18 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
      */
     function nv_block_lich_van_nien($block_config)
     {
-        global $module_info, $module_file;
+        global $global_config, $module_info, $module_name, $module_file, $site_mods;
+
+        // Explicitly target the huyen-hoc module
+        $target_module = 'huyen-hoc';
+        $module_data = 'huyen-hoc';
 
         // Require classes
-        $lunarFile = NV_ROOTDIR . '/modules/' . $module_file . '/classes/LunarCalendar.php';
-        $lichFile = NV_ROOTDIR . '/modules/' . $module_file . '/classes/LichVanNien.php';
+        $lunarFile = NV_ROOTDIR . '/modules/' . $target_module . '/classes/LunarCalendar.php';
+        $lichFile = NV_ROOTDIR . '/modules/' . $target_module . '/classes/LichVanNien.php';
+        $fengShuiFile = NV_ROOTDIR . '/modules/' . $target_module . '/classes/FengShuiUtils.php';
 
+        if (file_exists($fengShuiFile)) require_once $fengShuiFile;
         if (file_exists($lunarFile)) require_once $lunarFile;
         if (file_exists($lichFile)) require_once $lichFile;
 
@@ -105,7 +111,9 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
             $data['huong_xuat_hanh'] = $info['huong_xuat_hanh'];
 
             if (class_exists('\\NukeViet\\Module\\HuyenHoc\\LunarCalendar')) {
-                $chiNgay = $info['ids']['chi_ngay'];
+                // If getGioHoangDao is static and needs Chi Ngay index
+                // Assuming getInfo returns 'ids' array with 'chi_ngay' index
+                $chiNgay = isset($info['ids']['chi_ngay']) ? $info['ids']['chi_ngay'] : 0;
                 $data['gio_hoang_dao'] = \NukeViet\Module\HuyenHoc\LunarCalendar::getGioHoangDao($chiNgay);
             }
 
@@ -130,21 +138,29 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
         }
 
         // Determine template file
-        if (file_exists(NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_info['module_theme'] . '/block_lich_van_nien.tpl')) {
-            $block_tpl_name = 'block_lich_van_nien.tpl';
-            $block_tpl_path = NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_info['module_theme'];
+        // Priority: Theme > Default Theme > Module Default
+        // If current module is NOT huyen-hoc, we should look in themes/default/modules/huyen-hoc/
+
+        $block_tpl_name = 'block_lich_van_nien.tpl';
+
+        if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['site_theme'] . '/modules/' . $target_module . '/' . $block_tpl_name)) {
+             $block_tpl_path = NV_ROOTDIR . '/themes/' . $global_config['site_theme'] . '/modules/' . $target_module;
+        } elseif (file_exists(NV_ROOTDIR . '/themes/default/modules/' . $target_module . '/' . $block_tpl_name)) {
+             $block_tpl_path = NV_ROOTDIR . '/themes/default/modules/' . $target_module;
         } else {
-            $block_tpl_name = 'block_lich_van_nien.tpl';
-            $block_tpl_path = NV_ROOTDIR . '/themes/default/modules/' . $module_file;
+             // Fallback
+             $block_tpl_path = NV_ROOTDIR . '/themes/default/modules/' . $target_module;
         }
 
         $xtpl = new XTemplate($block_tpl_name, $block_tpl_path);
         $xtpl->assign('DATA', $data);
         $xtpl->assign('BLOCK_ID', $block_config['bid']);
 
-        // Use module_file to ensure we target the huyen-hoc module for AJAX
-        $xtpl->assign('MODULE_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_file);
-        $xtpl->assign('AJAX_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_file . '&' . NV_OP_VARIABLE . '=ajax&action=block_calendar');
+        // Use target_module for URLs
+        $xtpl->assign('MODULE_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $target_module);
+
+        // AJAX URL must point to the module's ajax op
+        $xtpl->assign('AJAX_URL', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $target_module . '&' . NV_OP_VARIABLE . '=ajax&action=block_calendar');
 
         if (isset($block_config['show_zodiac']) && $block_config['show_zodiac'] && !empty($data['gio_hoang_dao'])) {
             foreach ($data['gio_hoang_dao'] as $gio) {
@@ -157,9 +173,9 @@ if (!nv_function_exists('nv_block_config_lich_van_nien')) {
         if (!empty($data['ly_thuan_phong'])) {
             foreach ($data['ly_thuan_phong'] as $ltp) {
                 $xtpl->assign('LTP', $ltp);
-                $xtpl->parse('main.show_ltp.loop');
+                $xtpl->parse('main.show_ltp.loop'); // Ensure template has this block
             }
-            $xtpl->parse('main.show_ltp');
+            $xtpl->parse('main.show_ltp'); // Ensure template has this block
         }
 
         $xtpl->parse('main');
