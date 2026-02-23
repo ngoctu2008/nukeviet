@@ -220,11 +220,11 @@ if ($nv_Request->isset_request('submit', 'post')) {
         // 1. Cach Cuc & Relational
         $adv = new TuViAdvanced($calcData);
         $laSoData['cach_cuc'] = $adv->detectCachCuc();
-        // Pre-calculate relations
+        // Pre-calculate relations using Interpreter to get readings
         $laSoData['relations'] = [
-            'vo_chong' => $adv->lapCucNguoiThan('PHU_THE'),
-            'cha_me' => $adv->lapCucNguoiThan('PHU_MAU'),
-            'con_cai' => $adv->lapCucNguoiThan('TU_TUC')
+            'vo_chong' => $interpreter->luanGiaiNguoiThan($laSoData, 'PHU_THE'),
+            'cha_me' => $interpreter->luanGiaiNguoiThan($laSoData, 'PHU_MAU'),
+            'con_cai' => $interpreter->luanGiaiNguoiThan($laSoData, 'TU_TUC')
         ];
 
         // 2. Career

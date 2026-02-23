@@ -355,7 +355,8 @@
 
             $('#ket-qua-han').html('<div class="text-center p-5"><i class="fa fa-spinner fa-spin fa-3x"></i><br>Đang luận giải vận hạn...</div>');
 
-            $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tu-vi&ajax_get_han=1', {
+            $.post(nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tu-vi', {
+                ajax_get_han: 1,
                 d: birthDay,
                 m: birthMonth,
                 y: birthYear,
