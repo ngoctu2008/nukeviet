@@ -29,7 +29,9 @@ class TuViXemNgay {
         // Tho Tu: Month -> Chi Index (0=Ty...)
         'THO_TU' => [1=>10, 2=>4, 3=>11, 4=>5, 5=>0, 6=>6, 7=>1, 8=>7, 9=>2, 10=>8, 11=>3, 12=>9],
         // Sat Chu Duong: Month -> Chi Index
-        'SAT_CHU_DUONG' => [1=>0, 2=>5, 3=>7, 4=>3, 5=>8, 6=>10, 7=>11, 8=>1, 9=>6, 10=>9, 11=>2, 12=>4]
+        'SAT_CHU_DUONG' => [1=>0, 2=>5, 3=>7, 4=>3, 5=>8, 6=>10, 7=>11, 8=>1, 9=>6, 10=>9, 11=>2, 12=>4],
+        // Sat Chu Am: Month -> Chi Index (For Funeral)
+        'SAT_CHU_AM' => [1=>5, 2=>0, 3=>7, 4=>3, 5=>8, 6=>10, 7=>11, 8=>1, 9=>6, 10=>9, 11=>2, 12=>4]
     ];
 
     public function __construct($birthYear, $gender, $dateToCheck) {
@@ -63,6 +65,7 @@ class TuViXemNgay {
             'binh_giai' => [],
             'diem_so' => 5, // Thang 10
             'ket_luan' => '',
+            'comment' => '', // Alias for template compatibility
             'hoa_giai' => null,
             'is_bad_day' => false
         ];
@@ -86,9 +89,20 @@ class TuViXemNgay {
             case 'MA_CHAY':
                 $result = $this->xemMaChay($result);
                 break;
-            default:
+            default: // GENERIC
                 $result['binh_giai'][] = "Mục đích chung: Xem ngày tốt xấu cơ bản.";
                 $result = $this->xemKhaiTruong($result); // Fallback to general good day logic
+                // Ensure comment is set if generic logic used
+                if (empty($result['ket_luan'])) {
+                    if ($result['diem_so'] > 6) $result['ket_luan'] = "Ngày Tốt (Đại Cát)";
+                    elseif ($result['diem_so'] > 0) $result['ket_luan'] = "Ngày Bình Thường (Trung Bình)";
+                    else $result['ket_luan'] = "Ngày Xấu (Hung)";
+                }
+        }
+
+        // Map ket_luan to comment if missing
+        if (empty($result['comment']) && !empty($result['ket_luan'])) {
+            $result['comment'] = $result['ket_luan'];
         }
 
         return $result;
@@ -221,13 +235,26 @@ class TuViXemNgay {
         $dayChi = $this->lunarDate['can_chi']['chi'];
 
         if ($userChi == $dayChi) {
-            $res['binh_giai'][] = "ĐẠI KỴ: Ngày Trùng Tang (Ngày trùng tuổi người mất).";
-            $res['diem_so'] = -100;
+             $res['binh_giai'][] = "ĐẠI KỴ: Ngày Trùng Tang (Ngày trùng tuổi người mất).";
+             $res['diem_so'] = -100;
         }
 
         // Check Sat Chu Am (Specifically for Funeral)
-        // Sat Chu Duong is for Living (Wedding, Building). Sat Chu Am is for Dead.
-        // Assuming we have Sat Chu Am data. If not, use generic bad day warning.
+        $m = $this->lunarDate['month'];
+        if (isset(self::BAD_DAYS['SAT_CHU_AM'][$m]) && self::BAD_DAYS['SAT_CHU_AM'][$m] == $dayChi) {
+             $res['binh_giai'][] = "ĐẠI KỴ: Ngày Sát Chủ Âm (Kỵ mai táng).";
+             $res['diem_so'] = -100;
+        }
+
+        // Check Trung Phuc (Simplified)
+        // Check Tho Tu
+        if (isset(self::BAD_DAYS['THO_TU'][$m]) && self::BAD_DAYS['THO_TU'][$m] == $dayChi) {
+             $res['binh_giai'][] = "ĐẠI KỴ: Ngày Thọ Tử (Trăm sự đều kỵ).";
+             $res['diem_so'] = -100;
+        }
+
+        if ($res['diem_so'] > 0) $res['ket_luan'] = "Ngày Tốt Tang Lễ";
+        else $res['ket_luan'] = "Ngày Xấu Tang Lễ";
 
         return $res;
     }
@@ -262,15 +289,7 @@ class TuViXemNgay {
         $posTens = $pos;
 
         // Move units (from tens pos)
-        // 11 is next step.
-        // If age=10 (tens=1, units=0), pos is startPos.
-        // If age=11 (tens=1, units=1), pos is startPos + 1 step.
-        for ($i=0; $i<$units; $i++) { // 1st unit is 1 step away? Or 10->11 is 1 step.
-             // Usually: 10 at A. 11 at B.
-             // If units=1 (11), loop once. Correct.
-             // Exception: If tens=0 (Age < 10). Start at 1 year old?
-             // Usually start at StartPos for 1 year old? Or 10?
-             // If < 10, start at StartPos (1).
+        for ($i=0; $i<$units; $i++) {
              if ($tens == 0 && $i == 0) $pos = $startPos; // Reset start for units only
              else $pos = $this->moveStep($pos, $direction);
         }
@@ -306,11 +325,6 @@ class TuViXemNgay {
             // Thien Di: Ty(0), Ngo(6), Dan(2), Than(8) ? Or Ty(0), Hoi(11), Dan(2), Than(8)?
             // User requested: "Dan Than Ty Hoi - Thien Di"
             if (in_array($idx, [2, 8, 5, 11])) return ['type'=>'thien_di', 'text'=>'Thiên Di (Bình thường)'];
-            // Trung Tang: Ty Ngo Mao Dau? No, Ty(Snake) is Thien Di.
-            // Let's check keys: 0=Ty(Rat), 5=Ty(Snake).
-            // User: "Dan Than Ty Hoi". Ty(Snake) is 5. Hoi is 11. Dan is 2. Than is 8.
-            // So [2, 8, 5, 11] is Thien Di.
-
             // "Ty Ngo Mao Dau - Trung Tang". Ty(Rat) is 0. Ngo is 6. Mao is 3. Dau is 9.
             if (in_array($idx, [0, 6, 3, 9])) return ['type'=>'trung_tang', 'text'=>'Trùng Tang (Xấu)'];
 
@@ -366,6 +380,63 @@ class TuViXemNgay {
         ];
     }
 
+    /**
+     * Tim Ngay Gio Tot Tang Le (Kham liem, Di quan, Ha huyet)
+     * Scan next 7 days from Death Time
+     */
+    public function timNgayGioTangLe($deceasedYear, $deathSolarDate) {
+        $recommendations = [];
+        $startTime = strtotime($deathSolarDate); // y-m-d
+        $deceasedChi = ($deceasedYear - 4) % 12;
+
+        // Loop next 7 days
+        for ($i=1; $i<=7; $i++) {
+            $checkTime = strtotime("+$i days", $startTime);
+            $d = date('j', $checkTime);
+            $m = date('n', $checkTime);
+            $y = date('Y', $checkTime);
+
+            // Check bad day (Sat Chu Am, Tho Tu, Trung Tang...)
+            // Reuse xemMaChay logic by instantiating self
+            // Note: pass deceasedYear as userYear
+            $checker = new TuViXemNgay($deceasedYear, 1, "$y-$m-$d");
+            $res = $checker->phanTichNgay('MA_CHAY');
+
+            if ($res['diem_so'] > 0) {
+                // Day is OK. Find Good Hours.
+                $lunar = $checker->lunarDate;
+                $dayChi = $lunar['can_chi']['chi'];
+
+                // Get Hoang Dao Hours
+                $gioHoangDao = LunarCalendar::getGioHoangDao($dayChi);
+
+                // Filter hours suitable for funeral
+                // Avoid hour conflicting with Deceased
+                $goodHours = [];
+                foreach ($gioHoangDao as $gh) {
+                    // Use chi_index directly from LunarCalendar
+                    $hChi = isset($gh['chi_index']) ? $gh['chi_index'] : floor(($gh['start'] + 1) / 2) % 12;
+
+                    if (abs($hChi - $deceasedChi) == 6) {
+                        continue; // Xung with Deceased
+                    }
+                    $goodHours[] = $gh['name'] . " (" . $gh['range'] . ")";
+                }
+
+                if (!empty($goodHours)) {
+                    $recommendations[] = [
+                        'solar_date' => "$d/$m/$y",
+                        'lunar_date' => "{$lunar['day']}/{$lunar['month']}",
+                        'can_chi' => $lunar['can_chi']['name'],
+                        'hours' => implode(', ', $goodHours),
+                        'note' => implode(' ', $res['binh_giai'])
+                    ];
+                }
+            }
+        }
+        return $recommendations;
+    }
+
     // --- TRA CỨU & GỢI Ý ---
 
     public function goiYNgayTotTrongThang($month, $year, $purpose) {
@@ -417,7 +488,7 @@ class TuViXemNgay {
         }
         if (isset(self::BAD_DAYS['THO_TU'][$m]) && self::BAD_DAYS['THO_TU'][$m] == $chi) {
             $res['binh_giai'][] = "Ngày Thọ Tử (Đại hung).";
-            $res['diem_so'] = -10; // Block
+            $res['diem_so'] = -100; // Block
             return true;
         }
         if (isset(self::BAD_DAYS['SAT_CHU_DUONG'][$m]) && self::BAD_DAYS['SAT_CHU_DUONG'][$m] == $chi) {

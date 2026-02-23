@@ -371,6 +371,36 @@
                         <strong>Xung khắc:</strong> {CONFLICT}
                     </div>
                     <!-- END: conflict -->
+
+                    <!-- BEGIN: suggestion_list -->
+                    <div class="panel panel-success" style="margin-top: 20px;">
+                        <div class="panel-heading">Gợi ý ngày giờ tốt cho: Khâm liệm, Di quan, Hạ huyệt (7 ngày tới)</div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Ngày Dương</th>
+                                        <th>Ngày Âm</th>
+                                        <th>Can Chi</th>
+                                        <th>Giờ Hoàng Đạo (Tránh tuổi vong)</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- BEGIN: item -->
+                                    <tr>
+                                        <td>{SUGG.solar_date}</td>
+                                        <td>{SUGG.lunar_date}</td>
+                                        <td>{SUGG.can_chi}</td>
+                                        <td>{SUGG.hours}</td>
+                                        <td>{SUGG.note}</td>
+                                    </tr>
+                                    <!-- END: item -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END: suggestion_list -->
                 </div>
             </div>
             <!-- END: tang_le_result -->

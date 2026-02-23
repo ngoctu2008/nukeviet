@@ -102,6 +102,17 @@ if ($func == 'trung_tang' || $tab == 'tang_le') {
                 $xtpl->parse('main.tang_le_result.conflict');
             }
         }
+
+        // Suggestions for Kham liem, Di quan, Ha huyet
+        $suggestions = $app->timNgayGioTangLe($deceasedYear, "$y-$m-$d");
+        if (!empty($suggestions)) {
+            foreach ($suggestions as $sugg) {
+                $xtpl->assign('SUGG', $sugg);
+                $xtpl->parse('main.tang_le_result.suggestion_list.item');
+            }
+            $xtpl->parse('main.tang_le_result.suggestion_list');
+        }
+
         $xtpl->parse('main.tang_le_result');
     }
 }

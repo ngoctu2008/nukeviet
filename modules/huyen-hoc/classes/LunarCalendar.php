@@ -387,7 +387,9 @@ class LunarCalendar {
 
             $result[] = [
                 'name' => $CHI[$idx],
-                'range' => $start . '-' . ($end > 24 ? $end - 24 : $end)
+                'range' => $start . '-' . ($end > 24 ? $end - 24 : $end),
+                'chi_index' => $idx,
+                'start' => $start
             ];
         }
         return $result;
