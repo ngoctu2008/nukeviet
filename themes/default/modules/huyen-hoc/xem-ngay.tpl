@@ -130,8 +130,8 @@
                                 <div class="form-group">
                                     <label>Năm dự định làm nhà:</label>
                                     <div class="row">
-                                        <div class="col-xs-6"><input type="number" name="target_year" value="{TARGET_YEAR}" class="form-control" placeholder="Năm"></div>
-                                        <div class="col-xs-6"><input type="number" name="target_month" value="{TARGET_MONTH}" class="form-control" placeholder="Tháng dự kiến"></div>
+                                        <div class="col-xs-12"><input type="number" name="target_year" value="{TARGET_YEAR}" class="form-control" placeholder="Năm"></div>
+                                        <div class="col-xs-12"><input type="number" name="target_month" value="{TARGET_MONTH}" class="form-control" placeholder="Tháng dự kiến"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
