@@ -733,6 +733,34 @@ function detail_theme($news_contents, $array_keyword, $related_new_array, $relat
 
     $xtpl->assign('NEWSID', $news_contents['id']);
     $xtpl->assign('NEWSCHECKSS', $news_contents['newscheckss']);
+
+    // Tạo mục lục
+    if (!empty($news_contents['toc'])) {
+        $toc_html = '';
+        $toc_count = 0;
+        $news_contents['bodyhtml'] = preg_replace_callback('/<h([1-3])(.*?)>(.*?)<\/h[1-3]>/is', function ($matches) use (&$toc_html, &$toc_count) {
+            $level = $matches[1];
+            $attr = $matches[2];
+            $text = strip_tags($matches[3]);
+
+            if (preg_match('/id=[\'"]([^\'"]+)[\'"]/', $attr, $idMatches)) {
+                $id = $idMatches[1];
+            } else {
+                $id = 'toc-heading-' . (++$toc_count);
+                $attr .= ' id="' . $id . '"';
+            }
+
+            $toc_html .= '<li class="toc-h' . $level . '"><a href="#' . $id . '">' . $text . '</a></li>';
+
+            return '<h' . $level . $attr . '>' . $matches[3] . '</h' . $level . '>';
+        }, $news_contents['bodyhtml']);
+
+        if (!empty($toc_html)) {
+            $xtpl->assign('TOC', $toc_html);
+            $xtpl->parse('main.toc');
+        }
+    }
+
     $xtpl->assign('DETAIL', $news_contents);
 
     // Xuất giọng đọc
