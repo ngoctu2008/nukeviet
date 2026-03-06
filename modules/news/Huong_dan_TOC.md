@@ -1,5 +1,8 @@
 # Hướng Dẫn Sử Dụng Chức Năng Tạo Mục Lục Tự Động (TOC) Cho Bài Viết Module News
 
+**Tác giả:** Ngọc Tú
+**Email:** ngoctu.dnkd@gmail.com
+
 Tính năng này cho phép quản trị viên lựa chọn tạo một "Mục lục" tự động cho từng bài viết của module News trên nền tảng NukeViet. Hệ thống sẽ tự động quét các thẻ tiêu đề (`<h1>`, `<h2>`, `<h3>`) trong nội dung chi tiết bài viết (Bodytext) để tạo thành một bảng danh sách phân cấp với các liên kết neo (anchor links). Khi người dùng nhấp vào một mục trong danh sách, trang web sẽ cuộn mượt mà đến phần nội dung tương ứng.
 
 ---
