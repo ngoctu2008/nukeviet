@@ -13,7 +13,7 @@ if (!defined('NV_ADMIN')) {
 }
 
 $module_version = [
-    'name' => 'edu_chatbot_rag',
+    'name' => 'edu-chatbot-rag',
     'modfuncs' => 'main,chat',
     'change_alias' => 'main',
     'submenu' => 'main,chat',

@@ -22,7 +22,7 @@ if (!nv_function_exists('nv_edu_chatbot_rag_block_chatbot')) {
     function nv_edu_chatbot_rag_block_chatbot($block_config)
     {
         global $global_config, $module_info, $nv_Request, $language_array, $module_name, $module_data;
-        $module = isset($block_config['module']) ? $block_config['module'] : "edu_chatbot_rag";
+        $module = isset($block_config['module']) ? $block_config['module'] : "edu-chatbot-rag";
         if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module . '/block_chatbot.tpl')) {
             $block_theme = $global_config['module_theme'];
         } elseif (file_exists(NV_ROOTDIR . '/themes/' . $global_config['site_theme'] . '/modules/' . $module . '/block_chatbot.tpl')) {
