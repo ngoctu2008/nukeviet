@@ -1,15 +1,17 @@
 <?php
 
 /**
- * @Project NUKEVIET 4.x
- * @Author Jules (ai@nukeviet.vn)
- * @Copyright (C) 2024 Jules. All rights reserved
- * @Createdate Mon, 21 Oct 2024 00:00:00 GMT
+ * @Dự án module Huyền học cho NukeViet 4.5.07
+ * @Người lập trình: Phạm Ngọc Tú (ngoctu.dnkd@gmail.com)
+ * @Ngày triển khai: 01/01/2026
+ * @Ngày hoàn thành: 11/02/2026
  */
 
 namespace NukeViet\Module\HuyenHoc;
 
 class FengShuiUtils {
+
+    // Utility class for Feng Shui calculations (Can, Chi, Ngu Hanh, Bat Trach)
 
     // Can: 0=Giáp, 1=Ất, ... 9=Quý
     public static $CAN = array('Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý');

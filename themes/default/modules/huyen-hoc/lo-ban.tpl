@@ -6,9 +6,10 @@
 
     <div class="text-center">
         <p class="help-block"><i class="fa fa-hand-pointer-o"></i> Kéo thước hoặc nhập kích thước bên dưới.</p>
-        <div class="lo-ban-input-group">
+        <div class="lo-ban-input-group" style="position: relative;">
             <input type="number" id="lo-ban-input" step="0.1" name="length" value="{LENGTH}" placeholder="0">
             <span style="font-size: 18px;">cm</span>
+            <div class="lo-ban-cursor-line"></div>
         </div>
     </div>
 

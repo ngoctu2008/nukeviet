@@ -1,6 +1,7 @@
 .lo-ban-container {
     position: relative;
     padding: 10px;
+    overflow: hidden;
 }
 
 .lo-ban-canvas-container {
@@ -39,4 +40,16 @@
     border-radius: 5px;
     padding: 5px;
     margin-right: 10px;
+}
+
+.lo-ban-cursor-line {
+    position: absolute;
+    top: 100%; /* Start from bottom of input group */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 600px; /* Covers the canvas area */
+    background: #e65100;
+    z-index: 100;
+    pointer-events: none;
 }

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @Project NUKEVIET 4.x
- * @Author Jules (ai@nukeviet.vn)
- * @Copyright (C) 2024 Jules. All rights reserved
- * @Createdate Mon, 21 Oct 2024 00:00:00 GMT
+ * @Dự án module Huyền học cho NukeViet 4.5.07
+ * @Người lập trình: Phạm Ngọc Tú (ngoctu.dnkd@gmail.com)
+ * @Ngày triển khai: 01/01/2026
+ * @Ngày hoàn thành: 11/02/2026
  */
 
 namespace NukeViet\Module\HuyenHoc;
@@ -91,5 +91,38 @@ class Divination {
         }
 
         return null;
+    }
+
+    /**
+     * Mai Hoa Dich So (Time Based Hexagram)
+     * @param int $y Year (Chi Index 1-12)
+     * @param int $m Month
+     * @param int $d Day
+     * @param int $h Hour (Chi Index 1-12)
+     */
+    public static function getMaiHoaHexagram($y, $m, $d, $h) {
+        $trigrams = [
+            1 => 'Càn (Trời)', 2 => 'Đoài (Đầm)', 3 => 'Ly (Lửa)', 4 => 'Chấn (Sấm)',
+            5 => 'Tốn (Gió)', 6 => 'Khảm (Nước)', 7 => 'Cấn (Núi)', 8 => 'Khôn (Đất)'
+        ];
+
+        // Upper: (Y+M+D)%8
+        $upperVal = ($y + $m + $d) % 8;
+        if ($upperVal == 0) $upperVal = 8;
+
+        // Lower: (Y+M+D+H)%8
+        $lowerVal = ($y + $m + $d + $h) % 8;
+        if ($lowerVal == 0) $lowerVal = 8;
+
+        // Moving Line: (Y+M+D+H)%6
+        $movingLine = ($y + $m + $d + $h) % 6;
+        if ($movingLine == 0) $movingLine = 6;
+
+        return [
+            'upper' => $trigrams[$upperVal],
+            'lower' => $trigrams[$lowerVal],
+            'moving_line' => $movingLine,
+            'hex_name' => "Quẻ " . $trigrams[$upperVal] . " trên " . $trigrams[$lowerVal] . " dưới"
+        ];
     }
 }

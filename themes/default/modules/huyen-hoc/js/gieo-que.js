@@ -1,4 +1,4 @@
-// Gieo Que JS
+// Gieo Que JS - Redesigned Interface
 
 var shakeThreshold = 15;
 var lastX, lastY, lastZ;
@@ -39,7 +39,7 @@ function performDivination(duration) {
                     }
                 }
                 renderResult(data);
-            }, 1000);
+            }, 1500);
         },
         error: function() {
             alert('Có lỗi xảy ra. Vui lòng thử lại.');
@@ -48,22 +48,56 @@ function performDivination(duration) {
     });
 }
 
+function renderHexagram(containerId, lines) {
+    var container = $(containerId);
+    container.empty();
+    if (!lines || !Array.isArray(lines)) return;
+
+    // Lines come Top -> Bottom (index 0 is Top line 6)
+    // We render them simply as divs
+    lines.forEach(function(val) {
+        var type = (val == 1) ? 'yang' : 'yin';
+        var lineDiv = $('<div class="line ' + type + '"></div>');
+        container.append(lineDiv);
+    });
+}
+
 function renderResult(data) {
     $('#step-3').hide();
     $('#step-4').fadeIn().addClass('fade-in');
 
-    if (data && data.id) {
-        $('#res-name').text('Quẻ số ' + data.id + ': ' + data.name_han);
-        $('#res-poem-han').text(data.poem_han);
-        $('#res-poem-viet').text(data.poem_viet);
-        $('#res-meaning').text(data.meaning);
-        if (data.note) {
-             $('#res-meaning').append('<br><small class="text-muted">(' + data.note + ')</small>');
+    if (data && data.chu) {
+        // 1. Render Hexagrams
+        renderHexagram('#hex-vis-chu', data.chu.lines);
+        renderHexagram('#hex-vis-ho', data.ho.lines);
+        renderHexagram('#hex-vis-bien', data.bien.lines);
+
+        // 2. Render Basic Info
+        $('#res-chu-name').text(data.chu.name);
+        $('#res-chu-nghia').text(data.chu.nghia);
+        $('#res-chu-dong').text(data.chu.dong);
+
+        $('#res-ho-name').text(data.ho.name);
+        $('#res-ho-nghia').text(data.ho.nghia);
+
+        $('#res-bien-name').text(data.bien.name);
+        $('#res-bien-nghia').text(data.bien.nghia);
+
+        // 3. Render Detailed Interpretation
+        if (data.tong_luan) {
+            $('#interp-context').html(data.tong_luan.context);
+            $('#interp-process').html(data.tong_luan.process);
+            $('#interp-outcome').html(data.tong_luan.outcome);
+            $('#interp-advice').html(data.tong_luan.advice);
+        } else {
+             // Fallback
+             $('#interp-context').text('Đang cập nhật...');
         }
+
     } else {
         var msg = (data && data.error) ? data.error : 'Tâm chưa tịnh, ý chưa thông. Xin hãy thử lại sau.';
-        $('#res-name').text('Vô Vi Chi Quẻ');
-        $('#res-meaning').text(msg);
+        $('#res-chu-name').text('Vô Vi Chi Quẻ');
+        $('#res-chu-nghia').text(msg);
     }
 }
 
@@ -96,10 +130,11 @@ $(document).ready(function() {
             isShaking = false;
             ongXam.removeClass('shaking');
             var duration = new Date().getTime() - holdStartTime;
-            if (duration > 1000) { // Must hold for 1s
+            // Lower threshold for quick clicks (e.g. 500ms)
+            if (duration > 500) {
                 performDivination(duration);
             } else {
-                alert('Hãy thành tâm lắc ống xăm lâu hơn (giữ chuột trên 1 giây).');
+                alert('Hãy thành tâm giữ và lắc lâu hơn một chút (giữ chuột/tay trên 0.5 giây).');
             }
         }
     });
@@ -125,7 +160,7 @@ $(document).ready(function() {
                 ongXam.addClass('shaking');
                 setTimeout(function(){ ongXam.removeClass('shaking'); }, 500);
 
-                if (shakeDuration > 2000) { // Cumulative shake > 2s
+                if (shakeDuration > 1500) { // Cumulative shake > 1.5s
                     window.removeEventListener('devicemotion', handleMotion);
                     performDivination(shakeDuration);
                 }
@@ -136,9 +171,4 @@ $(document).ready(function() {
             lastZ = current.z;
         }
     }
-
-    // Reload
-    $('#btn-retry').click(function(){
-        location.reload();
-    });
 });

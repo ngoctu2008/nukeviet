@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @Project NUKEVIET 4.x
- * @Author Jules (ai@nukeviet.vn)
- * @Copyright (C) 2024 Jules. All rights reserved
- * @Createdate Mon, 21 Oct 2024 00:00:00 GMT
+ * @Dự án module Huyền học cho NukeViet 4.5.07
+ * @Người lập trình: Phạm Ngọc Tú (ngoctu.dnkd@gmail.com)
+ * @Ngày triển khai: 01/01/2026
+ * @Ngày hoàn thành: 11/02/2026
  */
 
 if (!defined('NV_IS_MOD_HUYEN_HOC')) {
@@ -14,8 +14,72 @@ if (!defined('NV_IS_MOD_HUYEN_HOC')) {
 use NukeViet\Module\HuyenHoc\LunarCalendar;
 use NukeViet\Module\HuyenHoc\TuViLapSo;
 use NukeViet\Module\HuyenHoc\TuViLuanGiai;
+use NukeViet\Module\HuyenHoc\TuViVanHan;
+use NukeViet\Module\HuyenHoc\TuViSaoHan;
+use NukeViet\Module\HuyenHoc\TuViAdvanced;
+use NukeViet\Module\HuyenHoc\TuViHuongNghiep;
+use NukeViet\Module\HuyenHoc\TuViYLy;
+
+// Manual require to ensure classes are loaded if autoloader fails
+if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViAdvanced.php')) require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViAdvanced.php';
+if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViHuongNghiep.php')) require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViHuongNghiep.php';
+if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViYLy.php')) require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViYLy.php';
+if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViVanHan.php')) require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViVanHan.php';
+if (file_exists(NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViSaoHan.php')) require_once NV_ROOTDIR . '/modules/' . $module_file . '/classes/TuViSaoHan.php';
 
 $page_title = $lang_module['tu_vi'];
+
+// AJAX: Xem Vận Hạn
+if ($nv_Request->isset_request('ajax_get_han', 'post')) {
+    $birthDay = $nv_Request->get_int('d', 'post', 1);
+    $birthMonth = $nv_Request->get_int('m', 'post', 1);
+    $birthYear = $nv_Request->get_int('y', 'post', 1990);
+    $birthHour = $nv_Request->get_int('h', 'post', 0);
+    $gender = $nv_Request->get_int('g', 'post', 1);
+    $viewYear = $nv_Request->get_int('view_year', 'post', date('Y'));
+    $name = $nv_Request->get_string('name', 'post', 'Đương số');
+
+    // 1. Convert Lunar for Birth
+    $lunar = LunarCalendar::convertSolar2Lunar($birthDay, $birthMonth, $birthYear);
+    $canChi = LunarCalendar::getCanChi($lunar['year'], $lunar['month'], $lunar['day'], $birthHour);
+
+    // 2. Lap La So Goc
+    $laSoData = TuViLapSo::lapLaSo(
+        $lunar['day'],
+        $lunar['month'],
+        $lunar['year'],
+        $birthHour,
+        $gender,
+        $canChi['canYear'],
+        $canChi['chiYear'],
+        $name
+    );
+
+    // Load Star Meanings (fix for undefined variable)
+    $starMeanings = [];
+    $jsonPath = NV_ROOTDIR . '/modules/' . $module_file . '/data/star_meanings.json';
+    if (file_exists($jsonPath)) {
+        $jsonContent = file_get_contents($jsonPath);
+        $starMeanings = json_decode($jsonContent, true);
+    }
+
+    // 3. Tinh Sao Han (Cuu Dieu, Tam Tai...)
+    $saoHanApp = new TuViSaoHan($birthYear, $gender, $viewYear);
+    $htmlSaoHan = $saoHanApp->execute();
+
+    // 4. Tinh Van Han (Tu Vi Chart Limits)
+    $vanHanApp = new TuViVanHan($laSoData, $viewYear);
+    $htmlVanHan = $vanHanApp->luanGiaiChiTiet();
+
+    // Combine
+    $html = '<div class="row">';
+    $html .= '<div class="col-md-6">' . $htmlSaoHan . '</div>';
+    $html .= '<div class="col-md-6">' . $htmlVanHan . '</div>';
+    $html .= '</div>';
+
+    echo $html;
+    die();
+}
 
 $result = array();
 
@@ -35,6 +99,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     $hour = $data_input['h'];
     $gender = $data_input['g'];
     $name = $data_input['name'];
+    if (empty($name)) $name = 'Đương số';
 
     // Convert Solar to Lunar
     $lunar = LunarCalendar::convertSolar2Lunar($day, $month, $year);
@@ -84,10 +149,12 @@ if ($nv_Request->isset_request('submit', 'post')) {
             }
         }
     }
+    unset($palace);
 
     // Luan Giai
     try {
-        $interpreter = new TuViLuanGiai();
+        // Pass Loaded Star Meanings to Interpreter
+        $interpreter = new TuViLuanGiai($starMeanings);
         $interpretation = $interpreter->luanGiai($laSoData);
         $structuredReport = $interpreter->generateStructuredReport($laSoData);
 
@@ -130,6 +197,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
                  }
              }
         }
+        unset($palace);
 
         // Add Tong Quan to laSoData
         $laSoData['luan_giai_tong_quan'] = array(
@@ -140,6 +208,33 @@ if ($nv_Request->isset_request('submit', 'post')) {
         );
 
         $laSoData['structured_report'] = $structuredReport;
+
+        // --- Advanced Analysis ---
+        // Prepare calculator object/array wrapper for new classes
+        $calcData = [
+            'dia_ban' => $laSoData['dia_ban'], // 0..11 indexed
+            'meta' => $laSoData['meta'],
+            'input' => $data_input
+        ];
+
+        // 1. Cach Cuc & Relational
+        $adv = new TuViAdvanced($calcData);
+        $laSoData['cach_cuc'] = $adv->detectCachCuc();
+        // Pre-calculate relations using Interpreter to get readings
+        $laSoData['relations'] = [
+            'vo_chong' => $interpreter->luanGiaiNguoiThan($laSoData, 'PHU_THE'),
+            'cha_me' => $interpreter->luanGiaiNguoiThan($laSoData, 'PHU_MAU'),
+            'con_cai' => $interpreter->luanGiaiNguoiThan($laSoData, 'TU_TUC')
+        ];
+
+        // 2. Career
+        $career = new TuViHuongNghiep($calcData);
+        $laSoData['career_report'] = $career->renderReport();
+
+        // 3. Health (Y Ly)
+        $health = new TuViYLy($calcData);
+        $laSoData['health_diagnosis'] = $health->chanDoanBenh();
+        $laSoData['health_diet'] = $health->goiYThucDuong();
 
     } catch (\Exception $e) {
         // Ignore error if DB not ready

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @Project NUKEVIET 4.x
- * @Author Jules (ai@nukeviet.vn)
- * @Copyright (C) 2024 Jules. All rights reserved
- * @Createdate Mon, 21 Oct 2024 00:00:00 GMT
+ * @Dự án module Huyền học cho NukeViet 4.5.07
+ * @Người lập trình: Phạm Ngọc Tú (ngoctu.dnkd@gmail.com)
+ * @Ngày triển khai: 01/01/2026
+ * @Ngày hoàn thành: 11/02/2026
  */
 
 namespace NukeViet\Module\HuyenHoc;
@@ -119,6 +119,85 @@ class SimPhongThuy {
             'last4' => $last4,
             'score' => $res,
             'meaning' => $meaning
+        ];
+    }
+
+    /**
+     * Analyze Sim based on Ngu Hanh (Element) Compatibility
+     * @param string $phone
+     * @param int $birthYear
+     * @param int $gender (1=Male, 0=Female)
+     */
+    public static function analyzeNguHanh($phone, $birthYear, $gender) {
+        // 1. Get User Element (Menh Nien / Nap Am)
+        // Need Can/Chi of Birth Year.
+        // Can = Year % 10. 4=Giap, 5=At...
+        // Standard: 0=Canh, 1=Tan, 2=Nham, 3=Quy, 4=Giap, 5=At, 6=Binh, 7=Dinh, 8=Mau, 9=Ky.
+        // FengShuiUtils::$CAN: 0=Giap...
+        // Map: ($year - 4) % 10 -> 0=Canh...
+        // FengShuiUtils expects 0=Giap.
+        // ($year - 4) % 10.
+        // If Year 1984 (Giap Ty). 1984-4 = 1980. %10 = 0. 0=Canh? No. Giap is 0 in Utils.
+        // Real Can: 0=Canh... 4=Giap.
+        // Utils Can: 0=Giap.
+        // So Utils Index = (Real Can Index - 4 + 10) % 10?
+        // Let's rely on standard Year -> Can/Chi math.
+
+        $canIndex = ($birthYear - 4) % 10; // 0=Giap... if aligned?
+        // 1984: Giap Ty. (1984-4)%10 = 0.
+        // If 0 is Giap. Then ($year - 4) % 10 maps 0->Giap. Correct.
+        // FengShuiUtils::$CAN starts with Giap.
+        // 0=Giap, 1=At...
+
+        $chiIndex = ($birthYear - 4) % 12; // 0=Ty...
+        // 1984: Giap Ty. (1984-4)%12 = 0.
+        // FengShuiUtils::$CHI starts with Ty.
+        // 0=Ty. Correct.
+
+        $menhID = FengShuiUtils::getNguHanhNapAm($canIndex, $chiIndex);
+        // 1=Thuy, 2=Hoa, 3=Tho, 4=Kim, 5=Moc
+
+        // 2. Get Sim Element (Last Digit - Ha Do)
+        $lastDigit = intval(substr($phone, -1));
+        // 1,6=Thuy(1); 2,7=Hoa(2); 3,8=Moc(5); 4,9=Kim(4); 0,5=Tho(3)
+        $simEl = 0;
+        if (in_array($lastDigit, [1, 6])) $simEl = 1;
+        elseif (in_array($lastDigit, [2, 7])) $simEl = 2;
+        elseif (in_array($lastDigit, [3, 8])) $simEl = 5;
+        elseif (in_array($lastDigit, [4, 9])) $simEl = 4;
+        elseif (in_array($lastDigit, [0, 5])) $simEl = 3;
+
+        // 3. Compare
+        // Sinh: 4(Kim)->1(Thuy)->5(Moc)->2(Hoa)->3(Tho)->4(Kim)
+        // Khac: 4->5->3->1->2->4
+        $sinh = [4=>1, 1=>5, 5=>2, 2=>3, 3=>4];
+        $khac = [4=>5, 5=>3, 3=>1, 1=>2, 2=>4];
+
+        $relation = "Bình Hòa";
+        $score = 5;
+
+        if ($simEl == $menhID) {
+            $relation = "Tương Hỗ (Bình Hòa)";
+            $score = 7;
+        } elseif (isset($sinh[$simEl]) && $sinh[$simEl] == $menhID) {
+            $relation = "Sim Sinh Mệnh (Rất Tốt)";
+            $score = 10;
+        } elseif (isset($sinh[$menhID]) && $sinh[$menhID] == $simEl) {
+            $relation = "Mệnh Sinh Sim (Sinh Xuất - Hao)";
+            $score = 4;
+        } elseif (isset($khac[$simEl]) && $khac[$simEl] == $menhID) {
+            $relation = "Sim Khắc Mệnh (Xấu)";
+            $score = 0;
+        } elseif (isset($khac[$menhID]) && $khac[$menhID] == $simEl) {
+            $relation = "Mệnh Khắc Sim (Khắc Chế - Trung Bình)";
+            $score = 5;
+        }
+
+        return [
+            'menh_user' => FengShuiUtils::getNguHanhName($menhID),
+            'sim_element' => FengShuiUtils::getNguHanhName($simEl),
+            'relation' => $relation,
+            'score' => $score
         ];
     }
 }

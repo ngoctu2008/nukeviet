@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @Project NUKEVIET 4.x
- * @Author Jules (ai@nukeviet.vn)
- * @Copyright (C) 2024 Jules. All rights reserved
- * @Createdate Mon, 21 Oct 2024 00:00:00 GMT
+ * @Dự án module Huyền học cho NukeViet 4.5.07
+ * @Người lập trình: Phạm Ngọc Tú (ngoctu.dnkd@gmail.com)
+ * @Ngày triển khai: 01/01/2026
+ * @Ngày hoàn thành: 11/02/2026
  */
 
 namespace NukeViet\Module\HuyenHoc;
@@ -22,15 +22,22 @@ class LunarCalendar {
         $s1 = self::getNewMoonDay($k, $timeZone);
         $s2 = self::getNewMoonDay($k + 1, $timeZone);
 
-        while ($s1 > $minJl) {
+        $loopCount = 0;
+        $maxLoops = 50; // Safety limit (approx 4 years scan)
+
+        while ($s1 > $minJl && $loopCount < $maxLoops) {
             $k--;
             $s2 = $s1;
             $s1 = self::getNewMoonDay($k, $timeZone);
+            $loopCount++;
         }
-        while ($s2 <= $minJl) {
+
+        $loopCount = 0;
+        while ($s2 <= $minJl && $loopCount < $maxLoops) {
             $k++;
             $s1 = $s2;
             $s2 = self::getNewMoonDay($k + 1, $timeZone);
+            $loopCount++;
         }
 
         $lunarDay = (int)($minJl - $s1 + 1);
@@ -244,5 +251,190 @@ class LunarCalendar {
             'canHour' => $canHour,
             'chiHour' => $chiHour
         );
+    }
+
+    public static function getCanChiDay($d, $m, $y) {
+        $info = self::getCanChiDayInfo($d, $m, $y);
+        return $info['name'];
+    }
+
+    public static function getCanChiDayInfo($d, $m, $y) {
+        $jd = self::jdn($d, $m, $y);
+        $CAN = array('Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý');
+        $CHI = array('Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi');
+
+        $canIndex = ($jd + 9) % 10;
+        $chiIndex = ($jd + 1) % 12;
+
+        return [
+            'can_index' => $canIndex,
+            'chi_index' => $chiIndex,
+            'name' => $CAN[$canIndex] . ' ' . $CHI[$chiIndex]
+        ];
+    }
+
+    public static function getCanChiMonth($month, $year) {
+        $CAN = array('Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý');
+        $CHI = array('Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi');
+
+        // Simple approximate: Month 1 is Dan
+        $chiIndex = ($month + 1) % 12; // 1->2 (Dan), 2->3 (Mao)...
+
+        // Calculate Can Month based on Can Year
+        $canYearIndex = ($year + 6) % 10; // Giap=0, At=1... (2024=Giap, 2024%10=4. So +6=0)
+        $startMonthCan = ($canYearIndex % 5) * 2;
+        if ($startMonthCan >= 10) $startMonthCan -= 10;
+
+        $canMonthIndex = ($startMonthCan + ($month - 1)) % 10;
+
+        return $CAN[$canMonthIndex] . ' ' . $CHI[$chiIndex];
+    }
+
+    public static function getCanChiYear($year) {
+        $CAN = array('Canh', 'Tân', 'Nhâm', 'Quý', 'Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ');
+        $CHI = array('Thân', 'Dậu', 'Tuất', 'Hợi', 'Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi');
+
+        return $CAN[$year % 10] . ' ' . $CHI[$year % 12];
+    }
+
+    public static function getNgayHoangDao($dayChiIndex, $month) {
+        // Hoang Dao Stars mapping by Month (Lunar)
+        // 1 (Dan): Ty, Suu, Ty(ran), Mui (Thanh Long, Minh Duong, Kim Duong, Bao Quang, Ngoc Duong, Tu Menh)
+        // Correct Rule (Luc Nham Dai Don):
+        // Month 1, 7: Ty (Thanh Long), Suu (Minh Duong), Thin (Kim Duong), Ty (Thien Tai?), Mui (Ngoc Duong), Tuat (Tu Menh).
+        // Let's use simplified 6 Hoang Dao stars mapping.
+        // Offsets from Month Branch?
+        // Month 1 (Dan): Start Thanh Long at Ty (0).
+        // Month 2 (Mao): Start Thanh Long at Dan (2).
+        // Month 3 (Thin): Start Thanh Long at Thin (4).
+        // Offset = (Month - 1) * 2.
+
+        $start = (($month - 1) * 2) % 12;
+
+        // Sequence of 12 Stars:
+        // 1. Thanh Long (H), 2. Minh Duong (H), 3. Thien Cuong (Black), 4. Chu Tuoc (B), 5. Kim Duong (H), 6. Kim Quy (H)
+        // 7. Thien Hinh (B), 8. Ngoc Duong (H), 9. Thien Lao (B), 10. Nguyen Vu (B), 11. Tu Menh (H), 12. Cau Tran (B)
+        // Hoang Dao (H): 1, 2, 5, 6, 8, 11
+        // Hac Dao (B): 3, 4, 7, 9, 10, 12
+
+        $map = [
+            1 => 'Thanh Long (Hoàng Đạo)',
+            2 => 'Minh Đường (Hoàng Đạo)',
+            3 => 'Thiên Cương (Hắc Đạo)',
+            4 => 'Chu Tước (Hắc Đạo)',
+            5 => 'Kim Đường (Hoàng Đạo)',
+            6 => 'Kim Quỹ (Hoàng Đạo)',
+            7 => 'Thiên Hình (Hắc Đạo)',
+            8 => 'Ngọc Đường (Hoàng Đạo)',
+            9 => 'Thiên Lao (Hắc Đạo)',
+            10 => 'Nguyên Vũ (Hắc Đạo)',
+            11 => 'Tư Mệnh (Hoàng Đạo)',
+            12 => 'Câu Trận (Hắc Đạo)'
+        ];
+
+        // Calculate Star at Day Chi
+        // Star 1 starts at $start.
+        // Day Chi $dayChiIndex.
+        // Distance = ($dayChiIndex - $start + 12) % 12.
+        // Star Index = Distance + 1.
+
+        $dist = ($dayChiIndex - $start + 12) % 12;
+        $starIdx = $dist + 1;
+
+        return isset($map[$starIdx]) ? $map[$starIdx] : 'Bình thường';
+    }
+
+    public static function getGioHoangDao($dayChiIndex) {
+        // Chi Index: 0=Ty, 1=Suu, ... 11=Hoi
+        // Groups:
+        // Dan (2), Than (8): Ty, Suu, Thin, Ty, Mui, Tuat (0, 1, 4, 5, 7, 10)
+        // Mao (3), Dau (9): Ty, Dan, Mao, Ngo, Mui, Dau (0, 2, 3, 6, 7, 9)
+        // Thin (4), Tuat (10): Dan, Thin, Ty, Than, Dau, Hoi (2, 4, 5, 8, 9, 11)
+        // Ty (5), Hoi (11): Suu, Thin, Ngo, Mui, Tuat, Hoi (1, 4, 6, 7, 10, 11)
+        // Ty (0), Ngo (6): Ty, Suu, Mao, Ngo, Than, Dau (0, 1, 3, 6, 8, 9)
+        // Suu (1), Mui (7): Dan, Mao, Ty, Than, Tuat, Hoi (2, 3, 5, 8, 10, 11)
+
+        $map = [
+            0 => [0, 1, 3, 6, 8, 9],  // Ty
+            6 => [0, 1, 3, 6, 8, 9],  // Ngo
+            1 => [2, 3, 5, 8, 10, 11], // Suu
+            7 => [2, 3, 5, 8, 10, 11], // Mui
+            2 => [0, 1, 4, 5, 7, 10],  // Dan
+            8 => [0, 1, 4, 5, 7, 10],  // Than
+            3 => [0, 2, 3, 6, 7, 9],   // Mao
+            9 => [0, 2, 3, 6, 7, 9],   // Dau
+            4 => [2, 4, 5, 8, 9, 11],  // Thin
+            10 => [2, 4, 5, 8, 9, 11], // Tuat
+            5 => [1, 4, 6, 7, 10, 11], // Ty (Snake)
+            11 => [1, 4, 6, 7, 10, 11] // Hoi
+        ];
+
+        $indices = $map[$dayChiIndex] ?? [];
+        $CHI = array('Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi');
+
+        $result = [];
+        foreach ($indices as $idx) {
+            // Calculate time range: Ty (23-1), Suu (1-3)...
+            // Formula: Start = (Index * 2 - 1). If < 0, +24.
+            // Example: Ty (0): -1 -> 23. End: 1. Range: 23-1.
+            // Example: Suu (1): 1. End: 3. Range: 1-3.
+
+            $start = ($idx * 2 - 1);
+            if ($start < 0) $start += 24;
+            $end = ($idx * 2 + 1);
+            // Don't mod 24 here for display logic "23-1" is clearer than "23-25"
+            // But usually represented as 23h-1h.
+
+            $result[] = [
+                'name' => $CHI[$idx],
+                'range' => $start . '-' . ($end > 24 ? $end - 24 : $end),
+                'chi_index' => $idx,
+                'start' => $start
+            ];
+        }
+        return $result;
+    }
+
+    public static function getTruc($d, $m, $y) {
+        $TRUC = array('Kiến', 'Trừ', 'Mãn', 'Bình', 'Định', 'Chấp', 'Phá', 'Nguy', 'Thành', 'Thu', 'Khai', 'Bế');
+        return $TRUC[($d + $m) % 12];
+    }
+
+    public static function getTietKhi($d, $m, $y) {
+        // Approximate Solar Terms
+        // Format: Month => [DayBound1 => Term1, DayBound2 => Term2...]
+        // Terms are assigned if Day >= Bound. Last match wins.
+        // Handle "previous year" spillover for Jan manually if needed.
+
+        $TERMS = [
+            1 => [6 => 'Tiểu hàn', 21 => 'Đại hàn'],
+            2 => [4 => 'Lập xuân', 19 => 'Vũ thủy'],
+            3 => [6 => 'Kinh trập', 21 => 'Xuân phân'],
+            4 => [5 => 'Thanh minh', 20 => 'Cốc vũ'],
+            5 => [6 => 'Lập hạ', 21 => 'Tiểu mãn'],
+            6 => [6 => 'Mang chủng', 22 => 'Hạ chí'],
+            7 => [7 => 'Tiểu thử', 23 => 'Đại thử'],
+            8 => [8 => 'Lập thu', 23 => 'Xử thử'],
+            9 => [8 => 'Bạch lộ', 23 => 'Thu phân'],
+            10 => [8 => 'Hàn lộ', 24 => 'Sương giáng'],
+            11 => [8 => 'Lập đông', 22 => 'Tiểu tuyết'],
+            12 => [7 => 'Đại tuyết', 22 => 'Đông chí']
+        ];
+
+        $term = 'Đông chí'; // Default for Jan 1-5
+        if (isset($TERMS[$m])) {
+            foreach ($TERMS[$m] as $dayBound => $tName) {
+                if ($d >= $dayBound) {
+                    $term = $tName;
+                }
+            }
+        }
+
+        // Edge case: Jan 1-5 is Dong Chi from previous year.
+        if ($m == 1 && $d < 6) {
+             $term = 'Đông chí';
+        }
+
+        return $term;
     }
 }
