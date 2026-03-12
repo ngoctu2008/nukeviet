@@ -9,18 +9,15 @@
  */
 
 if (!defined('NV_IS_MOD_EDU_CHATBOT_RAG')) {
-    die('Stop!!!');
+    exit('Stop!!!');
 }
 
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
 
-$xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
-$xtpl->assign('LANG', $lang_module);
-$xtpl->assign('MODULE_NAME', $module_name);
+$array_data = [];
 
-$xtpl->parse('main');
-$contents = $xtpl->text('main');
+$contents = nv_theme_edu_chatbot_rag_main($array_data);
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);
