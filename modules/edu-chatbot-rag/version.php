@@ -8,7 +8,7 @@
  * @Createdate Mon, 10 Mar 2025 00:00:00 GMT
  */
 
-if (!defined('NV_ADMIN')) {
+if (!defined('NV_IS_FILE_MODULES')) {
     die('Stop!!!');
 }
 
