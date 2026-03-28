@@ -1,0 +1,623 @@
+{
+    "tu_vi": {
+        "name": "Tử Vi",
+        "hanh": "Thổ",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Đế Tinh, quyền uy, chủ về tước lộc, khả năng lãnh đạo, giải ách chế hóa.",
+        "dac_ham": "Miếu địa: Tỵ, Ngọ, Dần, Thân; Vượng địa: Thìn, Tuất; Đắc địa: Sửu, Mùi; Hãm địa: (Không hãm, nhưng kém ở Mão, Dậu, Hợi, Tý)",
+        "y_nghia": {
+            "menh": "Người đôn hậu, trọng danh dự, có khí chất lãnh đạo, khả năng quản lý tốt.",
+            "phuc_duc": "Thọ trường, dòng họ có người làm quan, phúc đức dồi dào."
+        },
+        "luu_sao": "Gia tăng quyền lực, sự tôn trọng, giải trừ hung họa.",
+        "cach_cuc": "Tử Phủ Vũ Tướng: Quyền uy hiển hách; Tử Vi cư Ngọ: Cực hướng Ly minh (Vua ngoảnh mặt về Nam)."
+    },
+    "thien_co": {
+        "name": "Thiên Cơ",
+        "hanh": "Mộc",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Thiện Tinh, chủ về trí tuệ, mưu lược, sự khéo léo, tính toán, huynh đệ.",
+        "dac_ham": "Miếu địa: Thìn, Tuất, Mão, Dậu; Vượng địa: Tỵ, Thân; Đắc địa: Tý, Ngọ, Sửu, Mùi; Hãm địa: Dần, Hợi",
+        "y_nghia": {
+            "menh": "Thông minh, cơ trí, nhân hậu, thích nghiên cứu học thuật, tôn giáo.",
+            "phuc_duc": "Được hưởng phúc thọ, nhưng hay phải lo toan, suy nghĩ nhiều."
+        },
+        "luu_sao": "Có sự thay đổi, tính toán mới, đi lại nhiều.",
+        "cach_cuc": "Cơ Nguyệt Đồng Lương: Làm công chức, tham mưu, văn phòng rất tốt."
+    },
+    "thai_duong": {
+        "name": "Thái Dương",
+        "hanh": "Hỏa",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Quý Tinh, chủ về quan lộc, danh tiếng, sự quang minh chính đại, cha, chồng.",
+        "dac_ham": "Miếu địa: Tỵ, Ngọ; Vượng địa: Dần, Mão, Thìn; Đắc địa: Sửu, Mùi; Hãm địa: Thân, Dậu, Tuất, Hợi, Tý",
+        "y_nghia": {
+            "menh": "Tính tình cương trực, nóng nảy nhưng độ lượng, thích danh vọng.",
+            "phuc_duc": "Phúc thọ song toàn, nhưng vất vả vì phải lo toan cho người khác."
+        },
+        "luu_sao": "Thăng quan tiến chức, nổi danh, nhưng đề phòng kiện tụng, đau mắt.",
+        "cach_cuc": "Nhật Nguyệt Tịnh Minh: Thông minh xuất chúng; Cự Nhật: Chủ về ăn nói, ngoại giao."
+    },
+    "vu_khuc": {
+        "name": "Vũ Khúc",
+        "hanh": "Kim",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Tài Tinh, chủ về tiền bạc, sự quả quyết, cô độc, kinh doanh.",
+        "dac_ham": "Miếu địa: Thìn, Tuất, Sửu, Mùi; Vượng địa: Dần, Thân, Tý, Ngọ; Đắc địa: Mão, Dậu; Hãm địa: Tỵ, Hợi",
+        "y_nghia": {
+            "menh": "Cương nghị, quả quyết, có tài kinh doanh, nhưng thường cô độc, ít bạn bè.",
+            "phuc_duc": "Phải tự lập, xa quê hương mới tốt, hậu vận giàu có."
+        },
+        "luu_sao": "Cơ hội kiếm tiền, đầu tư, nhưng cẩn thận mất mát tình cảm.",
+        "cach_cuc": "Vũ Tham đồng hành: Giàu có hoạch phát ở hậu vận."
+    },
+    "thien_dong": {
+        "name": "Thiên Đồng",
+        "hanh": "Thủy",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Phúc Tinh, chủ về sự hưởng thụ, thay đổi, trẻ con, may mắn.",
+        "dac_ham": "Miếu địa: Dần, Thân, Tý; Vượng địa: Mão; Đắc địa: Tỵ, Hợi, Mùi; Hãm địa: Thìn, Tuất, Sửu, Ngọ, Dậu",
+        "y_nghia": {
+            "menh": "Ôn hòa, nhân hậu, thích hưởng thụ, hay thay đổi chí hướng.",
+            "phuc_duc": "Được hưởng phúc đức tổ tiên, cuộc sống an nhàn, ít lo nghĩ."
+        },
+        "luu_sao": "Có sự thay đổi chỗ ở, công việc, hoặc có tin vui, tiệc tùng.",
+        "cach_cuc": "Cơ Nguyệt Đồng Lương: Hợp với công việc văn phòng, dịch vụ."
+    },
+    "liem_trinh": {
+        "name": "Liêm Trinh",
+        "hanh": "Hỏa",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Đào Hoa Tinh, Tù Tinh, chủ về sự liêm khiết, nóng nảy, tranh đoạt, tình cảm.",
+        "dac_ham": "Miếu địa: Thìn, Tuất, Sửu, Mùi; Vượng địa: Dần, Thân; Đắc địa: Tý, Ngọ; Hãm địa: Tỵ, Hợi, Mão, Dậu",
+        "y_nghia": {
+            "menh": "Thẳng thắn, nóng tính, liêm khiết, nhưng dễ vướng vào tranh chấp, tình cảm phức tạp.",
+            "phuc_duc": "Phúc đức thất thường, ly hương lập nghiệp mới tốt."
+        },
+        "luu_sao": "Đề phòng quan tụng, tranh chấp, hoặc có chuyện tình cảm rắc rối.",
+        "cach_cuc": "Liêm Phủ: Phú quý song toàn; Liêm Tham: Đào hoa, dễ vướng thị phi."
+    },
+    "thien_phu": {
+        "name": "Thiên Phủ",
+        "hanh": "Thổ",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Tài Tinh, Kho Tàng, chủ về sự cai quản, tích lũy, nhân hậu, ổn định.",
+        "dac_ham": "Miếu địa: Dần, Thân, Tý, Ngọ; Vượng địa: Thìn, Tuất; Đắc địa: Tỵ, Hợi, Mùi; Hãm địa: Mão, Dậu, Sửu",
+        "y_nghia": {
+            "menh": "Thông minh, ôn hòa, cẩn trọng, giỏi quản lý tài chính, có uy tín.",
+            "phuc_duc": "Dòng họ giàu có, phúc đức dày, con cháu thành đạt."
+        },
+        "luu_sao": "Tài lộc ổn định, có cơ hội tích lũy, thăng chức.",
+        "cach_cuc": "Phủ Tướng triều viên: Phú quý, quyền uy."
+    },
+    "thai_am": {
+        "name": "Thái Âm",
+        "hanh": "Thủy",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Phú Tinh, chủ về điền sản, tiền bạc, sự dịu dàng, mẹ, vợ.",
+        "dac_ham": "Miếu địa: Hợi, Tý, Sửu; Vượng địa: Dậu, Tuất; Đắc địa: Thân; Hãm địa: Dần, Mão, Thìn, Tỵ, Ngọ, Mùi",
+        "y_nghia": {
+            "menh": "Thông minh, lãng mạn, yêu văn học nghệ thuật, trọng tình cảm.",
+            "phuc_duc": "Được hưởng phúc đức từ mẹ hoặc bà, hậu vận an nhàn."
+        },
+        "luu_sao": "Lợi về điền sản, tài lộc, tình cảm, cưới hỏi.",
+        "cach_cuc": "Nguyệt lãng thiên môn (Thái Âm cư Hợi): Rất quý hiển."
+    },
+    "tham_lang": {
+        "name": "Tham Lang",
+        "hanh": "Thủy/Mộc",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Đào Hoa Tinh, Dục Vọng, chủ về tham vọng, hưởng thụ, tài nghệ, tu hành.",
+        "dac_ham": "Miếu địa: Sửu, Mùi; Vượng địa: Thìn, Tuất; Đắc địa: Dần, Thân; Hãm địa: Tý, Ngọ, Mão, Dậu, Tỵ, Hợi",
+        "y_nghia": {
+            "menh": "Khôn khéo, đa tài, tham vọng lớn, thích hưởng thụ, dễ gần gũi người khác giới.",
+            "phuc_duc": "Phúc đức kém nếu không tu dưỡng, dễ sa ngã, hậu vận mới tốt."
+        },
+        "luu_sao": "Có tin vui, tiệc tùng, hoặc hao tài vì ăn chơi, tình cảm.",
+        "cach_cuc": "Tham Vũ đồng hành: Giàu có; Tham Hỏa: Phát dã như lôi (phát nhanh như sấm)."
+    },
+    "cu_mon": {
+        "name": "Cự Môn",
+        "hanh": "Thủy",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Ám Tinh, chủ về ngôn ngữ, thị phi, nghi ngờ, nghiên cứu chuyên sâu.",
+        "dac_ham": "Miếu địa: Mão, Dậu; Vượng địa: Tý, Ngọ, Dần, Thân; Đắc địa: Hợi, Tỵ; Hãm địa: Thìn, Tuất, Sửu, Mùi",
+        "y_nghia": {
+            "menh": "Thông minh, có tài hùng biện, nhưng đa nghi, dễ vướng thị phi miệng tiếng.",
+            "phuc_duc": "Dòng họ có người tài giỏi nhưng hay bất hòa, ly tán."
+        },
+        "luu_sao": "Đề phòng khẩu thiệt, kiện tụng, tranh cãi.",
+        "cach_cuc": "Cự Cơ Mão Dậu: Đại phú đại quý; Cự Nhật: Chủ về ngoại giao, nổi tiếng."
+    },
+    "thien_tuong": {
+        "name": "Thiên Tướng",
+        "hanh": "Thủy",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Quyền Tinh, Ấn Tín, chủ về uy quyền, lòng trắc ẩn, sự phục vụ, tương trợ.",
+        "dac_ham": "Miếu địa: Dần, Thân; Vượng địa: Thìn, Tuất, Tý, Ngọ; Đắc địa: Sửu, Mùi, Tỵ, Hợi; Hãm địa: Mão, Dậu",
+        "y_nghia": {
+            "menh": "Đôn hậu, trượng nghĩa, thích giúp đỡ người khác, có khí chất uy nghi.",
+            "phuc_duc": "Được hưởng phúc, dòng họ danh giá, nhiều người thành đạt."
+        },
+        "luu_sao": "Được quý nhân giúp đỡ, thăng chức, tăng quyền lực.",
+        "cach_cuc": "Phủ Tướng triều viên: Công danh hiển hách."
+    },
+    "thien_luong": {
+        "name": "Thiên Lương",
+        "hanh": "Mộc",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Ấm Tinh, Thọ Tinh, chủ về sự che chở, phúc thọ, nguyên tắc, thầy thuốc, nhà giáo.",
+        "dac_ham": "Miếu địa: Ngọ, Thìn, Tuất; Vượng địa: Tý, Mão, Dần, Thân; Đắc địa: Sửu, Mùi; Hãm địa: Dậu, Tỵ, Hợi",
+        "y_nghia": {
+            "menh": "Nhân hậu, hiền lành, thích làm việc thiện, sống có nguyên tắc.",
+            "phuc_duc": "Được hưởng phúc thọ, giải trừ tai ách, gặp hung hóa cát."
+        },
+        "luu_sao": "Giải hạn, gặp thầy thuốc giỏi, công việc ổn định.",
+        "cach_cuc": "Dương Lương Xương Lộc: Cách cục đỗ đạt cao, làm quan văn."
+    },
+    "that_sat": {
+        "name": "Thất Sát",
+        "hanh": "Kim",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Quyền Tinh, Dũng Tinh, chủ về uy quyền, sát phạt, dũng cảm, sự mất mát.",
+        "dac_ham": "Miếu địa: Dần, Thân, Tý, Ngọ; Vượng địa: Tỵ, Hợi; Đắc địa: Sửu, Mùi; Hãm địa: Mão, Dậu, Thìn, Tuất",
+        "y_nghia": {
+            "menh": "Cương nghị, nóng nảy, dũng cảm, thích mạo hiểm, có tài chỉ huy quân sự.",
+            "phuc_duc": "Phúc đức mỏng, phải ly hương, tự lập mới tốt.",
+            "phu_the": "Duyên nợ trắc trở, thường kết hôn muộn hoặc hình khắc."
+        },
+        "luu_sao": "Có sự thay đổi lớn, tranh đấu, đề phòng tai nạn hình thương.",
+        "cach_cuc": "Thất Sát triều đẩu: Uy quyền hiển hách; Hùng tú càn nguyên."
+    },
+    "pha_quan": {
+        "name": "Phá Quân",
+        "hanh": "Thủy",
+        "loai": "Chính Tinh",
+        "dac_tinh": "Hao Tinh, Bại Tinh, chủ về sự phá bỏ, hao tán, tiên phong, dũng mãnh.",
+        "dac_ham": "Miếu địa: Tý, Ngọ; Vượng địa: Sửu, Mùi; Đắc địa: Thìn, Tuất; Hãm địa: Mão, Dậu, Dần, Thân, Tỵ, Hợi",
+        "y_nghia": {
+            "menh": "Ngang tàng, dũng cảm, thích làm việc mới lạ, không chịu ngồi yên, tiền bạc thất thường.",
+            "phuc_duc": "Hao tán, phải xa quê hương, dòng họ ly tán.",
+            "phu_the": "Hình khắc, dễ chia ly, vợ chồng bất hòa."
+        },
+        "luu_sao": "Hao tài tốn của, thay đổi công việc, nhà cửa, đề phòng rủi ro.",
+        "cach_cuc": "Phá Quân Thìn Tuất: Bất hiển công danh nhưng giàu có; Tử Phá Mộ Cung."
+    },
+    "hoa_loc": {
+        "name": "Hóa Lộc",
+        "hanh": "Mộc",
+        "loai": "Cát Tinh (Tứ Hóa)",
+        "dac_tinh": "Phúc Tinh, chủ về tài lộc, sự may mắn, thuận lợi và khả năng kinh doanh nhạy bén.",
+        "dac_ham": "Đắc địa: Thìn, Tuất, Sửu, Mùi, Dần, Mão (phát huy mạnh tài lộc); Hãm địa: Tý, Ngọ, Thân, Dậu, Tỵ, Hợi (giảm cát lợi).",
+        "y_nghia": {
+            "menh": "Thông minh, khéo léo, có duyên kinh doanh, cuộc sống dư dả.",
+            "phuc_duc": "Được hưởng phúc, hay gặp may mắn, có quý nhân giúp đỡ."
+        },
+        "luu_sao": "Kích tài lộc mạnh mẽ, công việc thuận lợi, có cơ hội kiếm tiền.",
+        "cach_cuc": "Lộc Mã giao trì: Rất tốt cho thương mại, đi xa kiếm tiền."
+    },
+    "hoa_quyen": {
+        "name": "Hóa Quyền",
+        "hanh": "Mộc",
+        "loai": "Cát Tinh (Tứ Hóa)",
+        "dac_tinh": "Quyền Tinh, chủ về uy quyền, thế lực, địa vị, sự nể trọng.",
+        "dac_ham": "Đắc địa: Dần, Thân, Tỵ, Hợi; Hãm địa: Tý, Ngọ (kém hơn).",
+        "y_nghia": {
+            "menh": "Có uy quyền, lời nói có trọng lượng, thích chỉ huy, tham vọng.",
+            "quan_loc": "Thăng tiến nhanh, nắm giữ chức vụ quan trọng."
+        },
+        "luu_sao": "Được thăng chức, tăng lương, gia tăng uy tín và quyền lực."
+    },
+    "hoa_khoa": {
+        "name": "Hóa Khoa",
+        "hanh": "Thủy",
+        "loai": "Cát Tinh (Tứ Hóa)",
+        "dac_tinh": "Văn Tinh, Giải Thần, chủ về khoa bảng, danh tiếng, kiến thức, giải ách.",
+        "dac_ham": "Đắc địa: Thìn, Tuất, Sửu, Mùi; Hãm địa: Không có hãm, luôn tốt.",
+        "y_nghia": {
+            "menh": "Thông minh, hiếu học, có bằng cấp cao, danh tiếng tốt, gặp nạn được cứu.",
+            "tat_ach": "Giải trừ bệnh tật, tai họa rất mạnh."
+        },
+        "luu_sao": "Thi cử đỗ đạt, có danh tiếng, giải quyết được rắc rối cũ."
+    },
+    "hoa_ky": {
+        "name": "Hóa Kỵ",
+        "hanh": "Thủy",
+        "loai": "Hung Tinh (Tứ Hóa)",
+        "dac_tinh": "Ám Tinh, chủ về thị phi, đố kỵ, trở ngại, thất bại, tai tiếng.",
+        "dac_ham": "Đắc địa: Thìn, Tuất, Sửu, Mùi; Hãm địa: Các cung khác.",
+        "y_nghia": {
+            "menh": "Hay bị hiểu lầm, thị phi, tính tình đa nghi, cuộc đời nhiều trắc trở.",
+            "phu_the": "Vợ chồng bất hòa, nghi kỵ lẫn nhau.",
+            "quan_loc": "Công danh lận đận, hay bị tiểu nhân hãm hại."
+        },
+        "luu_sao": "Gặp xui xẻo, thị phi, kiện tụng, đau ốm, hao tài."
+    },
+    "loc_ton": {
+        "name": "Lộc Tồn",
+        "hanh": "Thổ",
+        "loai": "Cát Tinh",
+        "dac_tinh": "Tài Tinh, Phúc Tinh, chủ về tài lộc trời cho, sự thận trọng, chậm chắc.",
+        "dac_ham": "Luôn tốt ở mọi vị trí, nhưng kỵ gặp Không Kiếp, Hóa Kỵ.",
+        "y_nghia": {
+            "menh": "Cẩn thận, giữ tiền tốt, cả đời không lo thiếu thốn, nhưng có thể hơi cô độc.",
+            "tai_bach": "Giàu có, tiền bạc dư dả, nguồn thu ổn định."
+        },
+        "luu_sao": "Có lộc bất ngờ, tiền bạc hanh thông."
+    },
+    "kinh_duong": {
+        "name": "Kình Dương",
+        "hanh": "Kim",
+        "loai": "Sát Tinh (Lục Sát)",
+        "dac_tinh": "Hình Tinh, chủ về thương tích, sự hung bạo, liều lĩnh, tranh đấu.",
+        "dac_ham": "Đắc địa: Thìn, Tuất, Sửu, Mùi (Tứ Mộ); Hãm địa: Các cung khác.",
+        "y_nghia": {
+            "menh": "Nóng nảy, liều lĩnh, dễ bị thương tích, phẫu thuật, cuộc đời nhiều sóng gió.",
+            "tat_ach": "Dễ bị bệnh tật liên quan đến dao kéo, máu me."
+        },
+        "luu_sao": "Đề phòng tai nạn, xô xát, mổ xẻ.",
+        "cach_cuc": "Mã đầu đới kiếm (Kình Dương cư Ngọ): Nguy hiểm nhưng phát dã như lôi."
+    },
+    "da_la": {
+        "name": "Đà La",
+        "hanh": "Kim",
+        "loai": "Sát Tinh (Lục Sát)",
+        "dac_tinh": "Ám Tinh, chủ về sự trì trệ, nham hiểm, lừa gạt, bệnh tật dai dẳng.",
+        "dac_ham": "Đắc địa: Thìn, Tuất, Sửu, Mùi; Hãm địa: Các cung khác.",
+        "y_nghia": {
+            "menh": "Thâm trầm, khôn ngoan nhưng quyệt, hay do dự, công việc hay bị cản trở.",
+            "tat_ach": "Bệnh mãn tính, dai dẳng khó chữa."
+        },
+        "luu_sao": "Mọi việc chậm trễ, bị tiểu nhân quấy phá, đau ốm."
+    },
+    "hoa_tinh": {
+        "name": "Hỏa Tinh",
+        "hanh": "Hỏa",
+        "loai": "Sát Tinh (Lục Sát)",
+        "dac_tinh": "Sát Tinh, chủ về nóng nảy, tai họa bất ngờ, cháy nổ, sốt cao.",
+        "dac_ham": "Đắc địa: Dần, Ngọ, Tuất; Hãm địa: Các cung khác.",
+        "y_nghia": {
+            "menh": "Nóng tính, vội vàng, liều lĩnh, dễ gặp tai nạn về lửa điện.",
+            "tai_bach": "Tiền đến nhanh đi nhanh (nếu hãm địa)."
+        },
+        "luu_sao": "Đề phòng hỏa hoạn, nóng giận, việc gấp gáp."
+    },
+    "linh_tinh": {
+        "name": "Linh Tinh",
+        "hanh": "Hỏa",
+        "loai": "Sát Tinh (Lục Sát)",
+        "dac_tinh": "Sát Tinh, chủ về sự lạnh lùng, nham hiểm, tai họa ngầm, u uất.",
+        "dac_ham": "Đắc địa: Dần, Ngọ, Tuất; Hãm địa: Các cung khác.",
+        "y_nghia": {
+            "menh": "Lầm lì, ít nói, thù dai, cuộc đời nhiều chuyện buồn phiền.",
+            "tat_ach": "Bệnh về thần kinh, khí huyết."
+        },
+        "luu_sao": "Có chuyện buồn phiền, lo âu, đề phòng tiểu nhân hãm hại ngầm."
+    },
+    "dia_khong": {
+        "name": "Địa Không",
+        "hanh": "Hỏa",
+        "loai": "Sát Tinh (Lục Sát)",
+        "dac_tinh": "Bại Tinh, chủ về sự trống rỗng, mất mát, ảo tưởng, phá tán.",
+        "dac_ham": "Đắc địa: Dần, Thân, Tỵ, Hợi; Hãm địa: Các cung khác.",
+        "y_nghia": {
+            "menh": "Thông minh nhưng không thực tế, hay thay đổi, cuộc đời thăng trầm thất thường.",
+            "tai_bach": "Khó giữ tiền, hay bị phá sản hoặc mất mát lớn."
+        },
+        "luu_sao": "Mất tiền, mất chức, làm ăn thua lỗ, bị lừa gạt.",
+        "cach_cuc": "Mệnh Không Thân Kiếp: Cuộc đời vất vả, bôn ba."
+    },
+    "dia_kiep": {
+        "name": "Địa Kiếp",
+        "hanh": "Hỏa",
+        "loai": "Sát Tinh (Lục Sát)",
+        "dac_tinh": "Bại Tinh, chủ về tai nạn, cướp đoạt, lừa đảo, đau khổ.",
+        "dac_ham": "Đắc địa: Dần, Thân, Tỵ, Hợi; Hãm địa: Các cung khác.",
+        "y_nghia": {
+            "menh": "Tính tình trầm, hay lo nghĩ, dễ gặp tai nạn, cuộc sống nhiều bi kịch.",
+            "phu_the": "Duyên nợ ngang trái, dễ đứt gánh giữa đường."
+        },
+        "luu_sao": "Gặp hạn nặng, tai nạn, mất của, đau ốm."
+    },
+    "van_xuong": {
+        "name": "Văn Xương",
+        "hanh": "Kim",
+        "loai": "Cát Tinh (Lục Cát)",
+        "dac_tinh": "Văn Tinh, chủ về văn chương, học thuật, bằng cấp, vẻ đẹp.",
+        "dac_ham": "Đắc địa: Thìn, Tuất, Sửu, Mùi, Tỵ, Hợi; Hãm địa: Dần, Thân, Mão, Dậu.",
+        "y_nghia": {
+            "menh": "Thông minh, học giỏi, có tài văn chương nghệ thuật, ngoại hình thanh tú.",
+            "quan_loc": "Dễ thành danh nhờ văn học, nghệ thuật, giáo dục."
+        },
+        "luu_sao": "Thi cử đỗ đạt, có tin vui về giấy tờ, bằng cấp."
+    },
+    "van_khuc": {
+        "name": "Văn Khúc",
+        "hanh": "Thủy",
+        "loai": "Cát Tinh (Lục Cát)",
+        "dac_tinh": "Văn Tinh, Đào Hoa, chủ về tài biện luận, âm nhạc, bói toán, tình cảm.",
+        "dac_ham": "Đắc địa: Thìn, Tuất, Sửu, Mùi, Tỵ, Hợi; Hãm địa: Dần, Thân, Mão, Dậu.",
+        "y_nghia": {
+            "menh": "Đa tài, khéo nói, có khiếu âm nhạc, nhưng dễ vướng lưới tình.",
+            "phu_the": "Vợ chồng đẹp đôi, lãng mạn."
+        },
+        "luu_sao": "Có tin vui, cưới hỏi, hoặc thị phi tình ái (nếu hãm)."
+    },
+    "ta_phu": {
+        "name": "Tả Phù",
+        "hanh": "Thổ",
+        "loai": "Cát Tinh (Lục Cát)",
+        "dac_tinh": "Trợ Tinh, chủ về sự giúp đỡ, phò tá, tăng cường lực lượng (bên trái).",
+        "dac_ham": "Luôn tốt, đắc địa ở Thìn, Tuất, Sửu, Mùi.",
+        "y_nghia": {
+            "menh": "Được nhiều người giúp đỡ, có tài tổ chức, tính tình nhân hậu.",
+            "no_boc": "Có bạn bè, thuộc cấp đắc lực."
+        },
+        "luu_sao": "Công việc thuận lợi nhờ có người hỗ trợ."
+    },
+    "huu_bat": {
+        "name": "Hữu Bật",
+        "hanh": "Thủy",
+        "loai": "Cát Tinh (Lục Cát)",
+        "dac_tinh": "Trợ Tinh, chủ về sự giúp đỡ, phò tá, tăng cường lực lượng (bên phải).",
+        "dac_ham": "Luôn tốt, đắc địa ở Thìn, Tuất, Sửu, Mùi.",
+        "y_nghia": {
+            "menh": "Đa tài, quan hệ rộng, được quý nhân phù trợ.",
+            "phu_the": "Dễ có người thứ ba hoặc hai đời chồng/vợ (nếu đi cùng sao đào hoa)."
+        },
+        "luu_sao": "Gặp quý nhân, công việc trôi chảy."
+    },
+    "thien_khoi": {
+        "name": "Thiên Khôi",
+        "hanh": "Hỏa",
+        "loai": "Cát Tinh (Lục Cát)",
+        "dac_tinh": "Quý Tinh, Đứng đầu, chủ về bằng cấp, sự dẫn đầu, cơ hội.",
+        "dac_ham": "Đắc địa: Sửu, Mùi; Tốt ở mọi cung.",
+        "y_nghia": {
+            "menh": "Thông minh, là con trưởng hoặc đoạt trưởng, thường đứng đầu trong tập thể.",
+            "quan_loc": "Dễ thăng tiến, được cấp trên trọng dụng."
+        },
+        "luu_sao": "Có cơ hội mới, thi cử đỗ đầu, thăng chức."
+    },
+    "thien_viet": {
+        "name": "Thiên Việt",
+        "hanh": "Hỏa",
+        "loai": "Cát Tinh (Lục Cát)",
+        "dac_tinh": "Quý Tinh, chủ về sự giúp đỡ, may mắn, sự xuất chúng.",
+        "dac_ham": "Đắc địa: Sửu, Mùi; Tốt ở mọi cung.",
+        "y_nghia": {
+            "menh": "Thông minh, khéo léo, được nhiều người yêu mến, giúp đỡ.",
+            "phuc_duc": "Phát phúc, dòng họ có người làm quan."
+        },
+        "luu_sao": "Gặp may mắn, quý nhân, việc khó hóa dễ."
+    },
+    "thien_ma": {
+        "name": "Thiên Mã",
+        "hanh": "Hỏa",
+        "loai": "Cát Tinh",
+        "dac_tinh": "Động Tinh, chủ về sự di chuyển, thay đổi, nghị lực, xe cộ.",
+        "dac_ham": "Đắc địa: Dần, Thân, Tỵ, Hợi (Tứ Sinh).",
+        "y_nghia": {
+            "menh": "Tháo vát, nhanh nhẹn, thích đi lại, có chí tiến thủ, hay phải đi xa.",
+            "thien_di": "Ra ngoài hay gặp may, đi nhiều.",
+            "loc_ma": "Lộc Mã giao trì: Chủ về giàu có nhờ thương mại, vận tải."
+        },
+        "luu_sao": "Đi du lịch, công tác, thay đổi chỗ ở, mua xe."
+    },
+    "dao_hoa": {
+        "name": "Đào Hoa",
+        "hanh": "Mộc",
+        "loai": "Cát Tinh (Đào Hoa)",
+        "dac_tinh": "Duyên Tinh, chủ về tình yêu, sắc đẹp, sự quyến rũ, may mắn.",
+        "dac_ham": "Đắc địa: Tý, Ngọ, Mão, Dậu (Tứ Chính).",
+        "y_nghia": {
+            "menh": "Xinh đẹp, duyên dáng, đa tình, được nhiều người theo đuổi.",
+            "phu_the": "Vợ chồng đẹp đôi, nhưng dễ có người thứ ba xen vào."
+        },
+        "luu_sao": "Có tình duyên, cưới hỏi, hoặc tin vui."
+    },
+    "hong_loan": {
+        "name": "Hồng Loan",
+        "hanh": "Thủy",
+        "loai": "Cát Tinh (Đào Hoa)",
+        "dac_tinh": "Hỷ Tinh, chủ về tin vui, sự dịu dàng, khéo léo, may mắn nhỏ.",
+        "dac_ham": "Tốt ở mọi cung.",
+        "y_nghia": {
+            "menh": "Nết na, khéo tay, được người khác giới yêu mến.",
+            "tu_tuc": "Dễ sinh con gái đầu lòng, con cái xinh đẹp."
+        },
+        "luu_sao": "Có tin vui, hỷ sự, mua sắm đồ đẹp."
+    },
+    "thien_hy": {
+        "name": "Thiên Hỷ",
+        "hanh": "Thủy",
+        "loai": "Cát Tinh (Đào Hoa)",
+        "dac_tinh": "Hỷ Tinh, chủ về niềm vui, cưới hỏi, sinh nở.",
+        "dac_ham": "Tốt ở mọi cung.",
+        "y_nghia": {
+            "menh": "Vui vẻ, hòa đồng, hay cười, cuộc đời nhiều niềm vui.",
+            "phu_the": "Vợ chồng hòa thuận, vui vẻ."
+        },
+        "luu_sao": "Có tin mừng, đám cưới, sinh con."
+    },
+    "co_than": {
+        "name": "Cô Thần",
+        "hanh": "Thổ",
+        "loai": "Ám Tinh",
+        "dac_tinh": "Chủ về sự cô đơn, lẻ loi, ít bạn bè, khắc người thân (Nam kỵ Cô, Nữ kỵ Quả).",
+        "dac_ham": "Không có đắc hãm rõ ràng, xấu ở Mệnh, Phối.",
+        "y_nghia": {
+            "menh": "Tính tình trầm lặng, khó tính, thích ở một mình, ít giao tiếp.",
+            "phu_the": "Vợ chồng lạnh nhạt, ít chia sẻ, dễ xa cách."
+        },
+        "luu_sao": "Cảm thấy cô đơn, bị bỏ rơi."
+    },
+    "qua_tu": {
+        "name": "Quả Tú",
+        "hanh": "Thổ",
+        "loai": "Ám Tinh",
+        "dac_tinh": "Chủ về sự cô độc, góa bụa, khép kín, giữ của.",
+        "dac_ham": "Không có đắc hãm rõ ràng, xấu ở Mệnh, Phối.",
+        "y_nghia": {
+            "menh": "Khắt khe, kỹ tính, cô độc, nhưng giữ tiền rất tốt.",
+            "phu_the": "Dễ sống độc thân hoặc góa bụa sớm, vợ chồng ít gần gũi."
+        },
+        "luu_sao": "Cô đơn, buồn phiền về tình cảm."
+    },
+    "thien_hinh": {
+        "name": "Thiên Hình",
+        "hanh": "Hỏa",
+        "loai": "Hình Tinh",
+        "dac_tinh": "Chủ về hình phạt, luật pháp, sự nghiêm khắc, thương tích, mổ xẻ.",
+        "dac_ham": "Đắc địa: Dần, Thân, Mão, Dậu; Hãm địa: Các cung khác.",
+        "y_nghia": {
+            "menh": "Nghiêm nghị, thẳng thắn, có uy, hợp nghề công an, luật pháp, bác sĩ.",
+            "tat_ach": "Dễ bị thương tích, mổ xẻ, kiện tụng."
+        },
+        "luu_sao": "Đề phòng quan sự, hình thương, tai nạn xe cộ."
+    },
+    "thien_rieu": {
+        "name": "Thiên Riêu",
+        "hanh": "Thủy",
+        "loai": "Ám Tinh (Đào Hoa)",
+        "dac_tinh": "Chủ về sự mê muội, sắc dục, thuốc men, tâm linh.",
+        "dac_ham": "Đắc địa: Dần, Thân, Mão, Dậu.",
+        "y_nghia": {
+            "menh": "Thông minh nhưng ham vui, dễ sa ngã vào tửu sắc, có giác quan thứ 6.",
+            "tat_ach": "Bệnh về sinh lý, đường ruột."
+        },
+        "luu_sao": "Đề phòng ngộ độc, bệnh tật, rắc rối tình ái."
+    },
+    "thai_tue": {
+        "name": "Thái Tuế",
+        "hanh": "Hỏa",
+        "loai": "Chủ Tinh (Vòng Thái Tuế)",
+        "dac_tinh": "Chủ về lời ăn tiếng nói, tranh biện, kiện tụng, sự chính danh.",
+        "dac_ham": "Tốt nếu gặp sao tốt, xấu nếu gặp sao xấu.",
+        "y_nghia": {
+            "menh": "Ăn nói lưu loát, hay lý luận, cương trực nhưng dễ mất lòng người khác.",
+            "quan_loc": "Làm nghề luật sư, giáo viên, diễn thuyết rất tốt."
+        },
+        "luu_sao": "Năm tuổi, có nhiều biến động, đề phòng thị phi miệng tiếng."
+    },
+    "bach_ho": {
+        "name": "Bạch Hổ",
+        "hanh": "Kim",
+        "loai": "Bại Tinh (Vòng Thái Tuế)",
+        "dac_tinh": "Chủ về máu me, tai nạn, thú dữ, sự dũng mãnh, tang tóc.",
+        "dac_ham": "Đắc địa: Dần, Thân, Mão, Dậu (Hổ cư lều, Hổ xuất sơn).",
+        "y_nghia": {
+            "menh": "Can đảm, quả cảm, nhưng cuộc đời nhiều sóng gió, lo âu, dễ bị thương tích.",
+            "tat_ach": "Bệnh về xương khớp, máu huyết, thần kinh."
+        },
+        "luu_sao": "Đề phòng tai nạn máu me, tang chế, thú dữ cắn."
+    },
+    "tang_mon": {
+        "name": "Tang Môn",
+        "hanh": "Mộc",
+        "loai": "Bại Tinh (Vòng Thái Tuế)",
+        "dac_tinh": "Chủ về sự buồn phiền, tang tóc, lo âu, bệnh tật.",
+        "dac_ham": "Đắc địa: Dần, Thân, Mão, Dậu.",
+        "y_nghia": {
+            "menh": "Hay lo nghĩ, mặt buồn, cuộc đời nhiều chuyện buồn phiền.",
+            "phuc_duc": "Tổ tiên có người chết trẻ, kém phúc."
+        },
+        "luu_sao": "Có tin buồn, tang chế, đau ốm, mất mát."
+    },
+    "thien_khoc": {
+        "name": "Thiên Khốc",
+        "hanh": "Thủy",
+        "loai": "Bại Tinh",
+        "dac_tinh": "Chủ về nước mắt, sự buồn rầu, tiếng khóc, hư danh.",
+        "dac_ham": "Đắc địa: Sửu, Mùi, Tý, Ngọ (Tiếng chuông ngân).",
+        "y_nghia": {
+            "menh": "Đa sầu đa cảm, hay khóc thầm, cuộc đời lận đận (nếu hãm).",
+            "dac_dia": "Có danh tiếng vang xa, lời nói có trọng lượng."
+        },
+        "luu_sao": "Gặp chuyện buồn, khóc lóc, lo âu."
+    },
+    "thien_hu": {
+        "name": "Thiên Hư",
+        "hanh": "Thủy",
+        "loai": "Bại Tinh",
+        "dac_tinh": "Chủ về sự hư ảo, không thực, bệnh tật, buồn phiền.",
+        "dac_ham": "Đắc địa: Sửu, Mùi, Tý, Ngọ.",
+        "y_nghia": {
+            "menh": "Làm việc không đến nơi đến chốn, hay thay đổi, sức khỏe kém.",
+            "dac_dia": "Có tài văn chương, lý luận."
+        },
+        "luu_sao": "Mưu sự khó thành, hư hao tài sản."
+    },
+    "tieu_hao": {
+        "name": "Tiểu Hao",
+        "hanh": "Hỏa",
+        "loai": "Hao Tinh",
+        "dac_tinh": "Chủ về sự hao tốn nhỏ, thay đổi, kém bền vững.",
+        "dac_ham": "Đắc địa: Mão, Dậu, Dần, Thân.",
+        "y_nghia": {
+            "menh": "Rộng rãi, hào phóng, nhưng không giữ được tiền lâu.",
+            "tai_bach": "Tiền vào tay trái ra tay phải."
+        },
+        "luu_sao": "Hao tiền tốn của, chi tiêu nhiều."
+    },
+    "dai_hao": {
+        "name": "Đại Hao",
+        "hanh": "Hỏa",
+        "loai": "Hao Tinh",
+        "dac_tinh": "Chủ về sự hao tốn lớn, phá tán, thay đổi lớn, ly hương.",
+        "dac_ham": "Đắc địa: Mão, Dậu, Dần, Thân (Chúng thủy triều đông).",
+        "y_nghia": {
+            "menh": "Phóng khoáng, tiêu tiền như nước, thích làm việc lớn, nhưng dễ phá sản.",
+            "dac_dia": "Giàu có lớn nhưng cũng tiêu xài lớn."
+        },
+        "luu_sao": "Mất tiền lớn, đầu tư mạo hiểm, thay đổi chỗ ở."
+    },
+    "trang_sinh": {
+        "name": "Tràng Sinh",
+        "hanh": "Thủy",
+        "loai": "Cát Tinh (Vòng Tràng Sinh)",
+        "dac_tinh": "Chủ về sự sinh sôi, nảy nở, khởi đầu, sức khỏe, sự bền vững.",
+        "dac_ham": "Luôn tốt.",
+        "y_nghia": {
+            "menh": "Sức khỏe tốt, nhân hậu, cuộc đời suôn sẻ, có hậu.",
+            "phuc_duc": "Phúc đức trường tồn, dòng họ đông đúc."
+        },
+        "luu_sao": "Khởi đầu mới thuận lợi, sức khỏe tốt."
+    },
+    "de_vuong": {
+        "name": "Đế Vượng",
+        "hanh": "Kim",
+        "loai": "Cát Tinh (Vòng Tràng Sinh)",
+        "dac_tinh": "Chủ về cực thịnh, quyền lực, đỉnh cao, sự độc lập.",
+        "dac_ham": "Luôn tốt.",
+        "y_nghia": {
+            "menh": "Tự lập, có khí phách, làm chủ cuộc đời, dễ đạt được danh vọng.",
+            "quan_loc": "Nắm quyền hành, chức vụ cao."
+        },
+        "luu_sao": "Thăng tiến, đạt được mục tiêu, sức khỏe dồi dào."
+    },
+    "mo": {
+        "name": "Mộ",
+        "hanh": "Thổ",
+        "loai": "Trung Tinh (Vòng Tràng Sinh)",
+        "dac_tinh": "Chủ về sự tàng ẩn, chôn vùi, kết thúc, ngu đần hoặc thâm trầm.",
+        "dac_ham": "Tứ Mộ: Thìn, Tuất, Sửu, Mùi.",
+        "y_nghia": {
+            "menh": "Kín đáo, ít nói, làm việc âm thầm, kiên trì.",
+            "tai_bach": "Tích lũy tiền bạc tốt (Mộ kho)."
+        },
+        "luu_sao": "Bế tắc, trì trệ, hoặc tích lũy được tiền."
+    },
+    "tuyet": {
+        "name": "Tuyệt",
+        "hanh": "Thổ",
+        "loai": "Hung Tinh (Vòng Tràng Sinh)",
+        "dac_tinh": "Chủ về sự chấm dứt, khô cạn, bế tắc, hết duyên.",
+        "dac_ham": "Xấu ở mọi cung.",
+        "y_nghia": {
+            "menh": "Khôn ngoan, đa mưu nhưng cô độc, cuộc đời nhiều thăng trầm.",
+            "phuc_duc": "Phúc đức kém, dòng họ suy tàn."
+        },
+        "luu_sao": "Bế tắc, mọi việc đi vào ngõ cụt, tuyệt vọng."
+    }
+}

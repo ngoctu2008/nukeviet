@@ -1,0 +1,98 @@
+[
+    {
+        "star_key": "tu_vi",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Đế Tinh, chủ về quyền lực, danh vọng, giải ách chế hóa."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "menh",
+        "topic": "meaning",
+        "content": "Người có Tử Vi thủ mệnh thường có dáng người đậm, mặt vuông hoặc tròn, tính tình đôn hậu, trọng danh dự, có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Thiện Tinh, chủ về trí tuệ, mưu lược, tính toán, huynh đệ."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "menh",
+        "topic": "meaning",
+        "content": "Người có Thiên Cơ thủ mệnh thường thông minh, khéo léo, hay suy tính, thích hợp với các nghề cần sự khéo léo hoặc tham mưu."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Quyền Tinh, chủ về quan lộc, danh tiếng, cha, chồng."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Tài Tinh, chủ về tiền bạc, sự cô độc."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Phúc Tinh, chủ về hưởng thụ, thay đổi, phúc thọ."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Đào Hoa Tinh, Tù Tinh, chủ về kỷ luật, nóng nảy, tình cảm."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Tài Tinh, Kho Tinh, chủ về tài lộc, sự che chở, bao dung."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Phú Tinh, chủ về điền sản, mẹ, vợ, sự dịu dàng."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Đào Hoa Tinh, chủ về dục vọng, giao tế, tu hành."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Ám Tinh, chủ về ngôn ngữ, thị phi, nghiên cứu."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Quyền Tinh, Ấn Tinh, chủ về quyền hành, sự tương trợ, y thực."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Ấm Tinh, Thọ Tinh, chủ về sự che chở, dạy dỗ, thọ trường, nguyên tắc."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Quyền Tinh, Dũng Tinh, chủ về sát phạt, uy quyền, cô khắc."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Hao Tinh, chủ về hao tán, phá cũ đổi mới, phu thê, tử tức."
+    }
+]

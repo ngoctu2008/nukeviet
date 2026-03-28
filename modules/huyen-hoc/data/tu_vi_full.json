@@ -1,0 +1,1178 @@
+[
+    {
+        "star_key": "tu_vi",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Tử Vi là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Thiên Cơ là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Thái Dương là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Vũ Khúc là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Thiên Đồng là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Liêm Trinh là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Thiên Phủ là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Thái Âm là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Tham Lang là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Cự Môn là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Thiên Tướng là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Thiên Lương là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Thất Sát là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "all",
+        "topic": "nature",
+        "content": "Sao Phá Quân là một trong 14 chính tinh, có ảnh hưởng lớn đến vận mệnh."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Tử Vi thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Tử Vi tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Tử Vi tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Tử Vi tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Tử Vi tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Tử Vi tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Tử Vi tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Tử Vi tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Tử Vi cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Tử Vi tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Tử Vi ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "tu_vi",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Tử Vi tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Thiên Cơ thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Thiên Cơ tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Thiên Cơ tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Thiên Cơ tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Thiên Cơ tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Thiên Cơ tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Thiên Cơ tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Thiên Cơ tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Thiên Cơ cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Thiên Cơ tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Thiên Cơ ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "thien_co",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Thiên Cơ tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Thái Dương thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Thái Dương tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Thái Dương tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Thái Dương tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Thái Dương tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Thái Dương tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Thái Dương tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Thái Dương tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Thái Dương cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Thái Dương tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Thái Dương ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "thai_duong",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Thái Dương tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Vũ Khúc thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Vũ Khúc tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Vũ Khúc tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Vũ Khúc tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Vũ Khúc tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Vũ Khúc tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Vũ Khúc tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Vũ Khúc tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Vũ Khúc cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Vũ Khúc tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Vũ Khúc ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "vu_khuc",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Vũ Khúc tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Thiên Đồng thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Thiên Đồng tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Thiên Đồng tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Thiên Đồng tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Thiên Đồng tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Thiên Đồng tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Thiên Đồng tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Thiên Đồng tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Thiên Đồng cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Thiên Đồng tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Thiên Đồng ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "thien_dong",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Thiên Đồng tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Liêm Trinh thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Liêm Trinh tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Liêm Trinh tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Liêm Trinh tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Liêm Trinh tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Liêm Trinh tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Liêm Trinh tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Liêm Trinh tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Liêm Trinh cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Liêm Trinh tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Liêm Trinh ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "liem_trinh",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Liêm Trinh tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Thiên Phủ thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Thiên Phủ tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Thiên Phủ tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Thiên Phủ tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Thiên Phủ tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Thiên Phủ tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Thiên Phủ tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Thiên Phủ tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Thiên Phủ cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Thiên Phủ tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Thiên Phủ ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "thien_phu",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Thiên Phủ tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Thái Âm thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Thái Âm tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Thái Âm tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Thái Âm tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Thái Âm tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Thái Âm tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Thái Âm tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Thái Âm tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Thái Âm cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Thái Âm tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Thái Âm ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "thai_am",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Thái Âm tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Tham Lang thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Tham Lang tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Tham Lang tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Tham Lang tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Tham Lang tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Tham Lang tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Tham Lang tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Tham Lang tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Tham Lang cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Tham Lang tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Tham Lang ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "tham_lang",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Tham Lang tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Cự Môn thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Cự Môn tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Cự Môn tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Cự Môn tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Cự Môn tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Cự Môn tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Cự Môn tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Cự Môn tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Cự Môn cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Cự Môn tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Cự Môn ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "cu_mon",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Cự Môn tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Thiên Tướng thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Thiên Tướng tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Thiên Tướng tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Thiên Tướng tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Thiên Tướng tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Thiên Tướng tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Thiên Tướng tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Thiên Tướng tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Thiên Tướng cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Thiên Tướng tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Thiên Tướng ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "thien_tuong",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Thiên Tướng tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Thiên Lương thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Thiên Lương tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Thiên Lương tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Thiên Lương tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Thiên Lương tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Thiên Lương tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Thiên Lương tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Thiên Lương tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Thiên Lương cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Thiên Lương tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Thiên Lương ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "thien_luong",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Thiên Lương tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Thất Sát thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Thất Sát tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Thất Sát tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Thất Sát tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Thất Sát tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Thất Sát tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Thất Sát tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Thất Sát tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Thất Sát cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Thất Sát tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Thất Sát ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "that_sat",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Thất Sát tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "menh",
+        "topic": "main",
+        "content": "Người có Phá Quân thủ Mệnh thường có cá tính mạnh mẽ, thông minh và có khả năng lãnh đạo."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "phu_mau",
+        "topic": "main",
+        "content": "Phá Quân tại cung Phụ Mẫu mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "phuc_duc",
+        "topic": "main",
+        "content": "Phá Quân tại cung Phúc Đức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "dien_trach",
+        "topic": "main",
+        "content": "Phá Quân tại cung Điền Trạch mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "quan_loc",
+        "topic": "main",
+        "content": "Phá Quân tại Quan Lộc báo hiệu đường công danh thuận lợi, có chức quyền."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "no_boc",
+        "topic": "main",
+        "content": "Phá Quân tại cung Nô Bộc mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "thien_di",
+        "topic": "main",
+        "content": "Phá Quân tại cung Thiên Di mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "tat_ach",
+        "topic": "main",
+        "content": "Phá Quân tại cung Tật Ách mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "tai_bach",
+        "topic": "main",
+        "content": "Phá Quân cư Tài Bạch chủ về tài lộc dồi dào, biết cách kiếm tiền và giữ tiền."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "tu_tuc",
+        "topic": "main",
+        "content": "Phá Quân tại cung Tử Tức mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "phu_the",
+        "topic": "main",
+        "content": "Phá Quân ở Phu Thê thì vợ chồng hòa thuận, hỗ trợ lẫn nhau trong sự nghiệp."
+    },
+    {
+        "star_key": "pha_quan",
+        "palace_key": "huynh_de",
+        "topic": "main",
+        "content": "Phá Quân tại cung Huynh Đệ mang lại sự ổn định và cát lành cho phương diện này."
+    },
+    {
+        "star_key": "kinh_duong",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Kình Dương có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "da_la",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Đà La có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "dia_khong",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Địa Không có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "dia_kiep",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Địa Kiếp có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "hoa_tinh",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Hỏa Tinh có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "linh_tinh",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Linh Tinh có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "hoa_loc",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Hóa Lộc có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "hoa_quyen",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Hóa Quyền có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "hoa_khoa",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Hóa Khoa có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "hoa_ky",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Hóa Kỵ có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "van_xuong",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Văn Xương có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "van_khuc",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Văn Khúc có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "ta_phu",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Tả Phù có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    },
+    {
+        "star_key": "huu_bat",
+        "palace_key": "general",
+        "topic": "meaning",
+        "content": "Sao Hữu Bật có tác động bổ trợ hoặc gây trở ngại tùy thuộc vào các sao đi cùng."
+    }
+]
