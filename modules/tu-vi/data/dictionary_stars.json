@@ -1,0 +1,198 @@
+[
+  {
+    "id": "tu_vi",
+    "name": "Tử Vi",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Tử Vi cư Mệnh ở thế Miếu Vượng là cách cục tốt nhất. Chủ về người có dáng vẻ tôn nghiêm, tính tình đôn hậu, trọng danh dự và có khả năng lãnh đạo bẩm sinh. Cuộc đời thường gặp nhiều may mắn, được quý nhân phù trợ, dễ đạt được vị trí cao trong xã hội."
+  },
+  {
+    "id": "tu_vi",
+    "name": "Tử Vi",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Tử Vi hãm địa tuy giảm bớt uy lực nhưng vẫn giữ được cốt cách quân tử. Chủ về người có tài nhưng chưa gặp thời, cần phải nỗ lực gấp bội mới mong thành công. Dễ có tư tưởng thoát tục hoặc nghiên cứu tôn giáo, triết học."
+  },
+  {
+    "id": "thien_co",
+    "name": "Thiên Cơ",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Thiên Cơ đắc địa là người thông minh tuyệt đỉnh, cơ trí, đa mưu túc trí. Rất giỏi trong việc lập kế hoạch, tham mưu và ứng biến linh hoạt. Thích hợp làm các công việc đòi hỏi tư duy logic, kỹ thuật hoặc kinh doanh."
+  },
+  {
+    "id": "thien_co",
+    "name": "Thiên Cơ",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Thiên Cơ hãm địa thì trí tuệ vẫn có nhưng hay dùng vào việc vặt, tính toán vụn vặt, so đo. Tâm tính hay lo âu, bất an, dễ bị căng thẳng thần kinh. Cuộc đời hay phải bôn ba, di chuyển nhiều."
+  },
+  {
+    "id": "thai_duong",
+    "name": "Thái Dương",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Thái Dương miếu vượng (Nhật mọc) chủ về sự quang minh chính đại, nhiệt tình, bác ái. Đường công danh rộng mở, thăng tiến nhanh chóng, có uy tín lớn. Rất hợp với nam giới, chủ về sự thành đạt sớm."
+  },
+  {
+    "id": "thai_duong",
+    "name": "Thái Dương",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Thái Dương hãm địa (Nhật lặn) thì vất vả buổi đầu, hữu danh vô thực. Mắt kém hoặc hay đau đầu. Tính tình nhân hậu nhưng thiếu kiên quyết, dễ bị người khác lợi dụng."
+  },
+  {
+    "id": "vu_khuc",
+    "name": "Vũ Khúc",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Vũ Khúc là sao tài tinh, chủ về sự quả quyết, cương nghị và tài năng quản lý tài chính. Đắc địa thì giàu có lớn, làm chủ doanh nghiệp hoặc nắm giữ trọng trách kinh tế. Tính tình thẳng thắn, sòng phẳng."
+  },
+  {
+    "id": "vu_khuc",
+    "name": "Vũ Khúc",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Vũ Khúc hãm địa thì tiền bạc tụ tán thất thường, làm nhiều hưởng ít. Tính tình cô độc, khắc nghiệt, ít bạn bè. Cần đề phòng các tai nạn hình thương hoặc mất mát tài sản."
+  },
+  {
+    "id": "thien_dong",
+    "name": "Thiên Đồng",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Thiên Đồng là phúc tinh, chủ về sự hưởng thụ, an nhàn và may mắn. Người có Thiên Đồng đắc địa thường có tính tình vui vẻ, hòa đồng, hay làm việc thiện. Cuộc đời ít sóng gió, thường được quý nhân giúp đỡ."
+  },
+  {
+    "id": "thien_dong",
+    "name": "Thiên Đồng",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Thiên Đồng hãm địa thì hay thay đổi, thiếu lập trường, \"đứng núi này trông núi nọ\". Cuộc đời bôn ba vất vả, hay phải lo âu, phiền muộn về chuyện tình cảm hoặc gia đạo."
+  },
+  {
+    "id": "liem_trinh",
+    "name": "Liêm Trinh",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Liêm Trinh đắc địa là người liêm khiết, chính trực, có tài tổ chức và giám sát. Rất hợp với ngành luật pháp, công an hoặc quản lý hành chính. Tính tình nghiêm nghị nhưng nóng nảy, yêu ghét phân minh."
+  },
+  {
+    "id": "liem_trinh",
+    "name": "Liêm Trinh",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Liêm Trinh hãm địa thì tính cách thất thường, hay ghen tuông, nóng nảy và liều lĩnh. Dễ vướng vào vòng lao lý hoặc kiện tụng nếu không tu dưỡng đạo đức. Cuộc đời nhiều thăng trầm, tai ách."
+  },
+  {
+    "id": "thien_phu",
+    "name": "Thiên Phủ",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Thiên Phủ là kho lộc của trời, chủ về sự giàu có, sung túc và ổn định. Người có Thiên Phủ thủ mệnh thường có dáng vẻ phúc hậu, tính tình ôn hòa, cẩn trọng. Rất giỏi giữ tiền và quản lý tài sản."
+  },
+  {
+    "id": "thien_phu",
+    "name": "Thiên Phủ",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Thiên Phủ không có hãm địa thực sự, nhưng nếu gặp Tuần/Triệt hoặc Không/Kiếp (Kho rỗng) thì coi như hãm. Khi đó tài lộc bị phá tán, làm bao nhiêu tiêu bấy nhiêu, khó tụ tài. Tính tình trở nên toan tính, thực dụng."
+  },
+  {
+    "id": "thai_am",
+    "name": "Thái Âm",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Thái Âm miếu vượng (Trăng rằm) chủ về sự dịu dàng, tinh tế, yêu nghệ thuật và văn chương. Rất hợp với nữ giới, chủ về sự đảm đang, khéo léo. Tài lộc dồi dào, nhất là về điền sản, đất đai."
+  },
+  {
+    "id": "thai_am",
+    "name": "Thái Âm",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Thái Âm hãm địa (Trăng mờ) thì tình cảm lận đận, hay u sầu, đa sầu đa cảm. Mắt kém hoặc hay mắc bệnh phụ khoa (với nữ). Tiền bạc không ổn định, hay bị hao hụt."
+  },
+  {
+    "id": "tham_lang",
+    "name": "Tham Lang",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Tham Lang đắc địa là người đa tài, khéo léo trong giao tiếp, có duyên với người khác phái. Thích hợp kinh doanh, ngoại giao hoặc nghệ thuật. Có tham vọng lớn và khả năng thực hiện tham vọng đó."
+  },
+  {
+    "id": "tham_lang",
+    "name": "Tham Lang",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Tham Lang hãm địa thì ham vui chơi, hưởng thụ, dễ sa đà vào tửu sắc, cờ bạc. Tính tình gian xảo, tham lam. Nếu không có sao giải thì dễ gặp tai họa vì tình tiền."
+  },
+  {
+    "id": "cu_mon",
+    "name": "Cự Môn",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Cự Môn đắc địa là người có tài ăn nói, hùng biện xuất sắc. Lời nói có trọng lượng, thuyết phục được người khác. Thích hợp làm luật sư, chính trị gia, giáo viên. Có khả năng nghiên cứu sâu sắc."
+  },
+  {
+    "id": "cu_mon",
+    "name": "Cự Môn",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Cự Môn hãm địa thì lời nói hay gây thị phi, khẩu thiệt. Tính tình đa nghi, hay soi mói, chỉ trích người khác. Cuộc đời hay gặp rắc rối vì miệng lưỡi, kiện tụng."
+  },
+  {
+    "id": "thien_tuong",
+    "name": "Thiên Tướng",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Thiên Tướng là ấn tinh, chủ về quyền uy và sự trung thành. Người có Thiên Tướng thủ mệnh thường rất hào hiệp, hay giúp đỡ người khác, có lòng trắc ẩn. Thích hợp làm trợ lý, bác sĩ hoặc công tác xã hội."
+  },
+  {
+    "id": "thien_tuong",
+    "name": "Thiên Tướng",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Thiên Tướng hãm địa thì tính tình nhu nhược, thiếu quyết đoán, dễ bị người khác chi phối. Công danh lận đận, hay bị thay đổi vị trí. Cần đề phòng các bệnh về mặt, đầu."
+  },
+  {
+    "id": "thien_luong",
+    "name": "Thiên Lương",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Thiên Lương là ấm tinh, chủ về sự che chở, thọ trường và phúc đức. Tính tình hiền lành, từ bi, thích làm việc thiện. Có khả năng hóa giải tai ách, gặp hung hóa cát. Thích hợp nghề y, giáo dục."
+  },
+  {
+    "id": "thien_luong",
+    "name": "Thiên Lương",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Thiên Lương hãm địa thì hay mơ mộng viển vông, thiếu thực tế. Tính tình hay thay đổi, cả thèm chóng chán. Cuộc đời hay gặp rắc rối nhưng cuối cùng vẫn được giải cứu."
+  },
+  {
+    "id": "that_sat",
+    "name": "Thất Sát",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Thất Sát là tướng tinh, chủ về uy quyền, dũng mãnh và sát phạt. Người có Thất Sát thủ mệnh tính tình cương nghị, nóng nảy, dám nghĩ dám làm. Thích hợp với võ nghiệp, kinh doanh mạo hiểm. Có khả năng khai phá, đi đầu."
+  },
+  {
+    "id": "that_sat",
+    "name": "Thất Sát",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Thất Sát hãm địa thì tính tình hung bạo, liều lĩnh, thiếu suy nghĩ. Dễ gặp tai nạn hình thương, súng đạn hoặc xe cộ. Cuộc đời nhiều thăng trầm, cô độc."
+  },
+  {
+    "id": "pha_quan",
+    "name": "Phá Quân",
+    "scope": "menh",
+    "brightness": "M",
+    "content": "Phá Quân là hao tinh, chủ về sự phá cũ đổi mới, sáng tạo và tiên phong. Người có Phá Quân thủ mệnh rất dũng cảm, không ngại khó khăn, thích làm những việc chưa ai làm. Thích hợp với nghề kỹ thuật, xây dựng, khai khoáng."
+  },
+  {
+    "id": "pha_quan",
+    "name": "Phá Quân",
+    "scope": "menh",
+    "brightness": "H",
+    "content": "Phá Quân hãm địa thì tính tình ngang ngược, phá tán, không chịu nghe lời khuyên. Tiền bạc làm ra bao nhiêu hết bấy nhiêu, không giữ được. Gia đạo bất hòa, tình duyên trắc trở."
+  }
+]

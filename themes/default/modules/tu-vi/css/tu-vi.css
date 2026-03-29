@@ -1,0 +1,188 @@
+/* Root Variables for Colors */
+:root {
+    --color-kim: #A0A0A0; /* Metal - Gray/White */
+    --color-moc: #2E8B57; /* Wood - Green */
+    --color-thuy: #000000; /* Water - Black */
+    --color-hoa: #DC143C; /* Fire - Red */
+    --color-tho: #DAA520; /* Earth - Yellow/Brown */
+    --border-color: #8B4513;
+    --bg-paper: #FFF8DC; /* Parchment look */
+}
+
+/* Container */
+.tuvi-chart-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Times New Roman', serif;
+    background-color: var(--bg-paper);
+    border: 2px solid var(--border-color);
+    padding: 10px;
+}
+
+/* Grid Layout for Desktop (12 Palaces + Center) */
+.tuvi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, minmax(200px, auto));
+    gap: 2px;
+    background-color: var(--border-color); /* Lines between cells */
+}
+
+.tuvi-palace {
+    background-color: #fff;
+    padding: 5px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    overflow: hidden;
+}
+
+/* Background Watermarks using Sprite */
+.tuvi-palace::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px; /* Adjust based on sprite cell size */
+    height: 100px;
+    background-image: url('../images/zodiac_sprite.png');
+    background-repeat: no-repeat;
+    opacity: 0.1; /* Watermark effect */
+    z-index: 0;
+    /* We will set background-position via JS or specific classes if sprite is regular grid */
+    background-size: 400%; /* Assuming 4x3 grid or similar? Check file later. Let's assume user provided 12 separate images logic or 1 sprite. */
+}
+
+/* Sprite Positions (Assuming 12 items in a row or grid? I'll guess vertical or horizontal based on standard sprites)
+   Since I can't see the sprite, I'll assume it's a grid or row.
+   Let's assume simple unique classes and I might need to adjust via CSS later.
+   For now, I'll use specific classes injected by PHP.
+*/
+
+/* Center Block (Thien Ban) spans middle 2x2 */
+.tuvi-center {
+    grid-column: 2 / span 2;
+    grid-row: 2 / span 2;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.yin-yang-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+/* Star Styles */
+.star-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+}
+
+.star-item {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.star-kim { color: var(--color-kim); }
+.star-moc { color: var(--color-moc); }
+.star-thuy { color: var(--color-thuy); }
+.star-hoa { color: var(--color-hoa); }
+.star-tho { color: var(--color-tho); }
+
+.brightness {
+    font-size: 0.8em;
+    color: #555;
+    margin-left: 3px;
+}
+
+/* Palace Header */
+.palace-header {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+    padding-bottom: 2px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #8B0000;
+    display: flex;
+    justify-content: space-between;
+}
+
+.palace-name {
+    font-size: 1.1em;
+}
+
+/* Grid Positioning for 12 Zodiacs
+   Standard Layout:
+   Top Row: Ti(5), Ngo(6), Mui(7), Than(8)
+   Right Col: Dau(9), Tuat(10)
+   Bot Row: Hoi(11), Ty(0), Suu(1), Dan(2)
+   Left Col: Mao(3), Thin(4)
+*/
+
+.palace-5 { grid-row: 1; grid-column: 1; } /* Ti */
+.palace-6 { grid-row: 1; grid-column: 2; } /* Ngo */
+.palace-7 { grid-row: 1; grid-column: 3; } /* Mui */
+.palace-8 { grid-row: 1; grid-column: 4; } /* Than */
+
+.palace-9 { grid-row: 2; grid-column: 4; } /* Dau */
+.palace-10 { grid-row: 3; grid-column: 4; } /* Tuat */
+
+.palace-11 { grid-row: 4; grid-column: 4; } /* Hoi */
+.palace-0  { grid-row: 4; grid-column: 3; } /* Ty */
+.palace-1  { grid-row: 4; grid-column: 2; } /* Suu */
+.palace-2  { grid-row: 4; grid-column: 1; } /* Dan */
+
+.palace-3  { grid-row: 3; grid-column: 1; } /* Mao */
+.palace-4  { grid-row: 2; grid-column: 1; } /* Thin */
+
+/* Background Sprite Positioning
+   Assuming sprite is a 12-cell strip or grid.
+   If user provided '8a012congiap1.png', it's likely a strip or 4x3.
+   We'll assume unique positions.
+   For now, we just ensure the class is there.
+   If sprite is vertical strip: 0 to 11 * height.
+   If horizontal: 0 to 11 * width.
+   Let's assume horizontal strip for now (common).
+*/
+.palace-0::before { background-position: 0 0; } /* Ty */
+.palace-1::before { background-position: -100px 0; } /* Suu */
+.palace-2::before { background-position: -200px 0; }
+.palace-3::before { background-position: -300px 0; }
+.palace-4::before { background-position: -400px 0; }
+.palace-5::before { background-position: -500px 0; }
+.palace-6::before { background-position: -600px 0; }
+.palace-7::before { background-position: -700px 0; }
+.palace-8::before { background-position: -800px 0; }
+.palace-9::before { background-position: -900px 0; }
+.palace-10::before { background-position: -1000px 0; }
+.palace-11::before { background-position: -1100px 0; }
+
+/* Mobile View (Responsive) */
+@media (max-width: 768px) {
+    .tuvi-grid {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tuvi-center {
+        order: -1; /* Show info first */
+        margin-bottom: 10px;
+    }
+
+    .tuvi-palace {
+        min-height: auto;
+        border-bottom: 1px solid #ccc;
+    }
+}
