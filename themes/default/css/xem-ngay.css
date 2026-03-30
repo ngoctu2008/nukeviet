@@ -1,0 +1,24 @@
+.xemngay-result-table {
+    margin-top: 20px;
+}
+.xemngay-result-table th {
+    background-color: #f5f5f5;
+}
+.status-bad {
+    color: #dc3545;
+    font-weight: bold;
+}
+.status-good {
+    color: #28a745;
+    font-weight: bold;
+}
+.score-high {
+    color: #28a745;
+}
+.score-medium {
+    color: #ffc107;
+}
+.warning-text {
+    color: #ffc107;
+    font-style: italic;
+}
