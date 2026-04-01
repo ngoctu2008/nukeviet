@@ -48,6 +48,7 @@ $lang_module['print_link'] = 'URL của bản tin này';
 $lang_module['author'] = 'Tác giả';
 $lang_module['internal_author'] = 'Tác giả';
 $lang_module['external_author'] = 'Tác giả khác';
+$lang_module['toc_title'] = 'Nội dung bài viết';
 $lang_module['post_name'] = 'Người đăng bài viết';
 $lang_module['source'] = 'Nguồn tin';
 $lang_module['topic'] = 'Theo dòng sự kiện';

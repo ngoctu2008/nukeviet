@@ -121,6 +121,24 @@
             <!-- END: imgfull -->
         </div>
         <!-- END: showhometext -->
+        <!-- BEGIN: toc -->
+        <div class="news-toc panel panel-default margin-bottom-lg">
+            <div class="panel-heading" style="cursor: pointer;" onclick="$(this).next().slideToggle();">
+                <strong class="toc-title">{LANG.toc_title}</strong>
+                <a href="#" class="toc-toggle pull-right" onclick="return false;">[+/-]</a>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled">
+                    {TOC}
+                </ul>
+            </div>
+        </div>
+        <style>
+            .news-toc .toc-h1 { margin-left: 0; font-weight: bold; }
+            .news-toc .toc-h2 { margin-left: 15px; }
+            .news-toc .toc-h3 { margin-left: 30px; font-style: italic; }
+        </style>
+        <!-- END: toc -->
         <div id="news-bodyhtml" class="bodytext margin-bottom-lg">
             {DETAIL.bodyhtml}
         </div>
