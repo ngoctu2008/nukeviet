@@ -87,3 +87,4 @@
 !/data/cache/.htaccess
 !/data/cache/index.html
 !/data/tmp/index.html
+modules/edu-chatbot-rag/vendor/
